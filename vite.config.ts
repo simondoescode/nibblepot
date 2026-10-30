@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // Keep all release assets and the service worker inside the GitHub Pages repo path.
-export default defineConfig(({ command }) => {
-  const base = command === 'serve' ? '/' : '/nibblepot/';
+export default defineConfig(() => {
+  const base = '/nibblepot/';
   return {
     base,
     plugins: [
