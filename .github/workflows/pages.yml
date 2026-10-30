@@ -23,13 +23,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --legacy-peer-deps --no-audit --no-fund
-      - name: Capture updated lockfile for reproducible CI
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-lockfile
-          path: package-lock.json
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --legacy-peer-deps
       - name: Show npm error details on failure
         if: failure()
         run: cat "$HOME"/.npm/_logs/*-debug-0.log | tail -150 || true
