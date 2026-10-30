@@ -32,7 +32,7 @@ export function RecipeDialog({ modal, recipe, larder, saved, onClose, onView, on
         <RecipeArt recipe={recipe} saved={saved} large />
         <div className="modal-body">
           <div className="recipe-detail-meta"><Clock3 size={15} aria-hidden="true" /> {recipe.mins} MIN <span aria-hidden="true">·</span> SERVES 4</div>
-          {random && <span className="recipe-random-tag">🎲 TONIGHT'S PICK!</span>}
+          {random && <span className="recipe-random-tag">🎲 Tonight’s pick!</span>}
           <Dialog.Title><span className="sr-only">{random ? 'Random dinner suggestion: ' : 'Recipe: '}</span>{recipe.title}</Dialog.Title>
           <Dialog.Description>{recipe.description} Simple ingredients, proper comfort food.</Dialog.Description>
           {random ? <div className="random-actions">
