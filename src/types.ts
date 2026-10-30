@@ -14,6 +14,8 @@ export interface Recipe {
   description: string;
   emoji: string;
   color: string;
+  /** Local image relative to the Vite base (e.g. recipes/jacket.webp). */
+  image?: string;
   mins: number;
   ing: RecipeIngredient[];
   steps: string[];

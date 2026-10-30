@@ -69,3 +69,11 @@ On touch devices, drag down from the top of the page until **Release to refresh*
 ## Illustrated recipe collection
 
 All sixteen recipes use bespoke self-contained SVG artwork in `public/recipes/`, with a shared colour and layout language. Cards and recipe details load the same local file using the GitHub Pages-aware Vite base URL, without external image services or image dependencies. The illustration catalogue is checked by Vitest and Playwright.
+
+## Adding recipes and generating images
+
+- [IMAGE_STYLE.md](IMAGE_STYLE.md): premium food-cutout style, real transparent alpha, low three-quarter angle, **800×504 WebP**, target 80–180 KB, hard cap **250,000 bytes**, and a copyable AI generation prompt.
+- [ADDING_RECIPES.md](ADDING_RECIPES.md): end-to-end recipe/ingredient workflow including generating, optimising and validating the new food image.
+- [AGENTS.md](AGENTS.md): project guardrails for coding and image agents.
+
+Original recipes keep their SVG illustrations. A new recipe can set an optional `image` field such as `"recipes/new-recipe.webp"` to use a local optimised WebP; GitHub Pages paths remain safe.
