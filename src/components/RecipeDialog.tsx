@@ -16,7 +16,6 @@ export function RecipeDialog({ modal, recipe, larder, saved, onClose, onView, on
     <Dialog.Portal>
       <Dialog.Overlay className="overlay" />
       <Dialog.Content className="modal"
-        aria-label={`${random ? 'Random dinner suggestion' : 'Recipe'}: ${recipe.title}`}
         onCloseAutoFocus={event => {
           // The recipe cards and surprise-me button are external to Dialog.Root.
           event.preventDefault();
@@ -29,7 +28,7 @@ export function RecipeDialog({ modal, recipe, larder, saved, onClose, onView, on
         <RecipeArt recipe={recipe} saved={saved} large />
         <div className="modal-body">
           <span className="modal-topline">{random ? 'Tonight’s pick!' : `⏱ ${recipe.mins} min · Serves 4`}</span>
-          <Dialog.Title>{recipe.title}</Dialog.Title>
+          <Dialog.Title><span className="sr-only">{random ? 'Random dinner suggestion: ' : 'Recipe: '}</span>{recipe.title}</Dialog.Title>
           <Dialog.Description>{recipe.description} · {recipe.mins} minutes · serves 4</Dialog.Description>
           {random ? <div className="random-actions">
             <Button tone="primary" onClick={onView}>🍴 See recipe</Button>
