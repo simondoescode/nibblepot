@@ -32,7 +32,7 @@ export function HomePage({ filter, setFilter, search, setSearch, favorites, lard
       </div>
       <div className="hero-art" aria-hidden="true"><div className="art-disk" /><div className="art-squiggle" />
         <div className="hero-pot"><PotMascot /></div><span className="float-food ff-1">🥕</span>
-        <span className="float-food ff-2">🍅</span><span className="float-food ff-3">🥦</span><span className="mini-burst">✳</span>
+        <span className="float-food ff-2">🍅</span><span className="float-food ff-3">🥦</span><span className="mini-burst">✳</span><div className="hero-copy-speech">GOOD GRUB.<br/>ZERO FAFF.</div>
       </div>
     </section>
     <div className="section-heading"><div><h2>What takes your fancy? <span aria-hidden="true">✳</span></h2>

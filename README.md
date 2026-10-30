@@ -65,3 +65,7 @@ Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable butto
 Open **Settings** in the desktop or mobile navigation. The page provides a **Refresh app** action, data backup/restore, a summary of local favourites/larder/shopping, and an explicitly confirmed local data reset.
 
 On touch devices, drag down from the top of the page until **Release to refresh** appears. This uses the same PWA refresh operation as the Settings button: check the service worker for an update, allow any waiting worker to activate, then reload the complete app (not only React state). Pulling on inputs or in recipe dialogs won't trigger it. Offline reloads fall back to the cached PWA shell. Saved data stays under the existing localStorage key.
+
+## Illustrated recipe collection
+
+All sixteen recipes use bespoke self-contained SVG artwork in `public/recipes/`, with a shared colour and layout language. Cards and recipe details load the same local file using the GitHub Pages-aware Vite base URL, without external image services or image dependencies. The illustration catalogue is checked by Vitest and Playwright.

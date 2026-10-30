@@ -1,3 +1,4 @@
+import { ArrowUpRight, Clock3, Heart, Soup } from 'lucide-react';
 import type { Recipe } from '../types';
 import { inLarder } from '../lib/recipes';
 import { Button } from '../ui/controls';
@@ -11,15 +12,23 @@ type Props = {
   onReset?: () => void;
 };
 
-export function RecipeArt({ recipe, saved, onFavorite, large = false }: {
-  recipe: Recipe; saved: boolean; onFavorite?: () => void; large?: boolean;
+/** Lightweight, local SVG art. No external images, per-user requests or layout shifts. */
+export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: {
+  recipe: Recipe; saved: boolean; onFavorite?: () => void; onOpen?: () => void; large?: boolean;
 }) {
-  return <div className={large ? 'modal-art' : 'recipe-pic'} style={{ background: recipe.color }}>
-    {!large && <span className="tiny-label">{recipe.mins} min</span>}
-    <div className="food-plate"><span className="food-emoji" role="img" aria-label={recipe.title}>{recipe.emoji}</span></div>
+  const image = <img
+    className="recipe-illustration"
+    src={`${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`}
+    alt="" width="800" height="504"
+    loading={large ? 'eager' : 'lazy'} decoding="async"
+  />;
+  return <div className={large ? 'modal-art illustrated-art' : 'recipe-pic illustrated-art'}>
+    {large ? image : <button type="button" className="recipe-art-open" onClick={onOpen}
+      aria-label={`View ${recipe.title}`}>{image}</button>}
+    {!large && <span className="tiny-label"><Clock3 size={13} aria-hidden="true" /> {recipe.mins} min</span>}
     {!large && <button type="button" className={`heart ${saved ? 'saved' : ''}`}
       aria-label={`${saved ? 'Remove from' : 'Add to'} favourites`} aria-pressed={saved} onClick={onFavorite}>
-      {saved ? '♥' : '♡'}
+      <Heart size={19} fill={saved ? 'currentColor' : 'none'} strokeWidth={2.6} aria-hidden="true" />
     </button>}
   </div>;
 }
@@ -30,12 +39,21 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
     <p>Try another search or filter.</p>
     {onReset && <Button tone="primary" size="small" onClick={onReset}>Show everything</Button>}
   </div>;
-  return <div className="recipe-grid">{recipes.map(recipe => <article className="recipe-card" key={recipe.id}>
-    <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)} onFavorite={() => onFavorite(recipe.id)} />
-    <div className="recipe-info"><h3>{recipe.title}</h3><p>{recipe.description}</p>
-      <div className="card-foot"><span className="foot-meta">🫙 {inLarder(recipe, larder)}/{recipe.ing.length} in larder</span>
-        <button type="button" className="open-recipe" onClick={() => onOpen(recipe.id)} aria-label={`View ${recipe.title}`}>View →</button>
+  return <div className="recipe-grid">{recipes.map(recipe => {
+    const inStock = inLarder(recipe, larder);
+    return <article className="recipe-card" key={recipe.id}>
+      <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)}
+        onFavorite={() => onFavorite(recipe.id)} onOpen={() => onOpen(recipe.id)} />
+      <div className="recipe-info">
+        <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'ONE-POT FAVOURITE' : recipe.ing.length <= 5 ? 'MINIMAL INGREDIENTS' : 'FAMILY FAVOURITE'}</div>
+        <h3>{recipe.title}</h3><p>{recipe.description}</p>
+        <div className="card-foot">
+          <span className="foot-meta"><span className="foot-stock-dot" aria-hidden="true" />{inStock} of {recipe.ing.length} in larder</span>
+          <button type="button" className="open-recipe" onClick={() => onOpen(recipe.id)} aria-label={`Open recipe: ${recipe.title}`}>
+            <span>Let's cook</span><ArrowUpRight size={17} aria-hidden="true" />
+          </button>
+        </div>
       </div>
-    </div>
-  </article>)}</div>;
+    </article>;
+  })}</div>;
 }
