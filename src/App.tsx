@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { recipes, ingredientName } from './data';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
+import { refreshPwa } from './lib/refresh';
+import { usePullToRefresh } from './hooks/usePullToRefresh';
 import type { Filter, RecipeModal, SavedData, Tab } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
@@ -9,6 +11,8 @@ import { FavouritesPage } from './components/FavouritesPage';
 import { LarderPage } from './components/LarderPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipeDialog } from './components/RecipeDialog';
+import { SettingsPage } from './components/SettingsPage';
+import { PullIndicator } from './components/PullIndicator';
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('home');
@@ -17,10 +21,19 @@ export default function App() {
   const [modal, setModal] = useState<RecipeModal | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [notice, setNotice] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshingRef = useRef(false);
   const noticeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const dialogReturnFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => { writeSavedData(data); }, [data]);
+  const refresh = useCallback(() => {
+    if (refreshingRef.current) return;
+    refreshingRef.current = true;
+    setRefreshing(true);
+    void refreshPwa();
+  }, []);
+  const pull = usePullToRefresh(refresh, !modal && !refreshing);
   useEffect(() => () => { if (noticeTimeout.current) clearTimeout(noticeTimeout.current); }, []);
   const toast = useCallback((message: string) => {
     setNotice(message);
@@ -67,6 +80,7 @@ export default function App() {
 
   const activeRecipe = modal ? recipes.find(recipe => recipe.id === modal.id) : undefined;
   return <>
+    <PullIndicator distance={pull} refreshing={refreshing} />
     <div className="wrap">
       <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main">
@@ -74,13 +88,15 @@ export default function App() {
           favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={openRecipe}
           onRandom={randomMeal} onLarder={() => navigate('larder')} />}
         {tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
-          onFavorite={toggleFavorite} onOpen={id => setModal({ kind: 'recipe', id })} onBrowse={() => navigate('home')} />}
+          onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {tab === 'larder' && <LarderPage larder={data.larder} onToggle={toggleLarder} onFindMeals={findMeals} />}
         {tab === 'shopping' && <ShoppingPage shopping={data.shopping}
           onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
           onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
           onCopy={copyShopping} onBrowse={() => navigate('home')} />}
+        {tab === 'settings' && <SettingsPage data={data} onRefresh={refresh} refreshing={refreshing}
+          onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
       </main>
       <footer className="footer">Made for real-life tea times ✳ Nibblepot demo</footer>
     </div>
