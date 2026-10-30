@@ -23,7 +23,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      - run: npm install --no-audit --no-fund --legacy-peer-deps
+      - name: Show npm error details on failure
+        if: failure()
+        run: cat "$HOME"/.npm/_logs/*-debug-0.log | tail -150 || true
       - run: npm run build
       - run: npm run test
       - name: Install Chromium for browser smoke tests
