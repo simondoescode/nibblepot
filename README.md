@@ -55,3 +55,7 @@ scripts/generate-icons.mjs  Pure Node app-icon generator
 ```
 
 Recipe timings and ingredient quantities are demo content and should be independently reviewed before publishing as cooking guidance.
+
+## UI system
+
+Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable buttons and filter chips are in `src/ui/controls.tsx`. The recipe dialog uses Radix Primitives for accessible focus management, dismissal and screen-reader semantics. Lucide provides utility action icons, while Nibblepot's mascot, food artwork and playful colour palette stay custom.

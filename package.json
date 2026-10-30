@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "Good grub. Zero faff. Colourful family recipe-book PWA.",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "generate:icons": "node scripts/generate-icons.mjs",
     "predev": "npm run generate:icons",
@@ -17,6 +19,8 @@
     "check": "npm run build && npm run test && npm run test:e2e"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "1.3.1",
+    "lucide-react": "1.61.0",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },

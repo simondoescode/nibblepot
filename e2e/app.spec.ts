@@ -39,3 +39,27 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
   await page.getByRole('navigation', { name: nav }).getByRole('button', { name: 'Larder' }).click();
   await expect(page.locator('.larder-item').filter({ hasText: 'Potatoes' }).getByRole('checkbox')).not.toBeChecked();
 });
+
+test('recipe dialog traps focus and closes on Escape, returning to opener', async ({ page }) => {
+  await page.goto('/nibblepot/');
+  const open = page.getByRole('button', { name: '🎲 Surprise me!' });
+  await open.focus();
+  await open.click();
+  const dialog = page.getByRole('dialog', { name: /random dinner suggestion/i });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole('button', { name: 'Close dialog' })).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(dialog).toContainText('Tonight');
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(open).toBeFocused();
+});
+
+test('recipe dialog closes when clicking backdrop, preserving page actions', async ({ page }) => {
+  await page.goto('/nibblepot/');
+  await page.locator('.recipe-card').first().getByRole('button', { name: /view/i }).click();
+  await expect(page.getByRole('dialog', { name: /recipe:/i })).toBeVisible();
+  await page.mouse.click(5, 5);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.locator('.recipe-card')).toHaveCount(16);
+});

@@ -1,5 +1,6 @@
 import { recipes } from '../data';
 import { RecipeGrid } from './RecipeGrid';
+import { Button } from '../ui/controls';
 
 export function FavouritesPage({ favorites, larder, onFavorite, onOpen, onBrowse }: {
   favorites: string[]; larder: string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onBrowse: () => void;
@@ -10,7 +11,7 @@ export function FavouritesPage({ favorites, larder, onFavorite, onOpen, onBrowse
     {saved.length > 0 ? <RecipeGrid recipes={saved} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} /> :
       <div className="empty"><div className="empty-icon">♡</div><h3>Nothing saved yet</h3>
         <p>Tap the heart on any recipe to keep it here.</p>
-        <button type="button" className="btn btn-primary btn-small" onClick={onBrowse}>Find a favourite</button>
+        <Button tone="primary" size="small" onClick={onBrowse}>Find a favourite</Button>
       </div>}
   </>;
 }

@@ -18,6 +18,7 @@ export default function App() {
   const [data, setData] = useState<SavedData>(readSavedData);
   const [notice, setNotice] = useState('');
   const noticeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const dialogReturnFocus = useRef<HTMLElement | null>(null);
 
   useEffect(() => { writeSavedData(data); }, [data]);
   useEffect(() => () => { if (noticeTimeout.current) clearTimeout(noticeTimeout.current); }, []);
@@ -31,7 +32,14 @@ export default function App() {
     setTab(target); setModal(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-  const randomMeal = () => setModal(previous => ({ kind: 'random', id: chooseRandomRecipe(recipes, previous?.id).id }));
+  const randomMeal = () => {
+    if (!modal && document.activeElement instanceof HTMLElement) dialogReturnFocus.current = document.activeElement;
+    setModal(previous => ({ kind: 'random', id: chooseRandomRecipe(recipes, previous?.id).id }));
+  };
+  const openRecipe = (id: string) => {
+    if (document.activeElement instanceof HTMLElement) dialogReturnFocus.current = document.activeElement;
+    setModal({ kind: 'recipe', id });
+  };
   const toggleFavorite = (id: string) => {
     const alreadySaved = data.favorites.includes(id);
     setData(current => ({ ...current, favorites: alreadySaved ? current.favorites.filter(favorite => favorite !== id) : [...current.favorites, id] }));
@@ -63,7 +71,7 @@ export default function App() {
       <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main">
         {tab === 'home' && <HomePage filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
-          favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={id => setModal({ kind: 'recipe', id })}
+          favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={openRecipe}
           onRandom={randomMeal} onLarder={() => navigate('larder')} />}
         {tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={id => setModal({ kind: 'recipe', id })} onBrowse={() => navigate('home')} />}
@@ -80,7 +88,7 @@ export default function App() {
     {modal && activeRecipe && <RecipeDialog modal={modal} recipe={activeRecipe} larder={data.larder}
       saved={data.favorites.includes(activeRecipe.id)} onClose={() => setModal(null)}
       onView={() => setModal({ kind: 'recipe', id: activeRecipe.id })} onReroll={randomMeal}
-      onAddMissing={() => addMissing(activeRecipe.id)} onFavorite={() => toggleFavorite(activeRecipe.id)} />}
+      onAddMissing={() => addMissing(activeRecipe.id)} onFavorite={() => toggleFavorite(activeRecipe.id)} returnFocusRef={dialogReturnFocus} />}
     {notice && <div className="toast" role="status" aria-live="polite">{notice}</div>}
   </>;
 }
