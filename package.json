@@ -1,16 +1,34 @@
 {
   "name": "nibblepot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Good grub. Zero faff. A colourful offline-friendly family recipe PWA.",
-  "engines": {
-    "node": ">=20"
-  },
+  "description": "Good grub. Zero faff. Colourful family recipe-book PWA.",
+  "engines": { "node": ">=22.12.0" },
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "check": "npm run build && npm test",
-    "dev": "npx --yes http-server dist -p 4173 -c-1"
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "predev": "npm run generate:icons",
+    "dev": "vite",
+    "prebuild": "npm run generate:icons",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "check": "npm run build && npm run test && npm run test:e2e"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.8.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "8.3.5",
+    "vite-plugin-pwa": "2.0.0",
+    "vitest": "^4.0.0"
   }
 }

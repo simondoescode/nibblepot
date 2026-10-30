@@ -1,11 +1,10 @@
-import { readFile, writeFile, copyFile, mkdir, rm } from 'node:fs/promises';
-import { resolve, join } from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { deflateSync } from 'node:zlib';
 
-const root = resolve(import.meta.dirname, '..');
-const from = path => join(root, 'src', path);
-const out = path => join(root, 'dist', path);
-
+const root = fileURLToPath(new URL('../', import.meta.url));
+const out = name => join(root, 'public', 'icons', name);
 // Encode a small, crisp app icon in pure Node: no heavyweight build dependencies.
 const makeCRC = bytes => {
   let crc = 0xffffffff;
@@ -63,12 +62,7 @@ function potIcon(size) {
   ]);
 }
 
-await rm(out(''), { recursive: true, force: true });
-await mkdir(out('icons'), { recursive: true });
-await copyFile(from('index.html'), out('index.html'));
-await copyFile(from('manifest.webmanifest'), out('manifest.webmanifest'));
-await copyFile(from('icons/favicon.svg'), out('icons/favicon.svg'));
-const build = (process.env.GITHUB_SHA || 'local').slice(0, 12).replace(/[^a-zA-Z0-9_-]/g, '') || 'local';
-await writeFile(out('sw.js'), (await readFile(from('sw.js'), 'utf8')).replaceAll('__CACHE_VERSION__', build));
-for (const size of [192, 512]) await writeFile(out('icons/icon-' + size + '.png'), potIcon(size));
-console.log('Built Nibblepot for GitHub Pages → dist/ (cache: ' + build + ')');
+
+await mkdir(out(''), { recursive: true });
+for (const size of [192, 512]) await writeFile(out(`icon-${size}.png`), potIcon(size));
+console.log('Generated 192px and 512px PWA icons');
