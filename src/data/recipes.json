@@ -1,0 +1,566 @@
+[
+  {
+    "id": "jacket",
+    "title": "Jacket potatoes & beans",
+    "description": "The ultimate cheap, cheerful tea.",
+    "emoji": "🥔",
+    "color": "#ffd58e",
+    "mins": 55,
+    "ing": [
+      {
+        "id": "potatoes",
+        "qty": "4 large"
+      },
+      {
+        "id": "baked-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "cheese",
+        "qty": "100g (optional)"
+      },
+      {
+        "id": "butter",
+        "qty": "A little (optional)"
+      }
+    ],
+    "steps": [
+      "Prick the potatoes and bake at 200°C for 45–60 minutes until soft.",
+      "Heat the beans in a saucepan.",
+      "Split the potatoes, fluff with a fork and pile on the beans and cheese."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "sausage-bean",
+    "title": "Sausage & bean casserole",
+    "description": "Big flavour. One pan. Happy plates.",
+    "emoji": "🍲",
+    "color": "#f8c1ae",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "sausages",
+        "qty": "8"
+      },
+      {
+        "id": "baked-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Brown the sausages in a large pan, then set aside.",
+      "Soften the chopped onion, add paprika, tomatoes and beans.",
+      "Put sausages back in and simmer for 15–20 minutes until cooked through."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "chicken-rice",
+    "title": "One-pot chicken rice",
+    "description": "Dinner and minimal washing up.",
+    "emoji": "🍗",
+    "color": "#d4e6a8",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500g"
+      },
+      {
+        "id": "rice",
+        "qty": "300g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150g"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Brown diced chicken in a deep pan and soften the onion.",
+      "Stir in rice, paprika and stock made with enough water for your rice.",
+      "Cover and simmer until the rice is tender and chicken cooked through. Add peas near the end."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "cottage",
+    "title": "Cheat’s cottage pie",
+    "description": "A cosy classic without the fuss.",
+    "emoji": "🥧",
+    "color": "#eacdf4",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "750g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150g"
+      },
+      {
+        "id": "gravy",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "cheese",
+        "qty": "60g (optional)"
+      }
+    ],
+    "steps": [
+      "Boil the potatoes until soft and mash.",
+      "Brown the mince with onion; add peas, gravy granules and water to make a thick sauce.",
+      "Top with mash and optional cheese. Grill until golden and piping hot."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "tuna-bake",
+    "title": "Tuna pasta bake",
+    "description": "The cupboard-clearout hero.",
+    "emoji": "🍝",
+    "color": "#c7e8f5",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350g"
+      },
+      {
+        "id": "tuna",
+        "qty": "2 tins"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "1 small tin"
+      },
+      {
+        "id": "cheese",
+        "qty": "150g"
+      },
+      {
+        "id": "milk",
+        "qty": "250ml"
+      }
+    ],
+    "steps": [
+      "Cook the pasta until just tender.",
+      "Combine drained tuna, sweetcorn and pasta with milk and most of the cheese.",
+      "Tip into a baking dish, scatter remaining cheese and bake until hot and golden."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "tomato-pasta",
+    "title": "Speedy tomato pasta",
+    "description": "A very reliable 20-minute dinner.",
+    "emoji": "🍅",
+    "color": "#ffb7ad",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "garlic",
+        "qty": "2 cloves"
+      },
+      {
+        "id": "cheese",
+        "qty": "80g"
+      },
+      {
+        "id": "oil",
+        "qty": "1 tbsp"
+      }
+    ],
+    "steps": [
+      "Cook pasta in salted water.",
+      "Gently fry garlic in oil; add tomatoes and simmer until thickened.",
+      "Toss with pasta and finish with grated cheese."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "egg-rice",
+    "title": "Egg fried rice",
+    "description": "The quickest fridge raid going.",
+    "emoji": "🍚",
+    "color": "#e3d5ff",
+    "mins": 15,
+    "ing": [
+      {
+        "id": "rice",
+        "qty": "300g dry"
+      },
+      {
+        "id": "eggs",
+        "qty": "4"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150g"
+      },
+      {
+        "id": "soy-sauce",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "spring-onions",
+        "qty": "3"
+      }
+    ],
+    "steps": [
+      "Cook the rice according to the pack (or use safely cooled and refrigerated cooked rice).",
+      "Scramble the eggs in a hot pan, then add rice and peas.",
+      "Stir-fry until everything is piping hot, then add soy sauce and spring onions."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "quesadilla",
+    "title": "Cheesy bean wraps",
+    "description": "Crispy, melty, very little effort.",
+    "emoji": "🌮",
+    "color": "#f9d78e",
+    "mins": 15,
+    "ing": [
+      {
+        "id": "wraps",
+        "qty": "8"
+      },
+      {
+        "id": "baked-beans",
+        "qty": "1 tin"
+      },
+      {
+        "id": "cheese",
+        "qty": "150g"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "1 small tin"
+      }
+    ],
+    "steps": [
+      "Spoon beans, sweetcorn and cheese onto half of each wrap.",
+      "Fold over and toast in a dry frying pan until golden on both sides.",
+      "Cut into wedges and serve."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "mash",
+    "title": "Sausage, mash & peas",
+    "description": "Everyone knows the drill.",
+    "emoji": "🥔",
+    "color": "#c8e8ae",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "sausages",
+        "qty": "8"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "250g"
+      },
+      {
+        "id": "gravy",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Cook sausages according to the pack until fully cooked.",
+      "Boil and mash potatoes; cook peas.",
+      "Make gravy and serve everything together."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "butter-stew",
+    "title": "Smoky butter bean stew",
+    "description": "A cosy dinner from a few tins.",
+    "emoji": "🫘",
+    "color": "#f4bfa6",
+    "mins": 25,
+    "ing": [
+      {
+        "id": "butter-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      },
+      {
+        "id": "paprika",
+        "qty": "2 tsp"
+      }
+    ],
+    "steps": [
+      "Soften the onion in a pan with a splash of oil or water.",
+      "Add paprika, drained beans, tomatoes and a little stock.",
+      "Simmer for 15 minutes until thick and bubbling."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "traybake",
+    "title": "Chicken & potato traybake",
+    "description": "Chop, chuck in, oven on.",
+    "emoji": "🍗",
+    "color": "#f4de9d",
+    "mins": 45,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "600g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "700g"
+      },
+      {
+        "id": "carrots",
+        "qty": "4"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "oil",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C. Chop potatoes, carrots and onion into bite-sized pieces.",
+      "Toss vegetables and chicken with oil on a baking tray.",
+      "Roast for 35–45 minutes until chicken is cooked through and vegetables are tender."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "toasties",
+    "title": "Ham & cheese toasties",
+    "description": "When cooking feels like too much.",
+    "emoji": "🥪",
+    "color": "#c5e6f4",
+    "mins": 10,
+    "ing": [
+      {
+        "id": "bread",
+        "qty": "8 slices"
+      },
+      {
+        "id": "ham",
+        "qty": "8 slices"
+      },
+      {
+        "id": "cheese",
+        "qty": "150g"
+      },
+      {
+        "id": "butter",
+        "qty": "A little"
+      }
+    ],
+    "steps": [
+      "Fill bread with ham and cheese; butter the outside lightly.",
+      "Toast in a sandwich press or frying pan until golden.",
+      "Serve warm, with any veg you have on hand."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "meatball",
+    "title": "Meatball spaghetti",
+    "description": "A dependable midweek winner.",
+    "emoji": "🍝",
+    "color": "#f6c3d4",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "meatballs",
+        "qty": "16"
+      },
+      {
+        "id": "pasta",
+        "qty": "350g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "cheese",
+        "qty": "80g"
+      }
+    ],
+    "steps": [
+      "Brown and fully cook meatballs, and soften sliced onion.",
+      "Add tomatoes and simmer while the pasta cooks.",
+      "Mix with cooked pasta and scatter over cheese."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "fish-butties",
+    "title": "Fish finger butties",
+    "description": "A five-star lazy tea.",
+    "emoji": "🐟",
+    "color": "#c5def6",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "fish-fingers",
+        "qty": "12"
+      },
+      {
+        "id": "bread",
+        "qty": "8 slices"
+      },
+      {
+        "id": "mayo",
+        "qty": "4 tbsp"
+      },
+      {
+        "id": "lettuce",
+        "qty": "A few leaves"
+      }
+    ],
+    "steps": [
+      "Bake fish fingers until crisp and cooked through.",
+      "Spread bread with mayo and add lettuce.",
+      "Pile in fish fingers, close sandwiches and serve."
+    ],
+    "onePot": false
+  },
+  {
+    "id": "soup",
+    "title": "Tomato soup & toasties",
+    "description": "Easy comfort on a rainy day.",
+    "emoji": "🥫",
+    "color": "#ffb1a6",
+    "mins": 25,
+    "ing": [
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      },
+      {
+        "id": "bread",
+        "qty": "8 slices"
+      },
+      {
+        "id": "cheese",
+        "qty": "150g"
+      }
+    ],
+    "steps": [
+      "Simmer chopped onion, tomatoes and stock for 15 minutes.",
+      "Blend until smooth if preferred, and season to taste.",
+      "Make cheese toasties while soup heats through."
+    ],
+    "onePot": true
+  },
+  {
+    "id": "chilli-jacket",
+    "title": "Bean chilli jackets",
+    "description": "A loaded spud without the spend.",
+    "emoji": "🌶️",
+    "color": "#d7eab1",
+    "mins": 55,
+    "ing": [
+      {
+        "id": "potatoes",
+        "qty": "4 large"
+      },
+      {
+        "id": "kidney-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "paprika",
+        "qty": "2 tsp"
+      },
+      {
+        "id": "cheese",
+        "qty": "100g"
+      }
+    ],
+    "steps": [
+      "Bake potatoes until soft (45–60 minutes at 200°C).",
+      "Simmer drained kidney beans with tomatoes and paprika until thick and hot.",
+      "Split spuds, spoon over chilli and top with cheese."
+    ],
+    "onePot": true
+  }
+]

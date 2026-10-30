@@ -1,0 +1,142 @@
+{
+  "potatoes": [
+    "Potatoes",
+    "Cupboard"
+  ],
+  "baked-beans": [
+    "Baked beans",
+    "Cupboard"
+  ],
+  "rice": [
+    "Rice",
+    "Cupboard"
+  ],
+  "pasta": [
+    "Pasta",
+    "Cupboard"
+  ],
+  "chopped-tomatoes": [
+    "Chopped tomatoes",
+    "Cupboard"
+  ],
+  "onion": [
+    "Onion",
+    "Cupboard"
+  ],
+  "garlic": [
+    "Garlic",
+    "Cupboard"
+  ],
+  "stock": [
+    "Stock cubes",
+    "Cupboard"
+  ],
+  "paprika": [
+    "Paprika",
+    "Cupboard"
+  ],
+  "gravy": [
+    "Gravy granules",
+    "Cupboard"
+  ],
+  "wraps": [
+    "Wraps",
+    "Cupboard"
+  ],
+  "bread": [
+    "Bread",
+    "Cupboard"
+  ],
+  "tuna": [
+    "Tinned tuna",
+    "Cupboard"
+  ],
+  "butter-beans": [
+    "Butter beans",
+    "Cupboard"
+  ],
+  "kidney-beans": [
+    "Kidney beans",
+    "Cupboard"
+  ],
+  "soy-sauce": [
+    "Soy sauce",
+    "Cupboard"
+  ],
+  "oil": [
+    "Cooking oil",
+    "Cupboard"
+  ],
+  "noodles": [
+    "Noodles",
+    "Cupboard"
+  ],
+  "cheese": [
+    "Cheese",
+    "Fridge"
+  ],
+  "butter": [
+    "Butter or spread",
+    "Fridge"
+  ],
+  "eggs": [
+    "Eggs",
+    "Fridge"
+  ],
+  "milk": [
+    "Milk",
+    "Fridge"
+  ],
+  "cream-cheese": [
+    "Cream cheese",
+    "Fridge"
+  ],
+  "ham": [
+    "Ham",
+    "Fridge"
+  ],
+  "carrots": [
+    "Carrots",
+    "Fridge"
+  ],
+  "spring-onions": [
+    "Spring onions",
+    "Fridge"
+  ],
+  "lettuce": [
+    "Lettuce",
+    "Fridge"
+  ],
+  "mayo": [
+    "Mayonnaise",
+    "Fridge"
+  ],
+  "chicken": [
+    "Chicken thighs",
+    "Freezer"
+  ],
+  "sausages": [
+    "Sausages",
+    "Freezer"
+  ],
+  "beef": [
+    "Beef mince",
+    "Freezer"
+  ],
+  "frozen-peas": [
+    "Frozen peas",
+    "Freezer"
+  ],
+  "sweetcorn": [
+    "Sweetcorn",
+    "Freezer"
+  ],
+  "fish-fingers": [
+    "Fish fingers",
+    "Freezer"
+  ],
+  "meatballs": [
+    "Meatballs",
+    "Freezer"
+  ]
+}

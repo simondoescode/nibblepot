@@ -1,4 +1,4 @@
-name: Build and deploy Nibblepot
+name: Test and deploy Nibblepot
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build and test
+    name: Typecheck, build and test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,9 +24,16 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - run: npm ci
+          cache-dependency-path: package-lock.json
+      - run: npm ci --legacy-peer-deps
+      - name: Show npm error details on failure
+        if: failure()
+        run: cat "$HOME"/.npm/_logs/*-debug-0.log | tail -150 || true
       - run: npm run build
-      - run: npm test
+      - run: npm run test
+      - name: Install Chromium for browser smoke tests
+        run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       - name: Upload static site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
