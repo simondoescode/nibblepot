@@ -1,5 +1,6 @@
 import type { Recipe } from '../types';
 import { inLarder } from '../lib/recipes';
+import { Button } from '../ui/controls';
 
 type Props = {
   recipes: Recipe[];
@@ -27,7 +28,7 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
   if (!recipes.length) return <div className="empty">
     <div className="empty-icon">🍽️</div><h3>No recipes found</h3>
     <p>Try another search or filter.</p>
-    {onReset && <button type="button" className="btn btn-primary btn-small" onClick={onReset}>Show everything</button>}
+    {onReset && <Button tone="primary" size="small" onClick={onReset}>Show everything</Button>}
   </div>;
   return <div className="recipe-grid">{recipes.map(recipe => <article className="recipe-card" key={recipe.id}>
     <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)} onFavorite={() => onFavorite(recipe.id)} />

@@ -1,0 +1,17 @@
+/* Nibblepot's design language lives here. Radix controls are intentionally unstyled. */
+:root {
+  --ink: #25231e;
+  --muted: #746f64;
+  --cream: #fffaf1;
+  --paper: #fffefa;
+  --yellow: #ffd861;
+  --orange: #fc724e;
+  --green: #c8e8ae;
+  --lavender: #dcd0ff;
+  --blue: #c7e8f5;
+  --line: #29251f;
+  --shadow: 4px 5px 0 var(--line);
+  --radius-control: 15px;
+  --radius-card: 22px;
+  --focus-ring: #4b78e5;
+}

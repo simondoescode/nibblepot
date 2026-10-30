@@ -1,4 +1,5 @@
 import { ingredients } from '../data';
+import { Button } from '../ui/controls';
 
 const groups = [{ name: 'Cupboard', icon: '🥫' }, { name: 'Fridge', icon: '🧀' }, { name: 'Freezer', icon: '❄️' }] as const;
 
@@ -19,7 +20,7 @@ export function LarderPage({ larder, onToggle, onFindMeals }: {
       <aside className="larder-aside"><span>✨ YOU'RE STOCKED!</span>
         <div className="big">{larder.length}</div><strong>ingredients ready to go</strong>
         <p>See which dinners need the fewest extra bits. Your larder stays on this device.</p>
-        <button type="button" className="btn btn-primary" onClick={onFindMeals}>🍳 What can I make?</button>
+        <Button tone="primary" onClick={onFindMeals}>🍳 What can I make?</Button>
         <p style={{ fontSize: 12, marginBottom: 0 }}>We've added a few example ingredients to get you started. Change them to match your cupboards.</p>
       </aside>
     </div>

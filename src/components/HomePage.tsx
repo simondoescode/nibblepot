@@ -4,6 +4,7 @@ import { filterRecipes } from '../lib/recipes';
 import type { Filter } from '../types';
 import { PotMascot } from './PotArt';
 import { RecipeGrid } from './RecipeGrid';
+import { Button, FilterChip } from '../ui/controls';
 
 const filters: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All recipes' },
@@ -26,8 +27,8 @@ export function HomePage({ filter, setFilter, search, setSearch, favorites, lard
       <div className="hero-content"><span className="eyebrow">✳️ Good grub. Zero faff.</span>
         <h1>What's for<br /><em>tea?</em></h1>
         <p>Easy, budget-friendly family dinners. No waffle, no weird ingredients. Just food.</p>
-        <div className="actions"><button type="button" className="btn btn-primary" onClick={onRandom}>🎲 Surprise me!</button>
-          <button type="button" className="btn btn-cream" onClick={onLarder}>🫙 My larder</button></div>
+        <div className="actions"><Button tone="primary" onClick={onRandom}>🎲 Surprise me!</Button>
+          <Button onClick={onLarder}>🫙 My larder</Button></div>
       </div>
       <div className="hero-art" aria-hidden="true"><div className="art-disk" /><div className="art-squiggle" />
         <div className="hero-pot"><PotMascot /></div><span className="float-food ff-1">🥕</span>
@@ -41,8 +42,7 @@ export function HomePage({ filter, setFilter, search, setSearch, favorites, lard
           onChange={event => setSearch(event.target.value)} aria-label="Search recipes" /></label>
     </div>
     <div className="chips" aria-label="Recipe filters">{filters.map(({ id, label }) =>
-      <button key={id} className={`chip ${filter === id ? 'selected' : ''}`} type="button"
-        aria-pressed={filter === id} onClick={() => setFilter(id)}>{label}</button>)}</div>
+      <FilterChip key={id} selected={filter === id} onClick={() => setFilter(id)}>{label}</FilterChip>)}</div>
     <div id="home-results"><RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen}
       onReset={() => { setSearch(''); setFilter('all'); }} /></div>
   </>;
