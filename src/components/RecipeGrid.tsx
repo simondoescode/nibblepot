@@ -18,7 +18,7 @@ export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: 
 }) {
   const image = <img
     className="recipe-illustration"
-    src={`${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`}
+    src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
     alt="" width="800" height="504"
     loading={large ? 'eager' : 'lazy'} decoding="async"
   />;
