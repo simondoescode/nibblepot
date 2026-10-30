@@ -14,3 +14,6 @@
 .shop-remove:hover{background:var(--cream)}
 .modal-close{display:grid;place-items:center;cursor:pointer}
 @media(max-width:560px){.modal{width:calc(100vw - 24px)}}
+
+/* Screen-reader-only prefix ensures Radix dialog titles have meaningful names. */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
