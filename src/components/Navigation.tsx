@@ -6,6 +6,7 @@ const links: { id: Tab; icon: string; label: string }[] = [
   { id: 'favorites', icon: '❤️', label: 'Favourites' },
   { id: 'larder', icon: '🫙', label: 'Larder' },
   { id: 'shopping', icon: '🛒', label: 'Shopping' },
+  { id: 'settings', icon: '⚙️', label: 'Settings' },
 ];
 
 function Tabs({ tab, count, onNavigate, mobile }: { tab: Tab; count: number; onNavigate: (tab: Tab) => void; mobile: boolean }) {

@@ -1,6 +1,6 @@
 export type IngredientId = string;
 export type RecipeId = string;
-export type Tab = 'home' | 'favorites' | 'larder' | 'shopping';
+export type Tab = 'home' | 'favorites' | 'larder' | 'shopping' | 'settings';
 export type Filter = 'all' | 'quick' | 'simple' | 'onepot' | 'larder';
 
 export interface RecipeIngredient {

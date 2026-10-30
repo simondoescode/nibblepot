@@ -17,3 +17,32 @@
 
 /* Screen-reader-only prefix ensures Radix dialog titles have meaningful names. */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Settings screen uses the existing Nibblepot illustrations and chunky controls. */
+.settings-intro{background:var(--lavender)}
+.settings-stack{max-width:860px;display:grid;gap:19px}
+.settings-panel{background:var(--paper);border:2px solid var(--ink);border-radius:var(--radius-card);padding:22px;box-shadow:3px 4px 0 var(--ink)}
+.settings-panel h3{font-size:21px;letter-spacing:-.6px;margin:0 0 5px}
+.settings-panel p{color:var(--muted);font-size:14px;line-height:1.45;margin:0}
+.settings-panel p svg{vertical-align:middle}
+.settings-heading{display:flex;justify-content:space-between;align-items:start;gap:15px;padding-bottom:14px;border-bottom:1px solid #e5ded1}
+.settings-version{border:1.7px solid var(--ink);background:var(--yellow);border-radius:999px;padding:6px 11px;font-weight:900;font-size:12px;white-space:nowrap}
+.settings-action{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 0}
+.settings-action + .settings-action{border-top:1px solid #e5ded1}
+.settings-action:last-child{padding-bottom:0}
+.settings-action strong{display:block;font-weight:900;margin-bottom:5px}
+.settings-action small{display:block;color:var(--muted);line-height:1.45}
+.settings-action .btn{flex-shrink:0}
+.settings-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px 0}
+.settings-stats>div{background:#fff0d7;border:1.5px solid #ecd8b9;border-radius:13px;padding:13px;text-align:center}
+.settings-stats strong{display:block;font-size:25px}
+.settings-stats span{font-size:12px;font-weight:750;color:var(--muted)}
+.btn-danger{background:#ffe0db;border-color:#ad4540;color:#752a25}
+.btn-danger:hover{background:#ffcfc9}
+.pull-indicator{position:fixed;z-index:45;top:calc(4px + env(safe-area-inset-top));left:50%;display:flex;align-items:center;gap:8px;border:2px solid var(--ink);border-radius:100px;box-shadow:2px 3px 0 var(--ink);padding:9px 16px;background:var(--paper);font-size:13px;font-weight:900;white-space:nowrap;pointer-events:none}
+.pull-indicator.armed{background:var(--green)}
+.pull-spinning{animation:pull-spin .75s linear infinite}
+@keyframes pull-spin{to{transform:rotate(360deg)}}
+@media(pointer:coarse){html{overscroll-behavior-y:contain}}
+@media(max-width:560px){.settings-panel{padding:17px}.settings-action{align-items:stretch;flex-direction:column;gap:11px}.settings-action .btn{align-self:flex-start}.settings-stats>div{padding:9px 3px}.settings-stats span{font-size:11px}.small-print{display:none}}
+@media(prefers-reduced-motion:reduce){.pull-spinning{animation:none}}
