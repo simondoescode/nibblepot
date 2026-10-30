@@ -11,9 +11,11 @@ React 19, Vite, TypeScript, custom CSS, `vite-plugin-pwa`, Vitest and Playwright
 Requires Node.js 22.12+.
 
 ```sh
-npm install
+npm ci
 npm run dev
 ```
+
+Open http://localhost:5173/nibblepot/ in development. The base path stays the same in preview and on GitHub Pages.
 
 Commands:
 
