@@ -1,0 +1,16 @@
+{
+  "name": "nibblepot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Good grub. Zero faff. A colourful offline-friendly family recipe PWA.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm run build && npm test",
+    "dev": "npx --yes http-server dist -p 4173 -c-1"
+  }
+}
