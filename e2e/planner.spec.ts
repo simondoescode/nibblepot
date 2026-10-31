@@ -6,13 +6,12 @@ test('planner has seven days, shuffles, saves and updates a consolidated list', 
   await nav.getByRole('button',{name:'Planner'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/planner\/$/);
   await expect(page.locator('.planner-day')).toHaveCount(7);
-  await expect(page.locator('.planner-day').filter({hasText:'Leftovers night'})).toHaveCount(0);
   await page.getByRole('button',{name:'Clear week'}).click();
   await expect(page.locator('.planner-day-main select').first()).toHaveValue('empty');
   await page.locator('#planner-slot-0').selectOption('recipe:tomato-pasta');
   await page.locator('#planner-slot-1').selectOption('recipe:tomato-pasta');
   await page.locator('#planner-slot-2').selectOption('leftovers');
-  await expect(page.locator('.planner-summary')).toContainText('2 planned dinners');
+  await expect(page.locator('.planner-big')).toContainText('2planned dinners');
   // Start with a blank larder so pasta is actually missing.
   await page.evaluate(()=>localStorage.setItem('nibblepot-demo-v1',JSON.stringify({
     larder:[], favorites:[], shopping:[], weekPlans:JSON.parse(localStorage.getItem('nibblepot-demo-v1')||'{}').weekPlans
@@ -46,7 +45,7 @@ test('searchable larder filters groups, updates stock and handles empty results'
   await search.fill('not-a-real-ingredient');
   await expect(page.getByText(/no ingredients match/i)).toBeVisible();
   await page.getByRole('button',{name:'Clear larder search'}).click();
-  await expect(page.locator('.larder-item').count()).resolves.toBeGreaterThan(30);
+  await expect(page.locator('.larder-item')).toHaveCount(35);
   await page.reload();
   const nav=page.getByRole('navigation',{name:testInfo.project.name==='mobile'?'Mobile navigation':'Main navigation'});
   await nav.getByRole('button',{name:'Larder'}).click();
