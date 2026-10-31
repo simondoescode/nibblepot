@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build:
     name: Typecheck, build and test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,8 +31,10 @@ jobs:
         run: cat "$HOME"/.npm/_logs/*-debug-0.log | tail -150 || true
       - run: npm run build
       - run: npm run test
-      - name: Install Chromium for browser smoke tests
-        run: npx playwright install --with-deps chromium
+      # Ubuntu 24.04 GitHub-hosted runners include Google Chrome.
+      # Avoid Playwright's repeated Chromium downloads and apt installs.
+      - name: Check preinstalled Chrome
+        run: google-chrome --version
       - run: npm run test:e2e
       - name: Upload static site
         if: github.event_name != 'pull_request'
