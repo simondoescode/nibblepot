@@ -1,0 +1,33 @@
+
+/* Dedicated recipe routes — keep the same playful visual language and readable cooking layout. */
+.recipe-page{max-width:1050px;margin:4px auto 50px}
+.recipe-page-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 19px}
+.recipe-back{display:inline-flex;gap:7px;align-items:center;border:0;background:transparent;font-weight:900;color:var(--ink);padding:10px 0}
+.recipe-back:hover{text-decoration:underline;text-underline-offset:4px}
+.recipe-page-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;border:2px solid var(--ink);background:#fffefa;box-shadow:var(--shadow);border-radius:24px;overflow:hidden}
+.recipe-page-image{background:var(--cream);min-height:320px;height:100%;display:grid;place-items:center;overflow:hidden;border-right:2px solid var(--ink)}
+.recipe-page-image img{width:100%;height:auto;max-height:430px;object-fit:contain;display:block;aspect-ratio:800 / 504}
+.recipe-page-intro{padding:27px 31px 29px;min-width:0}
+.recipe-page-eyebrow{display:inline-block;font-weight:1000;font-size:11px;letter-spacing:1px;color:#a44e30;margin-bottom:15px}
+.recipe-page h1{font-size:clamp(32px,4.3vw,52px);line-height:1.05;letter-spacing:-2px;margin:0 0 15px;text-wrap:balance}
+.recipe-page-intro>p{font-size:16px;color:var(--muted);line-height:1.5;margin:0 0 18px}
+.recipe-page-facts{display:flex;flex-wrap:wrap;gap:10px 17px;font-size:13px;font-weight:850;margin-bottom:24px}
+.recipe-page-facts span{display:inline-flex;align-items:center;gap:6px}
+.recipe-page-actions{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}
+.recipe-page-actions .btn{min-width:0}
+.recipe-page-sections{display:grid;grid-template-columns:minmax(0,0.88fr) minmax(0,1.12fr);gap:20px;margin-top:25px;align-items:start}
+.recipe-page-sections .recipe-detail-panel{padding:22px;margin:0;border:2px solid var(--ink);background:#fffefa;box-shadow:3px 4px 0 var(--ink);border-radius:19px}
+.recipe-page-sections .recipe-detail-panel h2{font-size:clamp(21px,2.5vw,27px);font-weight:1000;letter-spacing:-1px;display:flex;align-items:center;justify-content:space-between;gap:7px;margin:0 0 20px}
+.recipe-page-sections .recipe-detail-panel h2 span{font-size:11px;font-weight:800;white-space:nowrap;letter-spacing:0;border-radius:99px;padding:6px 9px;background:var(--yellow)}
+.recipe-page-sections .stock-tag{display:inline-flex;align-items:center;gap:3px;font-size:11px;white-space:nowrap}
+.recipe-page-sections .ingredient-line{display:flex;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid #e9ddcb}
+.recipe-page-sections .ingredient-line:last-child{border-bottom:0}
+.recipe-page-sections .steps{margin:0;padding:0;list-style:none}
+.recipe-page-sections .steps li{display:flex;gap:13px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #e9ddcb;line-height:1.55}
+.recipe-page-sections .steps li:last-child{border-bottom:0}
+.recipe-page-sections .step-number{flex:0 0 34px}
+.recipe-page-bottom{margin:28px 0 10px;display:flex;justify-content:space-between;align-items:center;gap:18px;color:var(--muted);font-size:12px;font-weight:800}
+.recipe-page-not-found{margin:50px auto 80px;max-width:560px;text-align:center}
+.recipe-page-not-found h1{font-size:clamp(30px,6vw,48px);letter-spacing:-1.5px}
+@media(max-width:760px){.recipe-page-hero{grid-template-columns:1fr}.recipe-page-image{border-right:0;border-bottom:2px solid var(--ink);min-height:0}.recipe-page-image img{max-height:320px}.recipe-page-sections{grid-template-columns:1fr}.recipe-page-intro{padding:22px}.recipe-page h1{font-size:clamp(29px,7vw,41px)}}
+@media(max-width:560px){.recipe-page{margin-top:0}.recipe-page-toolbar{margin-bottom:12px}.recipe-page-hero{border-radius:20px}.recipe-page-intro{padding:17px}.recipe-page-image img{max-height:240px}.recipe-page-actions .btn{flex:1;font-size:12px;padding:12px 9px}.recipe-page-sections{margin-top:16px;gap:15px}.recipe-page-sections .recipe-detail-panel{padding:16px}.recipe-page-bottom span{display:none}.recipe-page-sections .ingredient-description{font-size:13px}}
