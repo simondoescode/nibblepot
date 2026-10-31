@@ -115,9 +115,9 @@ test('mobile timer chip reflects countdown while sheet is closed and the desktop
     await page.getByRole('button',{name:'Start timer'}).click();
     await page.getByRole('button',{name:'Close cooking tools'}).click();
     await expect(page.locator('.cook-mobile-tools')).toContainText('Timer');
-    await expect(page.locator('.cook-mobile-tools')).toContainText(/04:\\d\\d/);
+    await expect(page.locator('.cook-mobile-tools')).toContainText(/04:\d\d/);
     await page.reload();
-    await expect(page.locator('.cook-mobile-tools')).toContainText(/04:\\d\\d/);
+    await expect(page.locator('.cook-mobile-tools')).toContainText(/04:\d\d/);
   } else {
     await expect(page.locator('.cook-mobile-tools')).toHaveCount(0);
     await expect(page.locator('.cook-timer')).toBeVisible();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { ArrowLeft, ArrowRight, Check, CheckCheck, ChefHat, Clock3, Minus, Pause, Play, Plus, RotateCcw, X } from 'lucide-react';
 import { ingredientName } from '../data';
@@ -37,6 +37,7 @@ export function CookingMode({ recipe, servings, onExit }: {
   const [now, setNow] = useState(() => Date.now());
   const compact = useCompactLayout();
   const [activeTool, setActiveTool] = useState<'timer' | 'ingredients' | null>(null);
+  const toolReturnFocus = useRef<HTMLButtonElement | null>(null);
   useEffect(() => { if (!compact) setActiveTool(null); }, [compact]);
   const secondsLeft = timerSeconds(progress, now);
   const timerRunning = progress.deadline !== null && secondsLeft > 0;
@@ -165,12 +166,18 @@ export function CookingMode({ recipe, servings, onExit }: {
               <p>{recipe.steps[progress.step]}</p>
             </div>
             {compact && <div className="cook-mobile-tools" aria-label="Cooking tools">
-              <button type="button" onClick={() => setActiveTool('ingredients')}
+              <button type="button" onClick={event => {
+                  toolReturnFocus.current = event.currentTarget;
+                  setActiveTool('ingredients');
+                }}
                 aria-label="Open ingredient checklist" aria-haspopup="dialog">
                 <CheckCheck size={19} aria-hidden="true" />
                 <span>Ingredients</span><strong>{checkedCount}/{recipe.ing.length}</strong>
               </button>
-              <button type="button" onClick={() => setActiveTool('timer')}
+              <button type="button" onClick={event => {
+                  toolReturnFocus.current = event.currentTarget;
+                  setActiveTool('timer');
+                }}
                 aria-label="Open kitchen timer" aria-haspopup="dialog"
                 className={timerRunning ? 'timer-active' : ''}>
                 <Clock3 size={19} aria-hidden="true" />
@@ -199,7 +206,11 @@ export function CookingMode({ recipe, servings, onExit }: {
         {compact ? <Dialog.Root open={activeTool !== null} onOpenChange={open => { if (!open) setActiveTool(null); }}>
           <Dialog.Portal>
             <Dialog.Overlay className="cook-sheet-overlay" />
-            <Dialog.Content className="cook-sheet" aria-describedby="cook-sheet-description">
+            <Dialog.Content className="cook-sheet" aria-describedby="cook-sheet-description"
+              onCloseAutoFocus={event => {
+                event.preventDefault();
+                toolReturnFocus.current?.focus();
+              }}>
               <div className="cook-sheet-handle" aria-hidden="true" />
               <div className="cook-sheet-heading">
                 <Dialog.Title>{activeTool === 'timer' ? 'Kitchen timer' : 'Ingredients'}</Dialog.Title>
