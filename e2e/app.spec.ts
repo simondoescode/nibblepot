@@ -2,6 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
+  // Ensure the random recipe has missing ingredients regardless of which meal is selected.
+  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+    larder: [], favorites: [], shopping: [],
+  })));
+  await page.reload();
+
   await expect(page.getByRole('heading', { name: /what's for/i })).toBeVisible();
   await expect(page.locator('.recipe-card')).toHaveCount(16);
   await page.getByRole('button', { name: '🎲 Surprise me!' }).click();

@@ -115,3 +115,7 @@ Every recipe page now has **Start cooking**, which opens a distraction-free full
 Cooking Mode includes an optional, local countdown timer. Use +/- minute controls, or select durations **explicitly named** in the current recipe step (for ranges, both ends are offered). Start, pause and reset are supported. An absolute timestamp prevents cumulative drift when the tab is backgrounded, and a running countdown is restored after reload in the same tab. It does not provide guaranteed background alarms/notifications or verify food safety; always follow the recipe and check food is thoroughly cooked.
 
 The dedicated cook URLs are generated as physical GitHub Pages HTML entrypoints so direct visits and refreshes work. Cook pages declare `noindex,follow` and canonicalise to the normal recipe page to avoid SEO duplication. Existing saved recipes, shopping lists and planner data remain unchanged.
+
+### Mobile Cooking Mode improvements
+
+On screens up to 750px, Cooking Mode uses a **fixed bottom Previous/Next action bar** and a compact **Ingredients / Timer toolbar**. The toolbar opens accessible, dismissible bottom sheets, leaving large recipe text unobscured while cooking. The timer state and ingredient ticks remain identical to desktop and are stored in the same per-recipe session; resizing between mobile and desktop doesn't create duplicate countdowns. Mobile controls use larger touch targets, safe-area spacing and readable step text, with keyboard/Escape/focus handling provided by Radix Dialog. Desktop retains the two-panel layout.
