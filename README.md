@@ -77,3 +77,7 @@ All sixteen recipes use bespoke self-contained SVG artwork in `public/recipes/`,
 - [AGENTS.md](AGENTS.md): project guardrails for coding and image agents.
 
 Original recipes keep their SVG illustrations. A new recipe can set an optional `image` field such as `"recipes/new-recipe.webp"` to use a local optimised WebP; GitHub Pages paths remain safe.
+
+### AI food photos — first batch
+
+The first 10 recipes now use individually generated, transparent 800 × 504 WebP images in `public/recipes/` (roughly 60–100 KB each). Six remaining recipes continue using their existing SVG illustrations. The recipe `image` property selects the WebP, and the SVG catalogue remains available as fallback. Image sizing and transparency are covered by unit/browser tests. See [IMAGE_STYLE.md](IMAGE_STYLE.md).

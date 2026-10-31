@@ -29,7 +29,8 @@
       "Heat the beans in a saucepan.",
       "Split the potatoes, fluff with a fork and pile on the beans and cheese."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/jacket.webp"
   },
   {
     "id": "sausage-bean",
@@ -65,7 +66,8 @@
       "Soften the chopped onion, add paprika, tomatoes and beans.",
       "Put sausages back in and simmer for 15–20 minutes until cooked through."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/sausage-bean.webp"
   },
   {
     "id": "chicken-rice",
@@ -105,7 +107,8 @@
       "Stir in rice, paprika and stock made with enough water for your rice.",
       "Cover and simmer until the rice is tender and chicken cooked through. Add peas near the end."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/chicken-rice.webp"
   },
   {
     "id": "cottage",
@@ -145,7 +148,8 @@
       "Brown the mince with onion; add peas, gravy granules and water to make a thick sauce.",
       "Top with mash and optional cheese. Grill until golden and piping hot."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/cottage.webp"
   },
   {
     "id": "tuna-bake",
@@ -181,7 +185,8 @@
       "Combine drained tuna, sweetcorn and pasta with milk and most of the cheese.",
       "Tip into a baking dish, scatter remaining cheese and bake until hot and golden."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/tuna-bake.webp"
   },
   {
     "id": "tomato-pasta",
@@ -217,7 +222,8 @@
       "Gently fry garlic in oil; add tomatoes and simmer until thickened.",
       "Toss with pasta and finish with grated cheese."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/tomato-pasta.webp"
   },
   {
     "id": "egg-rice",
@@ -253,7 +259,8 @@
       "Scramble the eggs in a hot pan, then add rice and peas.",
       "Stir-fry until everything is piping hot, then add soy sauce and spring onions."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/egg-rice.webp"
   },
   {
     "id": "quesadilla",
@@ -285,7 +292,8 @@
       "Fold over and toast in a dry frying pan until golden on both sides.",
       "Cut into wedges and serve."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/quesadilla.webp"
   },
   {
     "id": "mash",
@@ -317,7 +325,8 @@
       "Boil and mash potatoes; cook peas.",
       "Make gravy and serve everything together."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/mash.webp"
   },
   {
     "id": "butter-stew",
@@ -353,7 +362,8 @@
       "Add paprika, drained beans, tomatoes and a little stock.",
       "Simmer for 15 minutes until thick and bubbling."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/butter-stew.webp"
   },
   {
     "id": "traybake",

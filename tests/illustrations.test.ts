@@ -24,7 +24,11 @@ describe('illustrated recipe cards', () => {
         const image = readFileSync(file);
         expect(image.toString('ascii', 0, 4)).toBe('RIFF');
         expect(image.toString('ascii', 8, 12)).toBe('WEBP');
-        // Alpha and aesthetic quality also require human review; the signature is not proof of alpha.
+        expect(image.toString('ascii', 12, 16), `${recipe.id}: extended WebP header`).toBe('VP8X');
+        expect(image[20] & 0x10, `${recipe.id}: missing alpha transparency`).toBe(0x10);
+        expect(image.readUIntLE(24, 3) + 1, `${recipe.id}: width`).toBe(800);
+        expect(image.readUIntLE(27, 3) + 1, `${recipe.id}: height`).toBe(504);
+        // Alpha is encoded; review transparency edges and food styling visually.
       } else {
         const svg = readFileSync(file, 'utf8');
         expect(svg).toContain('<svg');
