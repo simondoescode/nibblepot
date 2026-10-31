@@ -1,11 +1,13 @@
 import { ingredientName } from '../data';
 import { tescoSearchUrl } from '../lib/recipes';
+import { shoppingQuantity } from '../lib/quantities';
 import type { ShoppingEntry } from '../types';
 import { CheckCheck, ClipboardCopy, ExternalLink, X } from 'lucide-react';
 import { Button, IconButton } from '../ui/controls';
 
-export function ShoppingPage({ shopping, onToggle, onRemove, onClear, onCopy, onBrowse }: {
+export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, onCopy, onBrowse }: {
   shopping: ShoppingEntry[];
+  servings: Record<string, number>;
   onToggle: (id: string, done: boolean) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
@@ -21,17 +23,18 @@ export function ShoppingPage({ shopping, onToggle, onRemove, onClear, onCopy, on
         <input type="checkbox" checked={item.done} aria-label={`Mark ${ingredientName(item.id)} as purchased`}
           onChange={event => onToggle(item.id, event.target.checked)} />
         <div className="shop-item"><strong>{ingredientName(item.id)}</strong>
-          <small>{item.from.length ? `For ${item.from.length} recipe${item.from.length === 1 ? '' : 's'} · see recipe for quantities` : 'Added to your list'}</small></div>
+          <span className="shop-quantity">{shoppingQuantity(item, servings)}</span>
+          <small>{item.from.length ? `For ${item.from.length} recipe${item.from.length === 1 ? '' : 's'}` : 'Added to your list'}</small></div>
         <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
           aria-label={`Find ${ingredientName(item.id)} at Tesco`}>Tesco <ExternalLink size={14} aria-hidden="true" /></a>
         <IconButton className="shop-remove" onClick={() => onRemove(item.id)}
           label={`Remove ${ingredientName(item.id)}`}><X size={18} aria-hidden="true" /></IconButton>
       </div>)}</div>
     </> : <div className="empty"><div className="empty-icon">🧺</div><h3>Looking delightfully empty.</h3>
-      <p>Open a recipe and tap “Add missing ingredients”.</p>
+      <p>Open a recipe and tap “Add missing bits”.</p>
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
     <div className="info-bar" style={{ marginTop: 24 }}><strong>🛍️ Tesco links open product searches</strong>
-      <small>Adding items straight to a Tesco basket isn't supported in this demo.</small></div>
+      <small>Quantities combine recipes with matching units. Your larder tracks what's in stock, not how much: check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
   </>;
 }

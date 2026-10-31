@@ -33,3 +33,12 @@
 @media(max-width:560px){.recipe-page{margin-top:0}.recipe-page-toolbar{margin-bottom:12px}.recipe-page-hero{border-radius:20px}.recipe-page-intro{padding:17px}.recipe-page-image img{max-height:240px}.recipe-page-actions .btn{flex:1;font-size:12px;padding:12px 9px}.recipe-page-sections{margin-top:16px;gap:15px}.recipe-page-sections .recipe-detail-panel{padding:16px}.recipe-page-bottom span{display:none}.recipe-page-sections .ingredient-description{font-size:13px}}
 
 .recipe-info h3 a{text-decoration:none}.recipe-info h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+
+.servings-control{display:flex;gap:10px;align-items:center;margin-bottom:18px}
+.servings-control>span{font-size:13px;font-weight:900;margin-right:6px}
+.servings-control button{height:36px;width:36px;border-radius:11px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--yellow)}
+.servings-control button:disabled{opacity:.36;cursor:not-allowed}
+.servings-control output{font-size:21px;font-weight:1000;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
+.recipe-optional{display:flex;gap:5px;align-items:center;font-size:12px;font-weight:750;color:#805132;margin-top:5px;cursor:pointer}
+.recipe-optional input{accent-color:#bd6145}
+.shop-quantity{display:block;color:var(--ink);font-weight:950;font-size:15px;margin:3px 0}

@@ -91,3 +91,11 @@ Five additional recipes use individually optimised transparent 800 × 504 WebP f
 Each recipe now has a full-page, shareable URL such as [Jacket potatoes & beans](https://simondoescode.github.io/nibblepot/recipes/jacket/). Recipe cards are real links that support opening in new tabs. The surprise-me dialog takes users to the selected recipe page.
 
 Routing uses the browser History API and the existing Vite base path (no added router dependency). `npm run build` generates a real `dist/recipes/<id>/index.html` entry for every recipe, plus static entrypoints for Favourites, Larder, Shopping and Settings. GitHub Pages can therefore load copied recipe URLs and refresh them directly without relying on a fragile 404 redirect. The generated HTML includes recipe titles, canonical links, Open Graph metadata and Recipe structured data. The app keeps localStorage saved data intact and handles browser back/forward navigation.
+
+## v0.4 — quantity-aware shopping
+
+Recipe pages now support 1–8 servings (original recipes assume four), calculate scaled ingredient quantities and distinguish genuinely optional additions. Optional ingredients are added only if ticked, and ingredients already marked in the larder are excluded when adding a recipe.
+
+The Shopping page now sums compatible quantities across linked recipes (e.g. 350 g + 350 g pasta = 700 g), preserving incompatible units as separate amounts rather than inventing conversions (4 large potatoes + 750 g). Vague quantities such as 'A little' remain descriptive rather than made-up numbers. Changes to recipe servings automatically update the shopping list. Copy list includes amounts.
+
+Saved-data migrations preserve the existing `nibblepot-demo-v1` key, recipe IDs and shopping references. A new optional `servings` map stores recipe choices (1–8); older saved lists default to four servings. Larder items are binary in-stock flags, **not stock quantities**; the app cannot claim to subtract partial amounts. The Settings backup includes servings, if set.
