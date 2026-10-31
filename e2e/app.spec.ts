@@ -7,8 +7,10 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.getByRole('button', { name: '🎲 Surprise me!' }).click();
   await expect(page.getByRole('dialog', { name: /random dinner suggestion/i })).toBeVisible();
   await page.getByRole('button', { name: /see recipe/i }).click();
-  await expect(page.getByRole('heading', { name: "What you'll need" })).toBeVisible();
-  await page.getByRole('button', { name: '🛒 Add missing bits' }).click();
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/[a-z0-9-]+\//);
+  await expect(page.locator('.recipe-page')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /What you'll need/i })).toBeVisible();
+  await page.getByRole('button', { name: /add missing bits/i }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' }).getByRole('button', { name: 'Shopping' }).click();
   await expect(page.locator('.shop-row').first()).toBeVisible();
@@ -55,12 +57,15 @@ test('recipe dialog traps focus and closes on Escape, returning to opener', asyn
   await expect(open).toBeFocused();
 });
 
-test('recipe dialog closes when clicking backdrop, preserving page actions', async ({ page }) => {
+test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {
   await page.goto('/nibblepot/');
-  await page.locator('.recipe-card').first().getByRole('button', { name: /view/i }).click();
-  await expect(page.getByRole('dialog', { name: /recipe:/i })).toBeVisible();
-  await page.mouse.click(5, 5);
-  await expect(page.getByRole('dialog')).toHaveCount(0);
+  const link = page.locator('.recipe-card').first().getByRole('link', { name: /view jacket/i });
+  await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket/');
+  await link.click();
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+  await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
+  await page.getByRole('button', { name: /back to recipes/i }).click();
+  await expect(page).toHaveURL(/\/nibblepot\/$/);
   await expect(page.locator('.recipe-card')).toHaveCount(16);
 });
 
@@ -99,7 +104,8 @@ test('refresh app reloads the full PWA without clearing saved favourites', async
   const navigation = page.waitForEvent('load');
   await page.getByRole('button', { name: 'Refresh app' }).click();
   await navigation;
-  await expect(page.getByRole('heading', { name: /what's for/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
+  await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
   expect(await page.evaluate(() => sessionStorage.getItem('before-refresh'))).toBe('yes');
   await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Favourites' }).click();
   await expect(page.locator('.recipe-card')).toHaveCount(1);
