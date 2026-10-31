@@ -1,6 +1,8 @@
 
-import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket } from 'lucide-react';
+import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket, Minus, Plus } from 'lucide-react';
 import { ingredientName } from '../data';
+import { useState } from 'react';
+import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
 import type { Recipe } from '../types';
 import { Button } from '../ui/controls';
 
@@ -12,10 +14,12 @@ const ingredientIcons: Record<string, string> = {
   'kidney-beans': '🫘', 'butter-beans': '🫘', wraps: '🫓', tuna: '🐟', meatballs: '🥩',
 };
 
-export function RecipePage({ recipe, larder, saved, onBack, onAddMissing, onFavorite, notify }: {
+export function RecipePage({ recipe, larder, saved, servings, onServingsChange, onBack, onAddMissing, onFavorite, notify }: {
   recipe: Recipe; larder: string[]; saved: boolean;
-  onBack: () => void; onAddMissing: () => void; onFavorite: () => void; notify: (message: string) => void;
+  servings: number; onServingsChange: (value: number) => void;
+  onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; notify: (message: string) => void;
 }) {
+  const [includedOptional, setIncludedOptional] = useState<string[]>([]);
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -41,11 +45,19 @@ export function RecipePage({ recipe, larder, saved, onBack, onAddMissing, onFavo
         <p>{recipe.description}</p>
         <div className="recipe-page-facts">
           <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes</span>
-          <span>🍽️ Serves 4</span>
+          <span>🍽️ Serves {servings}</span>
           <span>🫙 {recipe.ing.filter(i => larder.includes(i.id)).length} of {recipe.ing.length} in larder</span>
         </div>
+        <div className="servings-control" aria-label="Adjust recipe servings">
+          <span>Servings</span>
+          <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
+            disabled={servings <= MIN_SERVINGS} aria-label="Fewer servings"><Minus size={17} /></button>
+          <output aria-live="polite" aria-label="Servings count">{servings}</output>
+          <button type="button" onClick={() => onServingsChange(Math.min(MAX_SERVINGS, servings + 1))}
+            disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
+        </div>
         <div className="recipe-page-actions">
-          <Button tone="primary" icon={<ShoppingBasket size={18} />} onClick={onAddMissing}>Add missing bits</Button>
+          <Button tone="primary" icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
           <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={onFavorite}
             aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>
@@ -53,14 +65,21 @@ export function RecipePage({ recipe, larder, saved, onBack, onAddMissing, onFavo
     </div>
     <div className="recipe-page-sections">
       <section className="recipe-detail-panel recipe-page-ingredients">
-        <h2>What you'll need <span>4 servings</span></h2>
+        <h2>What you'll need <span>{servings} servings</span></h2>
         <div className="recipe-ingredients">{recipe.ing.map(item => {
           const owned = larder.includes(item.id);
           return <div className="ingredient-line" key={item.id}>
             <span className="ingredient-icon" aria-hidden="true">{ingredientIcons[item.id] || '🥄'}</span>
-            <span className="ingredient-description"><strong>{item.qty}</strong> {ingredientName(item.id)}</span>
+            <span className="ingredient-description">
+              <strong>{formatRecipeQuantity(item, servings)}</strong> {ingredientName(item.id)}
+              {item.optional && <label className="recipe-optional"><input type="checkbox"
+                checked={includedOptional.includes(item.id)}
+                onChange={event => setIncludedOptional(current => event.target.checked
+                  ? [...current, item.id] : current.filter(id => id !== item.id))} />
+                Include optional ingredient</label>}
+            </span>
             <span className={`stock-tag ${owned ? 'have' : 'need'}`}>
-              {owned ? <><Check size={13} aria-hidden="true" /> In larder</> : '+ Need'}</span>
+              {owned ? <><Check size={13} aria-hidden="true" /> In larder</> : item.optional ? 'Optional' : '+ Need'}</span>
           </div>;
         })}</div>
       </section>

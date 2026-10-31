@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { recipes, ingredientName } from './data';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
+import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
 import { refreshPwa } from './lib/refresh';
 import { parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
@@ -93,18 +94,17 @@ export default function App() {
     ...current, larder: checked ? [...new Set([...current.larder, id])] : current.larder.filter(ingredient => ingredient !== id),
   }));
   const findMeals = () => { setSearch(''); setFilter('larder'); navigate('home'); };
-  const addMissing = (id: string) => {
+  const addMissing = (id: string, optionalIds: string[] = []) => {
     const recipe = recipes.find(item => item.id === id);
     if (!recipe) return;
-    setData(current => {
-      const { shopping } = addMissingIngredients(recipe, current);
-      return { ...current, shopping };
-    });
-    const added = addMissingIngredients(recipe, data).added;
-    toast(added ? `Added ${added} missing ingredient${added === 1 ? '' : 's'} 🛒` : 'Nothing new to add — nice!');
+    const { added } = addMissingIngredients(recipe, data, optionalIds);
+    setData(current => ({ ...current, shopping: addMissingIngredients(recipe, current, optionalIds).shopping }));
+    toast(added ? `Added ${added} missing ingredient${added === 1 ? '' : 's'} 🛒` : 'Shopping list updated 🛒');
   };
   const copyShopping = async () => {
-    const list = data.shopping.map(item => `${item.done ? '✓' : '☐'} ${ingredientName(item.id)}`).join('\n');
+    const list = data.shopping.map(item =>
+      `${item.done ? '✓' : '☐'} ${ingredientName(item.id)} — ${shoppingQuantity(item, data.servings)}`
+    ).join('\n');
     try { await navigator.clipboard.writeText(list); toast('Shopping list copied!'); }
     catch { toast('Copy not available here'); }
   };
@@ -119,8 +119,12 @@ export default function App() {
       <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main" id="main-content">
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
-          saved={data.favorites.includes(activeRecipe.id)} onBack={backToRecipes}
-          onAddMissing={() => addMissing(activeRecipe.id)} onFavorite={() => toggleFavorite(activeRecipe.id)} notify={toast} />}
+          saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
+          onServingsChange={value => setData(current => ({ ...current, servings: {
+            ...current.servings, [activeRecipe.id]: clampServings(value),
+          } }))} onBack={backToRecipes}
+          onAddMissing={optionalIds => addMissing(activeRecipe.id, optionalIds)}
+          onFavorite={() => toggleFavorite(activeRecipe.id)} notify={toast} />}
         {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe)) && <section className="recipe-page-not-found">
           <h1>That recipe's not in the pot 🍲</h1>
           <p>Try another recipe — there's plenty more for tea.</p>
@@ -132,7 +136,7 @@ export default function App() {
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} onToggle={toggleLarder} onFindMeals={findMeals} />}
-        {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping}
+        {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}}
           onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
           onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
