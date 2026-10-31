@@ -36,6 +36,11 @@ test('browser back and forward restore recipe and catalogue', async ({ page }) =
 
 test('favourites and shopping work within the dedicated recipe route', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/recipes/jacket/');
+  // The starter larder contains potatoes and beans; explicitly make them missing.
+  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+    larder: [], favorites: [], shopping: [],
+  })));
+  await page.reload();
   await page.getByRole('button', { name: /save recipe/i }).click();
   await expect(page.getByRole('button', { name: /saved to favourites/i })).toBeVisible();
   await page.getByRole('button', { name: /add missing bits/i }).click();
@@ -47,6 +52,11 @@ test('favourites and shopping work within the dedicated recipe route', async ({ 
 
 test('serving changes scale recipe amounts and update shopping quantities', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/recipes/tuna-bake/');
+  // Pasta is marked in-stock by default. Test shopping for a user without pasta.
+  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+    larder: [], favorites: [], shopping: [],
+  })));
+  await page.reload();
   await expect(page.locator('.recipe-page-ingredients')).toContainText('350 g');
   await page.getByRole('button', { name: 'Fewer servings' }).click();
   await page.getByRole('button', { name: 'Fewer servings' }).click();
