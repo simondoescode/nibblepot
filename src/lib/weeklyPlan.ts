@@ -63,7 +63,7 @@ export function weekContributions(slots: WeekSlot[], larder: string[]): Shopping
 }
 /** Replace only prior *planner* contributions. Keep hand-added shopping items/ticks. */
 export function applyWeekToShopping(data: SavedData, slots: WeekSlot[]): SavedData {
-  const manual = data.shopping
+  const manual: ShoppingEntry[] = data.shopping
     .filter(item => !(item.planGenerated && item.from.length === 0))
     .map(item => ({...item, from:[...item.from], weekCounts:undefined}));
   const byId = new Map(manual.map(item => [item.id, item]));
