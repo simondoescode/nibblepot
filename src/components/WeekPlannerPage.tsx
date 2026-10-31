@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { ArrowLeft, ArrowRight, CalendarDays, Dice5, ShoppingBasket, Trash2 } from 'lucide-react';
 import { recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
-import { defaultWeek, shiftWeek, weekContributions } from '../lib/weeklyPlan';
+import { shiftWeek, weekContributions } from '../lib/weeklyPlan';
 import type { WeekSlot } from '../types';
 import { Button } from '../ui/controls';
 
