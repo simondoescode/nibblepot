@@ -42,6 +42,8 @@ export interface SavedData {
   servings?: Record<RecipeId, number>;
   /** Per-Monday weekly meal plans. Unset weeks show a starter suggestion. */
   weekPlans?: Record<string, WeekSlot[]>;
+  /** The week and planner inputs last used to populate the shopping list. */
+  shoppingPlan?: { week: string; signature: string };
 }
 
 export interface RecipeModal {

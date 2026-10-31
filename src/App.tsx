@@ -128,6 +128,9 @@ export default function App() {
   const activeCookRecipe = route.kind === 'cook' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const backToRecipes = () => navigate(lastTab.current);
   const weekSlots = data.weekPlans?.[selectedWeek] ?? defaultWeek();
+  const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
+    ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
+  }));
   const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
     setData(current => {
       const slots = [...(current.weekPlans?.[selectedWeek] ?? defaultWeek())];
@@ -143,7 +146,7 @@ export default function App() {
       [selectedWeek]:Array.from({length:7},()=>({kind:'empty' as const}))}
   }));
   const addWeek = () => {
-    setData(current => applyWeekToShopping(current,current.weekPlans?.[selectedWeek] ?? defaultWeek()));
+    setData(current => applyWeekToShopping(current,current.weekPlans?.[selectedWeek] ?? defaultWeek(),selectedWeek));
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
@@ -176,8 +179,9 @@ export default function App() {
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} onToggle={toggleLarder} onFindMeals={findMeals} />}
         {route.kind === 'tab' && route.tab === 'planner' && <WeekPlannerPage week={selectedWeek}
-          slots={weekSlots} larder={data.larder} servings={data.servings ?? {}}
-          onWeekChange={setSelectedWeek} onChange={changeSlot} onShuffle={shuffleCurrentWeek}
+          slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
+          hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
+          onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
           onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
         {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}}
           onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}

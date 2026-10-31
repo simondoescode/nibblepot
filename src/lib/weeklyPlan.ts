@@ -62,7 +62,15 @@ export function weekContributions(slots: WeekSlot[], larder: string[]): Shopping
   return [...byIngredient.values()];
 }
 /** Replace only prior *planner* contributions. Keep hand-added shopping items/ticks. */
-export function applyWeekToShopping(data: SavedData, slots: WeekSlot[]): SavedData {
+/** Track which inputs the shopper last confirmed; editing a plan never silently overwrites a list. */
+export function shoppingPlanSignature(week: string, slots: WeekSlot[], larder: string[], servings: Record<string, number> = {}): string {
+  const inPlan = [...new Set(slots.filter((slot): slot is Extract<WeekSlot, {kind:'recipe'}> => slot.kind === 'recipe')
+    .map(slot => slot.id))].sort();
+  return JSON.stringify([
+    week, slots, [...larder].sort(), inPlan.map(id => [id, servings[id] ?? 4]),
+  ]);
+}
+export function applyWeekToShopping(data: SavedData, slots: WeekSlot[], week?: string): SavedData {
   const manual: ShoppingEntry[] = data.shopping
     .filter(item => !(item.planGenerated && item.from.length === 0))
     .map(item => ({...item, from:[...item.from], weekCounts:undefined}));
@@ -75,5 +83,7 @@ export function applyWeekToShopping(data: SavedData, slots: WeekSlot[]): SavedDa
       byId.set(planned.id,planned);
     }
   }
-  return {...data, shopping:manual};
+  return {...data, shopping:manual, shoppingPlan: week ? {
+    week, signature: shoppingPlanSignature(week,slots,data.larder,data.servings),
+  } : undefined};
 }
