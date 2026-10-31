@@ -34,12 +34,12 @@ test('browser back and forward restore recipe and catalogue', async ({ page }) =
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
 });
 
-test('favourites and shopping work within the dedicated recipe route', async ({ page }) => {
+test('favourites and shopping work within the dedicated recipe route', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/recipes/jacket/');
   await page.getByRole('button', { name: /save recipe/i }).click();
   await expect(page.getByRole('button', { name: /saved to favourites/i })).toBeVisible();
   await page.getByRole('button', { name: /add missing bits/i }).click();
-  const nav = page.getByRole('navigation', { name: 'Main navigation' });
+  const nav = page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' });
   await nav.getByRole('button', { name: 'Shopping' }).click();
   await expect(page).toHaveURL(/\/nibblepot\/shopping\/$/);
   await expect(page.locator('.shop-row').first()).toBeVisible();
