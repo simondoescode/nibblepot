@@ -28,11 +28,17 @@ export default function App() {
   const refreshingRef = useRef(false);
   const noticeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const dialogReturnFocus = useRef<HTMLElement | null>(null);
-  const lastTab = useRef<Tab>('home');
+  const lastTab = useRef<Tab>(route.kind === 'tab' ? route.tab : 'home');
 
   useEffect(() => { writeSavedData(data); }, [data]);
   useEffect(() => {
-    const sync = () => { setRoute(parseRoute(window.location.pathname)); setRandomId(null); };
+    const sync = () => {
+      const next = parseRoute(window.location.pathname);
+      if (next.kind === 'tab') lastTab.current = next.tab;
+      setRoute(next);
+      setRandomId(null);
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    };
     window.addEventListener('popstate', sync);
     return () => window.removeEventListener('popstate', sync);
   }, []);
