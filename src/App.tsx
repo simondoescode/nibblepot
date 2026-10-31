@@ -97,7 +97,7 @@ export default function App() {
   const addMissing = (id: string, optionalIds: string[] = []) => {
     const recipe = recipes.find(item => item.id === id);
     if (!recipe) return;
-    const { shopping, added } = addMissingIngredients(recipe, data, optionalIds);
+    const { added } = addMissingIngredients(recipe, data, optionalIds);
     setData(current => ({ ...current, shopping: addMissingIngredients(recipe, current, optionalIds).shopping }));
     toast(added ? `Added ${added} missing ingredient${added === 1 ? '' : 's'} 🛒` : 'Shopping list updated 🛒');
   };
