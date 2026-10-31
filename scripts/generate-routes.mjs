@@ -13,10 +13,11 @@ const origin = 'https://simondoescode.github.io';
 const base = '/nibblepot/';
 const escapeHTML = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-function metaPage(title, description, urlPath, recipe) {
+function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, noindex = false) {
   const meta = [
     '<meta name="description" content="' + escapeHTML(description) + '">',
-    '<link rel="canonical" href="' + origin + urlPath + '">',
+    '<link rel="canonical" href="' + origin + canonicalPath + '">',
+    ...(noindex ? ['<meta name="robots" content="noindex,follow">'] : []),
     '<meta property="og:type" content="' + (recipe ? 'article' : 'website') + '">',
     '<meta property="og:title" content="' + escapeHTML(title) + '">',
     '<meta property="og:description" content="' + escapeHTML(description) + '">',
@@ -44,6 +45,13 @@ function metaPage(title, description, urlPath, recipe) {
 }
 const pages = [
   ...recipes.map(recipe => ({
+    route: 'recipes/' + recipe.id + '/cook',
+    title: 'Cook ' + recipe.title + ' | Nibblepot',
+    description: 'Step-by-step cooking mode for ' + recipe.title + '.',
+    canonicalPath: base + 'recipes/' + recipe.id + '/',
+    noindex: true,
+  })),
+  ...recipes.map(recipe => ({
     route: 'recipes/' + recipe.id, title: recipe.title + ' | Nibblepot',
     description: recipe.description + ' Ingredients and simple steps for four.',
     recipe,
@@ -56,6 +64,6 @@ for (const page of pages) {
   const folder = path.join(dist, ...page.route.split('/'));
   await mkdir(folder, {recursive:true});
   await writeFile(path.join(folder,'index.html'),
-    metaPage(page.title, page.description, base + page.route + '/', page.recipe));
+    metaPage(page.title, page.description, base + page.route + '/', page.recipe, page.canonicalPath, page.noindex));
 }
 console.log('Generated ' + pages.length + ' static GitHub Pages route entrypoints.');

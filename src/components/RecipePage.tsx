@@ -1,5 +1,5 @@
 
-import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket, Minus, Plus, ChefHat } from 'lucide-react';
 import { ingredientName } from '../data';
 import { useState } from 'react';
 import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
@@ -14,10 +14,10 @@ const ingredientIcons: Record<string, string> = {
   'kidney-beans': '🫘', 'butter-beans': '🫘', wraps: '🫓', tuna: '🐟', meatballs: '🥩',
 };
 
-export function RecipePage({ recipe, larder, saved, servings, onServingsChange, onBack, onAddMissing, onFavorite, notify }: {
+export function RecipePage({ recipe, larder, saved, servings, onServingsChange, onBack, onAddMissing, onFavorite, onCook, notify }: {
   recipe: Recipe; larder: string[]; saved: boolean;
   servings: number; onServingsChange: (value: number) => void;
-  onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; notify: (message: string) => void;
+  onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; onCook: () => void; notify: (message: string) => void;
 }) {
   const [includedOptional, setIncludedOptional] = useState<string[]>([]);
   const copyLink = async () => {
@@ -57,7 +57,8 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
             disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
         </div>
         <div className="recipe-page-actions">
-          <Button tone="primary" icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
+          <Button tone="primary" icon={<ChefHat size={18} />} onClick={onCook}>Start cooking</Button>
+          <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
           <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={onFavorite}
             aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>

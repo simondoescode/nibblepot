@@ -6,7 +6,7 @@ import { readSavedData, writeSavedData } from './lib/storage';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
 import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
 import { refreshPwa } from './lib/refresh';
-import { parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
+import { cookingPath, parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
 import type { Filter, SavedData, Tab } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
@@ -16,6 +16,7 @@ import { LarderPage } from './components/LarderPage';
 import { WeekPlannerPage } from './components/WeekPlannerPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
+import { CookingMode } from './components/CookingMode';
 import { RandomRecipeDialog } from './components/RandomRecipeDialog';
 import { SettingsPage } from './components/SettingsPage';
 import { PullIndicator } from './components/PullIndicator';
@@ -47,14 +48,18 @@ export default function App() {
     return () => window.removeEventListener('popstate', sync);
   }, []);
   useEffect(() => {
-    const recipe = route.kind === 'recipe' ? recipes.find(item => item.id === route.id) : undefined;
-    document.title = recipe ? `${recipe.title} | Nibblepot` : 'Nibblepot — Good grub. Zero faff.';
+    const recipe = route.kind === 'recipe' || route.kind === 'cook'
+      ? recipes.find(item => item.id === route.id) : undefined;
+    document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Nibblepot` :
+      'Nibblepot — Good grub. Zero faff.';
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = recipe
-      ? `${recipe.description} Ingredients, instructions and a shopping list for this easy family meal.`
+      ? route.kind === 'cook' ? `Step-by-step cooking mode for ${recipe.title}.` :
+        `${recipe.description} Ingredients, instructions and a shopping list for this easy family meal.`
       : 'Easy, budget-friendly family dinners. Recipes, favourites, larder and shopping list.';
     const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (canonical) canonical.href = window.location.origin + window.location.pathname;
+    if (canonical) canonical.href = window.location.origin + (route.kind === 'cook' && recipe
+      ? recipePath(recipe.id) : window.location.pathname);
   }, [route]);
 
   const refresh = useCallback(() => {
@@ -63,7 +68,7 @@ export default function App() {
     setRefreshing(true);
     void refreshPwa();
   }, []);
-  const pull = usePullToRefresh(refresh, !randomId && !refreshing);
+  const pull = usePullToRefresh(refresh, !randomId && !refreshing && route.kind !== 'cook');
   useEffect(() => () => { if (noticeTimeout.current) clearTimeout(noticeTimeout.current); }, []);
   const toast = useCallback((message: string) => {
     setNotice(message);
@@ -83,6 +88,9 @@ export default function App() {
   }, [changeRoute]);
   const openRecipe = useCallback((id: string) => {
     changeRoute(recipePath(id), { kind: 'recipe', id });
+  }, [changeRoute]);
+  const startCooking = useCallback((id: string) => {
+    changeRoute(cookingPath(id), { kind: 'cook', id });
   }, [changeRoute]);
   const randomMeal = () => {
     if (!randomId && document.activeElement instanceof HTMLElement) dialogReturnFocus.current = document.activeElement;
@@ -115,6 +123,7 @@ export default function App() {
   const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
   const activeRecipe = route.kind === 'recipe' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const randomRecipe = randomId ? recipes.find(recipe => recipe.id === randomId) : undefined;
+  const activeCookRecipe = route.kind === 'cook' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const backToRecipes = () => navigate(lastTab.current);
   const weekSlots = data.weekPlans?.[selectedWeek] ?? defaultWeek();
   const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
@@ -136,6 +145,9 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
+  if (activeCookRecipe) return <CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
+    servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
+    onExit={() => openRecipe(activeCookRecipe.id)} />;
   return <>
     <PullIndicator distance={pull} refreshing={refreshing} />
     <div className="wrap">
@@ -147,8 +159,9 @@ export default function App() {
             ...current.servings, [activeRecipe.id]: clampServings(value),
           } }))} onBack={backToRecipes}
           onAddMissing={optionalIds => addMissing(activeRecipe.id, optionalIds)}
-          onFavorite={() => toggleFavorite(activeRecipe.id)} notify={toast} />}
-        {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe)) && <section className="recipe-page-not-found">
+          onFavorite={() => toggleFavorite(activeRecipe.id)} onCook={() => startCooking(activeRecipe.id)}
+          notify={toast} />}
+        {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe) || (route.kind === 'cook' && !activeCookRecipe)) && <section className="recipe-page-not-found">
           <h1>That recipe's not in the pot 🍲</h1>
           <p>Try another recipe — there's plenty more for tea.</p>
           <button type="button" className="btn btn-primary" onClick={() => navigate('home')}>Browse recipes</button>
