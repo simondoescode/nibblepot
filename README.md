@@ -99,3 +99,11 @@ Recipe pages now support 1–8 servings (original recipes assume four), calculat
 The Shopping page now sums compatible quantities across linked recipes (e.g. 350 g + 350 g pasta = 700 g), preserving incompatible units as separate amounts rather than inventing conversions (4 large potatoes + 750 g). Vague quantities such as 'A little' remain descriptive rather than made-up numbers. Changes to recipe servings automatically update the shopping list. Copy list includes amounts.
 
 Saved-data migrations preserve the existing `nibblepot-demo-v1` key, recipe IDs and shopping references. A new optional `servings` map stores recipe choices (1–8); older saved lists default to four servings. Larder items are binary in-stock flags, **not stock quantities**; the app cannot claim to subtract partial amounts. The Settings backup includes servings, if set.
+
+## v0.5 — weekly planner and searchable larder
+
+Open **Planner** to plan Monday–Sunday. Each day can be a recipe, leftovers, freezer night or empty; the starter plan suggests five cooked dinners and two easy nights. Use **Shuffle dinners** to randomly replace cooked dinners without repeating them, or edit days individually. Change weeks with the arrows. Plans are saved by Monday date in the existing localStorage data and included in Settings backups.
+
+The planner's preview counts missing ingredients across all scheduled dinners, applies saved servings and combines matching units. **Add week to shopping** replaces the *previous planner-generated* shopping contributions with the selected week's items while preserving manually added entries and checked items. Repeated recipes count multiple times; optional toppings are excluded by default. Shopping contents update when you choose Add week again, not automatically on changing meals. The larder is searchable across cupboard, fridge and freezer with instant filtering and clear search.
+
+The app remains offline-capable, GitHub Pages-hosted and account-free. New deep link: `/nibblepot/planner/`. The larder is still an in-stock flag, not an amount tracker.
