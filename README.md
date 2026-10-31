@@ -85,3 +85,9 @@ The first 10 recipes now use individually generated, transparent 800 × 504 WebP
 ### AI food photos — second batch
 
 Five additional recipes use individually optimised transparent 800 × 504 WebP food images: fish finger butties, meatball spaghetti, tomato soup, ham & cheese toasties, and bean chilli jackets (roughly 63–77 KB each). In total 15 of 16 recipes use WebP. The chicken & potato traybake retains its existing SVG for now: the generated photo contained sausages, which are not in that recipe, and should not be published under a misleading title. Replace only when correct chicken-and-potatoes artwork is available. See [IMAGE_STYLE.md](IMAGE_STYLE.md).
+
+## Dedicated recipe routes
+
+Each recipe now has a full-page, shareable URL such as [Jacket potatoes & beans](https://simondoescode.github.io/nibblepot/recipes/jacket/). Recipe cards are real links that support opening in new tabs. The surprise-me dialog takes users to the selected recipe page.
+
+Routing uses the browser History API and the existing Vite base path (no added router dependency). `npm run build` generates a real `dist/recipes/<id>/index.html` entry for every recipe, plus static entrypoints for Favourites, Larder, Shopping and Settings. GitHub Pages can therefore load copied recipe URLs and refresh them directly without relying on a fragile 404 redirect. The generated HTML includes recipe titles, canonical links, Open Graph metadata and Recipe structured data. The app keeps localStorage saved data intact and handles browser back/forward navigation.

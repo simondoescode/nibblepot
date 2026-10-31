@@ -4,7 +4,7 @@ import { recipes, ingredientName } from './data';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
 import { refreshPwa } from './lib/refresh';
-import { basePath, parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
+import { parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
 import type { Filter, SavedData, Tab } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
@@ -65,7 +65,7 @@ export default function App() {
     window.history.pushState({ nibblepot: true }, '', path);
     setRoute(next);
     setRandomId(null);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
   const navigate = useCallback((target: Tab) => {
     lastTab.current = target;

@@ -32,10 +32,15 @@ function metaPage(title, description, urlPath, recipe) {
       recipeIngredient: recipe.ing.map(item => item.qty + ' ' + (ingredients[item.id]?.[0] ?? item.id)),
       recipeInstructions: recipe.steps.map(step => ({ '@type': 'HowToStep', text: step })),
     };
-    meta.push('<script type="application/ld+json">' + JSON.stringify(schema).replaceAll('<','\\u003c') + '</script>');
+    meta.push('<script type="application/ld+json">' + JSON.stringify(schema).replaceAll('<', '\\u003c') + '</script>');
   }
-  return html.replace(/<title>[\\s\\S]*?<\\/title>/, '<title>' + escapeHTML(title) + '</title>')
-    .replace('</head>', meta.join('\\n') + '\\n</head>');
+  const titleStart = html.indexOf('<title>');
+  const titleEnd = html.indexOf('</title>', titleStart);
+  if (titleStart === -1 || titleEnd === -1) throw new Error('Missing HTML title');
+  const titled = html.slice(0, titleStart) +
+    '<title>' + escapeHTML(title) + '</title>' +
+    html.slice(titleEnd + '</title>'.length);
+  return titled.replace('</head>', meta.join(String.fromCharCode(10)) + String.fromCharCode(10) + '</head>');
 }
 const pages = [
   ...recipes.map(recipe => ({

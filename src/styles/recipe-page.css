@@ -31,3 +31,5 @@
 .recipe-page-not-found h1{font-size:clamp(30px,6vw,48px);letter-spacing:-1.5px}
 @media(max-width:760px){.recipe-page-hero{grid-template-columns:1fr}.recipe-page-image{border-right:0;border-bottom:2px solid var(--ink);min-height:0}.recipe-page-image img{max-height:320px}.recipe-page-sections{grid-template-columns:1fr}.recipe-page-intro{padding:22px}.recipe-page h1{font-size:clamp(29px,7vw,41px)}}
 @media(max-width:560px){.recipe-page{margin-top:0}.recipe-page-toolbar{margin-bottom:12px}.recipe-page-hero{border-radius:20px}.recipe-page-intro{padding:17px}.recipe-page-image img{max-height:240px}.recipe-page-actions .btn{flex:1;font-size:12px;padding:12px 9px}.recipe-page-sections{margin-top:16px;gap:15px}.recipe-page-sections .recipe-detail-panel{padding:16px}.recipe-page-bottom span{display:none}.recipe-page-sections .ingredient-description{font-size:13px}}
+
+.recipe-info h3 a{text-decoration:none}.recipe-info h3 a:hover{text-decoration:underline;text-underline-offset:3px}

@@ -10,14 +10,14 @@ test('recipe catalogue illustrations load on mobile and desktop', async ({ page 
   await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.svg"]')).toHaveCount(1);
   await art.first().scrollIntoViewIfNeeded();
   await expect.poll(() => art.first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
-  await page.locator('.recipe-card').first().getByRole('button', { name: /view jacket/i }).first().click();
-  const dialog = page.getByRole('dialog', { name: /recipe:/i });
-  await expect(dialog).toBeVisible();
-  await expect(dialog.locator('.recipe-illustration')).toHaveCount(1);
-  await expect(dialog.locator('.recipe-detail-panel')).toHaveCount(2);
-  await expect(dialog.getByRole('heading', { name: /let's make it/i })).toBeVisible();
-  await dialog.getByRole('button', { name: 'Close dialog' }).click();
-  await expect(dialog).toHaveCount(0);
+  await page.locator('.recipe-card').first().getByRole('link', { name: /view jacket/i }).click();
+  const recipe = page.locator('.recipe-page');
+  await expect(recipe).toBeVisible();
+  await expect(recipe.locator('.recipe-page-image img')).toHaveCount(1);
+  await expect(recipe.locator('.recipe-detail-panel')).toHaveCount(2);
+  await expect(recipe.getByRole('heading', { name: /let's make it/i })).toBeVisible();
+  await recipe.getByRole('button', { name: /back to recipes/i }).click();
+  await expect(recipe).toHaveCount(0);
 });
 
 
