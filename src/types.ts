@@ -1,6 +1,6 @@
 export type IngredientId = string;
 export type RecipeId = string;
-export type Tab = 'home' | 'favorites' | 'larder' | 'shopping' | 'settings';
+export type Tab = 'home' | 'favorites' | 'larder' | 'planner' | 'shopping' | 'settings';
 export type Filter = 'all' | 'quick' | 'simple' | 'onepot' | 'larder';
 
 export interface RecipeIngredient {
@@ -28,6 +28,10 @@ export interface ShoppingEntry {
   id: IngredientId;
   done: boolean;
   from: RecipeId[];
+  /** Planner-only contributions, counted per scheduled dinner. */
+  weekCounts?: Record<RecipeId, number>;
+  /** Distinguish generated list entries from manually added items. */
+  planGenerated?: boolean;
 }
 
 export interface SavedData {
@@ -36,9 +40,13 @@ export interface SavedData {
   shopping: ShoppingEntry[];
   /** Per-recipe serving choices; original recipes are written for four. */
   servings?: Record<RecipeId, number>;
+  /** Per-Monday weekly meal plans. Unset weeks show a starter suggestion. */
+  weekPlans?: Record<string, WeekSlot[]>;
 }
 
 export interface RecipeModal {
   kind: 'random' | 'recipe';
   id: RecipeId;
 }
+
+export type WeekSlot = { kind: 'recipe'; id: RecipeId } | { kind: 'leftovers' | 'freezer' | 'empty' };
