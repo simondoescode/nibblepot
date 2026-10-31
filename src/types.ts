@@ -6,6 +6,8 @@ export type Filter = 'all' | 'quick' | 'simple' | 'onepot' | 'larder';
 export interface RecipeIngredient {
   id: IngredientId;
   qty: string;
+  /** Optional toppings or accompaniments are excluded from shopping unless chosen. */
+  optional?: boolean;
 }
 
 export interface Recipe {
@@ -32,6 +34,8 @@ export interface SavedData {
   larder: IngredientId[];
   favorites: RecipeId[];
   shopping: ShoppingEntry[];
+  /** Per-recipe serving choices; original recipes are written for four. */
+  servings?: Record<RecipeId, number>;
 }
 
 export interface RecipeModal {

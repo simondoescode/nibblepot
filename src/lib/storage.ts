@@ -33,7 +33,19 @@ export function parseSavedData(value: unknown): SavedData {
           : [],
       }))
     : [];
-  return { larder, favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()] };
+  // Invalid or unknown recipe serving settings are ignored rather than corrupting existing saves.
+  const servings: Record<string, number> = {};
+  if (isObject(value.servings)) {
+    for (const [id, count] of Object.entries(value.servings)) {
+      if (validRecipeIds.has(id) && typeof count === 'number' && Number.isInteger(count) && count >= 1 && count <= 8) {
+        servings[id] = count;
+      }
+    }
+  }
+  return {
+    larder, favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
+    ...(Object.keys(servings).length ? { servings } : {}),
+  };
 }
 
 export function readSavedData(): SavedData {

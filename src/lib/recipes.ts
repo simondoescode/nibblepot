@@ -27,16 +27,19 @@ export function chooseRandomRecipe(recipes: readonly Recipe[], previousId?: stri
   return options[Math.min(Math.floor(random() * options.length), options.length - 1)];
 }
 
-export function addMissingIngredients(recipe: Recipe, data: SavedData): { shopping: ShoppingEntry[]; added: number } {
+export function addMissingIngredients(
+  recipe: Recipe, data: SavedData, optionalIds: readonly string[] = [],
+): { shopping: ShoppingEntry[]; added: number } {
   const shopping = data.shopping.map(item => ({ ...item, from: [...item.from] }));
+  const optional = new Set(optionalIds);
   let added = 0;
-  for (const { id } of recipe.ing) {
-    if (data.larder.includes(id)) continue;
-    const existing = shopping.find(item => item.id === id);
+  for (const ingredient of recipe.ing) {
+    if (data.larder.includes(ingredient.id) || (ingredient.optional && !optional.has(ingredient.id))) continue;
+    const existing = shopping.find(item => item.id === ingredient.id);
     if (existing) {
       if (!existing.from.includes(recipe.id)) existing.from.push(recipe.id);
     } else {
-      shopping.push({ id, done: false, from: [recipe.id] });
+      shopping.push({ id: ingredient.id, done: false, from: [recipe.id] });
       added++;
     }
   }

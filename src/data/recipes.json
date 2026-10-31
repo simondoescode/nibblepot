@@ -17,11 +17,13 @@
       },
       {
         "id": "cheese",
-        "qty": "100g (optional)"
+        "qty": "100g",
+        "optional": true
       },
       {
         "id": "butter",
-        "qty": "A little (optional)"
+        "qty": "A little",
+        "optional": true
       }
     ],
     "steps": [
@@ -140,7 +142,8 @@
       },
       {
         "id": "cheese",
-        "qty": "60g (optional)"
+        "qty": "60g",
+        "optional": true
       }
     ],
     "steps": [
