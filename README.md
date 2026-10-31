@@ -107,3 +107,11 @@ Open **Planner** to plan Monday–Sunday. Each day can be a recipe, leftovers, f
 The planner's preview counts missing ingredients across all scheduled dinners, applies saved servings and combines matching units. **Add week to shopping** replaces the *previous planner-generated* shopping contributions with the selected week's items while preserving manually added entries and checked items. Repeated recipes count multiple times; optional toppings are excluded by default. Shopping contents update when you choose Add week again, not automatically on changing meals. The larder is searchable across cupboard, fridge and freezer with instant filtering and clear search.
 
 The app remains offline-capable, GitHub Pages-hosted and account-free. New deep link: `/nibblepot/planner/`. The larder is still an in-stock flag, not an amount tracker.
+
+## v0.6 — Cooking Mode
+
+Every recipe page now has **Start cooking**, which opens a distraction-free full-page guide at `/nibblepot/recipes/<id>/cook/`. Follow one step at a time with generous mobile-sized controls, a progress indicator and checklist of ingredients (scaled to the saved serving count). Checked ingredients and step progress are kept in per-recipe `sessionStorage`, so refreshing within the same browser tab keeps your place. **Cook again** resets the current session.
+
+Cooking Mode includes an optional, local countdown timer. Use +/- minute controls, or select durations **explicitly named** in the current recipe step (for ranges, both ends are offered). Start, pause and reset are supported. An absolute timestamp prevents cumulative drift when the tab is backgrounded, and a running countdown is restored after reload in the same tab. It does not provide guaranteed background alarms/notifications or verify food safety; always follow the recipe and check food is thoroughly cooked.
+
+The dedicated cook URLs are generated as physical GitHub Pages HTML entrypoints so direct visits and refreshes work. Cook pages declare `noindex,follow` and canonicalise to the normal recipe page to avoid SEO duplication. Existing saved recipes, shopping lists and planner data remain unchanged.
