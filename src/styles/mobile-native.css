@@ -15,7 +15,7 @@
   .mobile-nav .mob-icon{position:relative;display:grid;place-items:center;width:51px;height:33px;
     border-radius:12px;color:inherit;transition:background .18s ease,transform .18s ease}
   .mobile-nav .mobbtn.active .mob-icon{background:var(--yellow);transform:translateY(-1px)}
-  .mobile-nav .mob-label{font-size:10px;white-space:nowrap;font-weight:tabular-nums}
+  .mobile-nav .mob-label{font-size:10px;white-space:nowrap;font-weight:800}
   .mobile-nav .mobbtn.active .mob-label{font-weight:1000}
   .mob-count{position:absolute;right:-3px;top:-4px;display:grid;place-items:center;
     min-width:18px;height:18px;border-radius:99px;padding:0 4px;border:2px solid var(--paper);
