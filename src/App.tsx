@@ -165,7 +165,7 @@ export default function App() {
           onFavorite={() => toggleFavorite(activeRecipe.id)} onCook={() => startCooking(activeRecipe.id)}
           notify={toast} />}
         {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe) || (route.kind === 'cook' && !activeCookRecipe)) && <section className="recipe-page-not-found">
-          <h1>That recipe's not in the pot 🍲</h1>
+          <h1>That recipe's not in the pot</h1>
           <p>Try another recipe — there's plenty more for tea.</p>
           <button type="button" className="btn btn-primary" onClick={() => navigate('home')}>Browse recipes</button>
         </section>}

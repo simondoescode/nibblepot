@@ -15,7 +15,7 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
   onBrowse: () => void;
 }) {
   return <>
-    <div className="page-intro blue"><div><h2>Shopping, sorted. 🛒</h2><p>Just the bits you're missing. No giant lists.</p></div><div className="intro-icon">🧺</div></div>
+    <div className="page-intro blue"><div><h2>Shopping, sorted.</h2><p>Just the bits you're missing. No giant lists.</p></div><div className="intro-icon" aria-hidden="true">🧺</div></div>
     {shopping.length > 0 ? <>
       <div className="shop-actions"><Button size="small" icon={<ClipboardCopy size={16} />} onClick={onCopy}>Copy list</Button>
         <Button size="small" icon={<CheckCheck size={16} />} onClick={onClear}>Remove ticked items</Button></div>
