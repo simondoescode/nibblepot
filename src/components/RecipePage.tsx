@@ -2,7 +2,7 @@
 import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket, Minus, Plus } from 'lucide-react';
 import { ingredientName } from '../data';
 import { useState } from 'react';
-import { BASE_SERVINGS, MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
+import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
 import type { Recipe } from '../types';
 import { Button } from '../ui/controls';
 
