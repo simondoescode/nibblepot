@@ -104,7 +104,6 @@ test('settings backup, restore, and confirmed reset persist across reloads', asy
 test('refresh app reloads the full PWA without clearing saved favourites', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
   await page.locator('.recipe-card').first().getByRole('button', { name: /add to favourites/i }).click();
-  const navName = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
   await openSecondaryTab(page, testInfo.project.name, 'Settings');
   await page.evaluate(() => sessionStorage.setItem('before-refresh', 'yes'));
   const navigation = page.waitForEvent('load');
