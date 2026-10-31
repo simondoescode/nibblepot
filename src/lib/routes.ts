@@ -3,7 +3,8 @@ import type { Tab } from '../types';
 
 export type PageRoute = { kind: 'tab'; tab: Tab } | { kind: 'recipe'; id: string } | { kind: 'not-found' };
 const segments: Record<Tab, string> = { home: '', favorites: 'favourites', larder: 'larder', shopping: 'shopping', settings: 'settings' };
-export const basePath = import.meta.env.BASE_URL;
+// Vitest defaults BASE_URL to '/' even though the deployed Pages site lives under /nibblepot/.
+export const basePath = import.meta.env.BASE_URL === '/' ? '/nibblepot/' : import.meta.env.BASE_URL;
 export const tabPath = (tab: Tab) => basePath + (segments[tab] ? segments[tab] + '/' : '');
 export const recipePath = (id: string) => basePath + 'recipes/' + encodeURIComponent(id) + '/';
 
