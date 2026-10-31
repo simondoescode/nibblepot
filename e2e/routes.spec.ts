@@ -59,7 +59,7 @@ test('serving changes scale recipe amounts and update shopping quantities', asyn
   await expect(page.locator('.shop-row').filter({ hasText: 'Pasta' })).toContainText('175 g');
   await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Recipes' }).click();
   await page.getByRole('link', { name: /view tuna pasta bake/i }).click();
-  await expect(page.getByRole('output', { name: 'Servings count' })).toHaveText('2');
+  await expect(page.locator('output[aria-label="Servings count"]')).toHaveText('2');
 });
 
 test('optional ingredients stay off the list until chosen', async ({ page }, testInfo) => {
