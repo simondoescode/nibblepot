@@ -57,7 +57,8 @@ export function formatRecipeQuantity(ingredient: RecipeIngredient, servings: num
 export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, number> = {}): string {
   const amounts = new Map<string, number>();
   const unknown: string[] = [];
-  for (const sourceId of entry.from) {
+  const sourceIds = new Set([...entry.from, ...Object.keys(entry.weekCounts ?? {})]);
+  for (const sourceId of sourceIds) {
     const recipe = recipes.find(item => item.id === sourceId);
     const ingredient = recipe?.ing.find(item => item.id === entry.id);
     if (!ingredient) continue;
@@ -66,7 +67,7 @@ export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, 
       if (!unknown.includes(p.raw)) unknown.push(p.raw);
       continue;
     }
-    amounts.set(p.unit, (amounts.get(p.unit) ?? 0) + p.value * clampServings(servings[sourceId] ?? BASE_SERVINGS) / BASE_SERVINGS);
+    amounts.set(p.unit, (amounts.get(p.unit) ?? 0) + p.value * Math.max(entry.from.includes(sourceId) ? 1 : 0, entry.weekCounts?.[sourceId] ?? 0) * clampServings(servings[sourceId] ?? BASE_SERVINGS) / BASE_SERVINGS);
   }
   const formatted = [...amounts].map(([unit, total]) => amountLabel(total, unit));
   return [...formatted, ...unknown].join(' + ') || 'Quantity not set';

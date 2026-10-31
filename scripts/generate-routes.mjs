@@ -49,7 +49,7 @@ const pages = [
     recipe,
   })),
   ...[
-    ['favourites', 'Favourites'], ['larder', 'Larder'], ['shopping', 'Shopping list'], ['settings', 'Settings']
+    ['favourites', 'Favourites'], ['larder', 'Larder'], ['planner', 'Meal planner'], ['shopping', 'Shopping list'], ['settings', 'Settings']
   ].map(([route,title]) => ({route,title: title + ' | Nibblepot', description: 'Nibblepot — Good grub. Zero faff.'})),
 ];
 for (const page of pages) {

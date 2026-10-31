@@ -5,6 +5,7 @@ const links: { id: Tab; icon: string; label: string }[] = [
   { id: 'home', icon: '🍽️', label: 'Recipes' },
   { id: 'favorites', icon: '❤️', label: 'Favourites' },
   { id: 'larder', icon: '🫙', label: 'Larder' },
+  { id: 'planner', icon: '📅', label: 'Planner' },
   { id: 'shopping', icon: '🛒', label: 'Shopping' },
   { id: 'settings', icon: '⚙️', label: 'Settings' },
 ];

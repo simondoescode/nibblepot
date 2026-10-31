@@ -4,6 +4,7 @@ import { recipes, ingredientName } from './data';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
+import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
 import { refreshPwa } from './lib/refresh';
 import { parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
@@ -12,6 +13,7 @@ import { Header, MobileNavigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
 import { FavouritesPage } from './components/FavouritesPage';
 import { LarderPage } from './components/LarderPage';
+import { WeekPlannerPage } from './components/WeekPlannerPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
 import { RandomRecipeDialog } from './components/RandomRecipeDialog';
@@ -24,6 +26,7 @@ export default function App() {
   const [search, setSearch] = useState('');
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
+  const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
   const [notice, setNotice] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const refreshingRef = useRef(false);
@@ -113,6 +116,26 @@ export default function App() {
   const activeRecipe = route.kind === 'recipe' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const randomRecipe = randomId ? recipes.find(recipe => recipe.id === randomId) : undefined;
   const backToRecipes = () => navigate(lastTab.current);
+  const weekSlots = data.weekPlans?.[selectedWeek] ?? defaultWeek();
+  const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
+    setData(current => {
+      const slots = [...(current.weekPlans?.[selectedWeek] ?? defaultWeek())];
+      slots[index] = slot;
+      return {...current,weekPlans:{...current.weekPlans,[selectedWeek]:slots}};
+    });
+  const shuffleCurrentWeek = () => setData(current => ({
+    ...current, weekPlans:{...current.weekPlans,
+      [selectedWeek]:shuffleWeek(current.weekPlans?.[selectedWeek] ?? defaultWeek())}
+  }));
+  const clearCurrentWeek = () => setData(current => ({
+    ...current, weekPlans:{...current.weekPlans,
+      [selectedWeek]:Array.from({length:7},()=>({kind:'empty' as const}))}
+  }));
+  const addWeek = () => {
+    setData(current => applyWeekToShopping(current,current.weekPlans?.[selectedWeek] ?? defaultWeek()));
+    toast('Week added to shopping 🛒');
+    navigate('shopping');
+  };
   return <>
     <PullIndicator distance={pull} refreshing={refreshing} />
     <div className="wrap">
@@ -136,6 +159,10 @@ export default function App() {
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} onToggle={toggleLarder} onFindMeals={findMeals} />}
+        {route.kind === 'tab' && route.tab === 'planner' && <WeekPlannerPage week={selectedWeek}
+          slots={weekSlots} larder={data.larder} servings={data.servings ?? {}}
+          onWeekChange={setSelectedWeek} onChange={changeSlot} onShuffle={shuffleCurrentWeek}
+          onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
         {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}}
           onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
