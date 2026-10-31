@@ -8,6 +8,10 @@ export function pullDistance(startX: number, startY: number, currentX: number, c
   if (vertical <= 0 || horizontal > vertical * 0.75) return 0;
   return Math.min(MAX_PULL, vertical * 0.65);
 }
+/** Visual overscroll uses resistance: a long finger drag never pulls the whole page off-screen. */
+export function pullOffset(distance: number): number {
+  return Math.min(93, Math.max(0, distance) * 0.64);
+}
 export function shouldRefresh(distance: number): boolean {
   return distance >= PULL_THRESHOLD;
 }

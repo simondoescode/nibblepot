@@ -8,6 +8,8 @@ import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/
 import { refreshPwa } from './lib/refresh';
 import { cookingPath, parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
+import { pullOffset } from './lib/pullGesture';
+import type { CSSProperties } from 'react';
 import type { Filter, SavedData, Tab } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
@@ -149,8 +151,9 @@ export default function App() {
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
     onExit={() => openRecipe(activeCookRecipe.id)} />;
   return <>
-    <PullIndicator distance={pull} refreshing={refreshing} />
-    <div className="wrap">
+    <PullIndicator distance={pull.distance} refreshing={refreshing} />
+    <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : ''}`}
+      style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main" id="main-content">
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
