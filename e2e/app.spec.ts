@@ -104,7 +104,8 @@ test('refresh app reloads the full PWA without clearing saved favourites', async
   const navigation = page.waitForEvent('load');
   await page.getByRole('button', { name: 'Refresh app' }).click();
   await navigation;
-  await expect(page.getByRole('heading', { name: /what's for/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
+  await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
   expect(await page.evaluate(() => sessionStorage.getItem('before-refresh'))).toBe('yes');
   await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Favourites' }).click();
   await expect(page.locator('.recipe-card')).toHaveCount(1);
