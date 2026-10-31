@@ -91,7 +91,7 @@
 .cook-sheet{position:fixed;bottom:0;left:0;right:0;z-index:71;margin:0 auto;width:100%;max-width:640px;max-height:85dvh;overflow-y:auto;overscroll-behavior:contain;background:var(--cream);border:2px solid var(--ink);border-bottom:0;border-radius:24px 24px 0 0;box-shadow:0 -8px 28px rgba(0,0,0,.1);padding:8px max(14px,env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));outline:none}
 .cook-sheet-handle{height:5px;width:43px;background:#b4a99a;border-radius:100px;margin:3px auto 11px}
 .cook-sheet-heading{display:flex;align-items:center;justify-content:space-between;padding:2px 4px 12px}
-.cook-sheet-heading [data-radix-dialog-title]{font-size:22px;letter-spacing:-.6px;font-weight:1000;margin:0}
+ .cook-sheet-heading h2{font-size:22px;letter-spacing:-.6px;font-weight:1000;margin:0}
 .cook-sheet-close{height:44px;width:44px;border:1.6px solid var(--ink);border-radius:12px;background:var(--paper);display:grid;place-items:center}
 .cook-sheet-body .cook-timer,.cook-sheet-body .cook-ingredients{box-shadow:none;border-radius:15px}
 .cook-sheet-body .cook-ingredients summary{display:none}
