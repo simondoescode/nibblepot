@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mondayFor, shiftWeek, validMondayKey, defaultWeek, shuffleWeek, weekContributions, applyWeekToShopping } from '../src/lib/weeklyPlan';
+import { mondayFor, shiftWeek, validMondayKey, defaultWeek, shuffleWeek, weekContributions, applyWeekToShopping, shoppingPlanSignature } from '../src/lib/weeklyPlan';
 import { parseSavedData } from '../src/lib/storage';
 import { shoppingQuantity } from '../src/lib/quantities';
 import type { SavedData, WeekSlot } from '../src/types';
@@ -52,6 +52,23 @@ describe('weekly meal planner',()=>{
     expect(next.shopping.some(x=>x.id==='chopped-tomatoes')).toBe(false);
     expect(next.shopping.some(x=>x.id==='chicken')).toBe(true);
     expect(applyWeekToShopping(next,planB).shopping.length).toBe(next.shopping.length);
+  });
+  it('tracks a shopping snapshot without mutating it on later edits',()=>{
+    const week='2026-10-26';
+    const slots=defaultWeek();
+    const current=applyWeekToShopping(emptyData,slots,week);
+    expect(current.shoppingPlan?.week).toBe(week);
+    expect(current.shoppingPlan?.signature).toBe(shoppingPlanSignature(week,slots,[],{}));
+    expect(shoppingPlanSignature(week,slots,['rice','pasta'],{}))
+      .toBe(shoppingPlanSignature(week,slots,['pasta','rice'],{}));
+    const updated=slots.map(slot=>({...slot}));
+    updated[0]={kind:'recipe',id:'egg-rice'};
+    expect(shoppingPlanSignature(week,updated,[],{})).not.toBe(current.shoppingPlan?.signature);
+    expect(shoppingPlanSignature(week,slots,[],{'jacket':2})).not.toBe(current.shoppingPlan?.signature);
+    expect(shoppingPlanSignature(week,slots,[],{'toasties':8})).toBe(current.shoppingPlan?.signature);
+    expect(shoppingPlanSignature('2026-11-02',slots,[],{})).not.toBe(current.shoppingPlan?.signature);
+    const restored=parseSavedData(current);
+    expect(restored.shoppingPlan).toEqual(current.shoppingPlan);
   });
   it('does not double-count a recipe selected manually and scheduled once',()=>{
     const single: WeekSlot[]=[{kind:'recipe',id:'tomato-pasta'},...Array.from({length:6},()=>({kind:'empty' as const}))];

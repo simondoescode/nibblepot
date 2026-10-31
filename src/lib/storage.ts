@@ -71,6 +71,10 @@ export function parseSavedData(value: unknown): SavedData {
   }
   return {
     ...(Object.keys(weekPlans).length ? { weekPlans } : {}),
+    ...(isObject(value.shoppingPlan) && typeof value.shoppingPlan.week === 'string' &&
+      validMondayKey(value.shoppingPlan.week) && typeof value.shoppingPlan.signature === 'string' &&
+      value.shoppingPlan.signature.length > 0 && value.shoppingPlan.signature.length < 4096
+      ? { shoppingPlan: { week: value.shoppingPlan.week, signature: value.shoppingPlan.signature } } : {}),
     larder, favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
     ...(Object.keys(servings).length ? { servings } : {}),
   };
