@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
-import { recipes } from '../src/data';
+const recipes = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; title: string }[];
 
 test('all sixteen GitHub Pages recipe routes are physical HTML entrypoints', () => {
   for (const recipe of recipes) {
