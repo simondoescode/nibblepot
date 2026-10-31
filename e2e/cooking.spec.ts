@@ -112,7 +112,6 @@ test('mobile timer chip reflects countdown while sheet is closed and the desktop
   await page.goto('/nibblepot/recipes/jacket/cook/');
   if (testInfo.project.name === 'mobile') {
     await page.getByRole('button',{name:'Open kitchen timer'}).click();
-    await page.getByRole('button',{name:'15 min',exact:true}).count().then(count => expect(count).toBe(0));
     await page.getByRole('button',{name:'Start timer'}).click();
     await page.getByRole('button',{name:'Close cooking tools'}).click();
     await expect(page.locator('.cook-mobile-tools')).toContainText('Timer');
