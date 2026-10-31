@@ -81,3 +81,7 @@ Original recipes keep their SVG illustrations. A new recipe can set an optional 
 ### AI food photos — first batch
 
 The first 10 recipes now use individually generated, transparent 800 × 504 WebP images in `public/recipes/` (roughly 60–100 KB each). Six remaining recipes continue using their existing SVG illustrations. The recipe `image` property selects the WebP, and the SVG catalogue remains available as fallback. Image sizing and transparency are covered by unit/browser tests. See [IMAGE_STYLE.md](IMAGE_STYLE.md).
+
+### AI food photos — second batch
+
+Five additional recipes use individually optimised transparent 800 × 504 WebP food images: fish finger butties, meatball spaghetti, tomato soup, ham & cheese toasties, and bean chilli jackets (roughly 63–77 KB each). In total 15 of 16 recipes use WebP. The chicken & potato traybake retains its existing SVG for now: the generated photo contained sausages, which are not in that recipe, and should not be published under a misleading title. Replace only when correct chicken-and-potatoes artwork is available. See [IMAGE_STYLE.md](IMAGE_STYLE.md).

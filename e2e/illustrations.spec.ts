@@ -6,7 +6,8 @@ test('recipe catalogue illustrations load on mobile and desktop', async ({ page 
   const art = page.locator('.recipe-card .recipe-illustration');
   await expect(art).toHaveCount(16);
   await expect(art.first()).toHaveAttribute('src', /\/nibblepot\/recipes\/jacket\.webp/);
-  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(10);
+  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(15);
+  await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.svg"]')).toHaveCount(1);
   await art.first().scrollIntoViewIfNeeded();
   await expect.poll(() => art.first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   await page.locator('.recipe-card').first().getByRole('button', { name: /view jacket/i }).first().click();

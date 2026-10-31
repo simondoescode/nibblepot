@@ -431,7 +431,8 @@
       "Toast in a sandwich press or frying pan until golden.",
       "Serve warm, with any veg you have on hand."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/toasties.webp"
   },
   {
     "id": "meatball",
@@ -467,7 +468,8 @@
       "Add tomatoes and simmer while the pasta cooks.",
       "Mix with cooked pasta and scatter over cheese."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/meatball.webp"
   },
   {
     "id": "fish-butties",
@@ -499,7 +501,8 @@
       "Spread bread with mayo and add lettuce.",
       "Pile in fish fingers, close sandwiches and serve."
     ],
-    "onePot": false
+    "onePot": false,
+    "image": "recipes/fish-butties.webp"
   },
   {
     "id": "soup",
@@ -535,7 +538,8 @@
       "Blend until smooth if preferred, and season to taste.",
       "Make cheese toasties while soup heats through."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/soup.webp"
   },
   {
     "id": "chilli-jacket",
@@ -571,6 +575,7 @@
       "Simmer drained kidney beans with tomatoes and paprika until thick and hot.",
       "Split spuds, spoon over chilli and top with cheese."
     ],
-    "onePot": true
+    "onePot": true,
+    "image": "recipes/chilli-jacket.webp"
   }
 ]
