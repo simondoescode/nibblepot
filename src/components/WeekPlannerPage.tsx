@@ -33,7 +33,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, onWeekChange, o
   const range = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(start) +
     ' – ' + new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(end);
   return <div className="planner-page">
-    <div className="page-intro planner-intro"><div><h2>This week's tea. 📅</h2>
+    <div className="page-intro planner-intro"><div><h2>This week's tea.</h2>
       <p>Seven days, less head-scratching. Pick dinners, plan leftovers, shop once.</p>
     </div><div className="intro-icon" aria-hidden="true">🍲</div></div>
     <div className="planner-week-head">

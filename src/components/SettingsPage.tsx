@@ -61,7 +61,7 @@ export function SettingsPage({ data, onRefresh, refreshing, onRestore, onReset, 
 
   return <div className="settings-page">
     <section className="page-intro settings-intro">
-      <div><h2>Little tweaks. ⚙️</h2><p>Make Nibblepot yours. No account, no fuss.</p></div>
+      <div><h2>Little tweaks.</h2><p>Make Nibblepot yours. No account, no fuss.</p></div>
       <span className="intro-icon" aria-hidden="true">🍲</span>
     </section>
     <div className="settings-stack">

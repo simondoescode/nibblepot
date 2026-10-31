@@ -12,7 +12,7 @@ export function LarderPage({ larder, onToggle, onFindMeals }: {
   const normalized = query.trim().toLocaleLowerCase('en-GB');
   const matches = Object.entries(ingredients).filter(([, [name]]) => name.toLocaleLowerCase('en-GB').includes(normalized));
   return <>
-    <div className="page-intro"><div><h2>What's in your larder? 🫙</h2><p>Search and tick what you've got. We'll do the thinking.</p></div><div className="intro-icon">🥫</div></div>
+    <div className="page-intro"><div><h2>What's in your larder?</h2><p>Search and tick what you've got. We'll do the thinking.</p></div><div className="intro-icon" aria-hidden="true">🥫</div></div>
     <div className="larder-layout"><div>
       <div className="larder-searchbar">
         <Search size={20} aria-hidden="true"/>
