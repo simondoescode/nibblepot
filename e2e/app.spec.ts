@@ -1,4 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' | 'Settings') {
+  if (project === 'mobile') {
+    await page.getByRole('navigation', {name:'Mobile navigation'}).getByRole('button', {name:'More'}).click();
+    await page.getByRole('dialog', {name:'More Nibblepot'}).getByRole('button', {name:tab}).click();
+  } else {
+    await page.getByRole('navigation', {name:'Main navigation'}).getByRole('button', {name:tab}).click();
+  }
+}
 
 test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
@@ -26,18 +35,10 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
 test('favourites and larder persist after reload', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
   await page.locator('.recipe-card').first().getByRole('button', { name: /add to favourites/i }).click();
-  if (testInfo.project.name === 'mobile') {
-    await page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('button', { name: 'Favourites' }).click();
-  } else {
-    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Favourites' }).click();
-  }
+  await openSecondaryTab(page, testInfo.project.name, 'Favourites');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
   await page.reload();
-  if (testInfo.project.name === 'mobile') {
-    await page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('button', { name: 'Favourites' }).click();
-  } else {
-    await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('button', { name: 'Favourites' }).click();
-  }
+  await openSecondaryTab(page, testInfo.project.name, 'Favourites');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
   const nav = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
   await page.getByRole('navigation', { name: nav }).getByRole('button', { name: 'Larder' }).click();
@@ -77,9 +78,8 @@ test('opening a recipe navigates to its own page and Back returns to listing', a
 
 test('settings backup, restore, and confirmed reset persist across reloads', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
-  const nav = page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' });
   await page.locator('.recipe-card').first().getByRole('button', { name: /add to favourites/i }).click();
-  await nav.getByRole('button', { name: 'Settings' }).click();
+  await openSecondaryTab(page, testInfo.project.name, 'Settings');
   await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
   await expect(page.locator('.settings-stats')).toContainText('1');
   const downloadPromise = page.waitForEvent('download');
@@ -93,7 +93,7 @@ test('settings backup, restore, and confirmed reset persist across reloads', asy
   await page.getByRole('button', { name: 'Clear saved data' }).click();
   await expect(page.locator('.settings-stats')).toContainText('0');
   await page.reload();
-  await page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' }).getByRole('button', { name: 'Settings' }).click();
+  await openSecondaryTab(page, testInfo.project.name, 'Settings');
   await expect(page.locator('.settings-stats')).toContainText('0');
 
   page.once('dialog', dialog => dialog.accept());
@@ -105,7 +105,7 @@ test('refresh app reloads the full PWA without clearing saved favourites', async
   await page.goto('/nibblepot/');
   await page.locator('.recipe-card').first().getByRole('button', { name: /add to favourites/i }).click();
   const navName = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
-  await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Settings' }).click();
+  await openSecondaryTab(page, testInfo.project.name, 'Settings');
   await page.evaluate(() => sessionStorage.setItem('before-refresh', 'yes'));
   const navigation = page.waitForEvent('load');
   await page.getByRole('button', { name: 'Refresh app' }).click();
@@ -113,7 +113,7 @@ test('refresh app reloads the full PWA without clearing saved favourites', async
   await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
   await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
   expect(await page.evaluate(() => sessionStorage.getItem('before-refresh'))).toBe('yes');
-  await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Favourites' }).click();
+  await openSecondaryTab(page, testInfo.project.name, 'Favourites');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
 });
 
