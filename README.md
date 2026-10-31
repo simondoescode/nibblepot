@@ -119,3 +119,9 @@ The dedicated cook URLs are generated as physical GitHub Pages HTML entrypoints 
 ### Mobile Cooking Mode improvements
 
 On screens up to 750px, Cooking Mode uses a **fixed bottom Previous/Next action bar** and a compact **Ingredients / Timer toolbar**. The toolbar opens accessible, dismissible bottom sheets, leaving large recipe text unobscured while cooking. The timer state and ingredient ticks remain identical to desktop and are stored in the same per-recipe session; resizing between mobile and desktop doesn't create duplicate countdowns. Mobile controls use larger touch targets, safe-area spacing and readable step text, with keyboard/Escape/focus handling provided by Radix Dialog. Desktop retains the two-panel layout.
+
+## Native-feeling mobile navigation
+
+The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and More. More opens a keyboard-accessible sheet for Favourites and Settings. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
+
+Pull-to-refresh applies a resistance-limited translation to the app's content (not its fixed tab bar) with a spring-like release animation; it still calls the existing full PWA reload. Scrollable inputs, horizontal swipe gestures, dialogs and cooking mode don't start a refresh, and pull animation is disabled for reduced-motion users. This is a web approximation of iOS overscroll, not a promise of native haptics or exact Safari bounce behaviour.
