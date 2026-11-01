@@ -91,6 +91,12 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
         )}</ol>
       </section>
     </div>
+    <section className="recipe-safety-panel" aria-labelledby="recipe-safety-heading">
+      <h2 id="recipe-safety-heading">Good to know</h2>
+      <p><strong>Cooking safely:</strong> {recipe.safety}</p>
+      <p><strong>Leftovers:</strong> {recipe.storage}</p>
+      <small>Recipe reviewed {recipe.reviewedOn} · General guidance: <a href="https://www.food.gov.uk/safety-hygiene/cooking-your-food" target="_blank" rel="noopener noreferrer">Food Standards Agency</a>.</small>
+    </section>
     <div className="recipe-page-bottom">
       <Button onClick={onBack} icon={<ArrowLeft size={17} />}>More recipes</Button>
       <span>Made for real-life tea times ✳</span>

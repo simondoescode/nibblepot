@@ -5,7 +5,7 @@
     "description": "The ultimate cheap, cheerful tea.",
     "emoji": "🥔",
     "color": "#ffd58e",
-    "mins": 55,
+    "mins": 65,
     "ing": [
       {
         "id": "potatoes",
@@ -22,17 +22,20 @@
       },
       {
         "id": "butter",
-        "qty": "A little",
+        "qty": "20g",
         "optional": true
       }
     ],
     "steps": [
-      "Prick the potatoes and bake at 200°C for 45–60 minutes until soft.",
-      "Heat the beans in a saucepan.",
-      "Split the potatoes, fluff with a fork and pile on the beans and cheese."
+      "Heat the oven to 200°C (180°C fan). Scrub and prick 4 large potatoes, then bake on a tray for 50–60 minutes until soft right through.",
+      "About 5 minutes before serving, heat the baked beans in a saucepan, stirring until bubbling and hot.",
+      "Split each potato, fluff the middle, add beans and, if you want, grated cheese and butter."
     ],
     "onePot": false,
-    "image": "recipes/jacket.webp"
+    "image": "recipes/jacket.webp",
+    "safety": "Check the middle of each potato is piping hot and soft before serving.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "sausage-bean",
@@ -40,7 +43,7 @@
     "description": "Big flavour. One pan. Happy plates.",
     "emoji": "🍲",
     "color": "#f8c1ae",
-    "mins": 30,
+    "mins": 35,
     "ing": [
       {
         "id": "sausages",
@@ -64,12 +67,15 @@
       }
     ],
     "steps": [
-      "Brown the sausages in a large pan, then set aside.",
-      "Soften the chopped onion, add paprika, tomatoes and beans.",
-      "Put sausages back in and simmer for 15–20 minutes until cooked through."
+      "Slice the onion. Brown the sausages in a deep pan for 8–10 minutes, turning; they do not need to be fully cooked yet.",
+      "Add the onion, paprika, chopped tomatoes and baked beans. Stir well and nestle the sausages into the sauce.",
+      "Cover and simmer gently for 15–20 minutes until the sausages are completely cooked through and the sauce is bubbling. Serve hot."
     ],
     "onePot": true,
-    "image": "recipes/sausage-bean.webp"
+    "image": "recipes/sausage-bean.webp",
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "chicken-rice",
@@ -77,7 +83,7 @@
     "description": "Dinner and minimal washing up.",
     "emoji": "🍗",
     "color": "#d4e6a8",
-    "mins": 35,
+    "mins": 45,
     "ing": [
       {
         "id": "chicken",
@@ -105,12 +111,15 @@
       }
     ],
     "steps": [
-      "Brown diced chicken in a deep pan and soften the onion.",
-      "Stir in rice, paprika and stock made with enough water for your rice.",
-      "Cover and simmer until the rice is tender and chicken cooked through. Add peas near the end."
+      "Dice the boneless chicken thighs into even pieces and chop the onion. Brown both in a large deep pan for 7–8 minutes.",
+      "Stir in 300 g dry rice and paprika. Dissolve the stock cube in 650 ml boiling water, pour in, cover and gently simmer for 18–20 minutes. Add a splash more water only if the pan dries out before the rice is tender.",
+      "Stir in the frozen peas for the final 4–5 minutes. Check the rice is tender, chicken cooked throughout and the whole pan piping hot. Serve straight away."
     ],
     "onePot": true,
-    "image": "recipes/chicken-rice.webp"
+    "image": "recipes/chicken-rice.webp",
+    "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "cottage",
@@ -118,7 +127,7 @@
     "description": "A cosy classic without the fuss.",
     "emoji": "🥧",
     "color": "#eacdf4",
-    "mins": 40,
+    "mins": 45,
     "ing": [
       {
         "id": "beef",
@@ -147,12 +156,15 @@
       }
     ],
     "steps": [
-      "Boil the potatoes until soft and mash.",
-      "Brown the mince with onion; add peas, gravy granules and water to make a thick sauce.",
-      "Top with mash and optional cheese. Grill until golden and piping hot."
+      "Peel and chop the potatoes. Boil for 15–20 minutes until tender, drain and mash.",
+      "While they boil, cook the beef mince and diced onion for 8–10 minutes until browned and cooked through. Stir in peas and gravy granules with about 300 ml boiling water; simmer 5 minutes until thick.",
+      "Heat the grill. Spoon the beef into an ovenproof dish and spread mashed potato over it; add cheese if using. Grill for 5–8 minutes until golden and piping hot."
     ],
     "onePot": false,
-    "image": "recipes/cottage.webp"
+    "image": "recipes/cottage.webp",
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "tuna-bake",
@@ -160,7 +172,7 @@
     "description": "The cupboard-clearout hero.",
     "emoji": "🍝",
     "color": "#c7e8f5",
-    "mins": 35,
+    "mins": 40,
     "ing": [
       {
         "id": "pasta",
@@ -181,15 +193,22 @@
       {
         "id": "milk",
         "qty": "250ml"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "150g"
       }
     ],
     "steps": [
-      "Cook the pasta until just tender.",
-      "Combine drained tuna, sweetcorn and pasta with milk and most of the cheese.",
-      "Tip into a baking dish, scatter remaining cheese and bake until hot and golden."
+      "Heat the oven to 200°C (180°C fan). Boil pasta for 1–2 minutes less than the pack says, then drain.",
+      "In a pan over low heat, stir cream cheese with the milk until smooth and warm. Fold in the drained tuna, sweetcorn, pasta and half the grated cheese.",
+      "Transfer to a baking dish, top with the remaining cheese and bake for 15–20 minutes until bubbling and piping hot in the middle."
     ],
     "onePot": false,
-    "image": "recipes/tuna-bake.webp"
+    "image": "recipes/tuna-bake.webp",
+    "safety": "Drain the canned tuna before mixing. Heat the bake until piping hot throughout.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "tomato-pasta",
@@ -221,12 +240,15 @@
       }
     ],
     "steps": [
-      "Cook pasta in salted water.",
-      "Gently fry garlic in oil; add tomatoes and simmer until thickened.",
-      "Toss with pasta and finish with grated cheese."
+      "Put the pasta in a pan of boiling water and cook to the packet time (usually 10–12 minutes).",
+      "Meanwhile heat the oil in a frying pan, gently cook the garlic for 30 seconds, then add tomatoes and simmer for 10–12 minutes until thickened.",
+      "Drain the pasta, toss with the hot sauce and finish with grated cheese."
     ],
-    "onePot": true,
-    "image": "recipes/tomato-pasta.webp"
+    "onePot": false,
+    "image": "recipes/tomato-pasta.webp",
+    "safety": "Serve piping hot; refrigerate any leftovers promptly.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "egg-rice",
@@ -234,7 +256,7 @@
     "description": "The quickest fridge raid going.",
     "emoji": "🍚",
     "color": "#e3d5ff",
-    "mins": 15,
+    "mins": 25,
     "ing": [
       {
         "id": "rice",
@@ -258,12 +280,15 @@
       }
     ],
     "steps": [
-      "Cook the rice according to the pack (or use safely cooled and refrigerated cooked rice).",
-      "Scramble the eggs in a hot pan, then add rice and peas.",
-      "Stir-fry until everything is piping hot, then add soy sauce and spring onions."
+      "Cook 300 g dry rice according to the packet (usually 10–12 minutes), drain and use immediately. Alternatively use 900 g cooked rice that was cooled quickly and kept refrigerated for no longer than 24 hours.",
+      "Heat a large frying pan, scramble the eggs until set, then stir in the cooked rice and frozen peas. Stir-fry for 5–7 minutes, breaking up clumps.",
+      "Add soy sauce and chopped spring onions. Stir-fry until everything is steaming hot throughout, then serve immediately."
     ],
-    "onePot": true,
-    "image": "recipes/egg-rice.webp"
+    "onePot": false,
+    "image": "recipes/egg-rice.webp",
+    "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "quesadilla",
@@ -271,7 +296,7 @@
     "description": "Crispy, melty, very little effort.",
     "emoji": "🌮",
     "color": "#f9d78e",
-    "mins": 15,
+    "mins": 20,
     "ing": [
       {
         "id": "wraps",
@@ -291,12 +316,15 @@
       }
     ],
     "steps": [
-      "Spoon beans, sweetcorn and cheese onto half of each wrap.",
-      "Fold over and toast in a dry frying pan until golden on both sides.",
-      "Cut into wedges and serve."
+      "Drain the sweetcorn and warm the beans in a pan until hot. Spoon a little bean mix and grated cheese over half of each wrap.",
+      "Fold the wraps. Cook in a dry frying pan in batches for 2–3 minutes per side until golden and the cheese has melted.",
+      "Cut each wrap into wedges, checking the filling is hot throughout, and serve."
     ],
     "onePot": false,
-    "image": "recipes/quesadilla.webp"
+    "image": "recipes/quesadilla.webp",
+    "safety": "Keep the filling hot and serve freshly cooked.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "mash",
@@ -304,7 +332,7 @@
     "description": "Everyone knows the drill.",
     "emoji": "🥔",
     "color": "#c8e8ae",
-    "mins": 30,
+    "mins": 35,
     "ing": [
       {
         "id": "sausages",
@@ -324,12 +352,15 @@
       }
     ],
     "steps": [
-      "Cook sausages according to the pack until fully cooked.",
-      "Boil and mash potatoes; cook peas.",
-      "Make gravy and serve everything together."
+      "Peel and chop potatoes. Put on to boil for 15–20 minutes until completely soft.",
+      "While they cook, cook the sausages according to their packet instructions until cooked throughout; boil the frozen peas for 3–4 minutes.",
+      "Drain and mash the potatoes, mix gravy granules with hot water following the packet, and serve while everything is hot."
     ],
     "onePot": false,
-    "image": "recipes/mash.webp"
+    "image": "recipes/mash.webp",
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "butter-stew",
@@ -361,12 +392,15 @@
       }
     ],
     "steps": [
-      "Soften the onion in a pan with a splash of oil or water.",
-      "Add paprika, drained beans, tomatoes and a little stock.",
-      "Simmer for 15 minutes until thick and bubbling."
+      "Dice the onion and soften in a saucepan over medium heat with 2 tablespoons water for 5 minutes.",
+      "Add paprika, drained butter beans, tomatoes and stock cube dissolved in 150 ml boiling water. Stir.",
+      "Simmer uncovered for 15 minutes, stirring occasionally, until thick, bubbling and hot throughout."
     ],
     "onePot": true,
-    "image": "recipes/butter-stew.webp"
+    "image": "recipes/butter-stew.webp",
+    "safety": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "traybake",
@@ -374,7 +408,7 @@
     "description": "Chop, chuck in, oven on.",
     "emoji": "🍗",
     "color": "#f4de9d",
-    "mins": 45,
+    "mins": 55,
     "ing": [
       {
         "id": "chicken",
@@ -398,11 +432,14 @@
       }
     ],
     "steps": [
-      "Heat oven to 200°C. Chop potatoes, carrots and onion into bite-sized pieces.",
-      "Toss vegetables and chicken with oil on a baking tray.",
-      "Roast for 35–45 minutes until chicken is cooked through and vegetables are tender."
+      "Heat oven to 200°C (180°C fan). Cut potatoes and carrots into 2 cm pieces and slice the onion.",
+      "Spread vegetables on a baking tray, toss with oil and roast for 10 minutes. Add evenly sized boneless chicken-thigh pieces and turn everything to coat.",
+      "Roast for another 25–35 minutes until the vegetables are soft and chicken is thoroughly cooked in the centre. Do not serve undercooked chicken."
     ],
-    "onePot": false
+    "onePot": false,
+    "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "toasties",
@@ -410,7 +447,7 @@
     "description": "When cooking feels like too much.",
     "emoji": "🥪",
     "color": "#c5e6f4",
-    "mins": 10,
+    "mins": 15,
     "ing": [
       {
         "id": "bread",
@@ -426,16 +463,19 @@
       },
       {
         "id": "butter",
-        "qty": "A little"
+        "qty": "20g"
       }
     ],
     "steps": [
-      "Fill bread with ham and cheese; butter the outside lightly.",
-      "Toast in a sandwich press or frying pan until golden.",
-      "Serve warm, with any veg you have on hand."
+      "Make four sandwiches with 2 slices of bread, 2 slices of ham and a quarter of the cheese in each. Lightly butter the outside.",
+      "Toast in a sandwich maker or frying pan in batches for about 3–4 minutes per side until golden, turning carefully.",
+      "Serve when the cheese is fully melted and the filling is hot."
     ],
     "onePot": false,
-    "image": "recipes/toasties.webp"
+    "image": "recipes/toasties.webp",
+    "safety": "Heat the ham-and-cheese filling until hot; refrigerate any remaining ham promptly.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "meatball",
@@ -443,7 +483,7 @@
     "description": "A dependable midweek winner.",
     "emoji": "🍝",
     "color": "#f6c3d4",
-    "mins": 30,
+    "mins": 35,
     "ing": [
       {
         "id": "meatballs",
@@ -467,12 +507,15 @@
       }
     ],
     "steps": [
-      "Brown and fully cook meatballs, and soften sliced onion.",
-      "Add tomatoes and simmer while the pasta cooks.",
-      "Mix with cooked pasta and scatter over cheese."
+      "Brown the meatballs in a frying pan for 8–10 minutes, turning. Add the diced onion and cook until softened.",
+      "Pour in the chopped tomatoes and simmer for 12–15 minutes, checking the meatballs are completely cooked through.",
+      "Meanwhile boil spaghetti/pasta according to the pack. Drain, toss with the meatball sauce and top with grated cheese."
     ],
     "onePot": false,
-    "image": "recipes/meatball.webp"
+    "image": "recipes/meatball.webp",
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "fish-butties",
@@ -480,7 +523,7 @@
     "description": "A five-star lazy tea.",
     "emoji": "🐟",
     "color": "#c5def6",
-    "mins": 20,
+    "mins": 25,
     "ing": [
       {
         "id": "fish-fingers",
@@ -496,16 +539,19 @@
       },
       {
         "id": "lettuce",
-        "qty": "A few leaves"
+        "qty": "4 leaves"
       }
     ],
     "steps": [
-      "Bake fish fingers until crisp and cooked through.",
-      "Spread bread with mayo and add lettuce.",
-      "Pile in fish fingers, close sandwiches and serve."
+      "Heat the oven following the fish-finger pack. Bake the fish fingers for the full packet time until cooked through and crisp.",
+      "Wash the lettuce and spread the bread with measured mayonnaise.",
+      "Divide fish fingers between four sandwiches, add lettuce, close and serve."
     ],
     "onePot": false,
-    "image": "recipes/fish-butties.webp"
+    "image": "recipes/fish-butties.webp",
+    "safety": "Follow the fish-finger cooking instructions; the centre must be cooked and piping hot.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "soup",
@@ -513,7 +559,7 @@
     "description": "Easy comfort on a rainy day.",
     "emoji": "🥫",
     "color": "#ffb1a6",
-    "mins": 25,
+    "mins": 30,
     "ing": [
       {
         "id": "chopped-tomatoes",
@@ -537,12 +583,15 @@
       }
     ],
     "steps": [
-      "Simmer chopped onion, tomatoes and stock for 15 minutes.",
-      "Blend until smooth if preferred, and season to taste.",
-      "Make cheese toasties while soup heats through."
+      "Finely chop the onion. Put it in a saucepan with the tomatoes and stock cube dissolved in 300 ml boiling water; simmer for 15–20 minutes.",
+      "Blend the hot soup carefully if you like a smooth texture. Return to the pan and reheat until bubbling.",
+      "While soup simmers, make four cheese sandwiches and toast them in a dry frying pan in batches until golden and cheese has melted. Serve together."
     ],
-    "onePot": true,
-    "image": "recipes/soup.webp"
+    "onePot": false,
+    "image": "recipes/soup.webp",
+    "safety": "Be careful blending hot soup; allow steam to escape and never overfill a sealed blender jug.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
   },
   {
     "id": "chilli-jacket",
@@ -550,7 +599,7 @@
     "description": "A loaded spud without the spend.",
     "emoji": "🌶️",
     "color": "#d7eab1",
-    "mins": 55,
+    "mins": 65,
     "ing": [
       {
         "id": "potatoes",
@@ -574,11 +623,560 @@
       }
     ],
     "steps": [
-      "Bake potatoes until soft (45–60 minutes at 200°C).",
-      "Simmer drained kidney beans with tomatoes and paprika until thick and hot.",
-      "Split spuds, spoon over chilli and top with cheese."
+      "Heat the oven to 200°C (180°C fan) and bake the scrubbed potatoes for 50–60 minutes until fully soft inside.",
+      "Drain and rinse the kidney beans. Simmer with chopped tomatoes and paprika in a saucepan for 15 minutes, stirring until thick and piping hot.",
+      "Split the baked potatoes, spoon over the bean chilli and finish with cheese."
+    ],
+    "onePot": false,
+    "image": "recipes/chilli-jacket.webp",
+    "safety": "Use canned kidney beans; do not substitute uncooked dried kidney beans without properly boiling and preparing them.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "sausage-traybake",
+    "title": "Sausage & potato traybake",
+    "description": "All on one tray, nothing fancy.",
+    "emoji": "🌭",
+    "color": "#e7cda3",
+    "mins": 55,
+    "ing": [
+      {
+        "id": "sausages",
+        "qty": "8"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800g"
+      },
+      {
+        "id": "carrots",
+        "qty": "3"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "oil",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Chop potatoes and carrots into 2 cm chunks and slice the onion. Toss vegetables with oil on a large tray.",
+      "Roast the vegetables for 15 minutes, then add the sausages, turning to coat.",
+      "Roast for 25–30 minutes more, turning sausages once, until potatoes are tender and sausages cooked all the way through."
+    ],
+    "onePot": false,
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chicken-pie",
+    "title": "Cheat’s chicken pie",
+    "description": "A cosy pie with a ready-made lid.",
+    "emoji": "🥧",
+    "color": "#d8e8aa",
+    "mins": 50,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200g"
+      },
+      {
+        "id": "carrots",
+        "qty": "2"
+      },
+      {
+        "id": "gravy",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "puff-pastry",
+        "qty": "1 sheet"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Dice chicken thighs and carrots. Cook chicken in a large frying pan for 8–10 minutes until nearly cooked; add carrots and peas.",
+      "Mix gravy granules with 300 ml boiling water. Pour into the pan and simmer for 5 minutes until the chicken is cooked through and the filling is thick.",
+      "Spoon into a baking dish, lay the ready-rolled pastry over the top and cut a small steam hole. Bake for 20–25 minutes until the pastry is golden and the filling piping hot."
+    ],
+    "onePot": false,
+    "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "tuna-jackets",
+    "title": "Tuna & sweetcorn jackets",
+    "description": "Cheap potatoes with a filling that works.",
+    "emoji": "🥔",
+    "color": "#c6dfea",
+    "mins": 65,
+    "ing": [
+      {
+        "id": "potatoes",
+        "qty": "4 large"
+      },
+      {
+        "id": "tuna",
+        "qty": "2 tins"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "1 small tin"
+      },
+      {
+        "id": "mayo",
+        "qty": "4 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Scrub, prick and bake the potatoes for 50–60 minutes until fully soft inside.",
+      "Drain the tuna and sweetcorn thoroughly, then mix with mayonnaise in a bowl. Keep refrigerated until serving.",
+      "Split the hot potatoes and divide the cold tuna filling between them. Serve straight away."
+    ],
+    "onePot": false,
+    "safety": "Keep tuna mayonnaise chilled until needed; do not leave it at room temperature while potatoes bake.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "creamy-chicken-rice",
+    "title": "Creamy chicken & pea rice",
+    "description": "One pot and proper comfort food.",
+    "emoji": "🍗",
+    "color": "#cde6ad",
+    "mins": 45,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500g"
+      },
+      {
+        "id": "rice",
+        "qty": "300g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "150g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Dice chicken and onion. Brown both in a large deep pan for about 8 minutes.",
+      "Add dry rice and a stock cube dissolved in 650 ml boiling water. Cover and simmer gently for 18–20 minutes, topping up with a splash of water only if needed.",
+      "Add frozen peas for the last 5 minutes. Stir through cream cheese, heat until bubbling and check the chicken is completely cooked and the rice tender. Serve straight away."
     ],
     "onePot": true,
-    "image": "recipes/chilli-jacket.webp"
+    "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "broccoli-pasta",
+    "title": "Creamy broccoli pasta",
+    "description": "Four ingredients. Creamy without a faff.",
+    "emoji": "🥦",
+    "color": "#d8e7ae",
+    "mins": 25,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350g"
+      },
+      {
+        "id": "broccoli",
+        "qty": "300g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "200g"
+      },
+      {
+        "id": "garlic",
+        "qty": "2 cloves"
+      }
+    ],
+    "steps": [
+      "Boil pasta in plenty of water according to the pack. Add small broccoli florets for the final 4–5 minutes until tender.",
+      "Before draining, scoop out 150 ml of pasta water. Drain the pasta and broccoli.",
+      "Gently warm cream cheese and crushed garlic in the pan with enough reserved pasta water to make a coating sauce. Fold in pasta and broccoli, heat through and serve."
+    ],
+    "onePot": true,
+    "safety": "Wash fresh broccoli and heat the sauce thoroughly before serving.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "smoky-bean-rice",
+    "title": "Smoky bean rice bowls",
+    "description": "More tins, less spending.",
+    "emoji": "🫘",
+    "color": "#e5ceaa",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "rice",
+        "qty": "300g"
+      },
+      {
+        "id": "kidney-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "2 tsp"
+      }
+    ],
+    "steps": [
+      "Cook the dry rice according to its packet, usually 10–12 minutes. Drain and serve straight away.",
+      "Meanwhile finely chop the onion and soften in a frying pan with 2 tablespoons water for 5 minutes.",
+      "Add drained canned kidney beans, chopped tomatoes and paprika. Simmer for 12–15 minutes until thick and steaming hot; spoon over rice."
+    ],
+    "onePot": false,
+    "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chicken-wraps",
+    "title": "Chicken salad wraps",
+    "description": "A midweek wrap with proper dinner filling.",
+    "emoji": "🌯",
+    "color": "#d9ead5",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500g"
+      },
+      {
+        "id": "wraps",
+        "qty": "8"
+      },
+      {
+        "id": "lettuce",
+        "qty": "4 leaves"
+      },
+      {
+        "id": "carrots",
+        "qty": "2"
+      },
+      {
+        "id": "mayo",
+        "qty": "4 tbsp"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Cut boneless chicken thighs into thin, even strips. Toss with paprika and fry in a non-stick pan, turning, for 12–15 minutes until cooked throughout.",
+      "Wash and shred the lettuce, grate carrots and warm wraps briefly according to the pack.",
+      "Spread the wraps with mayonnaise, divide the hot chicken and vegetables between them, roll tightly and serve immediately."
+    ],
+    "onePot": false,
+    "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "sausage-pasta",
+    "title": "One-pot sausage pasta",
+    "description": "A pan of tomato pasta that fills everyone up.",
+    "emoji": "🍝",
+    "color": "#ecb7a7",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "sausages",
+        "qty": "8"
+      },
+      {
+        "id": "pasta",
+        "qty": "350g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Slice sausages into bite-sized pieces and brown in a deep non-stick pan for 8–10 minutes, turning to colour.",
+      "Add diced onion, chopped tomatoes, paprika and 500 ml boiling water. Stir in dry pasta, cover and simmer for 12–15 minutes, stirring often and adding water if needed.",
+      "Check the pasta is tender, sauce thick and every sausage piece cooked through before serving."
+    ],
+    "onePot": true,
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "veggie-wraps",
+    "title": "Cheesy vegetable wraps",
+    "description": "A cupboard-and-freezer dinner.",
+    "emoji": "🌯",
+    "color": "#e9d0a0",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "wraps",
+        "qty": "8"
+      },
+      {
+        "id": "cheese",
+        "qty": "200g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150g"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "1 small tin"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Simmer frozen peas for 3–4 minutes until hot, then drain well. Drain the sweetcorn.",
+      "Mix peas, sweetcorn, grated cheese and paprika. Divide among 8 wraps and fold the wraps closed.",
+      "Toast in batches in a dry frying pan for 2–3 minutes each side until crisp, cheese melted and filling piping hot."
+    ],
+    "onePot": false,
+    "safety": "Make sure the frozen peas are thoroughly heated before filling the wraps.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "egg-noodles",
+    "title": "Egg & pea noodles",
+    "description": "A fast, filling noodle bowl.",
+    "emoji": "🍜",
+    "color": "#dcd8ad",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "noodles",
+        "qty": "300g"
+      },
+      {
+        "id": "eggs",
+        "qty": "4"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200g"
+      },
+      {
+        "id": "soy-sauce",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "spring-onions",
+        "qty": "3"
+      }
+    ],
+    "steps": [
+      "Cook noodles according to the packet. Add frozen peas for the final 3 minutes, then drain well.",
+      "Beat eggs and scramble in a non-stick frying pan until set. Add drained noodles and peas.",
+      "Stir-fry for 2–3 minutes until everything is piping hot. Stir in soy sauce and sliced spring onions and serve."
+    ],
+    "onePot": false,
+    "safety": "Cook eggs until set and the noodle mixture piping hot; leftovers should be chilled promptly.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "fish-wedges",
+    "title": "Fish fingers & homemade wedges",
+    "description": "Crisp potatoes and no fuss.",
+    "emoji": "🐟",
+    "color": "#d1e4ec",
+    "mins": 45,
+    "ing": [
+      {
+        "id": "fish-fingers",
+        "qty": "12"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200g"
+      },
+      {
+        "id": "oil",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat the oven to 200°C (180°C fan). Cut potatoes into slim wedges and toss with oil on a tray.",
+      "Roast wedges for 30–35 minutes, turning halfway. Cook fish fingers on a separate tray for the time and temperature stated on their pack so they finish together.",
+      "Boil the frozen peas for 3–4 minutes until hot. Serve wedges, fish fingers and peas together, checking everything is cooked."
+    ],
+    "onePot": false,
+    "safety": "Follow the fish-finger packet instructions and serve only once cooked through.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "beef-chilli",
+    "title": "Easy beef & bean chilli",
+    "description": "One big pan, plenty of leftovers.",
+    "emoji": "🍲",
+    "color": "#efc1a9",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500g"
+      },
+      {
+        "id": "kidney-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "2 tsp"
+      },
+      {
+        "id": "rice",
+        "qty": "300g"
+      }
+    ],
+    "steps": [
+      "Dice onion and brown with the beef mince in a large pan for 8–10 minutes, stirring until the mince is cooked through.",
+      "Drain canned kidney beans and add to the pan with chopped tomatoes and paprika. Simmer gently for 15–20 minutes until bubbling and thick.",
+      "Meanwhile cook dry rice according to the packet, drain and serve the hot chilli on top."
+    ],
+    "onePot": false,
+    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "lentil-soup",
+    "title": "Red lentil & tomato soup",
+    "description": "A cheap, hearty bowl from the cupboard.",
+    "emoji": "🥣",
+    "color": "#e8d4ae",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "red-lentils",
+        "qty": "250g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "carrots",
+        "qty": "2"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Rinse red lentils until the water runs clearer. Dice the onion and carrots.",
+      "Put lentils, vegetables, tomatoes and a stock cube dissolved in 900 ml boiling water into a large pan.",
+      "Simmer for 20–25 minutes, stirring occasionally, until lentils are soft and soup thick. Add a little water if needed and serve piping hot."
+    ],
+    "onePot": true,
+    "safety": "Cook lentils fully until softened; cool leftover soup promptly and reheat thoroughly.",
+    "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chickpea-curry",
+    "title": "Chickpea & spinach curry",
+    "description": "A gentle, budget-friendly curry.",
+    "emoji": "🍛",
+    "color": "#e0cdaa",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "chickpeas",
+        "qty": "2 tins"
+      },
+      {
+        "id": "frozen-spinach",
+        "qty": "250g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "curry-powder",
+        "qty": "2 tsp"
+      },
+      {
+        "id": "rice",
+        "qty": "300g"
+      }
+    ],
+    "steps": [
+      "Cook dry rice according to its packet and set aside for immediate serving.",
+      "Meanwhile drain canned chickpeas. Add them to a pan with chopped tomatoes, curry powder and frozen spinach.",
+      "Simmer for 15–20 minutes, stirring until spinach is fully thawed and everything piping hot. Serve with freshly cooked rice."
+    ],
+    "onePot": false,
+    "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
   }
 ]

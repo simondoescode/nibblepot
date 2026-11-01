@@ -47,7 +47,7 @@ test('planner has seven days, shuffles, saves and updates a consolidated list', 
 test('searchable larder filters groups, updates stock and handles empty results',async ({page},testInfo)=>{
   await page.goto('/nibblepot/larder/');
   const search=page.getByRole('searchbox',{name:'Search larder ingredients'});
-  await search.fill('PEA');
+  await search.fill('Frozen peas');
   await expect(page.locator('.larder-item')).toHaveCount(1);
   await expect(page.locator('.larder-item')).toContainText('Frozen peas');
   await page.locator('.larder-item').getByRole('checkbox').check();
@@ -55,11 +55,11 @@ test('searchable larder filters groups, updates stock and handles empty results'
   await search.fill('not-a-real-ingredient');
   await expect(page.getByText(/no ingredients match/i)).toBeVisible();
   await page.getByRole('button',{name:'Clear larder search'}).click();
-  await expect(page.locator('.larder-item')).toHaveCount(35);
+  await expect(page.locator('.larder-item')).toHaveCount(41);
   await page.reload();
   const nav=page.getByRole('navigation',{name:testInfo.project.name==='mobile'?'Mobile navigation':'Main navigation'});
   await nav.getByRole('button',{name:'Larder'}).click();
-  await page.getByRole('searchbox',{name:'Search larder ingredients'}).fill('peas');
+  await page.getByRole('searchbox',{name:'Search larder ingredients'}).fill('Frozen peas');
   await expect(page.locator('.larder-item').getByRole('checkbox')).toBeChecked();
 });
 
@@ -70,9 +70,9 @@ test('changing a dinner is searchable, filtered, undoable and keyboard accessibl
   await monday.click();
   const picker=page.getByRole('dialog',{name:'Change Monday dinner'});
   await expect(picker).toBeVisible();
-  await expect(picker.locator('.planner-meal-option')).toHaveCount(16);
+  await expect(picker.locator('.planner-meal-option')).toHaveCount(30);
   await picker.getByRole('button',{name:'30 min or less'}).click();
-  await expect(picker.locator('.planner-meal-option').count()).resolves.toBeLessThan(16);
+  await expect(picker.locator('.planner-meal-option').count()).resolves.toBeLessThan(30);
   await picker.getByRole('button',{name:'All meals'}).click();
   await picker.getByRole('searchbox',{name:'Search meals'}).fill('fried rice');
   await expect(picker.locator('.planner-meal-option')).toHaveCount(1);

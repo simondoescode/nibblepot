@@ -125,3 +125,7 @@ On screens up to 750px, Cooking Mode uses a **fixed bottom Previous/Next action 
 The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and More. More opens a keyboard-accessible sheet for Favourites and Settings. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
 
 Pull-to-refresh applies a resistance-limited translation to the app's content (not its fixed tab bar) with a spring-like release animation; it still calls the existing full PWA reload. Scrollable inputs, horizontal swipe gestures, dialogs and cooking mode don't start a refresh, and pull animation is disabled for reduced-motion users. This is a web approximation of iOS overscroll, not a promise of native haptics or exact Safari bounce behaviour.
+
+## v0.7 — Recipe Quality Update
+
+The catalogue now has **30 recipes**: all sixteen original IDs plus fourteen practical low-faff family meals. Recipes have checked ingredient lists, measured four-serving portions, detailed steps and per-recipe cooking/storage notes. Fourteen unique local SVG illustrations ship with the new recipes. Shopping gives whole-pack guidance when scaled tins or pastry sheets would be fractional; incompatible units stay separate. A new [recipe quality gate](docs/recipe-quality.md) enforces the reviewed content. Original favourites, larder flags, plans and shopping data remain backward-compatible.

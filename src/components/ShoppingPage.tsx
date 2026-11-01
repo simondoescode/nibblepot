@@ -1,6 +1,6 @@
 import { ingredientName } from '../data';
 import { tescoSearchUrl } from '../lib/recipes';
-import { shoppingQuantity } from '../lib/quantities';
+import { shoppingPackHint, shoppingQuantity } from '../lib/quantities';
 import type { ShoppingEntry } from '../types';
 import { CheckCheck, ClipboardCopy, ExternalLink, X } from 'lucide-react';
 import { Button, IconButton } from '../ui/controls';
@@ -24,6 +24,7 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
           onChange={event => onToggle(item.id, event.target.checked)} />
         <div className="shop-item"><strong>{ingredientName(item.id)}</strong>
           <span className="shop-quantity">{shoppingQuantity(item, servings)}</span>
+          {shoppingPackHint(item, servings) && <small className="shop-pack-hint">{shoppingPackHint(item, servings)}</small>}
           <small>{item.from.length ? `For ${item.from.length} recipe${item.from.length === 1 ? '' : 's'}` : 'Added to your list'}</small></div>
         <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
           aria-label={`Find ${ingredientName(item.id)} at Tesco`}>Tesco <ExternalLink size={14} aria-hidden="true" /></a>

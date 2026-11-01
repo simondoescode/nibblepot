@@ -99,3 +99,7 @@
 @media(prefers-reduced-motion:reduce){
   .cook-progress-track>div{transition:none}
 }
+
+.cook-safety-note{border:1px solid #c8d6b9;border-radius:12px;background:#f5f9eb;padding:10px 12px;margin:0 0 13px;line-height:1.4;font-size:12px}
+.cook-safety-note summary{font-weight:950;cursor:pointer;min-height:28px}
+.cook-safety-note p{margin:9px 0;font-size:12px}

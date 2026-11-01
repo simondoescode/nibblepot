@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { recipes } from '../src/data';
-import { formatRecipeQuantity, shoppingQuantity, parseQuantity, clampServings } from '../src/lib/quantities';
+import { formatRecipeQuantity, shoppingQuantity, shoppingPackHint, parseQuantity, clampServings } from '../src/lib/quantities';
 import { addMissingIngredients } from '../src/lib/recipes';
 import { parseSavedData } from '../src/lib/storage';
 
@@ -16,9 +16,12 @@ describe('servings and shopping quantities', () => {
     expect(formatRecipeQuantity(find('tuna-bake').ing[4], 8)).toBe('500 ml');
   });
   it('keeps descriptive measurements rather than inventing precision', () => {
-    expect(formatRecipeQuantity(find('toasties').ing[3], 8)).toBe('A little');
-    expect(formatRecipeQuantity(find('fish-butties').ing[3], 2)).toBe('A few leaves');
+    expect(formatRecipeQuantity(find('toasties').ing[3], 8)).toBe('40 g');
+    expect(formatRecipeQuantity(find('fish-butties').ing[3], 2)).toBe('2 leaves');
+    expect(formatRecipeQuantity(find('chicken-pie').ing.find(x=>x.id==='puff-pastry')!, 2)).toBe('½ sheet');
     expect(parseQuantity('A little')).toEqual({ raw: 'A little' });
+    expect(shoppingPackHint(shopping('puff-pastry',['chicken-pie']),{'chicken-pie':2})).toBe('Buy 1 whole pastry sheet; check pack size');
+    expect(shoppingPackHint(shopping('baked-beans',['jacket']),{'jacket':2})).toBeNull();
   });
   it('sums compatible quantities from several recipes without treating tins as grams', () => {
     expect(shoppingQuantity(shopping('pasta', ['tuna-bake', 'tomato-pasta']))).toBe('700 g');
