@@ -22,6 +22,12 @@ export interface Recipe {
   ing: RecipeIngredient[];
   steps: string[];
   onePot: boolean;
+  /** Specific preparation/food-safety caution, displayed with the recipe and cooking mode. */
+  safety: string;
+  /** Storage instructions (rice has stricter guidance than other leftovers). */
+  storage: string;
+  /** Explicit editorial review date for our recipes, not an automated certification. */
+  reviewedOn: string;
 }
 
 export interface ShoppingEntry {

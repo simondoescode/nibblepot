@@ -185,6 +185,9 @@ export function CookingMode({ recipe, servings, onExit }: {
                 {timerFinished && <span className="cook-tool-alert">!</span>}
               </button>
             </div>}
+            <details className="cook-safety-note"><summary>Cooking safety & leftovers</summary>
+              <p>{recipe.safety}</p><p>{recipe.storage}</p>
+            </details>
             <div className="cook-step-actions">
               <button type="button" className="cook-secondary" onClick={() => goTo(progress.step - 1)}
                 disabled={progress.step === 0}><ArrowLeft size={19} aria-hidden="true"/> Previous</button>

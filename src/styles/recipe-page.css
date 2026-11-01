@@ -42,3 +42,10 @@
 .recipe-optional{display:flex;gap:5px;align-items:center;font-size:12px;font-weight:750;color:#805132;margin-top:5px;cursor:pointer}
 .recipe-optional input{accent-color:#bd6145}
 .shop-quantity{display:block;color:var(--ink);font-weight:950;font-size:15px;margin:3px 0}
+
+.recipe-safety-panel{margin:22px 0 0;background:#f4f6e8;border:1.5px solid #c7d6ba;border-radius:18px;padding:18px 21px;color:#3e4e38}
+.recipe-safety-panel h2{font-size:21px;letter-spacing:-.6px;margin:0 0 12px}
+.recipe-safety-panel p{font-size:13px;line-height:1.55;margin:7px 0}
+.recipe-safety-panel small{display:block;margin-top:11px;font-size:11px;line-height:1.45}
+.recipe-safety-panel a{text-decoration:underline;text-underline-offset:2px}
+.shop-pack-hint{font-size:11px;display:block;color:#7b5b3a}
