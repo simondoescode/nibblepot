@@ -45,9 +45,9 @@ function amountLabel(amount: number, unit: string): string {
   }
   if (unit === 'large') return count + ' large';
   if (unit === 'dry') return count + ' dry';
-  if (unit === 'small tin') return count + (amount === 1 ? ' small tin' : ' small tins');
-  if (unit === 'leaf') return count + (amount === 1 ? ' leaf' : ' leaves');
-  return count + ' ' + (amount === 1 ? unit : unit + 's');
+  if (unit === 'small tin') return count + (amount <= 1 ? ' small tin' : ' small tins');
+  if (unit === 'leaf') return count + (amount <= 1 ? ' leaf' : ' leaves');
+  return count + ' ' + (amount <= 1 ? unit : unit + 's');
 }
 export function formatRecipeQuantity(ingredient: RecipeIngredient, servings: number): string {
   const parsed = parseQuantity(ingredient.qty);
