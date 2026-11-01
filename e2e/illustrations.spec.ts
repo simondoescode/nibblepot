@@ -2,9 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test('recipe catalogue illustrations load on mobile and desktop', async ({ page }) => {
   await page.goto('/nibblepot/');
-  await expect(page.locator('.recipe-card')).toHaveCount(16);
+  await expect(page.locator('.recipe-card')).toHaveCount(30);
   const art = page.locator('.recipe-card .recipe-illustration');
-  await expect(art).toHaveCount(16);
+  await expect(art).toHaveCount(30);
   await expect(art.first()).toHaveAttribute('src', /\/nibblepot\/recipes\/jacket\.webp/);
   await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(15);
   await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.svg"]')).toHaveCount(1);

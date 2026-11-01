@@ -105,7 +105,7 @@ test('mobile cooking controls stay thumb-reachable while scrolling, sheets close
   await expect(sheet).toHaveCount(0);
   await expect(page.getByRole('button',{name:'Open ingredient checklist'})).toBeFocused();
   await page.getByRole('button',{name:'Next step'}).click();
-  await expect(page.getByText(/Soften the chopped onion/)).toBeVisible();
+  await expect(page.getByText(/Add the onion, paprika/)).toBeVisible();
 });
 
 test('mobile timer chip reflects countdown while sheet is closed and the desktop keeps both panels', async ({page},testInfo) => {

@@ -47,7 +47,7 @@ test('planner has seven days, shuffles, saves and updates a consolidated list', 
 test('searchable larder filters groups, updates stock and handles empty results',async ({page},testInfo)=>{
   await page.goto('/nibblepot/larder/');
   const search=page.getByRole('searchbox',{name:'Search larder ingredients'});
-  await search.fill('PEA');
+  await search.fill('Frozen peas');
   await expect(page.locator('.larder-item')).toHaveCount(1);
   await expect(page.locator('.larder-item')).toContainText('Frozen peas');
   await page.locator('.larder-item').getByRole('checkbox').check();
@@ -59,7 +59,7 @@ test('searchable larder filters groups, updates stock and handles empty results'
   await page.reload();
   const nav=page.getByRole('navigation',{name:testInfo.project.name==='mobile'?'Mobile navigation':'Main navigation'});
   await nav.getByRole('button',{name:'Larder'}).click();
-  await page.getByRole('searchbox',{name:'Search larder ingredients'}).fill('peas');
+  await page.getByRole('searchbox',{name:'Search larder ingredients'}).fill('Frozen peas');
   await expect(page.locator('.larder-item').getByRole('checkbox')).toBeChecked();
 });
 
