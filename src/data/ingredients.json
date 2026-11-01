@@ -138,5 +138,29 @@
   "meatballs": [
     "Meatballs",
     "Freezer"
+  ],
+  "puff-pastry": [
+    "Ready-rolled puff pastry",
+    "Fridge"
+  ],
+  "broccoli": [
+    "Broccoli",
+    "Fridge"
+  ],
+  "red-lentils": [
+    "Red lentils",
+    "Cupboard"
+  ],
+  "chickpeas": [
+    "Chickpeas",
+    "Cupboard"
+  ],
+  "frozen-spinach": [
+    "Frozen spinach",
+    "Freezer"
+  ],
+  "curry-powder": [
+    "Curry powder",
+    "Cupboard"
   ]
 }
