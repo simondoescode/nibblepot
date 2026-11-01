@@ -18,7 +18,7 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.reload();
 
   await expect(page.getByRole('heading', { name: /what's for/i })).toBeVisible();
-  await expect(page.locator('.recipe-card')).toHaveCount(16);
+  await expect(page.locator('.recipe-card')).toHaveCount(30);
   await page.getByRole('button', { name: '🎲 Surprise me!' }).click();
   await expect(page.getByRole('dialog', { name: /random dinner suggestion/i })).toBeVisible();
   await page.getByRole('button', { name: /see recipe/i }).click();
@@ -73,7 +73,7 @@ test('opening a recipe navigates to its own page and Back returns to listing', a
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.getByRole('button', { name: /back to recipes/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/$/);
-  await expect(page.locator('.recipe-card')).toHaveCount(16);
+  await expect(page.locator('.recipe-card')).toHaveCount(30);
 });
 
 test('settings backup, restore, and confirmed reset persist across reloads', async ({ page }, testInfo) => {
@@ -130,5 +130,5 @@ test('pull-to-refresh is available on mobile and reloads instead of rerendering'
   });
   await loaded;
   expect(await page.evaluate(() => sessionStorage.getItem('touch-started'))).toBe('yes');
-  await expect(page.locator('.recipe-card')).toHaveCount(16);
+  await expect(page.locator('.recipe-card')).toHaveCount(30);
 });
