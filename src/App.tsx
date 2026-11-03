@@ -139,7 +139,7 @@ export default function App() {
     });
   const shuffleCurrentWeek = () => setData(current => ({
     ...current, weekPlans:{...current.weekPlans,
-      [selectedWeek]:shuffleWeek(current.weekPlans?.[selectedWeek] ?? defaultWeek())}
+      [selectedWeek]:shuffleWeek(current.weekPlans?.[selectedWeek] ?? defaultWeek(),Math.random,current.larder)}
   }));
   const clearCurrentWeek = () => setData(current => ({
     ...current, weekPlans:{...current.weekPlans,

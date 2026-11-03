@@ -25,6 +25,13 @@ describe('weekly meal planner',()=>{
     expect(new Set(ids).size).toBe(5);
     expect(shuffled.slice(5)).toEqual(plan.slice(5));
   });
+  it('prioritises recipes that use the larder when shuffling',()=>{
+    const slots=defaultWeek();
+    const pantry=['potatoes','baked-beans','cheese','butter'];
+    const shuffled=shuffleWeek(slots,()=>0,pantry);
+    expect(shuffled[0]).toEqual({kind:'recipe',id:'jacket'});
+    expect(new Set(shuffled.filter(s=>s.kind==='recipe').map(s=>s.kind==='recipe'?s.id:'')).size).toBe(5);
+  });
   it('generates missing ingredients with correct counts for repeated recipes',()=>{
     const repeated: WeekSlot[]=[
       {kind:'recipe',id:'tomato-pasta'}, {kind:'recipe',id:'tomato-pasta'},

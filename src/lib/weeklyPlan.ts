@@ -1,4 +1,5 @@
 import { recipes } from '../data';
+import { missingRequired } from './recipes';
 import type { SavedData, ShoppingEntry, WeekSlot } from '../types';
 
 /** Local Monday, not UTC; avoid daylight-saving changes by anchoring at midday. */
@@ -28,14 +29,17 @@ export const STARTER_PLAN: WeekSlot[] = [
   {kind:'recipe',id:'tuna-bake'}, {kind:'leftovers'}, {kind:'freezer'}
 ];
 export const defaultWeek = (): WeekSlot[] => STARTER_PLAN.map(slot => ({...slot}));
-export function shuffleWeek(slots: WeekSlot[], random = Math.random): WeekSlot[] {
+export function shuffleWeek(slots: WeekSlot[], random = Math.random, larder: readonly string[] = []): WeekSlot[] {
   const used = new Set<string>();
-  const available = recipes.map(x => x.id);
+  const available = [...recipes].sort((a,b) => missingRequired(a,larder)-missingRequired(b,larder) || a.mins-b.mins).map(x=>x.id);
   // Keep special nights in their chosen positions. Each dinner has a distinct recipe.
   return slots.map(slot => {
     if (slot.kind !== 'recipe') return {...slot};
     const options = available.filter(id => !used.has(id));
-    const id = options[Math.min(Math.floor(random()*options.length),options.length-1)];
+    // Pick among the best larder matches; retain a little variety.
+    const best = missingRequired(recipes.find(r=>r.id===options[0])!,larder);
+    const shortlist = options.filter(id=>missingRequired(recipes.find(r=>r.id===id)!,larder)===best);
+    const id = shortlist[Math.min(Math.floor(random()*shortlist.length),shortlist.length-1)];
     used.add(id);
     return {kind:'recipe',id};
   });
