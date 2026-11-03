@@ -1,5 +1,6 @@
 import { recipes } from '../data';
 import { missingRequired } from './recipes';
+import { shoppingQuantity } from './quantities';
 import type { SavedData, ShoppingEntry, WeekSlot } from '../types';
 
 /** Local Monday, not UTC; avoid daylight-saving changes by anchoring at midday. */
@@ -44,14 +45,14 @@ export function shuffleWeek(slots: WeekSlot[], random = Math.random, larder: rea
     return {kind:'recipe',id};
   });
 }
-export function weekContributions(slots: WeekSlot[], larder: string[]): ShoppingEntry[] {
+export function weekContributions(slots: WeekSlot[], larder: string[], stock: Record<string,string> = {}, servings: Record<string,number> = {}): ShoppingEntry[] {
   const byIngredient = new Map<string, ShoppingEntry>();
   for (const slot of slots) {
     if (slot.kind !== 'recipe') continue;
     const recipe = recipes.find(item => item.id === slot.id);
     if (!recipe) continue;
     for (const ingredient of recipe.ing) {
-      if (ingredient.optional || larder.includes(ingredient.id)) continue;
+      if (ingredient.optional || (larder.includes(ingredient.id) && !stock[ingredient.id])) continue;
       const previous = byIngredient.get(ingredient.id);
       if (previous) {
         previous.weekCounts![recipe.id] = (previous.weekCounts![recipe.id] ?? 0) + 1;
@@ -63,7 +64,7 @@ export function weekContributions(slots: WeekSlot[], larder: string[]): Shopping
       }
     }
   }
-  return [...byIngredient.values()];
+  return [...byIngredient.values()].filter(entry=>shoppingQuantity(entry,servings,stock)!=='Already in larder');
 }
 /** Replace only prior *planner* contributions. Keep hand-added shopping items/ticks. */
 /** Track which inputs the shopper last confirmed; editing a plan never silently overwrites a list. */
@@ -75,11 +76,13 @@ export function shoppingPlanSignature(week: string, slots: WeekSlot[], larder: s
   ]);
 }
 export function applyWeekToShopping(data: SavedData, slots: WeekSlot[], week?: string): SavedData {
+  // Preserve purchased items when refreshing a plan: they remain visible and ticked.
+  // Unchecked, planner-only items are rebuilt from the new plan.
   const manual: ShoppingEntry[] = data.shopping
-    .filter(item => !(item.planGenerated && item.from.length === 0))
-    .map(item => ({...item, from:[...item.from], weekCounts:undefined}));
+    .filter(item => !(item.planGenerated && item.from.length === 0 && !item.done))
+    .map(item => ({...item, from:[...item.from], weekCounts:item.done && item.planGenerated && item.from.length === 0 ? item.weekCounts : undefined}));
   const byId = new Map(manual.map(item => [item.id, item]));
-  for (const planned of weekContributions(slots,data.larder)) {
+  for (const planned of weekContributions(slots,data.larder,data.larderQuantities,data.servings)) {
     const existing = byId.get(planned.id);
     if (existing) existing.weekCounts = planned.weekCounts;
     else {

@@ -42,6 +42,8 @@ export interface ShoppingEntry {
 
 export interface SavedData {
   larder: IngredientId[];
+  /** Optional measured stock; legacy larder ticks remain supported. */
+  larderQuantities?: Record<IngredientId, string>;
   favorites: RecipeId[];
   shopping: ShoppingEntry[];
   /** Per-recipe serving choices; original recipes are written for four. */

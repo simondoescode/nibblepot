@@ -1,6 +1,7 @@
 import type { SavedData, ShoppingEntry, WeekSlot } from '../types';
 import { ingredients, recipes } from '../data';
 import { validMondayKey } from './weeklyPlan';
+import { parseQuantity } from './quantities';
 
 // Keep the existing storage key: returning users retain their original demo data.
 export const STORAGE_KEY = 'nibblepot-demo-v1';
@@ -21,6 +22,12 @@ export function parseSavedData(value: unknown): SavedData {
   const validIngredientIds = new Set(Object.keys(ingredients));
   const validRecipeIds = new Set(recipes.map(recipe => recipe.id));
   const larder = [...new Set(value.larder.filter((id): id is string => typeof id === 'string' && validIngredientIds.has(id)))];
+  const larderQuantities: Record<string,string> = {};
+  if (isObject(value.larderQuantities)) for (const [id, qty] of Object.entries(value.larderQuantities)) {
+    if (!larder.includes(id) || typeof qty !== 'string' || qty.length > 40) continue;
+    const parsed = parseQuantity(qty);
+    if (parsed.value !== undefined && parsed.value > 0 && parsed.value <= 100000) larderQuantities[id] = qty.trim();
+  }
   const favorites = Array.isArray(value.favorites)
     ? [...new Set(value.favorites.filter((id): id is string => typeof id === 'string' && validRecipeIds.has(id)))]
     : [];
@@ -75,7 +82,7 @@ export function parseSavedData(value: unknown): SavedData {
       validMondayKey(value.shoppingPlan.week) && typeof value.shoppingPlan.signature === 'string' &&
       value.shoppingPlan.signature.length > 0 && value.shoppingPlan.signature.length < 4096
       ? { shoppingPlan: { week: value.shoppingPlan.week, signature: value.shoppingPlan.signature } } : {}),
-    larder, favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
+    larder, ...(Object.keys(larderQuantities).length ? { larderQuantities } : {}), favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
     ...(Object.keys(servings).length ? { servings } : {}),
   };
 }

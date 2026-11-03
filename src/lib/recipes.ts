@@ -1,5 +1,6 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
+import { shoppingQuantity } from './quantities';
 
 /** Only required ingredients affect whether dinner can be made. */
 export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
@@ -39,7 +40,8 @@ export function addMissingIngredients(
   const optional = new Set(optionalIds);
   let added = 0;
   for (const ingredient of recipe.ing) {
-    if (data.larder.includes(ingredient.id) || (ingredient.optional && !optional.has(ingredient.id))) continue;
+    if ((data.larder.includes(ingredient.id) && !data.larderQuantities?.[ingredient.id]) || (ingredient.optional && !optional.has(ingredient.id))) continue;
+    if (shoppingQuantity({id:ingredient.id,done:false,from:[recipe.id]},data.servings,data.larderQuantities)==='Already in larder') continue;
     const existing = shopping.find(item => item.id === ingredient.id);
     if (existing) {
       if (!existing.from.includes(recipe.id)) existing.from.push(recipe.id);

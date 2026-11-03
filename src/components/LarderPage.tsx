@@ -5,14 +5,15 @@ import { Button } from '../ui/controls';
 
 const groups = [{ name: 'Cupboard', icon: '🥫' }, { name: 'Fridge', icon: '🧀' }, { name: 'Freezer', icon: '❄️' }] as const;
 
-export function LarderPage({ larder, onToggle, onFindMeals }: {
-  larder: string[]; onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
+export function LarderPage({ larder, quantities = {}, onQuantity, onToggle, onFindMeals }: {
+  larder: string[]; quantities?: Record<string,string>; onQuantity: (id:string, value:string)=>void;
+  onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
 }) {
   const [query,setQuery] = useState('');
   const normalized = query.trim().toLocaleLowerCase('en-GB');
   const matches = Object.entries(ingredients).filter(([, [name]]) => name.toLocaleLowerCase('en-GB').includes(normalized));
   return <>
-    <div className="page-intro"><div><h2>What's in your larder?</h2><p>Search and tick what you've got. We'll do the thinking.</p></div><div className="intro-icon" aria-hidden="true">🥫</div></div>
+    <div className="page-intro"><div><h2>What's in your larder?</h2><p>Search and tick what you've got. Add an amount if you know it (e.g. 200 g or 2 tins).</p></div><div className="intro-icon" aria-hidden="true">🥫</div></div>
     <div className="larder-layout"><div>
       <div className="larder-searchbar">
         <Search size={20} aria-hidden="true"/>
@@ -29,6 +30,7 @@ export function LarderPage({ larder, onToggle, onFindMeals }: {
             <div className="item-grid">{entries.map(([id, [name]]) => <label className="larder-item" key={id}>
               <input type="checkbox" checked={larder.includes(id)} onChange={event => onToggle(id, event.target.checked)} />
               <span>{name}</span>
+              {larder.includes(id) && <input type="text" className="larder-quantity" aria-label={`${name} quantity in stock`} placeholder="e.g. 200 g" value={quantities[id] ?? ''} onChange={event=>onQuantity(id,event.target.value)} />}
             </label>)}</div>
           </section>;
         })}

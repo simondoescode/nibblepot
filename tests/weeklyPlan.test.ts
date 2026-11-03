@@ -60,6 +60,20 @@ describe('weekly meal planner',()=>{
     expect(next.shopping.some(x=>x.id==='chicken')).toBe(true);
     expect(applyWeekToShopping(next,planB).shopping.length).toBe(next.shopping.length);
   });
+  it('keeps purchased planner items and their quantities when replacing the week',()=>{
+    const first: WeekSlot[]=[{kind:'recipe',id:'tomato-pasta'},...Array.from({length:6},()=>({kind:'empty' as const}))];
+    const next: WeekSlot[]=[{kind:'recipe',id:'chicken-rice'},...Array.from({length:6},()=>({kind:'empty' as const}))];
+    const generated=applyWeekToShopping(emptyData,first);
+    const ticked={...generated,shopping:generated.shopping.map(item=>item.id==='pasta'?{...item,done:true}:item)};
+    const refreshed=applyWeekToShopping(ticked,next);
+    const pasta=refreshed.shopping.find(item=>item.id==='pasta');
+    expect(pasta?.done).toBe(true);
+    expect(shoppingQuantity(pasta!)).toBe('350 g');
+    expect(refreshed.shopping.some(item=>item.id==='chopped-tomatoes')).toBe(false);
+    expect(refreshed.shopping.some(item=>item.id==='chicken')).toBe(true);
+    const cleared={...refreshed,shopping:refreshed.shopping.filter(item=>!item.done)};
+    expect(cleared.shopping.some(item=>item.id==='pasta')).toBe(false);
+  });
   it('tracks a shopping snapshot without mutating it on later edits',()=>{
     const week='2026-10-26';
     const slots=defaultWeek();
