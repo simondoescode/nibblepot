@@ -75,8 +75,10 @@ export function shoppingPlanSignature(week: string, slots: WeekSlot[], larder: s
   ]);
 }
 export function applyWeekToShopping(data: SavedData, slots: WeekSlot[], week?: string): SavedData {
+  // Preserve purchased items when refreshing a plan: they remain visible and ticked.
+  // Unchecked, planner-only items are rebuilt from the new plan.
   const manual: ShoppingEntry[] = data.shopping
-    .filter(item => !(item.planGenerated && item.from.length === 0))
+    .filter(item => !(item.planGenerated && item.from.length === 0 && !item.done))
     .map(item => ({...item, from:[...item.from], weekCounts:undefined}));
   const byId = new Map(manual.map(item => [item.id, item]));
   for (const planned of weekContributions(slots,data.larder)) {
