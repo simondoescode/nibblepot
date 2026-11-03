@@ -5,9 +5,10 @@ import type { ShoppingEntry } from '../types';
 import { CheckCheck, ClipboardCopy, ExternalLink, X } from 'lucide-react';
 import { Button, IconButton } from '../ui/controls';
 
-export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, onCopy, onBrowse }: {
+export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, onClear, onCopy, onBrowse }: {
   shopping: ShoppingEntry[];
   servings: Record<string, number>;
+  stock?: Record<string,string>;
   onToggle: (id: string, done: boolean) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
@@ -30,7 +31,7 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
         <input type="checkbox" checked={item.done} aria-label={`Mark ${ingredientName(item.id)} as purchased`}
           onChange={event => onToggle(item.id, event.target.checked)} />
         <div className="shop-item"><strong>{ingredientName(item.id)}</strong>
-          <span className="shop-quantity">{shoppingQuantity(item, servings)}</span>
+          <span className="shop-quantity">{shoppingQuantity(item, servings, stock)}</span>
           {shoppingPackHint(item, servings) && <small className="shop-pack-hint">{shoppingPackHint(item, servings)}</small>}
           <small>{item.from.length ? `For ${item.from.length} recipe${item.from.length === 1 ? '' : 's'}` : 'Added to your list'}</small></div>
         <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
@@ -44,6 +45,6 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
     <div className="info-bar" style={{ marginTop: 24 }}><strong>🛍️ Tesco links open product searches</strong>
-      <small>Grouped by cupboard, fridge and freezer, with unchecked items first. Quantities combine recipes with matching units; different units remain separate. Your larder tracks what's in stock, not how much: check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
+      <small>Grouped by cupboard, fridge and freezer, with unchecked items first. Quantities combine recipes with matching units; different units remain separate. Only entered larder quantities are subtracted when units match; unchecked stock quantities remain estimates. Check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
   </>;
 }
