@@ -42,6 +42,16 @@ describe('servings and shopping quantities', () => {
     expect(withOptional.shopping.map(x=>x.id)).toContain('cheese');
     expect(shoppingQuantity(shopping('potatoes',['jacket']), initial.servings)).toBe('2 large');
   });
+  it('subtracts only matching measured stock without guessing unit conversions', () => {
+    expect(shoppingQuantity(shopping('pasta',['tuna-bake']),{}, {pasta:'100 g'})).toBe('250 g');
+    expect(shoppingQuantity(shopping('pasta',['tuna-bake']),{}, {pasta:'500 g'})).toBe('Already in larder');
+    expect(shoppingQuantity(shopping('potatoes',['jacket','cottage']),{}, {potatoes:'2 large'})).toBe('2 large + 750 g');
+    expect(shoppingQuantity(shopping('pasta',['tuna-bake']),{}, {pasta:'2 tins'})).toBe('350 g');
+    const saved=parseSavedData({larder:['pasta'],favorites:[],shopping:[],larderQuantities:{pasta:'200 g',invalid:'3 g'}});
+    expect(saved.larderQuantities).toEqual({pasta:'200 g'});
+    const partial=addMissingIngredients(find('tuna-bake'),{...saved,shopping:[]});
+    expect(partial.shopping.some(item=>item.id==='pasta')).toBe(true);
+  });
   it('preserves legacy saves, and validates new serving settings', () => {
     const legacy = parseSavedData({ larder: [], favorites: ['jacket'], shopping: [{ id: 'pasta', done: false, from: ['tuna-bake'] }] });
     expect(legacy.servings).toBeUndefined();
