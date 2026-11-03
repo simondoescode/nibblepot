@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ingredients, recipes } from '../src/data';
-import { addMissingIngredients, chooseRandomRecipe, filterRecipes, inLarder, tescoSearchUrl } from '../src/lib/recipes';
+import { addMissingIngredients, chooseRandomRecipe, filterRecipes, inLarder, missingRequired, tescoSearchUrl } from '../src/lib/recipes';
 import { DEFAULT_DATA, parseSavedData } from '../src/lib/storage';
 
 describe('recipe catalogue', () => {
@@ -30,6 +30,11 @@ describe('recipe catalogue', () => {
     const matches = filterRecipes(recipes, '', 'larder', pantry);
     expect(matches[0].id).toBe('jacket');
     expect(inLarder(matches[0], pantry)).toBe(4);
+  });
+  it('ignores optional toppings when ranking dinner availability', () => {
+    const sample = recipes.find(r => r.ing.some(i=>i.optional))!;
+    const owned = sample.ing.filter(i=>!i.optional).map(i=>i.id);
+    expect(missingRequired(sample,owned)).toBe(0);
   });
   it('does not roll the same recipe twice in a row', () => {
     const first = recipes[0];
