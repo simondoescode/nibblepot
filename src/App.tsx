@@ -105,6 +105,10 @@ export default function App() {
   };
   const toggleLarder = (id: string, checked: boolean) => setData(current => ({
     ...current, larder: checked ? [...new Set([...current.larder, id])] : current.larder.filter(ingredient => ingredient !== id),
+    larderQuantities: checked ? current.larderQuantities : Object.fromEntries(Object.entries(current.larderQuantities ?? {}).filter(([key])=>key!==id)),
+  }));
+  const setLarderQuantity = (id: string, value: string) => setData(current => ({
+    ...current, larderQuantities: {...current.larderQuantities, [id]:value.slice(0,40)},
   }));
   const findMeals = () => { setSearch(''); setFilter('larder'); navigate('home'); };
   const addMissing = (id: string, optionalIds: string[] = []) => {
@@ -116,7 +120,7 @@ export default function App() {
   };
   const copyShopping = async () => {
     const list = data.shopping.map(item =>
-      `${item.done ? '✓' : '☐'} ${ingredientName(item.id)} — ${shoppingQuantity(item, data.servings)}`
+      `${item.done ? '✓' : '☐'} ${ingredientName(item.id)} — ${shoppingQuantity(item, data.servings, data.larderQuantities)}`
     ).join('\n');
     try { await navigator.clipboard.writeText(list); toast('Shopping list copied!'); }
     catch { toast('Copy not available here'); }
@@ -177,13 +181,13 @@ export default function App() {
           onRandom={randomMeal} onLarder={() => navigate('larder')} />}
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} onToggle={toggleLarder} onFindMeals={findMeals} />}
+        {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
         {route.kind === 'tab' && route.tab === 'planner' && <WeekPlannerPage week={selectedWeek}
           slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
           hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
           onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
           onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
-        {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}}
+        {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}} stock={data.larderQuantities}
           onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
           onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
