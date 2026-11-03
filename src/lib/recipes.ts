@@ -1,6 +1,10 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
 
+/** Only required ingredients affect whether dinner can be made. */
+export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
+  recipe.ing.filter(item => !item.optional && !larder.includes(item.id)).length;
+
 export const inLarder = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(({ id }) => larder.includes(id)).length;
 
@@ -15,7 +19,8 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
   if (filter === 'larder') {
     found = [...found].sort((a, b) =>
-      inLarder(b, larder) / b.ing.length - inLarder(a, larder) / a.ing.length
+      missingRequired(a, larder) - missingRequired(b, larder) ||
+      a.mins - b.mins
     );
   }
   return found;
