@@ -14,12 +14,15 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
   onCopy: () => void;
   onBrowse: () => void;
 }) {
+  const remaining = shopping.filter(item => !item.done);
+  const purchased = shopping.filter(item => item.done);
   return <>
     <div className="page-intro blue"><div><h2>Shopping, sorted.</h2><p>Just the bits you're missing. No giant lists.</p></div><div className="intro-icon" aria-hidden="true">🧺</div></div>
     {shopping.length > 0 ? <>
       <div className="shop-actions"><Button size="small" icon={<ClipboardCopy size={16} />} onClick={onCopy}>Copy list</Button>
         <Button size="small" icon={<CheckCheck size={16} />} onClick={onClear}>Remove ticked items</Button></div>
-      <div className="shop-list">{shopping.map(item => <div className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
+      <p role="status" aria-live="polite">{remaining.length} to buy · {purchased.length} ticked off</p>
+      <div className="shop-list">{[...remaining, ...purchased].map(item => <div className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
         <input type="checkbox" checked={item.done} aria-label={`Mark ${ingredientName(item.id)} as purchased`}
           onChange={event => onToggle(item.id, event.target.checked)} />
         <div className="shop-item"><strong>{ingredientName(item.id)}</strong>
@@ -36,6 +39,6 @@ export function ShoppingPage({ shopping, servings, onToggle, onRemove, onClear, 
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
     <div className="info-bar" style={{ marginTop: 24 }}><strong>🛍️ Tesco links open product searches</strong>
-      <small>Quantities combine recipes with matching units. Your larder tracks what's in stock, not how much: check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
+      <small>Unchecked items appear first. Quantities combine recipes with matching units; different units remain separate. Your larder tracks what's in stock, not how much: check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
   </>;
 }
