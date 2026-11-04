@@ -1,5 +1,4 @@
 import { recipes } from '../data';
-import { missingRequired } from './recipes';
 import { shoppingQuantity } from './quantities';
 import type { SavedData, ShoppingEntry, WeekSlot } from '../types';
 
@@ -30,19 +29,31 @@ export const STARTER_PLAN: WeekSlot[] = [
   {kind:'recipe',id:'tuna-bake'}, {kind:'leftovers'}, {kind:'freezer'}
 ];
 export const defaultWeek = (): WeekSlot[] => STARTER_PLAN.map(slot => ({...slot}));
+/** A weekly plan should reuse ingredients, not just optimise each dinner in isolation. */
 export function shuffleWeek(slots: WeekSlot[], random = Math.random, larder: readonly string[] = []): WeekSlot[] {
-  const used = new Set<string>();
-  const available = [...recipes].sort((a,b) => missingRequired(a,larder)-missingRequired(b,larder) || a.mins-b.mins).map(x=>x.id);
-  // Keep special nights in their chosen positions. Each dinner has a distinct recipe.
+  const selected = new Set<string>();
+  const shared = new Set<string>();
+  const catalogue = recipes.map(recipe => ({
+    recipe,
+    required: recipe.ing.filter(item => !item.optional).map(item => item.id),
+  }));
   return slots.map(slot => {
     if (slot.kind !== 'recipe') return {...slot};
-    const options = available.filter(id => !used.has(id));
-    // Pick among the best larder matches; retain a little variety.
-    const best = missingRequired(recipes.find(r=>r.id===options[0])!,larder);
-    const shortlist = options.filter(id=>missingRequired(recipes.find(r=>r.id===id)!,larder)===best);
-    const id = shortlist[Math.min(Math.floor(random()*shortlist.length),shortlist.length-1)];
-    used.add(id);
-    return {kind:'recipe',id};
+    const options = catalogue.filter(({recipe})=>!selected.has(recipe.id));
+    if (!options.length) return {...slot};
+    const scored = options.map(({recipe,required})=>{
+      const missing = required.filter(id=>!larder.includes(id));
+      const newItems = missing.filter(id=>!shared.has(id)).length;
+      const overlap = missing.length-newItems;
+      // Penalise new purchases; reuse previously selected ingredients as a tie-breaker.
+      return {recipe,required,score:newItems*10 + missing.length*2 - overlap};
+    });
+    const best = Math.min(...scored.map(option=>option.score));
+    const tied = scored.filter(option=>option.score===best);
+    const picked = tied[Math.min(Math.floor(Math.max(0,random())*tied.length),tied.length-1)];
+    selected.add(picked.recipe.id);
+    picked.required.forEach(id=>{if(!larder.includes(id))shared.add(id);});
+    return {kind:'recipe',id:picked.recipe.id};
   });
 }
 export function weekContributions(slots: WeekSlot[], larder: string[], stock: Record<string,string> = {}, servings: Record<string,number> = {}): ShoppingEntry[] {
