@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ingredients, recipes } from '../src/data';
-import { addMissingIngredients, chooseRandomRecipe, filterRecipes, inLarder, missingRequired, tescoSearchUrl } from '../src/lib/recipes';
+import { addMissingIngredients, chooseRandomRecipe, filterRecipes, inLarder, missingRequired, useItUpRecipes, tescoSearchUrl } from '../src/lib/recipes';
 import { DEFAULT_DATA, parseSavedData } from '../src/lib/storage';
 
 describe('recipe catalogue', () => {
@@ -35,6 +35,17 @@ describe('recipe catalogue', () => {
     const sample = recipes.find(r => r.ing.some(i=>i.optional))!;
     const owned = sample.ing.filter(i=>!i.optional).map(i=>i.id);
     expect(missingRequired(sample,owned)).toBe(0);
+  });
+  it('recommends meals using soon-dated ingredients but not expired stock', () => {
+    const suggestions = useItUpRecipes(recipes,['potatoes','baked-beans'],{potatoes:'2026-11-06','baked-beans':'2026-11-01'},'2026-11-04');
+    expect(suggestions.some(recipe=>recipe.id==='jacket')).toBe(true);
+    expect(useItUpRecipes(recipes,['potatoes'],{potatoes:'2026-11-03'},'2026-11-04')).toEqual([]);
+    expect(useItUpRecipes(recipes,['potatoes'],{potatoes:'2026-12-01'},'2026-11-04')).toEqual([]);
+  });
+  it('restores valid use-by dates without changing legacy saves', () => {
+    const data=parseSavedData({larder:['potatoes'],favorites:[],shopping:[],larderDates:{potatoes:'2026-11-06',eggs:'2026-11-06'}});
+    expect(data.larderDates).toEqual({potatoes:'2026-11-06'});
+    expect(parseSavedData({larder:[],favorites:[],shopping:[]}).larderDates).toBeUndefined();
   });
   it('does not roll the same recipe twice in a row', () => {
     const first = recipes[0];
