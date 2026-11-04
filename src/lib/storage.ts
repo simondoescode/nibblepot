@@ -30,7 +30,7 @@ export function parseSavedData(value: unknown): SavedData {
   }
   const larderDates: Record<string,string> = {};
   if (isObject(value.larderDates)) for (const [id, date] of Object.entries(value.larderDates)) {
-    if (!larder.includes(id) || typeof date !== 'string' || !/^\\d{4}-\\d{2}-\\d{2}$/.test(date)) continue;
+    if (!larder.includes(id) || typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
     const parsed = new Date(date + 'T12:00:00Z');
     if (!Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0,10) === date) larderDates[id] = date;
   }
