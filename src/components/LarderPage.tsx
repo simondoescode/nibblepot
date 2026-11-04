@@ -12,7 +12,8 @@ export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpen
   onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
 }) {
   const [query,setQuery] = useState('');
-  const today = new Date().toLocaleDateString('en-CA');
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   const suggestions = useItUpRecipes(recipes,larder,dates,today).slice(0,3);
   const overdue = Object.entries(dates).filter(([id,date])=>larder.includes(id) && date < today).length;
   const normalized = query.trim().toLocaleLowerCase('en-GB');
