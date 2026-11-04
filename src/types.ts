@@ -44,6 +44,8 @@ export interface SavedData {
   larder: IngredientId[];
   /** Optional measured stock; legacy larder ticks remain supported. */
   larderQuantities?: Record<IngredientId, string>;
+  /** User-entered use-by dates (YYYY-MM-DD); never infer food safety from these. */
+  larderDates?: Record<IngredientId, string>;
   favorites: RecipeId[];
   shopping: ShoppingEntry[];
   /** Per-recipe serving choices; original recipes are written for four. */

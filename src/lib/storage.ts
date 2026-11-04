@@ -28,6 +28,12 @@ export function parseSavedData(value: unknown): SavedData {
     const parsed = parseQuantity(qty);
     if (parsed.value !== undefined && parsed.value > 0 && parsed.value <= 100000) larderQuantities[id] = qty.trim();
   }
+  const larderDates: Record<string,string> = {};
+  if (isObject(value.larderDates)) for (const [id, date] of Object.entries(value.larderDates)) {
+    if (!larder.includes(id) || typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    const parsed = new Date(date + 'T12:00:00Z');
+    if (!Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0,10) === date) larderDates[id] = date;
+  }
   const favorites = Array.isArray(value.favorites)
     ? [...new Set(value.favorites.filter((id): id is string => typeof id === 'string' && validRecipeIds.has(id)))]
     : [];
@@ -82,7 +88,7 @@ export function parseSavedData(value: unknown): SavedData {
       validMondayKey(value.shoppingPlan.week) && typeof value.shoppingPlan.signature === 'string' &&
       value.shoppingPlan.signature.length > 0 && value.shoppingPlan.signature.length < 4096
       ? { shoppingPlan: { week: value.shoppingPlan.week, signature: value.shoppingPlan.signature } } : {}),
-    larder, ...(Object.keys(larderQuantities).length ? { larderQuantities } : {}), favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
+    larder, ...(Object.keys(larderQuantities).length ? { larderQuantities } : {}), ...(Object.keys(larderDates).length ? { larderDates } : {}), favorites, shopping: [...new Map(shopping.map(item => [item.id, item])).values()],
     ...(Object.keys(servings).length ? { servings } : {}),
   };
 }

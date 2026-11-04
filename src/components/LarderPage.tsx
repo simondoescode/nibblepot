@@ -1,15 +1,21 @@
 import { useState } from 'react';
 import { Search, X } from 'lucide-react';
-import { ingredients } from '../data';
+import { ingredients, recipes } from '../data';
+import { useItUpRecipes } from '../lib/recipes';
 import { Button } from '../ui/controls';
 
 const groups = [{ name: 'Cupboard', icon: '🥫' }, { name: 'Fridge', icon: '🧀' }, { name: 'Freezer', icon: '❄️' }] as const;
 
-export function LarderPage({ larder, quantities = {}, onQuantity, onToggle, onFindMeals }: {
-  larder: string[]; quantities?: Record<string,string>; onQuantity: (id:string, value:string)=>void;
+export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpenRecipe, onQuantity, onToggle, onFindMeals }: {
+  larder: string[]; quantities?: Record<string,string>; dates?: Record<string,string>;
+  onDate: (id:string,value:string)=>void; onOpenRecipe: (id:string)=>void; onQuantity: (id:string, value:string)=>void;
   onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
 }) {
   const [query,setQuery] = useState('');
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const suggestions = useItUpRecipes(recipes,larder,dates,today).slice(0,3);
+  const overdue = Object.entries(dates).filter(([id,date])=>larder.includes(id) && date < today).length;
   const normalized = query.trim().toLocaleLowerCase('en-GB');
   const matches = Object.entries(ingredients).filter(([, [name]]) => name.toLocaleLowerCase('en-GB').includes(normalized));
   return <>
@@ -30,6 +36,7 @@ export function LarderPage({ larder, quantities = {}, onQuantity, onToggle, onFi
             <div className="item-grid">{entries.map(([id, [name]]) => <label className="larder-item" key={id}>
               <input type="checkbox" checked={larder.includes(id)} onChange={event => onToggle(id, event.target.checked)} />
               <span>{name}</span>
+              {larder.includes(id) && <input type="date" aria-label={`${name} use-by date`} value={dates[id] ?? ''} onChange={event=>onDate(id,event.target.value)} />}
               {larder.includes(id) && <input type="text" className="larder-quantity" aria-label={`${name} quantity in stock`} placeholder="e.g. 200 g" value={quantities[id] ?? ''} onChange={event=>onQuantity(id,event.target.value)} />}
             </label>)}</div>
           </section>;
@@ -39,6 +46,8 @@ export function LarderPage({ larder, quantities = {}, onQuantity, onToggle, onFi
         <div className="big">{larder.length}</div><strong>ingredients ready to go</strong>
         <p>See which dinners need the fewest extra bits. Your larder stays on this device.</p>
         <Button tone="primary" onClick={onFindMeals}>🍳 What can I make?</Button>
+        {overdue > 0 && <p role="status">{overdue} item{overdue===1?'':'s'} past the date you entered. Check food safety guidance; do not assume it is safe to eat.</p>}
+        {suggestions.length > 0 && <section aria-label="Use it up recipe suggestions"><h3>Use it up soon</h3><p>Recipes using ingredients dated within three days. Always check food safety and freshness.</p>{suggestions.map(recipe=><p key={recipe.id}><button type="button" onClick={()=>onOpenRecipe(recipe.id)}>{recipe.title} · {recipe.mins} min</button></p>)}</section>}
         <p style={{ fontSize: 12, marginBottom: 0 }}>We've added a few example ingredients to get you started. Change them to match your cupboards.</p>
       </aside>
     </div>

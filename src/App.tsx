@@ -106,9 +106,13 @@ export default function App() {
   const toggleLarder = (id: string, checked: boolean) => setData(current => ({
     ...current, larder: checked ? [...new Set([...current.larder, id])] : current.larder.filter(ingredient => ingredient !== id),
     larderQuantities: checked ? current.larderQuantities : Object.fromEntries(Object.entries(current.larderQuantities ?? {}).filter(([key])=>key!==id)),
+    larderDates: checked ? current.larderDates : Object.fromEntries(Object.entries(current.larderDates ?? {}).filter(([key])=>key!==id)),
   }));
   const setLarderQuantity = (id: string, value: string) => setData(current => ({
     ...current, larderQuantities: {...current.larderQuantities, [id]:value.slice(0,40)},
+  }));
+  const setLarderDate = (id: string, value: string) => setData(current => ({
+    ...current, larderDates: {...current.larderDates, [id]:value},
   }));
   const findMeals = () => { setSearch(''); setFilter('larder'); navigate('home'); };
   const addMissing = (id: string, optionalIds: string[] = []) => {
@@ -181,7 +185,7 @@ export default function App() {
           onRandom={randomMeal} onLarder={() => navigate('larder')} />}
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
+        {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
         {route.kind === 'tab' && route.tab === 'planner' && <WeekPlannerPage week={selectedWeek}
           slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
           hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}

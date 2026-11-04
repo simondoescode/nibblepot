@@ -55,3 +55,9 @@ export function addMissingIngredients(
 
 export const tescoSearchUrl = (id: string) =>
   `https://www.tesco.com/shop/en-GB/search?query=${encodeURIComponent(ingredientName(id))}`;
+
+export function useItUpRecipes(catalogue: readonly Recipe[], larder: readonly string[], dates: Record<string,string>, today: string): Recipe[] {
+  const soon = new Set(Object.entries(dates).filter(([id,date]) => larder.includes(id) && date >= today && (Date.parse(date + 'T12:00:00Z') - Date.parse(today + 'T12:00:00Z')) / 86400000 <= 3).map(([id])=>id));
+  return catalogue.filter(recipe=>recipe.ing.some(item=>!item.optional && soon.has(item.id)))
+    .sort((a,b)=> b.ing.filter(item=>!item.optional && soon.has(item.id)).length - a.ing.filter(item=>!item.optional && soon.has(item.id)).length || missingRequired(a,larder)-missingRequired(b,larder) || a.mins-b.mins);
+}
