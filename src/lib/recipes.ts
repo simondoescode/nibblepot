@@ -10,10 +10,10 @@ export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
 export const inLarder = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(({ id }) => larder.includes(id)).length;
 
-export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], foodType: FoodType = 'all'): Recipe[] {
+export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], selectedFoodTypes: readonly FoodType[] = []): Recipe[] {
   const q = search.trim().toLocaleLowerCase('en-GB');
   let found = recipes.filter(recipe =>
-    matchesFoodType(recipe, foodType) && (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
+    (selectedFoodTypes.length === 0 || selectedFoodTypes.some(type=>matchesFoodType(recipe,type))) && (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
       .join(' ').toLocaleLowerCase('en-GB').includes(q))
   );
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
