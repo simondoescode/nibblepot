@@ -59,6 +59,8 @@ test('recipes, images, deep links and saved lists survive going offline', async 
   expect(await page.evaluate(async () => (await fetch('/nibblepot/recipes/jacket.webp')).ok)).toBe(true);
   await page.goto('/nibblepot/favourites/');
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();
+  await page.goto('/nibblepot/settings/');
+  await expect(page.getByText('Ready for offline tea times.', { exact: true })).toBeVisible();
   await context.setOffline(false);
   await expect(page.getByText('You’re offline.', { exact: false })).toHaveCount(0);
 });

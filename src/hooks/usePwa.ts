@@ -10,9 +10,17 @@ export function usePwa() {
   const [help, setHelp] = useState(false);
   const [error, setError] = useState('');
   const [online, setOnline] = useState(navigator.onLine);
+  const [cached, setCached] = useState(false);
   const { offlineReady: [offlineReady], needRefresh: [needRefresh, setNeedRefresh], updateServiceWorker } = useRegisterSW();
 
   useEffect(() => {
+    let mounted = true;
+    if ('serviceWorker' in navigator) {
+      // An already installed worker does not emit the first-install callback again.
+      void navigator.serviceWorker.ready.then(registration => {
+        if (mounted && registration.active && registration.scope === new URL(import.meta.env.BASE_URL, location.origin).href) setCached(true);
+      }).catch(() => {});
+    }
     const ready = () => setCanInstall(!!getInstallPrompt());
     const installed = () => { setInstalled(true); setCanInstall(false); setHelp(false); };
     const connection = () => setOnline(navigator.onLine);
@@ -24,6 +32,7 @@ export function usePwa() {
     window.addEventListener('offline', connection);
     display.addEventListener('change', mode);
     return () => {
+      mounted = false;
       window.removeEventListener('nibblepot-install-ready', ready);
       window.removeEventListener('appinstalled', installed);
       window.removeEventListener('online', connection);
@@ -47,7 +56,7 @@ export function usePwa() {
     } catch { setError('Installation did not open. Try your browser’s menu.'); setHelp(true); }
     finally { setInstalling(false); }
   };
-  return { installed, canInstall, dismissed, installing, help, setHelp, error, online, offlineReady, needRefresh,
+  return { installed, canInstall, dismissed, installing, help, setHelp, error, online, offlineReady: offlineReady || cached, needRefresh,
     apple: isAppleMobile(), install,
     dismiss: () => { dismissInstall(); setDismissed(true); },
     later: () => setNeedRefresh(false),
