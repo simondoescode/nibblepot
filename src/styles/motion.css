@@ -21,6 +21,7 @@
 .motion-sheet{translate:0 var(--sheet-drag,0px);transition:translate var(--motion-exit) var(--motion-ease)}
 .motion-sheet[data-state=open]{animation:sheet-in var(--motion-sheet) var(--motion-ease)}
 .motion-sheet[data-state=closed]{animation:sheet-out var(--motion-exit) ease-in;pointer-events:none}
+.motion-sheet.sheet-interacted[data-state=open]{animation:none}
 .motion-sheet.sheet-dragging{animation:none;transition:none}
 .motion-sheet-grip{display:none}
 .toast{animation:toast-in var(--motion-feedback) var(--motion-ease)}
@@ -35,6 +36,7 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
 .cook-step-content[data-direction=forward]{animation:app-forward var(--motion-step) var(--motion-ease)}
 .cook-step-content[data-direction=back]{animation:app-back var(--motion-step) var(--motion-ease)}
 .cook-progress-track>div{width:100%;transform-origin:left;transition:transform 200ms var(--motion-ease)}
+.cook-step-announcement{display:flex;flex:1;min-width:0}
 .cook-complete{animation:complete-in 200ms var(--motion-ease)}
 .pull-body{will-change:auto;transform:none}
 .pull-body.is-pulling,.pull-body.is-settling{will-change:transform}
@@ -45,7 +47,7 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
   .recipe-card:hover{box-shadow:3px 5px 0 var(--ink)}
 }
 @media(max-width:820px){
-  .motion-sheet{top:auto;bottom:0;left:0;right:0;transform:none;width:100%;max-width:640px;margin:0 auto;max-height:calc(var(--visual-height,100dvh) - 12px);border-radius:24px 24px 0 0;border-bottom:0;padding-bottom:max(20px,env(safe-area-inset-bottom))}
+  .motion-sheet{top:auto;bottom:var(--visual-bottom,0px);left:0;right:0;transform:none;width:100%;max-width:640px;margin:0 auto;max-height:calc(var(--visual-height,100dvh) - 12px);border-radius:24px 24px 0 0;border-bottom:0;padding-bottom:max(20px,env(safe-area-inset-bottom))}
   @keyframes sheet-in{from{translate:0 100%}to{translate:0 0}}
   @keyframes sheet-out{from{translate:0 0}to{translate:0 100%}}
   .motion-sheet-grip{display:flex;align-items:center;justify-content:center;width:100%;min-height:28px;border:0;background:transparent;touch-action:none;cursor:grab;padding:8px;margin:0 auto 4px}

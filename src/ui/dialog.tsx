@@ -36,15 +36,19 @@ export const Content = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeo
   const start = useRef<{x:number;y:number;time:number} | null>(null);
   const dragged = useRef(false);
   const [drag, setDrag] = useState(0);
-  const [visibleHeight, setVisibleHeight] = useState(() => window.visualViewport?.height ?? window.innerHeight);
+  const [interacted,setInteracted] = useState(false);
+  const visibleArea = () => ({height: window.visualViewport?.height ?? window.innerHeight, bottom: Math.max(0, window.innerHeight - (window.visualViewport?.height ?? window.innerHeight) - (window.visualViewport?.offsetTop ?? 0))});
+  const [viewportArea, setViewportArea] = useState(visibleArea);
   useEffect(() => {
     const viewport = window.visualViewport;
-    const update = () => setVisibleHeight(viewport?.height ?? window.innerHeight);
+    const update = () => setViewportArea(visibleArea());
     viewport?.addEventListener('resize', update);
-    return () => viewport?.removeEventListener('resize', update);
+    viewport?.addEventListener('scroll', update);
+    return () => {viewport?.removeEventListener('resize', update);viewport?.removeEventListener('scroll', update);};
   }, []);
   const pointerDown = (event: PointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0) return;
+    setInteracted(true);
     dragged.current=false;
     start.current = {x:event.clientX,y:event.clientY,time:performance.now()};
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -52,7 +56,7 @@ export const Content = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeo
   const pointerMove = (event: PointerEvent<HTMLButtonElement>) => {
     if (!start.current) return;
     const dy = Math.max(0,event.clientY-start.current.y);
-    if (Math.abs(event.clientX-start.current.x) > dy + 12) { start.current=null;setDrag(0);return; }
+    if (Math.abs(event.clientX-start.current.x) > dy + 12) { dragged.current=true;start.current=null;setDrag(0);return; }
     if (dy > 3) dragged.current=true;
     setDrag(dy);
   };
@@ -65,8 +69,8 @@ export const Content = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeo
     const velocity = distance / Math.max(1,performance.now()-origin.time);
     if (distance >= 80 || (distance > 20 && velocity >= .5)) dismiss();
   };
-  return <Primitive.Content {...props} ref={ref} className={`${className} motion-sheet${drag ? ' sheet-dragging' : ''}`}
-    style={{...style, '--visual-height': `${visibleHeight}px`, '--sheet-drag': `${reduced ? 0 : drag}px`} as React.CSSProperties}>
+  return <Primitive.Content {...props} ref={ref} className={`${className} motion-sheet${interacted ? ' sheet-interacted' : ''}${drag ? ' sheet-dragging' : ''}`}
+    style={{...style, '--visual-height': `${viewportArea.height}px`, '--visual-bottom': `${viewportArea.bottom}px`, '--sheet-drag': `${reduced ? 0 : drag}px`} as React.CSSProperties}>
     <button type="button" className="motion-sheet-grip" tabIndex={-1} aria-label="Close sheet" onClick={event => { if (event.detail === 0 || !dragged.current) dismiss(); }}
       onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp}
       onPointerCancel={() => {start.current=null;setDrag(0);}}><span aria-hidden="true" /></button>

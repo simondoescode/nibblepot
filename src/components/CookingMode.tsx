@@ -164,10 +164,11 @@ export function CookingMode({ recipe, servings, onExit }: {
               aria-valuemin={0} aria-valuemax={recipe.steps.length} aria-valuenow={progress.step + 1}>
               <div style={{ transform: `scaleX(${(progress.step + 1) / recipe.steps.length})` }} />
             </div>
-            <div key={progress.step} data-direction={direction} className="cook-step-content" aria-live="polite" aria-atomic="true">
+            <div className="cook-step-announcement" aria-live="polite" aria-atomic="true">
+            <div key={progress.step} data-direction={direction} className="cook-step-content">
               <span className="cook-step-number">{String(progress.step + 1).padStart(2, '0')}</span>
               <p>{recipe.steps[progress.step]}</p>
-            </div>
+            </div></div>
             {compact && <div className="cook-mobile-tools" aria-label="Cooking tools">
               <button type="button" onClick={event => {
                   toolReturnFocus.current = event.currentTarget;

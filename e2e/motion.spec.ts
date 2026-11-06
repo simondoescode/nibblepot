@@ -58,11 +58,14 @@ test('sheet drag dismisses only from its handle; cancelling preserves the sheet'
   const sheet=page.getByRole('dialog',{name:'Choose food types'});
   const grip=sheet.getByRole('button',{name:'Close sheet',exact:true});
   await expect(grip).toBeVisible();
+  await sheet.evaluate(async el => { await Promise.all(el.getAnimations().map(animation => animation.finished.catch(() => {}))); });
   const box=await grip.boundingBox();
   const x=box!.x+box!.width/2,y=box!.y+box!.height/2;
   await page.mouse.move(x,y);await page.mouse.down();
   await page.mouse.move(x,y+12,{steps:6});await page.mouse.up();
   await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveCSS('animation-name','none');
+  await sheet.evaluate(async el => { await Promise.all(el.getAnimations().map(animation => animation.finished.catch(() => {}))); });
   const after=await grip.boundingBox();
   await page.mouse.move(after!.x+after!.width/2,after!.y+after!.height/2);await page.mouse.down();
   await page.mouse.move(x,after!.y+120,{steps:8});await page.mouse.up();
