@@ -32,6 +32,7 @@ export default function App() {
   const [filter, setFilter] = useState<Filter>('all');
   const [selectedFoodTypes, setSelectedFoodTypes] = useState<FoodType[]>([]);
   const [search, setSearch] = useState('');
+  const [focusSearch, setFocusSearch] = useState(false);
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
@@ -93,6 +94,13 @@ export default function App() {
     lastTab.current = target;
     changeRoute(tabPath(target), { kind: 'tab', tab: target });
   }, [changeRoute]);
+  useEffect(() => {
+    if (!focusSearch || route.kind !== 'tab' || route.tab !== 'home') return;
+    const input = document.querySelector<HTMLInputElement>('#search');
+    input?.focus({preventScroll:true});
+    input?.scrollIntoView({block:'center',behavior:'auto'});
+    setFocusSearch(false);
+  }, [route, focusSearch]);
   const openRecipe = useCallback((id: string) => {
     changeRoute(recipePath(id), { kind: 'recipe', id });
   }, [changeRoute]);
@@ -169,9 +177,10 @@ export default function App() {
   return <>
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
+    <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate}
+      onSearch={()=>{navigate('home');setFocusSearch(true);}} />
     <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
-      <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main" id="main-content">
         {route.kind === 'tab' && route.tab === 'home' && <InstallCard pwa={pwa} />}
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}

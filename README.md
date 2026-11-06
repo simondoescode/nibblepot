@@ -138,3 +138,10 @@ An inline home-screen card offers installation when the browser makes a native p
 The app shell, recipe data and local recipe illustrations/photos are precached. Offline navigation falls back to the app shell, including direct recipe and cooking URLs. A connection banner explains that external shopping links need internet. Settings reports when the offline download is ready. Home-screen shortcuts open Planner, Shopping and Favourites.
 
 Updates wait for an explicit Update app or existing Refresh app action. The update card is hidden while Cooking Mode is open. No saved-data schema or key changes. Lists remain local to the current browser; use export/import before switching browsers.
+
+
+## Mobile app bar and complete food photography
+
+On mobile and tablet widths the app bar stays visible while the page scrolls. It offers direct search and favourites actions, with safe-area spacing, a compact welcome card and larger touch targets. Larder search sticks below the app bar, while the header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
+
+All 40 recipes now use individual food photos. The 25 replacement photos were generated separately with the built-in image tool, checked against the recipe ingredients, then exported as 800×504 transparent WebPs (under 250,000 bytes each; 974,904 bytes combined). Existing SVG artwork remains in the repository. The exact generation prompts and export specification are recorded in [the photo prompt manifest](docs/recipe-photo-prompts-2026-11-06.json).

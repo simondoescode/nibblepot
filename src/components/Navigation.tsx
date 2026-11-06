@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { BookOpen, CalendarDays, CookingPot, Ellipsis, Heart, Settings2, ShoppingBasket, X } from 'lucide-react';
+import { BookOpen, CalendarDays, CookingPot, Ellipsis, Heart, Settings2, ShoppingBasket, Search, X } from 'lucide-react';
 import type { Tab } from '../types';
 import { PotIcon } from './PotArt';
 
@@ -20,8 +20,8 @@ const mobileLinks = [
   { id: 'shopping', label: 'Shopping', icon: ShoppingBasket },
 ] as const;
 
-export function Header({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void }) {
-  return <header className="header">
+export function Header({ tab, shoppingCount, onNavigate, onSearch }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void; onSearch: () => void }) {
+  return <div className="app-header-shell"><div className="wrap"><header className="header">
     <button className="brand" type="button" onClick={() => onNavigate('home')} aria-label="Nibblepot home">
       <span className="brand-pot"><PotIcon /></span><span>nibblepot<span className="brand-dot">.</span></span>
     </button>
@@ -35,7 +35,11 @@ export function Header({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingC
       </button>)}
     </nav>
     <span className="small-print">GOOD GRUB. ZERO FAFF.</span>
-  </header>;
+    <div className="mobile-header-actions">
+      <button type="button" aria-label="Search recipes" onClick={onSearch}><Search size={21} aria-hidden="true"/></button>
+      <button type="button" aria-label="Open favourites" aria-current={tab==='favorites'?'page':undefined} onClick={()=>onNavigate('favorites')}><Heart size={21} aria-hidden="true"/></button>
+    </div>
+  </header></div></div>;
 }
 
 export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void }) {

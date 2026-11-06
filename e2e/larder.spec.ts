@@ -71,7 +71,8 @@ for (const width of [320,390,430]) {
     expect(rows.every(row=>row>width-50)).toBe(true);
     await page.evaluate(()=>window.scrollTo(0,500));
     const tools=await page.locator('.larder-tools').boundingBox();
-    expect(tools?.y).toBeCloseTo(0,0);
+    const header=await page.locator('.app-header-shell').boundingBox();
+    expect(tools?.y).toBeCloseTo(header!.height,0);
     const action=page.locator('.larder-meals-bar');
     const before=await action.boundingBox();
     expect(before!.y+before!.height).toBeLessThanOrEqual(730);

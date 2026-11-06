@@ -6,8 +6,8 @@ test('recipe catalogue illustrations load on mobile and desktop', async ({ page 
   const art = page.locator('.recipe-card .recipe-illustration');
   await expect(art).toHaveCount(40);
   await expect(art.first()).toHaveAttribute('src', /\/nibblepot\/recipes\/jacket\.webp/);
-  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(15);
-  await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.svg"]')).toHaveCount(1);
+  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(40);
+  await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.webp"]')).toHaveCount(1);
   await art.first().scrollIntoViewIfNeeded();
   await expect.poll(() => art.first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
   await page.locator('.recipe-card').first().getByRole('link', { name: /view jacket/i }).click();
@@ -23,7 +23,7 @@ test('recipe catalogue illustrations load on mobile and desktop', async ({ page 
 
 test('generated WebP images load with transparent corners', async ({ page }) => {
   await page.goto('/nibblepot/');
-  const photo = page.locator('.recipe-card img.recipe-photo').first();
+  const photo = page.locator('.recipe-card img.recipe-photo[src$="/recipes/traybake.webp"]');
   await photo.scrollIntoViewIfNeeded();
   await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth === 800)).toBe(true);
   const cornerAlpha = await photo.evaluate((img: HTMLImageElement) => {
