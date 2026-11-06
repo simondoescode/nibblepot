@@ -44,12 +44,11 @@ test('iPhone visitors get manual instructions and installed apps hide the offer'
 
 test('recipes, images, deep links and saved lists survive going offline', async ({ page, context }) => {
   await page.goto('/nibblepot/');
-  await page.evaluate(async () => {
-    const registration = await navigator.serviceWorker.ready;
-    if (!navigator.serviceWorker.controller) await new Promise<void>(resolve => {
-      navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true });
-      if (registration.active && navigator.serviceWorker.controller) resolve();
-    });
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  // A full navigation also verifies that an existing installation takes control.
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+  await page.evaluate(() => {
     localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: ['jacket'], larder: ['beans'], shopping: [] }));
   });
   await context.setOffline(true);

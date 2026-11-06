@@ -15,6 +15,8 @@ export default defineConfig(() => {
         registerType: 'prompt',
         includeAssets: ['icons/*'],
         workbox: {
+          clientsClaim: true,
+          skipWaiting: false,
           globPatterns: ['**/*.{js,css,html,svg,png,webp,ico}'],
           navigateFallback: '/nibblepot/index.html',
           navigateFallbackDenylist: [/^\/nibblepot\/assets\//, /^\/nibblepot\/icons\//],
