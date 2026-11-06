@@ -1232,7 +1232,7 @@
       },
       {
         "id": "carrots",
-        "qty": "2 medium"
+        "qty": "2"
       },
       {
         "id": "frozen-peas",
@@ -1267,7 +1267,7 @@
       },
       {
         "id": "eggs",
-        "qty": "4 large"
+        "qty": "4"
       },
       {
         "id": "frozen-peas",
@@ -1275,7 +1275,7 @@
       },
       {
         "id": "onion",
-        "qty": "1 medium"
+        "qty": "1"
       },
       {
         "id": "oil",
@@ -1314,7 +1314,7 @@
       },
       {
         "id": "onion",
-        "qty": "1 medium"
+        "qty": "1"
       },
       {
         "id": "stock",
@@ -1341,7 +1341,7 @@
     "ing": [
       {
         "id": "sausages",
-        "qty": "8 sausages"
+        "qty": "8"
       },
       {
         "id": "rice",
@@ -1380,7 +1380,7 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "4 large"
+        "qty": "4"
       },
       {
         "id": "chickpeas",
@@ -1462,7 +1462,7 @@
       },
       {
         "id": "broccoli",
-        "qty": "1 head"
+        "qty": "1"
       },
       {
         "id": "cheese",
@@ -1548,7 +1548,7 @@
       },
       {
         "id": "onion",
-        "qty": "1 medium"
+        "qty": "1"
       },
       {
         "id": "paprika",
