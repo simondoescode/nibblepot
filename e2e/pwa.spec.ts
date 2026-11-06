@@ -2,7 +2,6 @@ import { expect, test } from '@playwright/test';
 
 test('install offer is user-triggered, dismissible and remains available in Settings', async ({ page }) => {
   await page.addInitScript(() => {
-    localStorage.removeItem('nibblepot-install-later');
     Object.defineProperty(window, 'installCalls', { value: 0, writable: true });
   });
   await page.goto('/nibblepot/');
@@ -35,7 +34,6 @@ test('install offer is user-triggered, dismissible and remains available in Sett
 test('iPhone visitors get manual instructions and installed apps hide the offer', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'userAgent', { value: 'iPhone' });
-    localStorage.removeItem('nibblepot-install-later');
   });
   await page.goto('/nibblepot/');
   await page.getByRole('button', { name: 'How to install', exact: true }).click();
@@ -59,7 +57,7 @@ test('recipes, images, deep links and saved lists survive going offline', async 
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();
   await expect(page.getByText('You’re offline.', { exact: false })).toBeVisible();
   expect(await page.evaluate(async () => (await fetch('/nibblepot/recipes/jacket.webp')).ok)).toBe(true);
-  await page.goto('/nibblepot/favorites/');
+  await page.goto('/nibblepot/favourites/');
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();
   await context.setOffline(false);
   await expect(page.getByText('You’re offline.', { exact: false })).toHaveCount(0);
@@ -69,6 +67,6 @@ test('manifest shortcuts and icons stay inside the GitHub Pages scope', async ({
   const manifest = await (await request.get('/nibblepot/manifest.webmanifest')).json();
   expect(manifest.id).toBe('/nibblepot/');
   expect(manifest.display).toBe('standalone');
-  expect(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url)).toEqual(['planner/', 'shopping/', 'favorites/']);
+  expect(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url)).toEqual(['planner/', 'shopping/', 'favourites/']);
   for (const icon of manifest.icons) expect((await request.get(`/nibblepot/${icon.src}`)).ok()).toBe(true);
 });

@@ -32,7 +32,7 @@ export default defineConfig(() => {
           shortcuts: [
             { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
             { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
-            { name: 'Favourites', url: 'favorites/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
+            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
           ],
           background_color: '#fffaf1',
           theme_color: '#fff9ee',
