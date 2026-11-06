@@ -6,12 +6,12 @@ import { recipePath, cookingPath } from '../src/lib/routes';
 
 const originalIds = ['jacket','sausage-bean','chicken-rice','cottage','tuna-bake','tomato-pasta','egg-rice','quesadilla','mash','butter-stew','traybake','toasties','meatball','fish-butties','soup','chilli-jacket'];
 describe('recipe quality gate', () => {
-  it('preserves all original recipe IDs and has fourteen additions', () => {
-    expect(recipes).toHaveLength(30);
+  it('preserves all original recipe IDs and has twenty-four additions', () => {
+    expect(recipes).toHaveLength(40);
     const ids = recipes.map(r => r.id);
-    expect(new Set(ids).size).toBe(30);
+    expect(new Set(ids).size).toBe(40);
     expect(ids.slice(0,16)).toEqual(originalIds);
-    expect(ids.slice(16)).toHaveLength(14);
+    expect(ids.slice(16)).toHaveLength(24);
   });
   for (const recipe of recipes) {
     it('checks quantities, references and safety: ' + recipe.id, () => {
@@ -47,7 +47,7 @@ describe('recipe quality gate', () => {
     expect(shoppingPackHint(pastry,{'chicken-pie':1})).toContain('Buy 1 whole pastry sheet');
     expect(shoppingQuantity({id:'potatoes',done:false,from:['jacket','sausage-traybake']})).toBe('4 large + 800 g');
   });
-  it('includes fourteen bundled offline illustrations', () => {
+  it('includes twenty-four bundled offline illustrations', () => {
     for (const recipe of recipes.slice(16)) {
       const path='public/recipes/' + recipe.id + '.svg';
       const svg = readFileSync(path,'utf8');

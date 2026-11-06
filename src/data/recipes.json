@@ -1178,5 +1178,391 @@
     "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "bean-pasta",
+    "title": "Cheesy bean pasta",
+    "description": "Pasta, beans and a tomato sauce.",
+    "emoji": "🍝",
+    "color": "#f2d7a6",
+    "mins": 25,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "baked-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "cheese",
+        "qty": "100 g"
+      }
+    ],
+    "steps": [
+      "Boil the pasta in plenty of water for 10–12 minutes, following the packet instructions, until tender.",
+      "Warm the beans and chopped tomatoes together in a saucepan for 8–10 minutes, stirring regularly.",
+      "Drain the pasta, toss with the hot bean sauce and sprinkle over grated cheese before serving."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chicken-noodles",
+    "title": "Chicken & vegetable noodles",
+    "description": "A quick pan of noodles and veg.",
+    "emoji": "🍜",
+    "color": "#f2d7a6",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500 g"
+      },
+      {
+        "id": "noodles",
+        "qty": "300 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "2"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "soy-sauce",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Cut chicken into small even pieces and fry in a little oil over medium heat for 10–12 minutes until cooked through.",
+      "Cook noodles according to the packet; add thinly sliced carrots and peas to the chicken and cook until tender.",
+      "Drain noodles and toss with chicken, vegetables and soy sauce, heating everything through before serving."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "potato-egg-hash",
+    "title": "Potato, egg & pea hash",
+    "description": "Crispy potatoes with eggs.",
+    "emoji": "🥔",
+    "color": "#f2d7a6",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "eggs",
+        "qty": "4"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "oil",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Dice potatoes into small pieces and simmer in boiling water for 8–10 minutes until just tender, then drain.",
+      "Fry the chopped onion and drained potatoes in oil for 10 minutes until golden; stir in peas and cook for 3 minutes.",
+      "Make four gaps, crack in eggs, cover and cook for 5–7 minutes until whites are set and eggs cooked to preference."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "lentil-bolognese",
+    "title": "Budget lentil bolognese",
+    "description": "A meat-free pasta favourite.",
+    "emoji": "🍅",
+    "color": "#f2d7a6",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "red-lentils",
+        "qty": "200 g"
+      },
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Fry the chopped onion in a little oil until soft, then stir in the rinsed red lentils and chopped tomatoes.",
+      "Dissolve the stock cube in 400 ml boiling water, add to the sauce and simmer for 20–25 minutes until lentils are soft.",
+      "Meanwhile cook pasta according to the packet, drain and serve with the thickened lentil sauce."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "sausage-rice",
+    "title": "Sausage & tomato rice",
+    "description": "One-pan comfort food.",
+    "emoji": "🍚",
+    "color": "#f2d7a6",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "sausages",
+        "qty": "8"
+      },
+      {
+        "id": "rice",
+        "qty": "300 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Brown sausages in a deep pan for 10 minutes, turning often, then cut into bite-size pieces.",
+      "Add dry rice, chopped tomatoes and 550 ml hot water mixed with the stock cube; cover and simmer for 15 minutes.",
+      "Stir in peas and cook for another 5–10 minutes until rice is tender, liquid absorbed and sausages cooked through."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool cooked rice quickly, ideally within one hour; refrigerate and eat within 24 hours, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chickpea-jackets",
+    "title": "Chickpea tomato jackets",
+    "description": "A filling cupboard dinner.",
+    "emoji": "🥔",
+    "color": "#f2d7a6",
+    "mins": 65,
+    "ing": [
+      {
+        "id": "potatoes",
+        "qty": "4"
+      },
+      {
+        "id": "chickpeas",
+        "qty": "2 tins"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      },
+      {
+        "id": "cheese",
+        "qty": "80 g"
+      }
+    ],
+    "steps": [
+      "Prick scrubbed potatoes and bake at 200°C (180°C fan) for 50–60 minutes until soft in the centre.",
+      "Drain chickpeas and simmer with tomatoes and paprika for 12–15 minutes until thick and thoroughly hot.",
+      "Split potatoes and spoon over the chickpea topping, finishing with grated cheese if wanted."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "ham-pea-pasta",
+    "title": "Ham & pea creamy pasta",
+    "description": "An easy after-school tea.",
+    "emoji": "🍝",
+    "color": "#f2d7a6",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "ham",
+        "qty": "200 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "150 g"
+      },
+      {
+        "id": "milk",
+        "qty": "100 ml"
+      }
+    ],
+    "steps": [
+      "Cook pasta in boiling water according to the packet, adding frozen peas for the final 3 minutes.",
+      "Warm cream cheese and milk in a pan over a low heat until smooth, then stir in chopped ham.",
+      "Drain pasta and peas, combine with the sauce and heat until steaming hot before serving."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "broccoli-rice-bake",
+    "title": "Broccoli & cheese rice bake",
+    "description": "Golden, cheesy and filling.",
+    "emoji": "🥦",
+    "color": "#f2d7a6",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "rice",
+        "qty": "300 g"
+      },
+      {
+        "id": "broccoli",
+        "qty": "1"
+      },
+      {
+        "id": "cheese",
+        "qty": "150 g"
+      },
+      {
+        "id": "milk",
+        "qty": "250 ml"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "100 g"
+      }
+    ],
+    "steps": [
+      "Cook rice according to packet directions and steam chopped broccoli for 5 minutes until just tender.",
+      "Mix cooked rice and broccoli with milk, cream cheese and half the grated cheese in an ovenproof dish.",
+      "Sprinkle remaining cheese over and bake at 200°C (180°C fan) for 15–20 minutes until bubbling and golden."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool cooked rice quickly, ideally within one hour; refrigerate and eat within 24 hours, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "bean-quesadillas",
+    "title": "Crispy bean quesadillas",
+    "description": "Fast, cheesy folded wraps.",
+    "emoji": "🌯",
+    "color": "#f2d7a6",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "wraps",
+        "qty": "8"
+      },
+      {
+        "id": "kidney-beans",
+        "qty": "2 tins"
+      },
+      {
+        "id": "cheese",
+        "qty": "150 g"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "150 g"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Drain and rinse kidney beans, then mash lightly with paprika and sweetcorn in a bowl.",
+      "Divide filling and grated cheese between four wraps, top with remaining wraps and press gently.",
+      "Toast each quesadilla in a dry frying pan for 3–4 minutes per side until golden and hot throughout, then cut into wedges."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
+  },
+  {
+    "id": "chicken-tomato-pasta",
+    "title": "Chicken & tomato pasta",
+    "description": "Simple chicken pasta for four.",
+    "emoji": "🍗",
+    "color": "#f2d7a6",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500 g"
+      },
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Cook pasta according to packet instructions in a large pan of boiling water until tender.",
+      "Meanwhile fry chopped onion and diced chicken in a little oil for 10–12 minutes until chicken is cooked through.",
+      "Add tomatoes and paprika, simmer for 8 minutes, then combine with drained pasta and serve piping hot."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
+    "reviewedOn": "2026-11-01"
   }
 ]

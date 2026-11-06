@@ -70,9 +70,9 @@ test('changing a dinner is searchable, filtered, undoable and keyboard accessibl
   await monday.click();
   const picker=page.getByRole('dialog',{name:'Change Monday dinner'});
   await expect(picker).toBeVisible();
-  await expect(picker.locator('.planner-meal-option')).toHaveCount(30);
+  await expect(picker.locator('.planner-meal-option')).toHaveCount(40);
   await picker.getByRole('button',{name:'30 min or less'}).click();
-  await expect(picker.locator('.planner-meal-option').count()).resolves.toBeLessThan(30);
+  await expect(picker.locator('.planner-meal-option').count()).resolves.toBeLessThan(40);
   await picker.getByRole('button',{name:'All meals'}).click();
   await picker.getByRole('searchbox',{name:'Search meals'}).fill('fried rice');
   await expect(picker.locator('.planner-meal-option')).toHaveCount(1);
