@@ -33,7 +33,8 @@ test('filters combine with search and stock changes without losing hidden items'
   await page.getByRole('button',{name:'In stock',exact:true}).click();
   const count = await page.locator('.larder-item').count();
   expect(count).toBeGreaterThan(0);
-  await page.getByRole('checkbox',{name:'Potatoes',exact:true}).uncheck();
+  // Removing stock immediately removes the row from this filtered view.
+  await page.getByRole('checkbox',{name:'Potatoes',exact:true}).click();
   await expect(page.locator('.larder-item')).toHaveCount(count-1);
   await page.getByRole('button',{name:'Freezer',exact:true}).click();
   await expect(page.locator('.larder-group h3')).toContainText('Freezer');
