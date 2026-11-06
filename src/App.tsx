@@ -3,6 +3,7 @@ import { InstallCard, PwaStatus } from './components/PwaExperience';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { recipes, ingredientName } from './data';
+import type { FoodType } from './lib/foodTypes';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
@@ -29,6 +30,7 @@ export default function App() {
   const pwa = usePwa();
   const [route, setRoute] = useState<PageRoute>(() => parseRoute(window.location.pathname));
   const [filter, setFilter] = useState<Filter>('all');
+  const [foodType, setFoodType] = useState<FoodType>('all');
   const [search, setSearch] = useState('');
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
@@ -117,7 +119,7 @@ export default function App() {
   const setLarderDate = (id: string, value: string) => setData(current => ({
     ...current, larderDates: {...current.larderDates, [id]:value},
   }));
-  const findMeals = () => { setSearch(''); setFilter('larder'); navigate('home'); };
+  const findMeals = () => { setSearch(''); setFoodType('all'); setFilter('larder'); navigate('home'); };
   const addMissing = (id: string, optionalIds: string[] = []) => {
     const recipe = recipes.find(item => item.id === id);
     if (!recipe) return;
@@ -185,7 +187,7 @@ export default function App() {
           <p>Try another recipe — there's plenty more for tea.</p>
           <button type="button" className="btn btn-primary" onClick={() => navigate('home')}>Browse recipes</button>
         </section>}
-        {route.kind === 'tab' && route.tab === 'home' && <HomePage filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
+        {route.kind === 'tab' && route.tab === 'home' && <HomePage foodType={foodType} setFoodType={setFoodType} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
           favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={openRecipe}
           onRandom={randomMeal} onLarder={() => navigate('larder')} />}
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
