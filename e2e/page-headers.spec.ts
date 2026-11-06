@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 const pageTitles = [
   {route: 'favourites', heading: 'Saved for later.'},
-  {route: 'larder', heading: "What's in your larder?"},
+  {route: 'larder', heading: "Your larder"},
   {route: 'planner', heading: "This week's tea."},
   {route: 'shopping', heading: 'Shopping, sorted.'},
   {route: 'settings', heading: 'Little tweaks.'},
