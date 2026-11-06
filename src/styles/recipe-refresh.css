@@ -60,3 +60,16 @@
 /* Transparent editorial food cutouts: keep the entire dish visible on all screen sizes. */
 .illustrated-art:has(.recipe-photo){background:var(--cream)}
 .recipe-illustration.recipe-photo,.recipe-detail .modal-art img.recipe-photo{object-fit:contain;object-position:center}
+
+/* One compact food selector keeps the mobile recipe list within reach. */
+.recipe-food-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 18px}
+.recipe-food-toolbar label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;min-width:0}
+.recipe-food-toolbar select{min-height:44px;max-width:100%;padding:9px 34px 9px 12px;border:1px solid #b7ad9e;border-radius:12px;background:var(--paper);color:var(--ink);font:inherit;font-size:16px}
+.recipe-food-toolbar select:focus-visible,.recipe-clear-filters:focus-visible{outline:3px solid var(--focus-ring);outline-offset:3px}
+.recipe-clear-filters{min-height:44px;padding:8px 5px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:13px;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.recipe-result-count{margin:0 0 0 auto;font-size:12px;color:var(--muted)}
+@media(max-width:560px){
+  .recipe-food-toolbar{gap:8px 12px}
+  .recipe-food-toolbar label{flex:1 1 100%;justify-content:space-between}
+  .recipe-food-toolbar select{flex:1;max-width:245px}
+}

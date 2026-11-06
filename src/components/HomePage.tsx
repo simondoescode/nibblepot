@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { recipes } from '../data';
 import { filterRecipes } from '../lib/recipes';
+import { foodTypes, type FoodType } from '../lib/foodTypes';
 import type { Filter } from '../types';
 import { PotMascot } from './PotArt';
 import { RecipeGrid } from './RecipeGrid';
@@ -15,13 +16,15 @@ const filters: { id: Filter; label: string }[] = [
 ];
 
 type Props = {
+  foodType: FoodType; setFoodType: (type: FoodType) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
   favorites: string[]; larder: string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void;
   onRandom: () => void; onLarder: () => void;
 };
 
-export function HomePage({ filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, onRandom, onLarder }: Props) {
-  const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder), [search, filter, larder]);
+export function HomePage({ foodType, setFoodType, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, onRandom, onLarder }: Props) {
+  const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, foodType), [search, filter, larder, foodType]);
+  const clearFilters = () => { setSearch(''); setFilter('all'); setFoodType('all'); };
   return <>
     <section className="hero">
       <div className="hero-content"><span className="eyebrow">✳️ Good grub. Zero faff.</span>
@@ -43,7 +46,14 @@ export function HomePage({ filter, setFilter, search, setSearch, favorites, lard
     </div>
     <div className="chips" aria-label="Recipe filters">{filters.map(({ id, label }) =>
       <FilterChip key={id} selected={filter === id} onClick={() => setFilter(id)}>{label}</FilterChip>)}</div>
+    <div className="recipe-food-toolbar">
+      <label htmlFor="food-type">Food type<select id="food-type" value={foodType} onChange={event=>setFoodType(event.target.value as FoodType)}>
+        {foodTypes.map(type=><option key={type.id} value={type.id}>{type.label}</option>)}
+      </select></label>
+      {(foodType !== 'all' || filter !== 'all' || search.trim()) && <button type="button" className="recipe-clear-filters" onClick={clearFilters}>Clear filters</button>}
+      <p className="recipe-result-count" role="status">{filtered.length} of {recipes.length} recipes</p>
+    </div>
     <div id="home-results"><RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen}
-      onReset={() => { setSearch(''); setFilter('all'); }} /></div>
+      onReset={clearFilters} /></div>
   </>;
 }

@@ -1,6 +1,7 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
 import { shoppingQuantity } from './quantities';
+import { matchesFoodType, type FoodType } from './foodTypes';
 
 /** Only required ingredients affect whether dinner can be made. */
 export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
@@ -9,11 +10,11 @@ export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
 export const inLarder = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(({ id }) => larder.includes(id)).length;
 
-export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[]): Recipe[] {
+export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], foodType: FoodType = 'all'): Recipe[] {
   const q = search.trim().toLocaleLowerCase('en-GB');
   let found = recipes.filter(recipe =>
-    !q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
-      .join(' ').toLocaleLowerCase('en-GB').includes(q)
+    matchesFoodType(recipe, foodType) && (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
+      .join(' ').toLocaleLowerCase('en-GB').includes(q))
   );
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
   if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
