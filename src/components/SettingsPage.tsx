@@ -1,3 +1,5 @@
+import { InstallCard } from './PwaExperience';
+import type { PwaState } from '../hooks/usePwa';
 import { useRef, useState, type ChangeEvent } from 'react';
 import { Download, RefreshCw, Trash2, Upload, ShieldCheck } from 'lucide-react';
 import { Button } from '../ui/controls';
@@ -5,7 +7,8 @@ import { parseSavedData } from '../lib/storage';
 import type { SavedData } from '../types';
 import { version } from '../../package.json';
 
-export function SettingsPage({ data, onRefresh, refreshing, onRestore, onReset, notify }: {
+export function SettingsPage({ pwa, data, onRefresh, refreshing, onRestore, onReset, notify }: {
+  pwa: PwaState;
   data: SavedData;
   onRefresh: () => void;
   refreshing: boolean;
@@ -65,6 +68,8 @@ export function SettingsPage({ data, onRefresh, refreshing, onRestore, onReset, 
       <span className="intro-icon" aria-hidden="true">🍲</span>
     </section>
     <div className="settings-stack">
+      <InstallCard pwa={pwa} settings />
+      <p role="status">{pwa.offlineReady ? 'Ready for offline tea times.' : 'Offline access becomes available after the app finishes downloading.'}</p>
       <section className="settings-panel">
         <div className="settings-heading"><div><h3>App & updates</h3><p>Pull down at the top of any page to refresh the whole app.</p></div><span className="settings-version">v{version}</span></div>
         <div className="settings-action">
@@ -96,3 +101,4 @@ export function SettingsPage({ data, onRefresh, refreshing, onRestore, onReset, 
     </div>
   </div>;
 }
+

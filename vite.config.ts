@@ -12,8 +12,15 @@ export default defineConfig(() => {
       VitePWA({
         base,
         scope: base,
-        registerType: 'autoUpdate',
-        includeAssets: ['icons/favicon.svg'],
+        registerType: 'prompt',
+        includeAssets: ['icons/*'],
+        workbox: {
+          clientsClaim: true,
+          skipWaiting: false,
+          globPatterns: ['**/*.{js,css,html,svg,png,webp,ico}'],
+          navigateFallback: '/nibblepot/index.html',
+          navigateFallbackDenylist: [/^\/nibblepot\/assets\//, /^\/nibblepot\/icons\//],
+        },
         manifest: {
           id: base,
           name: "Nibblepot — What's for tea? Sorted.",
@@ -22,6 +29,13 @@ export default defineConfig(() => {
           start_url: './',
           scope: './',
           display: 'standalone',
+          lang: 'en-GB',
+          categories: ['food', 'lifestyle'],
+          shortcuts: [
+            { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
+            { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
+            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
+          ],
           background_color: '#fffaf1',
           theme_color: '#fff9ee',
           icons: [
@@ -33,3 +47,4 @@ export default defineConfig(() => {
     ]
   };
 });
+

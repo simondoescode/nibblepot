@@ -129,3 +129,12 @@ Pull-to-refresh applies a resistance-limited translation to the app's content (n
 ## v0.7 — Recipe Quality Update
 
 The catalogue now has **30 recipes**: all sixteen original IDs plus fourteen practical low-faff family meals. Recipes have checked ingredient lists, measured four-serving portions, detailed steps and per-recipe cooking/storage notes. Fourteen unique local SVG illustrations ship with the new recipes. Shopping gives whole-pack guidance when scaled tins or pastry sheets would be fractional; incompatible units stay separate. A new [recipe quality gate](docs/recipe-quality.md) enforces the reviewed content. Original favourites, larder flags, plans and shopping data remain backward-compatible.
+
+
+## Install and offline experience
+
+An inline home-screen card offers installation when the browser makes a native prompt available; iPhone/iPad visitors get Share → Add to Home Screen instructions. Maybe later hides the card for seven days. Settings always provides installation help, including when browser installation is unavailable. Installed standalone windows hide the offer. The browser controls native installation eligibility.
+
+The app shell, recipe data and local recipe illustrations/photos are precached. Offline navigation falls back to the app shell, including direct recipe and cooking URLs. A connection banner explains that external shopping links need internet. Settings reports when the offline download is ready. Home-screen shortcuts open Planner, Shopping and Favourites.
+
+Updates wait for an explicit Update app or existing Refresh app action. The update card is hidden while Cooking Mode is open. No saved-data schema or key changes. Lists remain local to the current browser; use export/import before switching browsers.
