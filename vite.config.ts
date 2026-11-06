@@ -23,7 +23,7 @@ export default defineConfig(() => {
         },
         manifest: {
           id: base,
-          name: "Nibblepot — What's for tea? Sorted.",
+          name: 'Nibblepot',
           short_name: 'Nibblepot',
           description: 'Cheap, cheerful family recipes, a larder, and shopping list.',
           start_url: './',
@@ -32,15 +32,16 @@ export default defineConfig(() => {
           lang: 'en-GB',
           categories: ['food', 'lifestyle'],
           shortcuts: [
-            { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
-            { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
-            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192.png', sizes: '192x192' }] },
+            { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
+            { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
+            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
           ],
           background_color: '#fffaf1',
           theme_color: '#fff9ee',
           icons: [
-            { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
-            { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+            { src: 'icons/icon-192-v2.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+            { src: 'icons/icon-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+            { src: 'icons/icon-maskable-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
           ]
         }
       })

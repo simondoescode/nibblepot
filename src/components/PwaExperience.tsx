@@ -4,7 +4,7 @@ import type { PwaState } from '../hooks/usePwa';
 export function InstallCard({ pwa, settings = false }: { pwa: PwaState; settings?: boolean }) {
   if (!settings && (pwa.installed || pwa.dismissed || (!pwa.canInstall && !pwa.apple))) return null;
   return <section className="pwa-card" aria-label="Install Nibblepot">
-    <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} width="52" height="52" alt="" />
+    <img src={`${import.meta.env.BASE_URL}icons/icon-192-v2.png`} width="52" height="52" alt="" />
     <div className="pwa-card-copy"><h3>{pwa.installed ? 'Nibblepot is on your home screen' : 'Tea times, one tap away.'}</h3>
       <p>{pwa.installed ? 'You’re using the app. Your recipes and lists stay on this device.' : 'Add Nibblepot to your home screen. Keep recipes, your planner and shopping list handy offline.'}</p>
       {!pwa.installed && <button className="btn btn-primary" type="button" disabled={pwa.installing} onClick={() => void pwa.install()}>

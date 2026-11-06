@@ -29,15 +29,19 @@ const insideRoundRect = (x, y, x1, y1, x2, y2, r) => {
   return (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
 };
 const insideEllipse = (x, y, cx, cy, rx, ry) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1;
-const hex = h => [1, 3, 5].map(i => Number.parseInt(h.slice(i, i + 2), 16));
-function potIcon(size) {
+// Every painted colour needs an explicit opaque alpha channel.
+const hex = h => [...[1, 3, 5].map(i => Number.parseInt(h.slice(i, i + 2), 16)), 255];
+function potIcon(size, maskable = false, opaque = false) {
   const raw = Buffer.alloc(size * (size * 4 + 1));
   const dark = hex('#25231e'), yellow = hex('#ffd861'), orange = hex('#fc724e');
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       // Draw at a fixed virtual 80x80 scale, independent of the PNG resolution.
-      const xx = (x + .5) * 80 / size, yy = (y + .5) * 80 / size;
-      let col = [0, 0, 0, 0];
+      const scale = maskable ? .62 : 1;
+      const xx = ((x + .5) * 80 / size - 40) / scale + 40;
+      const yy = ((y + .5) * 80 / size - 40) / scale + 40;
+      // Maskable icons have a full-bleed background and artwork inside the safe circle.
+      let col = maskable || opaque ? yellow : [0, 0, 0, 0];
       if (insideRoundRect(xx, yy, 1, 1, 79, 79, 19)) col = dark;
       if (insideRoundRect(xx, yy, 3, 3, 77, 77, 17)) col = yellow;
       const halfWidth = 27 - Math.max(0, yy - 27) * .14;
@@ -64,5 +68,11 @@ function potIcon(size) {
 
 
 await mkdir(out(''), { recursive: true });
-for (const size of [192, 512]) await writeFile(out(`icon-${size}.png`), potIcon(size));
-console.log('Generated 192px and 512px PWA icons');
+for (const size of [192, 512]) {
+  // Keep original URLs working for older manifests and installed shortcuts.
+  await writeFile(out(`icon-${size}.png`), potIcon(size));
+  await writeFile(out(`icon-${size}-v2.png`), potIcon(size));
+}
+await writeFile(out('icon-maskable-512-v2.png'), potIcon(512, true));
+await writeFile(out('apple-touch-180-v2.png'), potIcon(180, false, true));
+console.log('Generated visible PWA, maskable and Apple touch icons');
