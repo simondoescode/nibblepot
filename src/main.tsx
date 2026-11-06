@@ -15,3 +15,5 @@ import './styles/mobile-native.css';
 
 
 import './styles/pwa.css';
+
+import './styles/larder.css';
