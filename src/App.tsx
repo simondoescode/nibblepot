@@ -14,6 +14,7 @@ import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/
 import { refreshPwa } from './lib/refresh';
 import { cookingPath, recipePath, tabPath } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
+import { useSwipeTabs } from './hooks/useSwipeTabs';
 import { pullOffset } from './lib/pullGesture';
 import type { CSSProperties } from 'react';
 import type { Filter, SavedData, Tab } from './types';
@@ -134,6 +135,7 @@ export default function App() {
   };
 
   const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
+  const swipe = useSwipeTabs(route.kind === 'tab' ? route.tab : null, navigate, !!randomId || refreshing || pull.dragging);
   const activeRecipe = route.kind === 'recipe' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const randomRecipe = randomId ? recipes.find(recipe => recipe.id === randomId) : undefined;
   const lastRandom = useRef(randomRecipe);
@@ -173,7 +175,7 @@ export default function App() {
       onSearch={()=>{navigate('home');setFocusSearch(true);}} />
     <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
-      <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')} className="main route-content" data-motion={motion} id="main-content">
+      <main ref={swipe.element} onTouchStart={swipe.onTouchStart} onTouchMove={swipe.onTouchMove} onTouchEnd={swipe.onTouchEnd} onTouchCancel={swipe.onTouchCancel} key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')} className="main route-content" data-motion={motion} id="main-content">
         {route.kind === 'tab' && route.tab === 'home' && <InstallCard pwa={pwa} />}
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
           saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
