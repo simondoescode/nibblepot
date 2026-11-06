@@ -1,3 +1,6 @@
+import { Toast } from './components/Toast';
+import { useAppNavigation } from './hooks/useAppNavigation';
+import { useSessionState } from './hooks/useSessionState';
 import { usePwa } from './hooks/usePwa';
 import { InstallCard, PwaStatus } from './components/PwaExperience';
 
@@ -9,7 +12,7 @@ import { readSavedData, writeSavedData } from './lib/storage';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
 import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
 import { refreshPwa } from './lib/refresh';
-import { cookingPath, parseRoute, recipePath, tabPath, type PageRoute } from './lib/routes';
+import { cookingPath, recipePath, tabPath } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
 import { pullOffset } from './lib/pullGesture';
 import type { CSSProperties } from 'react';
@@ -28,33 +31,22 @@ import { PullIndicator } from './components/PullIndicator';
 
 export default function App() {
   const pwa = usePwa();
-  const [route, setRoute] = useState<PageRoute>(() => parseRoute(window.location.pathname));
-  const [filter, setFilter] = useState<Filter>('all');
-  const [selectedFoodTypes, setSelectedFoodTypes] = useState<FoodType[]>([]);
-  const [search, setSearch] = useState('');
+  const { route, motion, lastTab, changeRoute, back } = useAppNavigation();
+  const [filter, setFilter] = useSessionState<Filter>('recipe-filter', 'all');
+  const [selectedFoodTypes, setSelectedFoodTypes] = useSessionState<FoodType[]>('food-types', []);
+  const [search, setSearch] = useSessionState('recipe-search', '');
   const [focusSearch, setFocusSearch] = useState(false);
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
   const [notice, setNotice] = useState('');
+  const [noticeVersion,setNoticeVersion] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const refreshingRef = useRef(false);
   const noticeTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const dialogReturnFocus = useRef<HTMLElement | null>(null);
-  const lastTab = useRef<Tab>(route.kind === 'tab' ? route.tab : 'home');
-
   useEffect(() => { writeSavedData(data); }, [data]);
-  useEffect(() => {
-    const sync = () => {
-      const next = parseRoute(window.location.pathname);
-      if (next.kind === 'tab') lastTab.current = next.tab;
-      setRoute(next);
-      setRandomId(null);
-      window.scrollTo({ top: 0, behavior: 'auto' });
-    };
-    window.addEventListener('popstate', sync);
-    return () => window.removeEventListener('popstate', sync);
-  }, []);
+  useEffect(() => { setRandomId(null); }, [route]);
   useEffect(() => {
     const recipe = route.kind === 'recipe' || route.kind === 'cook'
       ? recipes.find(item => item.id === route.id) : undefined;
@@ -70,29 +62,27 @@ export default function App() {
       ? recipePath(recipe.id) : window.location.pathname);
   }, [route]);
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback((beforeReload: Promise<void> = Promise.resolve()) => {
     if (refreshingRef.current) return;
     refreshingRef.current = true;
     setRefreshing(true);
-    void refreshPwa();
+    void refreshPwa(beforeReload).catch(() => {
+      refreshingRef.current = false;
+      setRefreshing(false);
+      setNotice('Refresh failed. Please try again.');
+    });
   }, []);
-  const pull = usePullToRefresh(refresh, !randomId && !refreshing && route.kind !== 'cook');
+  const pull = usePullToRefresh(refresh, !randomId && route.kind !== 'cook', refreshing);
   useEffect(() => () => { if (noticeTimeout.current) clearTimeout(noticeTimeout.current); }, []);
   const toast = useCallback((message: string) => {
     setNotice(message);
+    setNoticeVersion(value => value + 1);
     if (noticeTimeout.current) clearTimeout(noticeTimeout.current);
     noticeTimeout.current = setTimeout(() => setNotice(''), 2500);
   }, []);
 
-  const changeRoute = useCallback((path: string, next: PageRoute) => {
-    window.history.pushState({ nibblepot: true }, '', path);
-    setRoute(next);
-    setRandomId(null);
-    window.scrollTo({ top: 0, behavior: 'auto' });
-  }, []);
   const navigate = useCallback((target: Tab) => {
-    lastTab.current = target;
-    changeRoute(tabPath(target), { kind: 'tab', tab: target });
+    void changeRoute(tabPath(target), { kind: 'tab', tab: target });
   }, [changeRoute]);
   useEffect(() => {
     if (!focusSearch || route.kind !== 'tab' || route.tab !== 'home') return;
@@ -146,8 +136,10 @@ export default function App() {
   const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
   const activeRecipe = route.kind === 'recipe' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const randomRecipe = randomId ? recipes.find(recipe => recipe.id === randomId) : undefined;
+  const lastRandom = useRef(randomRecipe);
+  if (randomRecipe) lastRandom.current = randomRecipe;
   const activeCookRecipe = route.kind === 'cook' ? recipes.find(recipe => recipe.id === route.id) : undefined;
-  const backToRecipes = () => navigate(lastTab.current);
+  const backToRecipes = () => back(tabPath(lastTab.current), {kind:'tab', tab:lastTab.current});
   const weekSlots = data.weekPlans?.[selectedWeek] ?? defaultWeek();
   const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
     ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
@@ -173,15 +165,15 @@ export default function App() {
   };
   if (activeCookRecipe) return <><PwaStatus pwa={pwa} cooking /><CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
-    onExit={() => openRecipe(activeCookRecipe.id)} /></>;
+    onExit={() => back(recipePath(activeCookRecipe.id), {kind:'recipe',id:activeCookRecipe.id})} /></>;
   return <>
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
     <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate}
       onSearch={()=>{navigate('home');setFocusSearch(true);}} />
-    <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : ''}`}
+    <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
-      <main className="main" id="main-content">
+      <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')} className="main route-content" data-motion={motion} id="main-content">
         {route.kind === 'tab' && route.tab === 'home' && <InstallCard pwa={pwa} />}
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
           saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
@@ -212,15 +204,15 @@ export default function App() {
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
           onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
           onCopy={copyShopping} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={refresh} refreshing={refreshing}
+        {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
           onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
       </main>
       <footer className="footer">Made for real-life tea times ✳ Nibblepot demo</footer>
     </div>
     <MobileNavigation tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
-    {randomRecipe && <RandomRecipeDialog recipe={randomRecipe} saved={data.favorites.includes(randomRecipe.id)}
-      onClose={() => setRandomId(null)} onView={() => openRecipe(randomRecipe.id)} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
-    {notice && <div className="toast" role="status" aria-live="polite">{notice}</div>}
+    {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
+      onReopen={() => setRandomId(lastRandom.current!.id)} onClose={() => setRandomId(null)} onView={() => { if (lastRandom.current) openRecipe(lastRandom.current.id); }} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
+    {notice && <Toast key={noticeVersion} message={notice} />}
   </>;
 }
 

@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
-  use: { baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
+  use: { launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH }, baseURL: 'http://127.0.0.1:4173', trace: 'retain-on-failure' },
   // CI uses runner-provided Chrome; local development keeps the standard Playwright browser.
   // No separate CI browser download is needed.
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], channel: process.env.CI ? 'chrome' : undefined } },

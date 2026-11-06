@@ -19,3 +19,5 @@ import './styles/pwa.css';
 import './styles/larder.css';
 
 import './styles/mobile-shell.css';
+
+import "./styles/motion.css";

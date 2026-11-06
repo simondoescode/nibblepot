@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { SlidersHorizontal, X } from 'lucide-react';
 import { foodTypes, type FoodType } from '../lib/foodTypes';
 import { Button } from '../ui/controls';
@@ -8,7 +8,7 @@ export function FoodTypePicker({selected,onChange}:{selected:FoodType[];onChange
   const [open,setOpen]=useState(false);
   const [draft,setDraft]=useState<FoodType[]>([]);
   const options=foodTypes.filter(type=>type.id!=='all');
-  return <Dialog.Root open={open} onOpenChange={value=>{if(value)setDraft([...selected]);setOpen(value);}}>
+  return <Dialog.Root historyKey="food-types" open={open} onOpenChange={value=>{if(value)setDraft([...selected]);setOpen(value);}}>
     <Dialog.Trigger className="food-type-trigger">
       <SlidersHorizontal size={18} aria-hidden="true"/><span>Food types</span>
       <span className="food-type-summary">{selected.length ? `${selected.length} selected` : 'All food'}</span>

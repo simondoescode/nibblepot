@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { BookOpen, CalendarDays, CookingPot, Ellipsis, Heart, Settings2, ShoppingBasket, Search, X } from 'lucide-react';
 import type { Tab } from '../types';
 import { PotIcon } from './PotArt';
@@ -44,8 +44,9 @@ export function Header({ tab, shoppingCount, onNavigate, onSearch }: { tab: Tab;
 
 export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void }) {
   const [moreOpen, setMoreOpen] = useState(false);
+  const leavingMore = useRef(false);
   const moreButton = useRef<HTMLButtonElement>(null);
-  const choose = (destination: Tab) => { setMoreOpen(false); onNavigate(destination); };
+  const choose = (destination: Tab) => { leavingMore.current=true;setMoreOpen(false); onNavigate(destination); };
   const moreActive = tab === 'favorites' || tab === 'settings';
 
   return <>
@@ -61,16 +62,16 @@ export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab;
       </button>)}
       <button ref={moreButton} type="button" className={`mobbtn ${moreActive ? 'active' : ''}`}
         aria-label="More" aria-haspopup="dialog" aria-expanded={moreOpen}
-        onClick={() => setMoreOpen(true)}>
+        onClick={() => {leavingMore.current=false;setMoreOpen(true);}}>
         <span className="mob-icon" aria-hidden="true"><Ellipsis size={24} strokeWidth={moreActive ? 2.6 : 2} /></span>
         <span className="mob-label">More</span>
       </button>
     </nav>
-    <Dialog.Root open={moreOpen} onOpenChange={setMoreOpen}>
+    <Dialog.Root historyKey="more" open={moreOpen} onOpenChange={setMoreOpen}>
       <Dialog.Portal>
         <Dialog.Overlay className="mobile-more-overlay" />
         <Dialog.Content className="mobile-more-sheet" aria-describedby="mobile-more-description"
-          onCloseAutoFocus={event => { event.preventDefault(); moreButton.current?.focus(); }}>
+          onCloseAutoFocus={event => { event.preventDefault(); if (!leavingMore.current) moreButton.current?.focus(); }}>
           <span className="mobile-more-handle" aria-hidden="true" />
           <div className="mobile-more-heading">
             <Dialog.Title>More Nibblepot</Dialog.Title>

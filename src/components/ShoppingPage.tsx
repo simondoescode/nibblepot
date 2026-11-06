@@ -25,7 +25,7 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
         <Button size="small" icon={<CheckCheck size={16} />} onClick={onClear}>Remove ticked items</Button></div>
       <p role="status" aria-live="polite">{remaining.length} to buy · {purchased.length} ticked off</p>
       <div className="shop-list">{sections.map(section => {
-        const entries = [...remaining, ...purchased].filter(item => ingredients[item.id]?.[1] === section);
+        const entries = shopping.filter(item => ingredients[item.id]?.[1] === section);
         if (!entries.length) return null;
         return <section key={section} aria-label={`${section} shopping items`}><h3>{section}</h3>{entries.map(item => <div className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
         <input type="checkbox" checked={item.done} aria-label={`Mark ${ingredientName(item.id)} as purchased`}
@@ -45,6 +45,6 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
     <div className="info-bar" style={{ marginTop: 24 }}><strong>🛍️ Tesco links open product searches</strong>
-      <small>Grouped by cupboard, fridge and freezer, with unchecked items first. Quantities combine recipes with matching units; different units remain separate. Only entered larder quantities are subtracted when units match; unchecked stock quantities remain estimates. Check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
+      <small>Grouped by cupboard, fridge and freezer, with items staying in place as you tick them off. Quantities combine recipes with matching units; different units remain separate. Only entered larder quantities are subtracted when units match; unchecked stock quantities remain estimates. Check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
   </>;
 }
