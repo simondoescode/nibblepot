@@ -68,6 +68,26 @@ test('manifest shortcuts and icons stay inside the GitHub Pages scope', async ({
   const manifest = await (await request.get('/nibblepot/manifest.webmanifest')).json();
   expect(manifest.id).toBe('/nibblepot/');
   expect(manifest.display).toBe('standalone');
+  expect(manifest.name).toBe('Nibblepot');
+  expect(manifest.icons.map((icon: {purpose:string})=>icon.purpose)).toEqual(['any','any','maskable']);
   expect(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url)).toEqual(['planner/', 'shopping/', 'favourites/']);
-  for (const icon of manifest.icons) expect((await request.get(`/nibblepot/${icon.src}`)).ok()).toBe(true);
+  for (const icon of manifest.icons) {
+    const response=await request.get(`/nibblepot/${icon.src}`);
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('image/png');
+    expect((await response.body()).subarray(0,8).toString('hex')).toBe('89504e470d0a1a0a');
+  }
+});
+
+
+test('install artwork decodes in the page and Apple touch icon has a PNG response', async ({page,request})=>{
+  await page.goto('/nibblepot/settings/');
+  const artwork=page.getByRole('region',{name:'Install Nibblepot'}).locator('img');
+  await expect(artwork).toBeVisible();
+  await expect(artwork).toHaveAttribute('src','/nibblepot/icons/icon-192-v2.png');
+  expect(await artwork.evaluate((image:HTMLImageElement)=>image.complete && image.naturalWidth===192)).toBe(true);
+  const touch=await page.locator('link[rel=apple-touch-icon]').getAttribute('href');
+  expect(touch).toBe('/nibblepot/icons/apple-touch-180-v2.png');
+  const response=await request.get(touch!);
+  expect(response.headers()['content-type']).toContain('image/png');
 });
