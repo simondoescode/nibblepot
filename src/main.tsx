@@ -1,3 +1,4 @@
+import './lib/install';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
@@ -11,3 +12,6 @@ import './styles/recipe-page.css';
 import './styles/week-planner.css';
 import './styles/cooking-mode.css';
 import './styles/mobile-native.css';
+
+
+import './styles/pwa.css';

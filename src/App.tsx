@@ -1,3 +1,5 @@
+import { usePwa } from './hooks/usePwa';
+import { InstallCard, PwaStatus } from './components/PwaExperience';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { recipes, ingredientName } from './data';
@@ -24,6 +26,7 @@ import { SettingsPage } from './components/SettingsPage';
 import { PullIndicator } from './components/PullIndicator';
 
 export default function App() {
+  const pwa = usePwa();
   const [route, setRoute] = useState<PageRoute>(() => parseRoute(window.location.pathname));
   const [filter, setFilter] = useState<Filter>('all');
   const [search, setSearch] = useState('');
@@ -158,15 +161,17 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
-  if (activeCookRecipe) return <CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
+  if (activeCookRecipe) return <><PwaStatus pwa={pwa} cooking /><CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
-    onExit={() => openRecipe(activeCookRecipe.id)} />;
+    onExit={() => openRecipe(activeCookRecipe.id)} /></>;
   return <>
+    <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
     <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
       <main className="main" id="main-content">
+        {route.kind === 'tab' && route.tab === 'home' && <InstallCard pwa={pwa} />}
         {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
           saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
           onServingsChange={value => setData(current => ({ ...current, servings: {
@@ -196,7 +201,7 @@ export default function App() {
           onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
           onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
           onCopy={copyShopping} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage data={data} onRefresh={refresh} refreshing={refreshing}
+        {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={refresh} refreshing={refreshing}
           onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
       </main>
       <footer className="footer">Made for real-life tea times ✳ Nibblepot demo</footer>
@@ -207,3 +212,4 @@ export default function App() {
     {notice && <div className="toast" role="status" aria-live="polite">{notice}</div>}
   </>;
 }
+
