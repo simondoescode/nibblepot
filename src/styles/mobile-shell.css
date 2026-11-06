@@ -1,0 +1,59 @@
+/* Keep the app bar outside the translated pull-to-refresh content. */
+:root{--mobile-header-height:calc(65px + env(safe-area-inset-top));--mobile-tab-height:calc(70px + env(safe-area-inset-bottom))}
+.mobile-header-actions{display:none}
+html{scroll-padding-top:12px}
+@media(max-width:820px){
+  html{scroll-padding-top:calc(var(--mobile-header-height) + 12px)}
+  .app-header-shell{position:sticky;top:0;z-index:40;padding-top:env(safe-area-inset-top);background:rgba(255,250,241,.97);border-bottom:1px solid #e7dfd1;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  .app-header-shell .header{min-height:64px;padding:8px 0;gap:10px}
+  .app-header-shell .brand{font-size:23px;gap:9px;min-height:44px}
+  .app-header-shell .brand-pot{width:34px;height:34px;border-radius:12px;box-shadow:1px 2px 0 var(--ink)}
+  .app-header-shell .brand-pot svg{width:28px;height:28px}
+  .app-header-shell .small-print{display:none}
+  .mobile-header-actions{display:flex;align-items:center;gap:4px;margin-left:auto}
+  .mobile-header-actions button{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:14px;background:transparent;color:var(--ink);touch-action:manipulation}
+  .mobile-header-actions button:active{background:#f1e6d2;transform:scale(.94)}
+  .mobile-header-actions button[aria-current="page"]{background:#ffe9c1}
+  .main{padding-top:14px;padding-bottom:calc(var(--mobile-tab-height) + 24px)}
+  .larder-tools{top:var(--mobile-header-height)}
+  .mobile-nav{min-height:var(--mobile-tab-height)}
+  .mobile-nav .mob-label{font-size:11px}
+  .mobile-nav .mobbtn .mob-label{font-size:11px}
+  .mobile-nav .mobbtn{min-height:54px}
+  .footer{display:none}
+  button,a,input,select{touch-action:manipulation}
+  button,a{-webkit-tap-highlight-color:transparent}
+  input[type=search],.add-row input{font-size:16px}
+  .recipe-back,.recipe-page-toolbar .btn,.servings-control button{min-height:44px}
+  .servings-control button{width:44px}
+  .recipe-page-toolbar{gap:8px}
+  .recipe-back{font-size:13px}
+  .recipe-page-toolbar .btn{font-size:12px}
+  .page-intro{margin-top:0;border-width:1px;box-shadow:none;border-radius:18px;padding:18px}
+  .page-intro h2{font-size:28px;line-height:1.15}
+  .page-intro .intro-icon{font-size:38px}
+  .pwa-update{z-index:55;bottom:calc(var(--mobile-tab-height) + 12px)}
+  .pull-native-indicator{top:calc(var(--mobile-header-height) + 8px)}
+  .hero{display:block;min-height:0;margin-bottom:24px;border-width:1px;border-radius:20px;box-shadow:none;background:#ffe3a2}
+  .hero-content{padding:20px;position:relative}
+  .hero .eyebrow{display:none}
+  .hero .hero-content h1{font-size:36px;line-height:1.04;letter-spacing:-1.5px;margin:0 0 10px;max-width:240px}
+  .hero .hero-content p{font-size:13px;line-height:1.45;margin-bottom:16px;max-width:260px}
+  .hero .actions{gap:9px}
+  .hero .actions .btn{min-height:44px;padding:10px 12px;font-size:13px;box-shadow:1px 2px 0 var(--ink)}
+  .hero-art{position:absolute;right:8px;top:16px;width:80px;height:85px;min-height:0;overflow:visible;pointer-events:none}
+  .hero-pot{width:78px;max-width:100%;transform:rotate(-7deg);filter:none}
+  .hero .art-disk,.hero .art-squiggle,.hero .float-food,.hero .mini-burst,.hero .hero-copy-speech{display:none}
+  .section-heading{gap:12px;margin-bottom:12px}
+  .section-heading h2{font-size:25px}
+  .section-heading .search{width:100%;min-height:46px}
+  .section-heading .search input{font-size:16px}
+  .chips .chip{min-height:44px}
+  .recipe-card{border-width:1px;box-shadow:0 2px 0 #25231e18}
+  .recipe-card:hover{transform:none;box-shadow:0 2px 0 #25231e18}
+  .recipe-info h3{line-height:1.2}
+  .heart{width:40px;height:40px}
+  .food-picker,.larder-sheet,.mobile-more-sheet{box-shadow:0 -12px 40px #0002}
+}
+@media(max-width:360px){.hero .hero-content h1{font-size:32px;max-width:180px}.hero-art{width:64px;height:72px;right:5px}.hero .hero-content p{max-width:235px}.app-header-shell .brand{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.mobile-header-actions button{transform:none!important}}
