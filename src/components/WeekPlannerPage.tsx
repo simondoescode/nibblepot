@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, Dice5, Pencil, RotateCcw, Search, ShoppingBasket, Trash2, X } from 'lucide-react';
 import { ingredientName, recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
@@ -35,6 +35,9 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
   onRecipe: (id: string) => void;
 }) {
 
+  const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
+  const [changedDay,setChangedDay] = useState<number|null>(null);
+  const lastEditing = useRef(0);
   const [editingDay,setEditingDay] = useState<number|null>(null);
   const [query,setQuery] = useState('');
   const [filter,setFilter] = useState<MealFilter>('all');
@@ -43,6 +46,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
   const opener = useRef<HTMLButtonElement|null>(null);
   useEffect(() => {
     setEditingDay(null);
+    setChangedDay(null);
     setClearPending(false);
     setUndo(null);
     setQuery('');
@@ -55,12 +59,14 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
     if(editingDay === null) return;
     if(!sameSlot(slots[editingDay],choice)){
       remember(days[editingDay] + ' dinner changed');
+      setChangedDay(editingDay);
       onChange(editingDay,choice);
     }
     setEditingDay(null);
   };
   const openPicker = (event: MouseEvent<HTMLButtonElement>, index:number) => {
     opener.current=event.currentTarget;
+    lastEditing.current=index;
     setEditingDay(index);
     setQuery('');
     setFilter('all');
@@ -108,9 +114,9 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
     </div><div className="intro-icon" aria-hidden="true">🍲</div></div>
     <div className="planner-week-head">
       <div className="planner-week-picker">
-        <button type="button" aria-label="Previous week" onClick={() => onWeekChange(shiftWeek(week,-1))}><ArrowLeft size={18}/></button>
+        <button type="button" aria-label="Previous week" onClick={() => {setDirection('back');onWeekChange(shiftWeek(week,-1));}}><ArrowLeft size={18}/></button>
         <div><CalendarDays size={17} aria-hidden="true"/><strong>{range}</strong></div>
-        <button type="button" aria-label="Next week" onClick={() => onWeekChange(shiftWeek(week,1))}><ArrowRight size={18}/></button>
+        <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={18}/></button>
       </div>
       <div className="planner-tools">
         {week !== mondayFor(new Date()) && <Button size="small" onClick={()=>onWeekChange(mondayFor(new Date()))}>This week</Button>}
@@ -126,10 +132,10 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
       <button type="button" onClick={revert}><RotateCcw size={15} aria-hidden="true"/> Undo</button>
     </div>}
     <div className="planner-layout">
-      <div className="planner-days">
+      <div className="planner-days" key={week} data-direction={direction}>
         {slots.map((slot,index) => {
           const recipe = slot.kind === 'recipe' ? recipes.find(r=>r.id===slot.id) : undefined;
-          return <section className="planner-day" key={index}>
+          return <section className={`planner-day${changedDay === index ? ' just-changed' : ''}`} onAnimationEnd={() => setChangedDay(null)} key={index}>
             <div className="planner-day-label"><strong>{days[index]}</strong>
               <span>{new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(dateFor(week,index))}</span>
             </div>
@@ -175,7 +181,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
         <p className="planner-note">Changing dinners saves your plan. Shopping updates only when you tap above. Manually added items stay.</p>
       </aside>
     </div>
-    <Dialog.Root open={editingDay !== null} onOpenChange={open=>{if(!open)setEditingDay(null);}}>
+    <Dialog.Root historyKey="planner-meal-picker" open={editingDay !== null} onOpenChange={open=>setEditingDay(open ? lastEditing.current : null)}>
       <Dialog.Portal>
         <Dialog.Overlay className="planner-picker-overlay"/>
         <Dialog.Content className="planner-picker-dialog" aria-describedby="planner-picker-description"
@@ -183,7 +189,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
           <div className="planner-picker-handle" aria-hidden="true"/>
           <div className="planner-picker-heading">
             <div>
-              <Dialog.Title>Change {editingDay===null?'':days[editingDay]} dinner</Dialog.Title>
+              <Dialog.Title>Change {days[editingDay ?? lastEditing.current]} dinner</Dialog.Title>
               <Dialog.Description id="planner-picker-description">Choose a recipe or easy night. Your change saves automatically.</Dialog.Description>
             </div>
             <Dialog.Close className="planner-picker-close" aria-label="Close meal picker"><X size={22}/></Dialog.Close>

@@ -1,5 +1,5 @@
 import { ArrowUpRight, Clock3, Heart, Soup } from 'lucide-react';
-import type { MouseEvent } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { recipePath } from '../lib/routes';
 import type { Recipe } from '../types';
 import { inLarder } from '../lib/recipes';
@@ -25,6 +25,7 @@ function visitRecipe(event: MouseEvent<HTMLAnchorElement>, id: string, onOpen?: 
 export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: {
   recipe: Recipe; saved: boolean; onFavorite?: () => void; onOpen?: () => void; large?: boolean;
 }) {
+  const [pulse, setPulse] = useState(false);
   const image = <img
     className={`recipe-illustration${recipe.image ? " recipe-photo" : ""}`}
     src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
@@ -36,8 +37,8 @@ export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: 
       onClick={event => visitRecipe(event, recipe.id, onOpen ? () => onOpen() : undefined)}
       aria-label={`View ${recipe.title}`}>{image}</a>}
     {!large && <span className="tiny-label"><Clock3 size={13} aria-hidden="true" /> {recipe.mins} min</span>}
-    {!large && <button type="button" className={`heart ${saved ? 'saved' : ''}`}
-      aria-label={`${saved ? 'Remove from' : 'Add to'} favourites`} aria-pressed={saved} onClick={onFavorite}>
+    {!large && <button type="button" className={`heart ${saved ? 'saved' : ''}${pulse ? ' just-saved' : ''}`}
+      aria-label={`${saved ? 'Remove from' : 'Add to'} favourites`} aria-pressed={saved} onAnimationEnd={() => setPulse(false)} onClick={() => {setPulse(!saved);onFavorite?.();}}>
       <Heart size={19} fill={saved ? 'currentColor' : 'none'} strokeWidth={2.6} aria-hidden="true" />
     </button>}
   </div>;

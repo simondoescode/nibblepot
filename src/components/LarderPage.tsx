@@ -1,6 +1,7 @@
+import { useSessionState } from '../hooks/useSessionState';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { CookingPot, Search, X, ArrowRight } from 'lucide-react';
 import { ingredients, recipes } from '../data';
 import { useItUpRecipes } from '../lib/recipes';
@@ -32,7 +33,7 @@ function StockDetails({ name, quantity, date, onSave }: {
     }
     setOpen(next);
   };
-  return <Dialog.Root open={open} onOpenChange={changeOpen}>
+  return <Dialog.Root historyKey={`stock-${name}`} open={open} onOpenChange={changeOpen}>
     <Dialog.Trigger className="larder-amount" aria-label={`Edit ${name} stock details`}>
       <span>{quantity || 'Add amount'}</span>{date && <small>Date added</small>}
     </Dialog.Trigger>
@@ -78,8 +79,8 @@ export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpen
   onDate: (id:string,value:string)=>void; onOpenRecipe: (id:string)=>void; onQuantity: (id:string, value:string)=>void;
   onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
 }) {
-  const [query,setQuery] = useState('');
-  const [filter,setFilter] = useState('All');
+  const [query,setQuery] = useSessionState('larder-query','');
+  const [filter,setFilter] = useSessionState('larder-filter','All');
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   const suggestions = useItUpRecipes(recipes,larder,dates,today).slice(0,3);

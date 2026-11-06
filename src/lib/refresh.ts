@@ -3,7 +3,7 @@
  * Try installing and activating a newer service worker before reloading. When
  * offline the browser can still reload from the app's existing cached shell.
  */
-export async function refreshPwa(): Promise<void> {
+export async function refreshPwa(beforeReload: Promise<void> = Promise.resolve()): Promise<void> {
   try {
     if ('serviceWorker' in navigator && navigator.onLine) {
       const scope = new URL(import.meta.env.BASE_URL, location.origin).href;
@@ -51,5 +51,6 @@ export async function refreshPwa(): Promise<void> {
   } catch {
     // Network/SW errors must never prevent a normal app reload.
   }
+  await beforeReload;
   window.location.reload();
 }

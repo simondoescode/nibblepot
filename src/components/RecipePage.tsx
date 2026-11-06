@@ -19,6 +19,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
   servings: number; onServingsChange: (value: number) => void;
   onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; onCook: () => void; notify: (message: string) => void;
 }) {
+  const [pulse,setPulse] = useState(false);
   const [includedOptional, setIncludedOptional] = useState<string[]>([]);
   const copyLink = async () => {
     try {
@@ -59,7 +60,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
         <div className="recipe-page-actions">
           <Button tone="primary" icon={<ChefHat size={18} />} onClick={onCook}>Start cooking</Button>
           <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
-          <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={onFavorite}
+          <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={() => {setPulse(!saved);onFavorite();}} className={pulse ? 'just-saved' : ''} onAnimationEnd={() => setPulse(false)}
             aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>
       </div>

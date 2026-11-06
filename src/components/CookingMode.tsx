@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { ArrowLeft, ArrowRight, Check, CheckCheck, ChefHat, Clock3, Minus, Pause, Play, Plus, RotateCcw, X } from 'lucide-react';
 import { ingredientName } from '../data';
 import { formatRecipeQuantity } from '../lib/quantities';
@@ -33,6 +33,8 @@ function useCompactLayout(): boolean {
 export function CookingMode({ recipe, servings, onExit }: {
   recipe: Recipe; servings: number; onExit: () => void;
 }) {
+  const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
+  const lastTool = useRef<'timer'|'ingredients'>('ingredients');
   const [progress, setProgress] = useState<CookingProgress>(() => restoreProgress(recipe));
   const [now, setNow] = useState(() => Date.now());
   const compact = useCompactLayout();
@@ -67,6 +69,7 @@ export function CookingMode({ recipe, servings, onExit }: {
   }, [now, progress.deadline]);
 
   const goTo = (step: number) => {
+    setDirection(step > progress.step ? 'forward' : 'back');
     setProgress(current => ({ ...current, step: Math.max(0, Math.min(recipe.steps.length - 1, step)) }));
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
@@ -159,16 +162,16 @@ export function CookingMode({ recipe, servings, onExit }: {
             </div>
             <div className="cook-progress-track" role="progressbar" aria-label="Recipe step progress"
               aria-valuemin={0} aria-valuemax={recipe.steps.length} aria-valuenow={progress.step + 1}>
-              <div style={{ width: `${(progress.step + 1) / recipe.steps.length * 100}%` }} />
+              <div style={{ transform: `scaleX(${(progress.step + 1) / recipe.steps.length})` }} />
             </div>
-            <div className="cook-step-content" aria-live="polite" aria-atomic="true">
+            <div key={progress.step} data-direction={direction} className="cook-step-content" aria-live="polite" aria-atomic="true">
               <span className="cook-step-number">{String(progress.step + 1).padStart(2, '0')}</span>
               <p>{recipe.steps[progress.step]}</p>
             </div>
             {compact && <div className="cook-mobile-tools" aria-label="Cooking tools">
               <button type="button" onClick={event => {
                   toolReturnFocus.current = event.currentTarget;
-                  setActiveTool('ingredients');
+                  lastTool.current='ingredients';setActiveTool('ingredients');
                 }}
                 aria-label="Open ingredient checklist" aria-haspopup="dialog">
                 <CheckCheck size={19} aria-hidden="true" />
@@ -176,7 +179,7 @@ export function CookingMode({ recipe, servings, onExit }: {
               </button>
               <button type="button" onClick={event => {
                   toolReturnFocus.current = event.currentTarget;
-                  setActiveTool('timer');
+                  lastTool.current='timer';setActiveTool('timer');
                 }}
                 aria-label="Open kitchen timer" aria-haspopup="dialog"
                 className={timerRunning ? 'timer-active' : ''}>
@@ -206,7 +209,7 @@ export function CookingMode({ recipe, servings, onExit }: {
             <button type="button" className="cook-secondary" onClick={onExit}>Back to recipe</button>
           </div>}
         </section>
-        {compact ? <Dialog.Root open={activeTool !== null} onOpenChange={open => { if (!open) setActiveTool(null); }}>
+        {compact ? <Dialog.Root historyKey={`cooking-tools-${recipe.id}`} open={activeTool !== null} onOpenChange={open => setActiveTool(open ? lastTool.current : null)}>
           <Dialog.Portal>
             <Dialog.Overlay className="cook-sheet-overlay" />
             <Dialog.Content className="cook-sheet" aria-describedby="cook-sheet-description"
@@ -216,16 +219,16 @@ export function CookingMode({ recipe, servings, onExit }: {
               }}>
               <div className="cook-sheet-handle" aria-hidden="true" />
               <div className="cook-sheet-heading">
-                <Dialog.Title>{activeTool === 'timer' ? 'Kitchen timer' : 'Ingredients'}</Dialog.Title>
+                <Dialog.Title>{(activeTool ?? lastTool.current) === 'timer' ? 'Kitchen timer' : 'Ingredients'}</Dialog.Title>
                 <Dialog.Close className="cook-sheet-close" aria-label="Close cooking tools">
                   <X size={22} aria-hidden="true" />
                 </Dialog.Close>
               </div>
               <Dialog.Description className="sr-only" id="cook-sheet-description">
-                {activeTool === 'timer' ? 'Set or pause an optional countdown timer.' : 'Tick off the ingredients you have prepared.'}
+                {(activeTool ?? lastTool.current) === 'timer' ? 'Set or pause an optional countdown timer.' : 'Tick off the ingredients you have prepared.'}
               </Dialog.Description>
               <div className="cook-sheet-body">
-                {activeTool === 'timer' ? renderTimer() : renderIngredients()}
+                {(activeTool ?? lastTool.current) === 'timer' ? renderTimer() : renderIngredients()}
               </div>
             </Dialog.Content>
           </Dialog.Portal>

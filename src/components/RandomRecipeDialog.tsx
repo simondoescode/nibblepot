@@ -1,16 +1,16 @@
 
 import { type RefObject } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import * as Dialog from '../ui/dialog';
 import { X, Clock3 } from 'lucide-react';
 import type { Recipe } from '../types';
 import { RecipeArt } from './RecipeGrid';
 import { Button } from '../ui/controls';
 
-export function RandomRecipeDialog({ recipe, saved, onClose, onView, onReroll, returnFocusRef }: {
-  recipe: Recipe; saved: boolean; onClose: () => void; onView: () => void; onReroll: () => void;
+export function RandomRecipeDialog({ recipe, saved, open, onReopen, onClose, onView, onReroll, returnFocusRef }: {
+  recipe: Recipe; saved: boolean; open: boolean; onReopen: () => void; onClose: () => void; onView: () => void; onReroll: () => void;
   returnFocusRef: RefObject<HTMLElement | null>;
 }) {
-  return <Dialog.Root open onOpenChange={open => { if (!open) onClose(); }}>
+  return <Dialog.Root historyKey="random-dinner" open={open} onOpenChange={open => { if (!open) onClose(); else onReopen(); }}>
     <Dialog.Portal>
       <Dialog.Overlay className="overlay" />
       <Dialog.Content className="modal recipe-detail"

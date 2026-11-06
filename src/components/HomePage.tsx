@@ -56,7 +56,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
       {foodTypes.filter(type=>selectedFoodTypes.includes(type.id)).map(type=><button key={type.id} type="button" aria-label={`Remove ${type.label} filter`}
         onClick={()=>setSelectedFoodTypes(selectedFoodTypes.filter(id=>id!==type.id))}>{type.label}<span aria-hidden="true">×</span></button>)}
     </div>}
-    <div id="home-results"><RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen}
+    <div id="home-results" className="results-feedback" key={filter + selectedFoodTypes.join(',')}><RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen}
       onReset={clearFilters} /></div>
   </>;
 }
