@@ -195,13 +195,14 @@ export default function App() {
     {page === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
       onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
   </>;
+  const shoppingCount = data.shopping.filter(item => !item.done).length;
   if (activeCookRecipe) return <><PwaStatus pwa={pwa} cooking /><CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
     onExit={() => back(recipePath(activeCookRecipe.id), {kind:'recipe',id:activeCookRecipe.id})} /></>;
   return <>
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
-    <Header tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate}
+    <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
       onSearch={()=>{navigate('home');setFocusSearch(true);}} />
     <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
@@ -235,7 +236,7 @@ export default function App() {
       </div>
       <footer className="footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
-    <MobileNavigation tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
+    <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
       onReopen={() => setRandomId(lastRandom.current!.id)} onClose={() => setRandomId(null)} onView={() => { if (lastRandom.current) openRecipe(lastRandom.current.id); }} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
     {notice && <Toast key={noticeVersion} message={notice} />}

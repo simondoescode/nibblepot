@@ -1,9 +1,12 @@
+import { useState } from 'react';
+import { ClipboardCopy, ExternalLink, ListX, ShoppingBasket, X } from 'lucide-react';
 import { ingredientName, ingredients } from '../data';
 import { tescoSearchUrl } from '../lib/recipes';
 import { shoppingPackHint, shoppingQuantity } from '../lib/quantities';
 import type { ShoppingEntry } from '../types';
-import { CheckCheck, ClipboardCopy, ExternalLink, X } from 'lucide-react';
 import { Button, IconButton } from '../ui/controls';
+
+const sections = ['Cupboard', 'Fridge', 'Freezer'] as const;
 
 export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, onClear, onCopy, onBrowse }: {
   shopping: ShoppingEntry[];
@@ -15,36 +18,76 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
   onCopy: () => void;
   onBrowse: () => void;
 }) {
+  const [showRemaining, setShowRemaining] = useState(false);
   const remaining = shopping.filter(item => !item.done);
-  const purchased = shopping.filter(item => item.done);
-  const sections = ['Cupboard', 'Fridge', 'Freezer'] as const;
-  return <>
-    <div className="page-intro blue"><div><h2>Shopping, sorted.</h2><p>Just the bits you're missing. No giant lists.</p></div><div className="intro-icon" aria-hidden="true">🧺</div></div>
+  const checkedCount = shopping.length - remaining.length;
+  const visibleItems = showRemaining ? remaining : shopping;
+
+  return <div className="shopping-screen">
+    <header className="page-intro shopping-heading">
+      <span className="intro-icon" aria-hidden="true"><ShoppingBasket size={22} /></span>
+      <h2>Shopping, sorted.</h2>
+    </header>
     {shopping.length > 0 ? <>
-      <div className="shop-actions"><Button size="small" icon={<ClipboardCopy size={16} />} onClick={onCopy}>Copy list</Button>
-        <Button size="small" icon={<CheckCheck size={16} />} onClick={onClear}>Remove ticked items</Button></div>
-      <p role="status" aria-live="polite">{remaining.length} to buy · {purchased.length} ticked off</p>
-      <div className="shop-list">{sections.map(section => {
-        const entries = shopping.filter(item => ingredients[item.id]?.[1] === section);
-        if (!entries.length) return null;
-        return <section key={section} aria-label={`${section} shopping items`}><h3>{section}</h3>{entries.map(item => <div className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
-        <input type="checkbox" checked={item.done} aria-label={`Mark ${ingredientName(item.id)} as purchased`}
-          onChange={event => onToggle(item.id, event.target.checked)} />
-        <div className="shop-item"><strong>{ingredientName(item.id)}</strong>
-          <span className="shop-quantity">{shoppingQuantity(item, servings, stock)}</span>
-          {shoppingPackHint(item, servings) && <small className="shop-pack-hint">{shoppingPackHint(item, servings)}</small>}
-          <small>{item.from.length ? `For ${item.from.length} recipe${item.from.length === 1 ? '' : 's'}` : 'Added to your list'}</small></div>
-        <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
-          aria-label={`Find ${ingredientName(item.id)} at Tesco`}>Tesco <ExternalLink size={14} aria-hidden="true" /></a>
-        <IconButton className="shop-remove" onClick={() => onRemove(item.id)}
-          label={`Remove ${ingredientName(item.id)}`}><X size={18} aria-hidden="true" /></IconButton>
-      </div>)}</section>;
-      })}</div>
-    </> : <div className="empty"><div className="empty-icon">🧺</div><h3>Looking delightfully empty.</h3>
+      <div className="shopping-summary">
+        <p role="status"><strong>{remaining.length} to buy</strong><span>{checkedCount} of {shopping.length} ticked off</span></p>
+        <progress aria-label="Shopping progress" value={checkedCount} max={shopping.length} />
+        <div className="shopping-toolbar">
+          <div className="shopping-filter" role="group" aria-label="Show shopping items">
+            <button type="button" aria-pressed={!showRemaining} onClick={() => setShowRemaining(false)}>All</button>
+            <button type="button" aria-pressed={showRemaining} onClick={() => setShowRemaining(true)}>To buy</button>
+          </div>
+          <div className="shopping-tools">
+            <IconButton label="Copy list" title="Copy list" onClick={onCopy}>
+              <ClipboardCopy size={19} aria-hidden="true" />
+            </IconButton>
+            <IconButton label="Remove ticked items" title="Remove ticked items" disabled={!checkedCount} onClick={onClear}>
+              <ListX size={19} aria-hidden="true" />
+            </IconButton>
+          </div>
+        </div>
+      </div>
+      {visibleItems.length ? <div className="shop-list">
+        {sections.map(section => {
+          const entries = visibleItems.filter(item => ingredients[item.id]?.[1] === section);
+          if (!entries.length) return null;
+
+          return <section key={section} aria-label={`${section} shopping items`}>
+            <h3>{section}</h3>
+            <ul className="shopping-group">
+              {entries.map(item => {
+                const name = ingredientName(item.id);
+                const packHint = shoppingPackHint(item, servings);
+                return <li className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
+                  <label className="shopping-toggle">
+                    <input type="checkbox" checked={item.done} aria-label={`Mark ${name} as purchased`}
+                      onChange={event => onToggle(item.id, event.target.checked)} />
+                    <span className="shop-item">
+                      <strong>{name}</strong>
+                      <span className="shop-quantity">{shoppingQuantity(item, servings, stock)}</span>
+                      {packHint && <small className="shop-pack-hint">{packHint}</small>}
+                    </span>
+                  </label>
+                  <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
+                    aria-label={`Find ${name} at Tesco`}>Tesco <ExternalLink size={12} aria-hidden="true" /></a>
+                  <IconButton className="shop-remove" onClick={() => onRemove(item.id)} label={`Remove ${name}`}>
+                    <X size={17} aria-hidden="true" />
+                  </IconButton>
+                </li>;
+              })}
+            </ul>
+          </section>;
+        })}
+      </div> : <div className="empty"><h3>Everything’s ticked off</h3>
+        <Button size="small" onClick={() => setShowRemaining(false)}>Show all items</Button>
+      </div>}
+      <details className="shopping-help">
+        <summary>About quantities and Tesco links</summary>
+        <p>Quantities combine recipes with matching units. Only larder amounts you’ve entered are subtracted, and only when the units match. Tesco links open product searches.</p>
+      </details>
+    </> : <div className="empty"><h3>Your list is empty</h3>
       <p>Open a recipe and tap “Add missing bits”.</p>
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
-    <div className="info-bar" style={{ marginTop: 24 }}><strong>🛍️ Tesco links open product searches</strong>
-      <small>Grouped by cupboard, fridge and freezer, with items staying in place as you tick them off. Quantities combine recipes with matching units; different units remain separate. Only entered larder quantities are subtracted when units match; unchecked stock quantities remain estimates. Check your cupboards before shopping. Tesco basket integration isn't supported.</small></div>
-  </>;
+  </div>;
 }
