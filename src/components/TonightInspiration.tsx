@@ -5,16 +5,18 @@ import { chooseRandomRecipe } from '../lib/recipes';
 
 type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, day: number) => void };
 const sessionKey = 'simmer-spotlight-v1';
+// The swipe preview and the mounted Recipes tab need the same initial pick.
+const initialRandom = Math.random();
 function initialId(recipes: readonly Recipe[]): string {
   if (!recipes.length) return '';
   try {
     const saved = sessionStorage.getItem(sessionKey);
     if (saved && recipes.some(recipe => recipe.id === saved)) return saved;
   } catch { /* Private browsing may block session storage. */ }
-  return chooseRandomRecipe(recipes).id;
+  return chooseRandomRecipe(recipes, undefined, () => initialRandom).id;
 }
 
-/** A self-contained gesture surface: horizontal swipes here do not navigate app tabs. */
+/** Supports recipe cycling when a gesture is not claimed by tab navigation. */
 export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
   const [id, setId] = useState(() => initialId(recipes));
   const [planDay, setPlanDay] = useState<number | null>(null);

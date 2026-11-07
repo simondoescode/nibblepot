@@ -47,7 +47,8 @@ export function useAppNavigation() {
     window.scrollTo({ top: destinationScroll.current, behavior: 'instant' });
     if (motion === 'direct') return;
     const link = returnRecipe.current && document.querySelector<HTMLElement>(`a.recipe-card-link[href$="/recipes/${returnRecipe.current}/"]`);
-    const focus = link || document.querySelector<HTMLElement>('main h1, main h2, main');
+    const main = document.querySelector<HTMLElement>('main');
+    const focus = link || main?.querySelector<HTMLElement>('h1, h2') || main;
     if (focus) { if (!link) focus.tabIndex = -1; focus.focus({ preventScroll: true }); }
     returnRecipe.current = null;
   }, [route, motion]);

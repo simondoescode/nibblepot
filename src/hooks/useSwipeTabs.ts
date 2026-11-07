@@ -4,7 +4,7 @@ import type { Tab } from '../types';
 import { prefersReducedMotion } from './useReducedMotion';
 
 export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping'];
-const BLOCKED = 'input,textarea,select,button,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
+const BLOCKED = 'input,textarea,select,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
 
 export function swipeDestination(tab: Tab, delta: number): Tab | null {
   const index = SWIPE_TABS.indexOf(tab);
@@ -16,12 +16,13 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number; time: number; axis: 'pending' | 'horizontal' | 'vertical'; dx: number; offset: number } | null>(null);
-  const animation = useRef<Animation | null>(null);
+  const animation = useRef<{ slide: Animation; committing: boolean } | null>(null);
   const [preview, setPreview] = useState<Tab | null>(null);
 
   const clearTrack = useCallback(() => {
-    animation.current?.cancel();
+    const settling = animation.current;
     animation.current = null;
+    settling?.slide.cancel();
     if (track.current) track.current.style.transform = '';
     gesture.current = null;
   }, []);
@@ -48,6 +49,7 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       }
       if (g.axis !== 'horizontal') return;
 
+      // Once the drag is horizontal, suppress the tap on any button it started on.
       if (event.cancelable) event.preventDefault();
       g.dx = dx;
       if (prefersReducedMotion()) return;
@@ -69,13 +71,14 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       if (gesture.current) reset();
       return;
     }
-    if (blocked || !tab || !SWIPE_TABS.includes(tab) || animation.current || window.innerWidth > 820) return;
+    if (blocked || !tab || !SWIPE_TABS.includes(tab) || animation.current?.committing || window.innerWidth > 820) return;
     const target = event.target;
     if (!(target instanceof Element) || target.closest(BLOCKED) || document.querySelector('[role="dialog"]')) return;
     // Leave horizontally scrolling components in control of their own gestures.
     for (let node: Element | null = target; node && node !== viewport.current; node = node.parentElement) {
       if (node.scrollWidth > node.clientWidth + 4 && ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) return;
     }
+    if (animation.current) reset();
     gesture.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, time: performance.now(), axis: 'pending', dx: 0, offset: 0 };
   };
 
@@ -101,11 +104,13 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       [{ transform: translate(g.offset) }, { transform: translate(commit ? Math.sign(g.dx) * width : 0) }],
       { duration: commit ? 230 : 260, easing: 'cubic-bezier(.22,.75,.2,1)', fill: 'forwards' },
     );
-    animation.current = slide;
-    slide.onfinish = () => {
-      if (commit) void navigate(target);
-      else reset();
+    animation.current = { slide, committing: !!commit };
+    const finish = () => {
+      if (animation.current?.slide === slide) reset();
     };
+    void slide.finished
+      .then(() => animation.current?.slide === slide && commit ? navigate(target) : undefined)
+      .then(finish, finish);
   };
 
   return { viewport, track, preview, onTouchStart, onTouchEnd, onTouchCancel: reset };
