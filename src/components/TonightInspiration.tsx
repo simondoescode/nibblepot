@@ -16,11 +16,10 @@ function initialId(recipes: readonly Recipe[]): string {
 
 /** A self-contained gesture surface: horizontal swipes here do not navigate app tabs. */
 export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
-  const [id, setId] = useState(() => initialId(recipes.filter(recipe => Boolean(recipe.image)).length ? recipes.filter(recipe => Boolean(recipe.image)) : recipes));
+  const [id, setId] = useState(() => initialId(recipes));
   const [planDay, setPlanDay] = useState<number | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
-  const eligible = recipes.filter(recipe => Boolean(recipe.image));
-  const catalogue = eligible.length ? eligible : [...recipes];
+  const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
   const show = (next: string) => {
     setPlanDay(null);
@@ -33,7 +32,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     show(catalogue[(index + direction + catalogue.length) % catalogue.length].id);
   };
   const surprise = () => { if (current) show(chooseRandomRecipe(catalogue, current.id).id); };
-  if (!current) return null;
+  if (!current) return <section className="simmer-spotlight simmer-spotlight-empty" aria-label="Tonight's inspiration"><div className="simmer-spotlight-content"><span className="simmer-spotlight-kicker">TONIGHT'S INSPIRATION</span><h2>Something good is cooking</h2><p>Try clearing your filters to see more dinner ideas.</p></div></section>;
   return <section className="simmer-spotlight" aria-label="Tonight's inspiration"
     onTouchStart={event => { const touch = event.touches[0]; start.current = {x:touch.clientX,y:touch.clientY}; }}
     onTouchCancel={() => { start.current = null; }}
@@ -46,7 +45,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     }}>
     <div className="simmer-spotlight-image" key={current.id}>
       <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
-        alt={current.title} width="800" height="504" decoding="async" fetchPriority="high"
+        alt="" width="800" height="504" decoding="async" fetchPriority="high"
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
     </div>
     <div className="simmer-spotlight-content">
@@ -65,7 +64,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     </div>
     <div className="simmer-spotlight-controls">
       <button type="button" aria-label="Previous inspiration" disabled={catalogue.length < 2} onClick={() => cycle(-1)}><ArrowLeft size={19}/></button>
-      <span aria-live="polite" aria-atomic="true">{catalogue.findIndex(recipe => recipe.id === current.id) + 1} / {catalogue.length}</span>
+      <span aria-live="polite" aria-atomic="true">{catalogue.findIndex(recipe => recipe.id === current.id) + 1} / {catalogue.length}: {current.title}</span>
       <button type="button" aria-label="Next inspiration" disabled={catalogue.length < 2} onClick={() => cycle(1)}><ArrowRight size={19}/></button>
       <button type="button" className="simmer-shuffle" disabled={catalogue.length < 2} onClick={surprise}><Shuffle size={17}/> Surprise me</button>
     </div>
