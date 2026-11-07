@@ -3,7 +3,7 @@ import { parseRoute, type PageRoute } from '../lib/routes';
 import { dismissSheet } from '../lib/sheetHistory';
 import type { Tab } from '../types';
 
-type Intent = 'direct' | 'tab' | 'forward' | 'back';
+type Intent = 'direct' | 'swipe' | 'tab' | 'forward' | 'back';
 export function useAppNavigation() {
   const [route, setRoute] = useState<PageRoute>(() => parseRoute(location.pathname));
   const [motion, setMotion] = useState<Intent>('direct');
@@ -64,5 +64,6 @@ export function useAppNavigation() {
     if (history.state?.nibblepotParent) history.back();
     else void changeRoute(fallback, next, 'back');
   }, [changeRoute]);
-  return { route, motion, lastTab, changeRoute, back };
+  const tabScrollPosition = (tabPath: string) => positions.current.get(tabPath) ?? 0;
+  return { route, motion, lastTab, changeRoute, back, tabScrollPosition };
 }

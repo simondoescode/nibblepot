@@ -14,7 +14,7 @@ import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/
 import { refreshPwa } from './lib/refresh';
 import { cookingPath, recipePath, tabPath } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
-import { useSwipeTabs } from './hooks/useSwipeTabs';
+import { swipeDestination, useSwipeTabs } from './hooks/useSwipeTabs';
 import { pullOffset } from './lib/pullGesture';
 import type { CSSProperties } from 'react';
 import type { Filter, SavedData, Tab } from './types';
@@ -32,7 +32,7 @@ import { PullIndicator } from './components/PullIndicator';
 
 export default function App() {
   const pwa = usePwa();
-  const { route, motion, lastTab, changeRoute, back } = useAppNavigation();
+  const { route, motion, lastTab, changeRoute, back, tabScrollPosition } = useAppNavigation();
   const [filter, setFilter] = useSessionState<Filter>('recipe-filter', 'all');
   const [selectedFoodTypes, setSelectedFoodTypes] = useSessionState<FoodType[]>('food-types', []);
   const [search, setSearch] = useSessionState('recipe-search', '');
@@ -135,7 +135,11 @@ export default function App() {
   };
 
   const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
-  const swipe = useSwipeTabs(route.kind === 'tab' ? route.tab : null, navigate, !!randomId || refreshing || pull.dragging);
+  const swipe = useSwipeTabs(
+    route.kind === 'tab' ? route.tab : null,
+    target => changeRoute(tabPath(target), { kind: 'tab', tab: target }, 'swipe'),
+    !!randomId || refreshing || pull.dragging,
+  );
   const activeRecipe = route.kind === 'recipe' ? recipes.find(recipe => recipe.id === route.id) : undefined;
   const randomRecipe = randomId ? recipes.find(recipe => recipe.id === randomId) : undefined;
   const lastRandom = useRef(randomRecipe);
@@ -170,6 +174,27 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
+  const renderTab = (page: Tab) => <>
+    {page === 'home' && <InstallCard pwa={pwa} />}
+    {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
+      favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
+      weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
+    {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
+      onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
+    {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
+    {page === 'planner' && <WeekPlannerPage week={selectedWeek}
+      slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
+      hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
+      onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
+      onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
+    {page === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}} stock={data.larderQuantities}
+      onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
+      onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
+      onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
+      onCopy={copyShopping} onBrowse={() => navigate('home')} />}
+    {page === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
+      onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
+  </>;
   if (activeCookRecipe) return <><PwaStatus pwa={pwa} cooking /><CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
     onExit={() => back(recipePath(activeCookRecipe.id), {kind:'recipe',id:activeCookRecipe.id})} /></>;
@@ -180,40 +205,34 @@ export default function App() {
       onSearch={()=>{navigate('home');setFocusSearch(true);}} />
     <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
-      <main ref={swipe.element} onTouchStart={swipe.onTouchStart} onTouchMove={swipe.onTouchMove} onTouchEnd={swipe.onTouchEnd} onTouchCancel={swipe.onTouchCancel} key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')} className="main route-content" data-motion={motion} id="main-content">
-        {route.kind === 'tab' && route.tab === 'home' && <InstallCard pwa={pwa} />}
-        {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
-          saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
-          onServingsChange={value => setData(current => ({ ...current, servings: {
-            ...current.servings, [activeRecipe.id]: clampServings(value),
-          } }))} onBack={backToRecipes}
-          onAddMissing={optionalIds => addMissing(activeRecipe.id, optionalIds)}
-          onFavorite={() => toggleFavorite(activeRecipe.id)} onCook={() => startCooking(activeRecipe.id)}
-          notify={toast} />}
-        {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe) || (route.kind === 'cook' && !activeCookRecipe)) && <section className="recipe-page-not-found">
-          <h1>That recipe's not in the pot</h1>
-          <p>Try another recipe — there's plenty more for tea.</p>
-          <button type="button" className="btn btn-primary" onClick={() => navigate('home')}>Browse recipes</button>
-        </section>}
-        {route.kind === 'tab' && route.tab === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
-          favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
-          weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
-        {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
-          onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
-        {route.kind === 'tab' && route.tab === 'planner' && <WeekPlannerPage week={selectedWeek}
-          slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
-          hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
-          onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
-          onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
-        {route.kind === 'tab' && route.tab === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}} stock={data.larderQuantities}
-          onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
-          onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
-          onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}
-          onCopy={copyShopping} onBrowse={() => navigate('home')} />}
-        {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
-          onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
-      </main>
+      <div className="swipe-viewport" ref={swipe.viewport} onTouchStart={swipe.onTouchStart}
+        onTouchEnd={swipe.onTouchEnd} onTouchCancel={swipe.onTouchCancel}>
+        <div className="swipe-track" ref={swipe.track}>
+          <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')}
+            className="main route-content" data-motion={motion} id="main-content">
+            {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
+              saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
+              onServingsChange={value => setData(current => ({ ...current, servings: {
+                ...current.servings, [activeRecipe.id]: clampServings(value),
+              } }))} onBack={backToRecipes}
+              onAddMissing={optionalIds => addMissing(activeRecipe.id, optionalIds)}
+              onFavorite={() => toggleFavorite(activeRecipe.id)} onCook={() => startCooking(activeRecipe.id)}
+              notify={toast} />}
+            {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe) || (route.kind === 'cook' && !activeCookRecipe)) && <section className="recipe-page-not-found">
+              <h1>That recipe's not in the pot</h1>
+              <p>Try another recipe — there's plenty more for tea.</p>
+              <button type="button" className="btn btn-primary" onClick={() => navigate('home')}>Browse recipes</button>
+            </section>}
+            {route.kind === 'tab' && renderTab(route.tab)}
+          </main>
+          {swipe.preview && <div key={swipe.preview} className="swipe-preview" aria-hidden="true" inert
+            data-side={swipeDestination(tab, -1) === swipe.preview ? 'right' : 'left'}>
+            <div className="main route-content" style={{ top: window.scrollY - tabScrollPosition(tabPath(swipe.preview)) }}>
+              {renderTab(swipe.preview)}
+            </div>
+          </div>}
+        </div>
+      </div>
       <footer className="footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
     <MobileNavigation tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
