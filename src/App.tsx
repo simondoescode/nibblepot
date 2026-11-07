@@ -5,10 +5,11 @@ import { usePwa } from './hooks/usePwa';
 import { InstallCard, PwaStatus } from './components/PwaExperience';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { recipes, ingredientName } from './data';
+import { recipes } from './data';
 import type { FoodType } from './lib/foodTypes';
 import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
+import { shoppingItemName } from './lib/shopping';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
 import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
 import { refreshPwa } from './lib/refresh';
@@ -17,7 +18,7 @@ import { usePullToRefresh } from './hooks/usePullToRefresh';
 import { swipeDestination, useSwipeTabs } from './hooks/useSwipeTabs';
 import { pullOffset } from './lib/pullGesture';
 import type { CSSProperties } from 'react';
-import type { Filter, SavedData, Tab } from './types';
+import type { Filter, SavedData, ShoppingEntry, Tab } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
 import { FavouritesPage } from './components/FavouritesPage';
@@ -126,10 +127,21 @@ export default function App() {
     setData(current => ({ ...current, shopping: addMissingIngredients(recipe, current, optionalIds).shopping }));
     toast(added ? `Added ${added} missing ingredient${added === 1 ? '' : 's'} 🛒` : 'Shopping list updated 🛒');
   };
+  const addShoppingItem = (entry: ShoppingEntry) => {
+    setData(current => {
+      const exists = current.shopping.some(item => item.id === entry.id);
+      const shopping = exists
+        ? current.shopping.map(item => item.id === entry.id ? { ...item, done: false, planGenerated: false } : item)
+        : [...current.shopping, entry];
+      return { ...current, shopping };
+    });
+    toast(`${shoppingItemName(entry)} added to shopping`);
+  };
   const copyShopping = async () => {
-    const list = data.shopping.map(item =>
-      `${item.done ? '✓' : '☐'} ${ingredientName(item.id)} — ${shoppingQuantity(item, data.servings, data.larderQuantities)}`
-    ).join('\n');
+    const list = data.shopping.map(item => {
+      const quantity = item.from.length || item.weekCounts ? shoppingQuantity(item, data.servings, data.larderQuantities) : '';
+      return `${item.done ? '✓' : '☐'} ${shoppingItemName(item)}${quantity ? ' — ' + quantity : ''}`;
+    }).join('\n');
     try { await navigator.clipboard.writeText(list); toast('Shopping list copied!'); }
     catch { toast('Copy not available here'); }
   };
@@ -187,7 +199,7 @@ export default function App() {
       hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
       onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
       onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
-    {page === 'shopping' && <ShoppingPage shopping={data.shopping} servings={data.servings ?? {}} stock={data.larderQuantities}
+    {page === 'shopping' && <ShoppingPage shopping={data.shopping} larder={data.larder} onAdd={addShoppingItem} servings={data.servings ?? {}} stock={data.larderQuantities}
       onToggle={(id, done) => setData(current => ({ ...current, shopping: current.shopping.map(item => item.id === id ? { ...item, done } : item) }))}
       onRemove={id => setData(current => ({ ...current, shopping: current.shopping.filter(item => item.id !== id) }))}
       onClear={() => { setData(current => ({ ...current, shopping: current.shopping.filter(item => !item.done) })); toast('Ticked items cleared'); }}

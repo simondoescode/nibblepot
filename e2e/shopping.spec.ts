@@ -60,3 +60,47 @@ test('two-digit shopping count fits the mobile tab badge', async ({ page }, test
   expect(badgeBox.x + badgeBox.width / 2).toBeGreaterThan(iconBox.x + iconBox.width / 2);
   expect(badgeBox.y + badgeBox.height).toBeLessThan(labelBox.y);
 });
+
+test('adds catalogue ingredients, larder picks and custom items from an empty list', async ({ page }) => {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('nibblepot-demo-v1')) {
+      localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: [], larder: ['rice'], shopping: [] }));
+    }
+  });
+  await page.goto('/nibblepot/shopping/');
+  const main = page.getByRole('main');
+  const addItem = main.getByRole('button', { name: 'Add item', exact: true });
+  const sheet = page.getByRole('dialog', { name: 'Add a shopping item' });
+  const search = sheet.getByRole('searchbox');
+
+  await addItem.click();
+  await search.fill('pasta');
+  await sheet.getByRole('button', { name: 'Add Pasta', exact: true }).click();
+  await expect(main.getByRole('checkbox', { name: 'Mark Pasta as purchased' })).toBeVisible();
+
+  await addItem.click();
+  await sheet.getByRole('button', { name: 'My larder', exact: true }).click();
+  await expect(sheet.getByRole('button', { name: 'Add Pasta', exact: true })).toHaveCount(0);
+  await sheet.getByRole('button', { name: 'Add Rice', exact: true }).click();
+  await expect(main.getByRole('checkbox', { name: 'Mark Rice as purchased' })).toBeVisible();
+
+  await addItem.click();
+  await search.fill('Washing up liquid');
+  await sheet.getByRole('button', { name: 'Add “Washing up liquid”', exact: true }).click();
+  const custom = main.getByRole('region', { name: 'Other items shopping items' });
+  const checkbox = custom.getByRole('checkbox', { name: 'Mark Washing up liquid as purchased' });
+  await expect(custom.getByRole('link', { name: 'Find Washing up liquid at Tesco' }))
+    .toHaveAttribute('href', /query=Washing%20up%20liquid$/);
+  await checkbox.check();
+  await page.reload();
+  await expect(checkbox).toBeChecked();
+
+  await addItem.click();
+  await search.fill('washing up liquid');
+  await search.press('Enter');
+  await expect(checkbox).toHaveCount(1);
+  await expect(checkbox).not.toBeChecked();
+  await expect(main.getByRole('status')).toContainText('3 to buy');
+  await custom.getByRole('button', { name: 'Remove Washing up liquid' }).click();
+  await expect(custom).toHaveCount(0);
+});
