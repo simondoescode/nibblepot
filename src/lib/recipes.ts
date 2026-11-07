@@ -20,8 +20,8 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
   if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
   if (filter === 'larder') {
-    found = found.filter(recipe => missingRequired(recipe, larder) === 0)
-      .sort((a, b) => a.mins - b.mins);
+    found = found.filter(recipe => missingRequired(recipe, larder) <= 2)
+      .sort((a, b) => missingRequired(a, larder) - missingRequired(b, larder) || a.mins - b.mins);
   }
   return found;
 }
