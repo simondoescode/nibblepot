@@ -1,0 +1,205 @@
+.shopping-screen {
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+.page-intro.shopping-heading {
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0 0 10px;
+  padding: 8px 0 4px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.shopping-heading .intro-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 14px;
+  background: var(--yellow);
+}
+
+.shopping-heading h2 {
+  margin: 0;
+  font-size: clamp(24px, 5vw, 32px);
+}
+
+.shopping-summary {
+  margin-bottom: 14px;
+  padding: 12px 12px 8px;
+  border: 1px solid #d9e4d8;
+  border-radius: 16px;
+  background: #f0f5ea;
+}
+
+.shopping-summary p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.shopping-summary strong {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.shopping-summary progress {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin: 8px 0;
+  accent-color: #357550;
+  appearance: none;
+  border: 0;
+  border-radius: 100px;
+  overflow: hidden;
+  background: #d7e6d5;
+}
+
+.shopping-summary progress::-webkit-progress-bar { background: #d7e6d5; }
+.shopping-summary progress::-webkit-progress-value { background: #357550; }
+.shopping-summary progress::-moz-progress-bar { background: #357550; }
+
+.shopping-toolbar,
+.shopping-filter,
+.shopping-tools {
+  display: flex;
+  align-items: center;
+}
+
+.shopping-toolbar {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.shopping-filter {
+  padding: 2px;
+  border-radius: 12px;
+  background: #e1eadc;
+}
+
+.shopping-toolbar button,
+.shopping-screen .shop-remove {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.shopping-filter button {
+  min-height: 40px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.shopping-filter button[aria-pressed="true"] {
+  background: var(--paper);
+  box-shadow: 0 1px 3px #102c271a;
+}
+
+.shopping-tools button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.shopping-screen .shop-list { gap: 14px; }
+
+.shopping-screen .shop-list h3 {
+  margin: 0 0 6px 2px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.shopping-group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #dfddd3;
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.shopping-group .shop-row {
+  gap: 0;
+  padding: 0 4px 0 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.shopping-group .shop-row + .shop-row { border-top: 1px solid #eae6dc; }
+.shopping-group .shop-row:first-child { border-radius: 15px 15px 0 0; }
+.shopping-group .shop-row:last-child { border-radius: 0 0 15px 15px; }
+.shopping-group .shop-row:only-child { border-radius: 15px; }
+.shopping-group .shop-row.done { background: #f5f7ef; }
+
+.shopping-toggle {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 7px 6px 7px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.shopping-group .shop-row input {
+  flex: none;
+  margin: 0;
+  accent-color: #357550;
+}
+
+.shopping-toggle:active,
+.shopping-toolbar button:enabled:active,
+.shopping-screen .shop-remove:active { background-color: #dce9d7; }
+
+.shopping-group .shop-item { overflow-wrap: anywhere; }
+.shopping-group .shop-row.done .shop-item strong { color: var(--muted); }
+
+.shopping-group .shop-quantity {
+  margin: 1px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.shopping-group .tesco-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 0 7px;
+  background: transparent;
+}
+
+.shopping-help {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.shopping-help summary {
+  width: fit-content;
+  padding: 13px 4px;
+  cursor: pointer;
+}
+
+.shopping-help p { margin: 2px 4px 0; }

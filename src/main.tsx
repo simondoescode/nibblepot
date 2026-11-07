@@ -31,3 +31,5 @@ import './styles/planner-drag.css';
 import './styles/cooking-awake.css';
 
 import './styles/pwa-landscape.css';
+
+import './styles/shopping.css';
