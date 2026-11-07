@@ -33,6 +33,24 @@ function useCompactLayout(): boolean {
 export function CookingMode({ recipe, servings, onExit }: {
   recipe: Recipe; servings: number; onExit: () => void;
 }) {
+  const [keepAwake,setKeepAwake] = useState(false);
+  const [awakeError,setAwakeError] = useState(false);
+  const wakeRef = useRef<{release:()=>Promise<void>}|null>(null);
+  useEffect(()=>{
+    let cancelled=false;
+    const release=()=>{const held=wakeRef.current;wakeRef.current=null;void held?.release().catch(()=>{});};
+    const acquire=async()=>{
+      if(!keepAwake || document.visibilityState!=='visible')return;
+      const api=(navigator as Navigator & {wakeLock?:{request:(type:'screen')=>Promise<{release:()=>Promise<void>}>}}).wakeLock;
+      if(!api){setAwakeError(true);setKeepAwake(false);return;}
+      try{const lock=await api.request('screen');if(cancelled || document.visibilityState!=='visible'){void lock.release();return;}wakeRef.current=lock;setAwakeError(false);}
+      catch{if(!cancelled){setAwakeError(true);setKeepAwake(false);}}
+    };
+    const visibility=()=>{if(document.visibilityState==='visible')void acquire();else release();};
+    if(keepAwake)void acquire();
+    document.addEventListener('visibilitychange',visibility);
+    return()=>{cancelled=true;document.removeEventListener('visibilitychange',visibility);release();};
+  },[keepAwake]);
   const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
   const lastTool = useRef<'timer'|'ingredients'>('ingredients');
   const [progress, setProgress] = useState<CookingProgress>(() => restoreProgress(recipe));
@@ -147,8 +165,9 @@ export function CookingMode({ recipe, servings, onExit }: {
           <ArrowLeft size={19} aria-hidden="true" /> Recipe
         </button>
         <span className="cook-brand"><ChefHat size={18} aria-hidden="true"/> COOKING MODE</span>
-        <span className="cook-serves">🍽️ {servings}</span>
+        <div className="cook-toolbar-actions"><button type="button" className="cook-awake" aria-pressed={keepAwake} onClick={()=>{setAwakeError(false);setKeepAwake(value=>!value);}}>{keepAwake?'Screen awake':'Keep screen on'}</button><span className="cook-serves">🍽️ {servings}</span></div>
       </header>
+      {awakeError && <p className="cook-awake-note" role="status">Screen awake isn't supported or allowed on this device. Check your display settings.</p>}
       <div className="cook-heading">
         <p>GOOD GRUB. ZERO FAFF.</p>
         <h1>{recipe.title}</h1>
