@@ -26,7 +26,7 @@ test('direct link refresh keeps the same recipe URL and displays the full page',
 
 test('browser back and forward restore recipe and catalogue', async ({ page }) => {
   await page.goto('/nibblepot/');
-  await page.getByRole('link', { name: /view jacket/i }).first().click();
+  await page.getByRole('link', { name: /jacket potatoes/i }).first().click();
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.goBack();
   await expect(page.locator('.recipe-card')).toHaveCount(40);
@@ -68,7 +68,7 @@ test('serving changes scale recipe amounts and update shopping quantities', asyn
   await page.reload();
   await expect(page.locator('.shop-row').filter({ hasText: 'Pasta' })).toContainText('175 g');
   await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Recipes' }).click();
-  await page.getByRole('link', { name: /view tuna pasta bake/i }).click();
+  await page.getByRole('link', { name: /tuna pasta bake/i }).click();
   await expect(page.locator('output[aria-label="Servings count"]')).toHaveText('2');
 });
 
@@ -81,7 +81,7 @@ test('optional ingredients stay off the list until chosen', async ({ page }, tes
   await nav.getByRole('button', { name: 'Shopping' }).click();
   await expect(page.locator('.shop-row').filter({ hasText: 'Butter or spread' })).toHaveCount(0);
   await nav.getByRole('button', { name: 'Recipes' }).click();
-  await page.getByRole('link', { name: /view jacket/i }).first().click();
+  await page.getByRole('link', { name: /jacket potatoes/i }).first().click();
   await page.locator('.recipe-optional').filter({ hasText: 'Include optional ingredient' }).last().getByRole('checkbox').check();
   await page.getByRole('button', { name: /add missing bits/i }).click();
   await nav.getByRole('button', { name: 'Shopping' }).click();

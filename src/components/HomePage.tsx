@@ -28,6 +28,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
   const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
   const nearly = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length > 0) : [];
+  const resultCount = filtered.length === recipes.length ? `${recipes.length}` : `${filtered.length} of ${recipes.length}`;
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   return <>
     <TonightInspiration recipes={ready} favorites={favorites} onFavorite={onFavorite} onOpen={onOpen} onPlan={onPlan} />
@@ -43,7 +44,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     <div className="recipe-food-toolbar">
       <FoodTypePicker selected={selectedFoodTypes} onChange={setSelectedFoodTypes}/>
       {(selectedFoodTypes.length > 0 || filter !== 'all' || search.trim()) && <button type="button" className="recipe-clear-filters" onClick={clearFilters}>Clear filters</button>}
-      <p className="recipe-result-count" role="status">{filter === 'larder' ? `${ready.length} ready to cook · ${nearly.length} nearly there` : `${filtered.length} of ${recipes.length} recipes`}</p>
+      <p className="recipe-result-count" role="status">{filter === 'larder' ? `${ready.length} ready to cook · ${nearly.length} nearly there` : `${resultCount} recipes`}</p>
     </div>
     {selectedFoodTypes.length > 0 && <div className="selected-food-types" aria-label="Selected food types">
       {foodTypes.filter(type=>selectedFoodTypes.includes(type.id)).map(type=><button key={type.id} type="button" aria-label={`Remove ${type.label} filter`}

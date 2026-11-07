@@ -1,4 +1,4 @@
-import { ArrowUpRight, Clock3, Heart, Soup } from 'lucide-react';
+import { ArrowRight, Clock3, Heart, Soup } from 'lucide-react';
 import { useState, type MouseEvent } from 'react';
 import { recipePath } from '../lib/routes';
 import type { Recipe } from '../types';
@@ -19,15 +19,15 @@ type Props = {
 };
 
 /** Keep real link hrefs for sharing/open-in-new-tab, with SPA navigation on a normal click. */
-function visitRecipe(event: MouseEvent<HTMLAnchorElement>, id: string, onOpen?: (id: string) => void) {
-  if (!onOpen || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+function visitRecipe(event: MouseEvent<HTMLAnchorElement>, id: string, onOpen: (id: string) => void) {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
   onOpen(id);
 }
 
 /** Local WebP and SVG food art. No external runtime images or layout shifts. */
-export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: {
-  recipe: Recipe; saved: boolean; onFavorite?: () => void; onOpen?: () => void; large?: boolean;
+export function RecipeArt({ recipe, saved, onFavorite, large = false }: {
+  recipe: Recipe; saved: boolean; onFavorite?: () => void; large?: boolean;
 }) {
   const [pulse, setPulse] = useState(false);
   const image = <img
@@ -37,9 +37,7 @@ export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: 
     loading={large ? 'eager' : 'lazy'} decoding="async"
   />;
   return <div className={large ? 'modal-art illustrated-art' : 'recipe-pic illustrated-art'}>
-    {large ? image : <a href={recipePath(recipe.id)} className="recipe-art-open"
-      onClick={event => visitRecipe(event, recipe.id, onOpen ? () => onOpen() : undefined)}
-      aria-label={`View ${recipe.title}`}>{image}</a>}
+    {image}
     {!large && <span className="tiny-label"><Clock3 size={13} aria-hidden="true" /> {recipe.mins} min</span>}
     {!large && <button type="button" className={`heart ${saved ? 'saved' : ''}${pulse ? ' just-saved' : ''}`}
       aria-label={`${saved ? 'Remove from' : 'Add to'} favourites`} aria-pressed={saved} onAnimationEnd={() => setPulse(false)} onClick={() => {setPulse(!saved);onFavorite?.();}}>
@@ -59,18 +57,20 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
     const missing = missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4);
     return <article className="recipe-card" key={recipe.id}>
       <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)}
-        onFavorite={() => onFavorite(recipe.id)} onOpen={() => onOpen(recipe.id)} />
+        onFavorite={() => onFavorite(recipe.id)} />
       <div className="recipe-info">
-        <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'ONE-POT FAVOURITE' : recipe.ing.length <= 5 ? 'MINIMAL INGREDIENTS' : 'FAMILY FAVOURITE'}</div>
-        <h3><a href={recipePath(recipe.id)} onClick={event => visitRecipe(event, recipe.id, onOpen)}>
+        <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'One pot' : recipe.ing.length <= 5 ? `${recipe.ing.length} ingredients` : 'Family favourite'}</div>
+        <h3><a className="recipe-card-link" href={recipePath(recipe.id)}
+          onClick={event => visitRecipe(event, recipe.id, onOpen)}>
           {recipe.title}</a></h3><p>{recipe.description}</p>
         {onAddMissing && missing.length > 0 && <div className="recipe-missing"><span>Need: {missing.map(item => ingredientName(item.id)).join(', ')}</span><button type="button" onClick={() => onAddMissing(recipe.id)}>Add missing to shopping</button></div>}
         <div className="card-foot">
-          <span className="foot-meta"><span className="foot-stock-dot" aria-hidden="true" />{inStock} of {recipe.ing.length} in larder</span>
-          <a href={recipePath(recipe.id)} className="open-recipe"
-            onClick={event => visitRecipe(event, recipe.id, onOpen)} aria-label={`Open recipe: ${recipe.title}`}>
-            <span>Let's cook</span><ArrowUpRight size={17} aria-hidden="true" />
-          </a>
+          <span className="foot-meta" data-in-stock={inStock > 0}>
+            <span className="foot-stock-dot" aria-hidden="true" />{inStock}/{recipe.ing.length} in larder
+          </span>
+          <span className="recipe-card-cue" aria-hidden="true">
+            <span>View recipe</span><ArrowRight size={16} />
+          </span>
         </div>
       </div>
     </article>;
