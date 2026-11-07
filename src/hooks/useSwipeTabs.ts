@@ -4,7 +4,7 @@ import type { Tab } from '../types';
 import { prefersReducedMotion } from './useReducedMotion';
 
 export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping'];
-const BLOCKED = 'input,textarea,select,button,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
+const BLOCKED = 'input,textarea,select,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
 
 export function swipeDestination(tab: Tab, delta: number): Tab | null {
   const index = SWIPE_TABS.indexOf(tab);
@@ -49,6 +49,7 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       }
       if (g.axis !== 'horizontal') return;
 
+      // Once the drag is horizontal, suppress the tap on any button it started on.
       if (event.cancelable) event.preventDefault();
       g.dx = dx;
       if (prefersReducedMotion()) return;

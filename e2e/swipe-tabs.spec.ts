@@ -2,10 +2,10 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function touchGesture(page: Page) {
   const session = await page.context().newCDPSession(page);
-  return (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', x = 0) =>
+  return (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', x = 0, y = 104) =>
     session.send('Input.dispatchTouchEvent', {
       type,
-      touchPoints: type === 'touchEnd' || type === 'touchCancel' ? [] : [{ x, y: 104 }],
+      touchPoints: type === 'touchEnd' || type === 'touchCancel' ? [] : [{ x, y }],
     });
 }
 
@@ -41,6 +41,37 @@ test.describe('Swipe between mobile tabs', () => {
     await expect(preview).toHaveCount(0);
     await page.goBack();
     await expect(main.getByRole('heading', { name: "This week's tea." })).toBeVisible();
+  });
+
+  test('swipes from a Planner meal card into the same Recipes page it previews', async ({ page }) => {
+    await page.addInitScript(() => { Math.random = () => 0.01; });
+    await page.goto('/nibblepot/planner/');
+    const meal = page.getByRole('button', { name: 'Change Monday dinner' });
+    await expect(meal).toBeInViewport();
+    const card = (await meal.boundingBox())!;
+    const x = card.x + 20;
+    const y = card.y + card.height / 2;
+    const touch = await touchGesture(page);
+
+    await touch('touchStart', x, y);
+    await touch('touchMove', x + 145, y);
+    const preview = page.locator('.swipe-preview');
+    await expect(preview).toContainText("This week's dinners");
+    const title = await preview.locator('h1').innerText();
+    await page.evaluate(() => { Math.random = () => 0.99; });
+    await touch('touchEnd');
+
+    await expect(page).toHaveURL(/\/nibblepot\/$/);
+    await expect(page.locator('#main-content h1')).toHaveText(title);
+    await expect(page.locator('.swipe-track')).toHaveCSS('transform', 'none');
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+
+    await touch('touchStart', 290);
+    await touch('touchMove', 80);
+    await touch('touchEnd');
+    await expect(page).toHaveURL(/\/planner\/$/);
+    await meal.tap();
+    await expect(page.getByRole('dialog')).toBeVisible();
   });
 
   test('returns to the current tab after a short swipe', async ({ page }) => {
