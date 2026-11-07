@@ -1,0 +1,35 @@
+/* Tablet layouts: preserve native touch navigation while using the available canvas. */
+@media (min-width:768px) and (max-width:1180px) {
+  .recipe-page{max-width:100%;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  .recipe-page-hero{grid-template-columns:minmax(0,0.95fr) minmax(0,1.05fr)}
+  .recipe-page-image{border-right:2px solid var(--ink);border-bottom:0;min-height:290px}
+  .recipe-page-intro{padding:clamp(18px,2.5vw,30px)}
+  .recipe-page h1{font-size:clamp(30px,4vw,48px)}
+  .recipe-page-sections{grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);gap:clamp(12px,2vw,22px)}
+  .recipe-page-sections .recipe-detail-panel{padding:clamp(15px,2vw,22px)}
+  .recipe-page-actions .btn{min-height:44px}
+  .cook-shell{width:min(100%,1080px)}
+  .cook-screen{padding:16px 22px calc(100px + env(safe-area-inset-bottom))}
+  .cook-layout{grid-template-columns:minmax(0,1.5fr) minmax(250px,0.9fr);gap:16px}
+  .cook-step-card{min-height:470px;padding:clamp(18px,2.5vw,28px)}
+  .cook-step-content p{font-size:clamp(27px,3.3vw,39px)}
+  .cook-side{position:sticky;top:16px;align-self:start;grid-template-columns:1fr}
+  .larder-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(225px,0.34fr);gap:18px;align-items:start}
+  .larder-catalogue{min-width:0}
+  .larder-aside{position:sticky;top:90px;min-width:0}
+  .larder-page{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+  .larder-page .item-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .planner-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(245px,0.8fr);gap:16px;align-items:start}
+  .planner-days,.planner-summary{min-width:0}
+  .planner-summary{position:sticky;top:90px}
+  .planner-day{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:12px}
+  .planner-view{grid-column:2;justify-self:end;min-height:36px}
+  .planner-week-head{flex-wrap:wrap}
+  .planner-picker-dialog{width:min(720px,calc(100vw - 48px));max-height:85dvh}
+  .planner-picker-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:768px) and (max-width:900px) {
+  .larder-layout{grid-template-columns:minmax(0,1fr) 225px}
+  .planner-layout{grid-template-columns:minmax(0,1fr) 245px}
+  .recipe-page-sections{grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr)}
+}
