@@ -29,7 +29,10 @@ export default defineConfig(() => {
           start_url: './',
           scope: './',
           display: 'standalone',
+          orientation: 'any',
+          display_override: ['standalone', 'minimal-ui'],
           lang: 'en-GB',
+          prefer_related_applications: false,
           categories: ['food', 'lifestyle'],
           shortcuts: [
             { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
