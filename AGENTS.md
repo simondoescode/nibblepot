@@ -4,6 +4,7 @@
 
 ## Mandatory guides
 
+- **UI/UX design and review:** use [UI UX Pro Max](.agents/skills/ui-ux-pro-max/SKILL.md) (upstream CLI 2.15.0) to check mobile and tablet layouts, touch interactions, accessibility and motion. Follow Simmer’s existing visual direction, components and tokens when applying its guidance.
 - **Food image generation, optimisation, or replacement:** read [IMAGE_STYLE.md](IMAGE_STYLE.md) first. Use real transparent **800×504 WebP** cutouts at a low three-quarter angle, restrained saturation, and a **250,000-byte maximum**.
 - **Adding or editing recipes:** follow [ADDING_RECIPES.md](ADDING_RECIPES.md), including generating and checking the food image.
 - **Architecture/deployment:** refer to [README.md](README.md), `src/types.ts`, `src/ui/tokens.css` and `src/styles/recipe-refresh.css`.
