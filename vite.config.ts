@@ -23,9 +23,9 @@ export default defineConfig(() => {
         },
         manifest: {
           id: base,
-          name: 'Nibblepot',
-          short_name: 'Nibblepot',
-          description: 'Cheap, cheerful family recipes, a larder, and shopping list.',
+          name: 'Simmer',
+          short_name: 'Simmer',
+          description: 'Dinner, sorted. Discover family recipes, plan meals and shop smarter.',
           start_url: './',
           scope: './',
           display: 'standalone',
@@ -36,8 +36,8 @@ export default defineConfig(() => {
             { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
             { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
           ],
-          background_color: '#fffaf1',
-          theme_color: '#fff9ee',
+          background_color: '#fff7eb',
+          theme_color: '#103b32',
           icons: [
             { src: 'icons/icon-192-v2.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
             { src: 'icons/icon-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
