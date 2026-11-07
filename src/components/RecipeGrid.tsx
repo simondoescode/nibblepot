@@ -2,7 +2,8 @@ import { ArrowUpRight, Clock3, Heart, Soup } from 'lucide-react';
 import { useState, type MouseEvent } from 'react';
 import { recipePath } from '../lib/routes';
 import type { Recipe } from '../types';
-import { inLarder } from '../lib/recipes';
+import { inLarder, missingRequiredIngredients } from '../lib/recipes';
+import { ingredientName } from '../data';
 import { Button } from '../ui/controls';
 
 type Props = {
@@ -12,6 +13,9 @@ type Props = {
   onFavorite: (id: string) => void;
   onOpen: (id: string) => void;
   onReset?: () => void;
+  stock?: Record<string,string>;
+  servings?: Record<string,number>;
+  onAddMissing?: (id:string) => void;
 };
 
 /** Keep real link hrefs for sharing/open-in-new-tab, with SPA navigation on a normal click. */
@@ -44,7 +48,7 @@ export function RecipeArt({ recipe, saved, onFavorite, onOpen, large = false }: 
   </div>;
 }
 
-export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onReset }: Props) {
+export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onReset, stock = {}, servings = {}, onAddMissing }: Props) {
   if (!recipes.length) return <div className="empty">
     <div className="empty-icon">🍽️</div><h3>No recipes found</h3>
     <p>Try another search or filter.</p>
@@ -52,6 +56,7 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
   </div>;
   return <div className="recipe-grid">{recipes.map(recipe => {
     const inStock = inLarder(recipe, larder);
+    const missing = missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4);
     return <article className="recipe-card" key={recipe.id}>
       <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)}
         onFavorite={() => onFavorite(recipe.id)} onOpen={() => onOpen(recipe.id)} />
@@ -59,6 +64,7 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
         <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'ONE-POT FAVOURITE' : recipe.ing.length <= 5 ? 'MINIMAL INGREDIENTS' : 'FAMILY FAVOURITE'}</div>
         <h3><a href={recipePath(recipe.id)} onClick={event => visitRecipe(event, recipe.id, onOpen)}>
           {recipe.title}</a></h3><p>{recipe.description}</p>
+        {onAddMissing && missing.length > 0 && <div className="recipe-missing"><span>Need: {missing.map(item => ingredientName(item.id)).join(', ')}</span><button type="button" onClick={() => onAddMissing(recipe.id)}>Add missing to shopping</button></div>}
         <div className="card-foot">
           <span className="foot-meta"><span className="foot-stock-dot" aria-hidden="true" />{inStock} of {recipe.ing.length} in larder</span>
           <a href={recipePath(recipe.id)} className="open-recipe"

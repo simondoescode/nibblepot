@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import type { WeekSlot } from '../types';
 import { TonightInspiration } from './TonightInspiration';
 import { recipes } from '../data';
-import { filterRecipes, missingRequired } from '../lib/recipes';
+import { filterRecipes, missingRequiredIngredients } from '../lib/recipes';
 import { foodTypes, type FoodType } from '../lib/foodTypes';
 import { FoodTypePicker } from './FoodTypePicker';
 import type { Filter } from '../types';
@@ -20,14 +20,14 @@ const filters: { id: Filter; label: string }[] = [
 type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
-  favorites: string[]; larder: string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void;
+  favorites: string[]; larder: string[]; stock: Record<string,string>; servings: Record<string,number>; onAddMissing: (id: string) => void; onFavorite: (id: string) => void; onOpen: (id: string) => void;
   weekSlots: WeekSlot[]; onPlan: (id: string, day: number) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
-  const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes), [search, filter, larder, selectedFoodTypes]);
-  const ready = filter === 'larder' ? filtered.filter(recipe => missingRequired(recipe, larder) === 0) : filtered;
-  const nearly = filter === 'larder' ? filtered.filter(recipe => missingRequired(recipe, larder) > 0) : [];
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, servings, onAddMissing, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
+  const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
+  const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
+  const nearly = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length > 0) : [];
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   return <>
     <TonightInspiration recipes={ready} favorites={favorites} onFavorite={onFavorite} onOpen={onOpen} onPlan={onPlan} />
@@ -54,7 +54,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
         <section aria-label="Ready to cook"><h2>Ready to cook</h2><p>Everything required is in your larder.</p>
           {ready.length ? <RecipeGrid recipes={ready} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No meals ready yet. Add ingredients to your larder.</p>}</section>
         <section aria-label="Nearly there"><h2>Nearly there</h2><p>Just one or two required ingredients to pick up.</p>
-          {nearly.length ? <RecipeGrid recipes={nearly} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No close matches right now.</p>}</section>
+          {nearly.length ? <RecipeGrid recipes={nearly} favorites={favorites} larder={larder} stock={stock} servings={servings} onAddMissing={onAddMissing} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No close matches right now.</p>}</section>
       </> : <RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} onReset={clearFilters} />}
     </div>
   </>;

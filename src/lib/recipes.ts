@@ -1,16 +1,28 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
-import { shoppingQuantity } from './quantities';
+import { shoppingQuantity, parseQuantity, formatRecipeQuantity } from './quantities';
 import { matchesFoodType, type FoodType } from './foodTypes';
 
 /** Only required ingredients affect whether dinner can be made. */
 export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(item => !item.optional && !larder.includes(item.id)).length;
 
+/** A checked item without a measured quantity remains available for legacy larders.
+ * Compare only compatible units; never guess conversions between packs and weights. */
+export const missingRequiredIngredients = (recipe: Recipe, larder: readonly string[], stock: Readonly<Record<string,string>> = {}, servings = 4) =>
+  recipe.ing.filter(item => {
+    if (item.optional) return false;
+    if (!larder.includes(item.id)) return true;
+    if (!stock[item.id]) return false;
+    const required = parseQuantity(formatRecipeQuantity(item, servings));
+    const owned = parseQuantity(stock[item.id]);
+    return required.value !== undefined && owned.value !== undefined && required.unit === owned.unit && owned.value < required.value;
+  });
+
 export const inLarder = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(({ id }) => larder.includes(id)).length;
 
-export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], selectedFoodTypes: readonly FoodType[] = []): Recipe[] {
+export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], selectedFoodTypes: readonly FoodType[] = [], stock: Readonly<Record<string,string>> = {}, servings: Readonly<Record<string,number>> = {}): Recipe[] {
   const q = search.trim().toLocaleLowerCase('en-GB');
   let found = recipes.filter(recipe =>
     (selectedFoodTypes.length === 0 || selectedFoodTypes.some(type=>matchesFoodType(recipe,type))) && (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
@@ -20,8 +32,8 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
   if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
   if (filter === 'larder') {
-    found = found.filter(recipe => missingRequired(recipe, larder) <= 2)
-      .sort((a, b) => missingRequired(a, larder) - missingRequired(b, larder) || a.mins - b.mins);
+    found = found.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length <= 2)
+      .sort((a, b) => missingRequiredIngredients(a, larder, stock, servings[a.id] ?? 4).length - missingRequiredIngredients(b, larder, stock, servings[b.id] ?? 4).length || a.mins - b.mins);
   }
   return found;
 }
