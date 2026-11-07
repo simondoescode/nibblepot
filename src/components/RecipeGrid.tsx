@@ -59,14 +59,14 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
       <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)}
         onFavorite={() => onFavorite(recipe.id)} />
       <div className="recipe-info">
-        <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'One-pot favourite' : recipe.ing.length <= 5 ? 'Simple ingredients' : 'Family favourite'}</div>
+        <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'One pot' : recipe.ing.length <= 5 ? `${recipe.ing.length} ingredients` : 'Family favourite'}</div>
         <h3><a className="recipe-card-link" href={recipePath(recipe.id)}
           aria-label={`View ${recipe.title}`} onClick={event => visitRecipe(event, recipe.id, onOpen)}>
           {recipe.title}</a></h3><p>{recipe.description}</p>
         {onAddMissing && missing.length > 0 && <div className="recipe-missing"><span>Need: {missing.map(item => ingredientName(item.id)).join(', ')}</span><button type="button" onClick={() => onAddMissing(recipe.id)}>Add missing to shopping</button></div>}
         <div className="card-foot">
           <span className="foot-meta" data-in-stock={inStock > 0}>
-            <span className="foot-stock-dot" aria-hidden="true" />{inStock} of {recipe.ing.length} in larder
+            <span className="foot-stock-dot" aria-hidden="true" />{inStock}/{recipe.ing.length} in larder
           </span>
           <span className="recipe-card-cue" aria-hidden="true">
             <span>View recipe</span><ArrowRight size={16} />

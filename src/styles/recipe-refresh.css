@@ -67,14 +67,14 @@
   .recipe-card .recipe-pic{aspect-ratio:4/3;border-bottom:1px solid #eddfcd}
   .recipe-card .recipe-pic:has(.recipe-photo){background:radial-gradient(ellipse at 50% 66%,#fffaf2 28%,#f8e5cd 100%)}
   .recipe-info{padding:11px 10px 10px;min-height:0}
-  .recipe-info h3{font-size:clamp(16px,4.35vw,21px);letter-spacing:-.45px}
+  .recipe-info h3{font-size:clamp(16px,4.35vw,21px);font-weight:800;letter-spacing:-.45px}
   .recipe-info p{font-size:12px;line-height:1.35;min-height:0;margin:0 0 10px}
   .recipe-card-eyebrow svg{width:11px;height:11px}
-  .tiny-label{bottom:7px;left:7px;font-size:11px;padding:4px 7px;gap:4px;border:0;box-shadow:none;background:#fff0c8}
+  .tiny-label{bottom:7px;left:7px;font-size:11px;padding:4px 7px;gap:4px;font-weight:800;border:0;box-shadow:none;background:#fff0c8}
   .tiny-label svg{width:12px;height:12px}
   .recipe-card .heart{width:44px;height:44px;top:5px;right:5px;border:1px solid #103b3233;box-shadow:0 2px 5px #103b321a}
   .card-foot{padding-top:3px;border:0;gap:4px}
-  .card-foot .foot-meta{width:fit-content;border-radius:12px;padding:5px 6px;background:#eaf2e6;color:#365a3c;line-height:1.15;gap:4px}
+  .card-foot .foot-meta{width:fit-content;border-radius:12px;padding:5px 6px;background:#eaf2e6;color:#365a3c;font-weight:750;line-height:1.15;gap:4px}
   .foot-meta[data-in-stock=false]{background:#f3eee5;color:#5b5043}
   .recipe-card-cue{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#ffe7b8}
   .recipe-card-cue span{display:none}
