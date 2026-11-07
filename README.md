@@ -1,6 +1,6 @@
-# Nibblepot 🍲
+# Simmer 🍲
 
-**Good grub. Zero faff.** A colourful, installable family recipe book with 16 recipes, a surprise-me button, favourites, larder, ingredient matching, and Tesco shopping links.
+**Dinner, sorted.** A colourful, installable family recipe book with 16 recipes, a surprise-me button, favourites, larder, ingredient matching, and Tesco shopping links.
 
 ## Stack
 
@@ -58,7 +58,7 @@ Recipe timings and ingredient quantities are demo content and should be independ
 
 ## UI system
 
-Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable buttons and filter chips are in `src/ui/controls.tsx`. The recipe dialog uses Radix Primitives for accessible focus management, dismissal and screen-reader semantics. Lucide provides utility action icons, while Nibblepot's mascot, food artwork and playful colour palette stay custom.
+Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable buttons and filter chips are in `src/ui/controls.tsx`. The recipe dialog uses Radix Primitives for accessible focus management, dismissal and screen-reader semantics. Lucide provides utility action icons, while Simmer's mascot, food artwork and playful colour palette stay custom.
 
 ## Settings and refreshing the PWA
 
