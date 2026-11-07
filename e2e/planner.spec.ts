@@ -131,3 +131,32 @@ test('bulk planner actions can be undone and clearing requires confirmation', as
   await page.getByRole('button',{name:'Undo'}).click();
   await expect(page.getByRole('button',{name:'Change Monday dinner'})).toContainText('Jacket potatoes');
 });
+
+test('the narrow planner keeps Today and both meal actions in one row', async ({page}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
+  await page.goto('/nibblepot/planner/');
+
+  const week = page.getByRole('group', { name: 'Choose a week' });
+  await expect(week).toContainText('Current week');
+  const today = page.locator('.planner-day[data-today]');
+  await expect(today.getByText('Today', { exact: true })).toBeVisible();
+  await expect(today.locator('[aria-current="date"]')).toContainText('2 Nov');
+  const edit = today.getByRole('button', { name: 'Change Monday dinner' });
+  const view = today.getByRole('button', { name: 'View recipe for Monday' });
+  const editBox = (await edit.boundingBox())!;
+  const viewBox = (await view.boundingBox())!;
+  expect(viewBox.width).toBeGreaterThanOrEqual(44);
+  expect(viewBox.height).toBeGreaterThanOrEqual(44);
+  expect(viewBox.x).toBeGreaterThanOrEqual(editBox.x + editBox.width);
+  expect(viewBox.y + viewBox.height / 2).toBeCloseTo(editBox.y + editBox.height / 2, 0);
+  expect(viewBox.x + viewBox.width).toBeLessThan(320);
+
+  await week.getByRole('button', { name: 'Next week' }).click();
+  await expect(today).toHaveCount(0);
+  await page.getByRole('button', { name: 'This week', exact: true }).click();
+  await expect(today).toHaveCount(1);
+
+  await view.click();
+  await expect(page).toHaveURL(/\/recipes\/jacket\/$/);
+});
