@@ -23,7 +23,7 @@ type Props = {
   onRandom: () => void; onLarder: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, onRandom, onLarder }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes), [search, filter, larder, selectedFoodTypes]);
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   return <>
