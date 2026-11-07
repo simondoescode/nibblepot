@@ -33,7 +33,7 @@ const insideEllipse = (x, y, cx, cy, rx, ry) => ((x - cx) / rx) ** 2 + ((y - cy)
 const hex = h => [...[1, 3, 5].map(i => Number.parseInt(h.slice(i, i + 2), 16)), 255];
 function potIcon(size, maskable = false, opaque = false) {
   const raw = Buffer.alloc(size * (size * 4 + 1));
-  const dark = hex('#25231e'), yellow = hex('#ffd861'), orange = hex('#fc724e');
+  const dark = hex('#103b32'), yellow = hex('#103b32'), orange = hex('#f35b20');
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       // Draw at a fixed virtual 80x80 scale, independent of the PNG resolution.
@@ -48,11 +48,9 @@ function potIcon(size, maskable = false, opaque = false) {
       if (yy >= 24 && yy <= 70 && Math.abs(xx - 40) <= halfWidth + 2) col = dark;
       if (yy >= 28 && yy <= 67 && Math.abs(xx - 40) <= halfWidth - 2) col = orange;
       if (insideRoundRect(xx, yy, 8, 23, 72, 29, 3)) col = dark;
-      if (insideEllipse(xx, yy, 31, 45, 3.3, 3.3) || insideEllipse(xx, yy, 51, 45, 3.3, 3.3)) col = dark;
-      if (yy > 52 && yy < 62) {
-        const smileY = 54 + 5 * (1 - ((xx - 41) / 9) ** 2);
-        if (xx >= 33 && xx <= 49 && Math.abs(yy - smileY) < 1.5) col = dark;
-      }
+      // Simmer's pot is intentionally minimal rather than a character mascot.
+      // Three soft steam strokes above the lid.
+      if (yy >= 9 && yy < 22 && [29,40,51].some(cx => Math.abs(xx - (cx + Math.sin(yy * .38) * 2)) < 1.8)) col = hex('#fff7eb');
       const p = y * (size * 4 + 1) + 1 + x * 4;
       raw[p] = col[0]; raw[p + 1] = col[1]; raw[p + 2] = col[2]; raw[p + 3] = col[3];
     }
