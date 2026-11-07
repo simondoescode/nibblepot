@@ -25,13 +25,15 @@ describe('recipe catalogue', () => {
     expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.length <= 5)).toBe(true);
     expect(filterRecipes(recipes, '', 'onepot', []).every(recipe => recipe.onePot)).toBe(true);
   });
-  it('only shows recipes with every required ingredient in the larder', () => {
+  it('groups ready and nearly ready recipes by required stock', () => {
     const pantry = ['potatoes', 'baked-beans', 'cheese', 'butter'];
     const matches = filterRecipes(recipes, '', 'larder', pantry);
     expect(matches.some(recipe => recipe.id === 'jacket')).toBe(true);
-    expect(matches.every(recipe => missingRequired(recipe, pantry) === 0)).toBe(true);
+    expect(matches.every(recipe => missingRequired(recipe, pantry) <= 2)).toBe(true);
+    expect(matches.map(recipe => missingRequired(recipe, pantry))).toEqual([...matches.map(recipe => missingRequired(recipe, pantry))].sort((a,b)=>a-b));
+    expect(matches.some(recipe => missingRequired(recipe, pantry) > 0)).toBe(true);
     expect(inLarder(recipes.find(recipe => recipe.id === 'jacket')!, pantry)).toBe(4);
-    expect(filterRecipes(recipes, '', 'larder', [])).toEqual([]);
+    expect(filterRecipes(recipes, '', 'larder', []).every(recipe => missingRequired(recipe, []) <= 2)).toBe(true);
     expect(filterRecipes(recipes, '', 'all', [])).toHaveLength(recipes.length);
   });
   it('ignores optional toppings when ranking dinner availability', () => {
