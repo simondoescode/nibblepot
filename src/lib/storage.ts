@@ -2,6 +2,7 @@ import type { SavedData, ShoppingEntry, WeekSlot } from '../types';
 import { ingredients, recipes } from '../data';
 import { validMondayKey } from './weeklyPlan';
 import { parseQuantity } from './quantities';
+import { customShoppingItem } from './shopping';
 
 // Keep the existing storage key: returning users retain their original demo data.
 export const STORAGE_KEY = 'nibblepot-demo-v1';
@@ -38,23 +39,27 @@ export function parseSavedData(value: unknown): SavedData {
     ? [...new Set(value.favorites.filter((id): id is string => typeof id === 'string' && validRecipeIds.has(id)))]
     : [];
   const shopping: ShoppingEntry[] = Array.isArray(value.shopping)
-    ? value.shopping.filter(isObject).filter(item => typeof item.id === 'string' && validIngredientIds.has(item.id))
-      .map(item => {
+    ? value.shopping.filter(isObject).flatMap(item => {
+        if (typeof item.id !== 'string') return [];
+        if (!validIngredientIds.has(item.id)) {
+          const custom = typeof item.customName === 'string' ? customShoppingItem(item.customName) : null;
+          return custom?.id === item.id ? [{ ...custom, done: item.done === true }] : [];
+        }
         const weekCounts: Record<string, number> = {};
         if (isObject(item.weekCounts)) for (const [id, count] of Object.entries(item.weekCounts)) {
           if (validRecipeIds.has(id) && typeof count === 'number' && Number.isInteger(count) && count >= 1 && count <= 7) {
             weekCounts[id] = count;
           }
         }
-        return {
-          id: String(item.id),
+        return [{
+          id: item.id,
           done: item.done === true,
           from: Array.isArray(item.from)
             ? [...new Set(item.from.filter((id): id is string => typeof id === 'string' && validRecipeIds.has(id)))]
             : [],
           ...(Object.keys(weekCounts).length ? { weekCounts } : {}),
           ...(item.planGenerated === true ? { planGenerated: true } : {}),
-        };
+        }];
       })
     : [];
   // Invalid or unknown recipe serving settings are ignored rather than corrupting existing saves.

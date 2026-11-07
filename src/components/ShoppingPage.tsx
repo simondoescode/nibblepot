@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { ClipboardCopy, ExternalLink, ListX, ShoppingBasket, X } from 'lucide-react';
-import { ingredientName, ingredients } from '../data';
+import { ingredients } from '../data';
 import { tescoSearchUrl } from '../lib/recipes';
 import { shoppingPackHint, shoppingQuantity } from '../lib/quantities';
+import { shoppingItemName } from '../lib/shopping';
 import type { ShoppingEntry } from '../types';
+import { AddShoppingItem } from './AddShoppingItem';
 import { Button, IconButton } from '../ui/controls';
 
-const sections = ['Cupboard', 'Fridge', 'Freezer'] as const;
+const sections = ['Cupboard', 'Fridge', 'Freezer', 'Other items'] as const;
 
-export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, onClear, onCopy, onBrowse }: {
+export function ShoppingPage({ shopping, larder, servings, stock, onAdd, onToggle, onRemove, onClear, onCopy, onBrowse }: {
   shopping: ShoppingEntry[];
+  larder: string[];
+  onAdd: (item: ShoppingEntry) => void;
   servings: Record<string, number>;
   stock?: Record<string,string>;
   onToggle: (id: string, done: boolean) => void;
@@ -27,6 +31,7 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
     <header className="page-intro shopping-heading">
       <span className="intro-icon" aria-hidden="true"><ShoppingBasket size={22} /></span>
       <h2>Shopping, sorted.</h2>
+      <AddShoppingItem larder={larder} onAdd={onAdd} />
     </header>
     {shopping.length > 0 ? <>
       <div className="shopping-summary">
@@ -49,14 +54,14 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
       </div>
       {visibleItems.length ? <div className="shop-list">
         {sections.map(section => {
-          const entries = visibleItems.filter(item => ingredients[item.id]?.[1] === section);
+          const entries = visibleItems.filter(item => (ingredients[item.id]?.[1] ?? 'Other items') === section);
           if (!entries.length) return null;
 
           return <section key={section} aria-label={`${section} shopping items`}>
             <h3>{section}</h3>
             <ul className="shopping-group">
               {entries.map(item => {
-                const name = ingredientName(item.id);
+                const name = shoppingItemName(item);
                 const packHint = shoppingPackHint(item, servings);
                 return <li className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
                   <label className="shopping-toggle">
@@ -64,11 +69,11 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
                       onChange={event => onToggle(item.id, event.target.checked)} />
                     <span className="shop-item">
                       <strong>{name}</strong>
-                      <span className="shop-quantity">{shoppingQuantity(item, servings, stock)}</span>
+                      {(item.from.length > 0 || item.weekCounts) && <span className="shop-quantity">{shoppingQuantity(item, servings, stock)}</span>}
                       {packHint && <small className="shop-pack-hint">{packHint}</small>}
                     </span>
                   </label>
-                  <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id)}
+                  <a className="tesco-link" target="_blank" rel="noopener noreferrer" href={tescoSearchUrl(item.id, name)}
                     aria-label={`Find ${name} at Tesco`}>Tesco <ExternalLink size={12} aria-hidden="true" /></a>
                   <IconButton className="shop-remove" onClick={() => onRemove(item.id)} label={`Remove ${name}`}>
                     <X size={17} aria-hidden="true" />
@@ -86,7 +91,7 @@ export function ShoppingPage({ shopping, servings, stock, onToggle, onRemove, on
         <p>Quantities combine recipes with matching units. Only larder amounts you’ve entered are subtracted, and only when the units match. Tesco links open product searches.</p>
       </details>
     </> : <div className="empty"><h3>Your list is empty</h3>
-      <p>Open a recipe and tap “Add missing bits”.</p>
+      <p>Add an item yourself or bring ingredients over from a recipe.</p>
       <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
   </div>;

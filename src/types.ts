@@ -32,6 +32,7 @@ export interface Recipe {
 
 export interface ShoppingEntry {
   id: IngredientId;
+  customName?: string;
   done: boolean;
   from: RecipeId[];
   /** Planner-only contributions, counted per scheduled dinner. */
