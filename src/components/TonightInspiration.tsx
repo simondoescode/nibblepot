@@ -22,8 +22,8 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   const mouseStart = useRef<{ x: number; y: number } | null>(null);
   const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
-  const backdrops = ['navy-tartan.svg','forest-table.svg','cream-linen.svg','slate-kitchen.svg'];
-  const backdrop = current ? backdrops[Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % backdrops.length] : backdrops[0];
+  // Raster backgrounds are optional until the generated WebP asset pack is added to public/backgrounds.
+  const backdrop = current ? ['navy-tartan','forest-table','cream-linen','rustic-wood','slate-kitchen','navy-tiles'][Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % 6] : 'forest-table';
   const show = (next: string) => {
     setPlanDay(null);
     setId(next);
@@ -49,7 +49,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
       start.current = null;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) cycle(dx < 0 ? 1 : -1);
     }}>
-    <div className="simmer-spotlight-image" key={current.id} style={{backgroundImage: `url(${import.meta.env.BASE_URL}backgrounds/${backdrop})`}}>
+    <div className="simmer-spotlight-image" key={current.id} data-backdrop={backdrop}>
       <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
