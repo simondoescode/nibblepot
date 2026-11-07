@@ -84,3 +84,9 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
 @media(prefers-reduced-motion:reduce){
   .route-content[data-motion]{animation:none!important;transform:none!important;opacity:1!important}
 }
+
+.swipe-viewport{overflow-x:clip}
+.swipe-track{position:relative}
+.swipe-preview{position:absolute;inset:0 auto 0 100%;width:100%;overflow:clip;pointer-events:none}
+.swipe-preview[data-side=left]{left:-100%}
+.swipe-preview > .main{position:relative}

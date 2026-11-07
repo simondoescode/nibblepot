@@ -1,0 +1,72 @@
+import { test, expect, type Page } from '@playwright/test';
+
+async function touchGesture(page: Page) {
+  const session = await page.context().newCDPSession(page);
+  return (type: 'touchStart' | 'touchMove' | 'touchEnd' | 'touchCancel', x = 0) =>
+    session.send('Input.dispatchTouchEvent', {
+      type,
+      touchPoints: type === 'touchEnd' || type === 'touchCancel' ? [] : [{ x, y: 104 }],
+    });
+}
+
+test.describe('Swipe between mobile tabs', () => {
+  test.skip(({ isMobile }) => !isMobile);
+
+  test('shows the neighbouring page in either direction before committing', async ({ page }) => {
+    await page.goto('/nibblepot/planner/');
+    const main = page.locator('#main-content');
+    await expect(main.getByRole('heading', { name: "This week's tea." })).toBeVisible();
+    const touch = await touchGesture(page);
+    const preview = page.locator('.swipe-preview');
+
+    await touch('touchStart', 170);
+    await touch('touchMove', 40);
+    await expect(preview).toContainText('Your larder');
+    await expect(preview).toHaveAttribute('inert', '');
+    await expect(page.getByRole('heading', { name: 'Your larder' })).toHaveCount(0);
+    const bounds = await preview.boundingBox();
+    expect(bounds!.x).toBeLessThan(page.viewportSize()!.width);
+    expect(bounds!.x).toBeGreaterThan(page.viewportSize()!.width / 2);
+    await expect(page).toHaveURL(/\/planner\/$/);
+
+    await touch('touchMove', 300);
+    await expect(preview).toContainText("This week's dinners");
+    expect((await preview.boundingBox())!.x).toBeLessThan(0);
+    await expect(page).toHaveURL(/\/planner\/$/);
+    await touch('touchEnd');
+
+    await expect(page).toHaveURL(/\/nibblepot\/$/);
+    await expect(main.getByRole('heading', { name: "This week's dinners" })).toBeVisible();
+    await expect(main).toHaveAttribute('data-motion', 'swipe');
+    await expect(preview).toHaveCount(0);
+    await page.goBack();
+    await expect(main.getByRole('heading', { name: "This week's tea." })).toBeVisible();
+  });
+
+  test('returns to the current tab after a short swipe', async ({ page }) => {
+    await page.goto('/nibblepot/planner/');
+    await expect(page.locator('#main-content h2').first()).toHaveText("This week's tea.");
+    const touch = await touchGesture(page);
+    await touch('touchStart', 170);
+    await touch('touchMove', 140);
+    await expect(page.locator('.swipe-preview')).toContainText('Your larder');
+    await touch('touchEnd');
+
+    await expect(page.locator('.swipe-preview')).toHaveCount(0);
+    await expect(page.locator('.swipe-track')).toHaveCSS('transform', 'none');
+    await expect(page).toHaveURL(/\/planner\/$/);
+  });
+
+  test('switches without sliding when reduced motion is enabled', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/nibblepot/planner/');
+    await expect(page.locator('#main-content h2').first()).toHaveText("This week's tea.");
+    const touch = await touchGesture(page);
+    await touch('touchStart', 270);
+    await touch('touchMove', 80);
+    await expect(page.locator('.swipe-preview')).toHaveCount(0);
+    await expect(page.locator('.swipe-track')).toHaveCSS('transform', 'none');
+    await touch('touchEnd');
+    await expect(page).toHaveURL(/\/larder\/$/);
+  });
+});

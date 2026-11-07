@@ -41,6 +41,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     onPointerUp={event => { if (!mouseStart.current || event.pointerType !== 'mouse') return; const dx=event.clientX-mouseStart.current.x,dy=event.clientY-mouseStart.current.y; mouseStart.current=null; if (Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4) cycle(dx<0?1:-1); }}
     onPointerCancel={() => { mouseStart.current=null; }}
     onTouchStart={event => { const touch = event.touches[0]; start.current = {x:touch.clientX,y:touch.clientY}; }}
+    onTouchMove={event => { if (event.defaultPrevented) start.current = null; }}
     onTouchCancel={() => { start.current = null; }}
     onTouchEnd={event => {
       if (!start.current) return;

@@ -1,85 +1,116 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import type { TouchEvent } from 'react';
 import type { Tab } from '../types';
+import { prefersReducedMotion } from './useReducedMotion';
 
 export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping'];
-const BLOCKED = 'input,textarea,select,button,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe]';
+const BLOCKED = 'input,textarea,select,button,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
+
 export function swipeDestination(tab: Tab, delta: number): Tab | null {
   const index = SWIPE_TABS.indexOf(tab);
   if (index < 0 || !delta) return null;
   return SWIPE_TABS[index + (delta < 0 ? 1 : -1)] ?? null;
 }
 
-export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => void, blocked = false) {
-  const element = useRef<HTMLElement | null>(null);
-  const gesture = useRef<{ x: number; y: number; time: number; axis: 'pending' | 'horizontal' | 'vertical'; dx: number } | null>(null);
-  const settling = useRef(false);
+export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<void>, blocked = false) {
+  const viewport = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const gesture = useRef<{ x: number; y: number; time: number; axis: 'pending' | 'horizontal' | 'vertical'; dx: number; offset: number } | null>(null);
   const animation = useRef<Animation | null>(null);
-  const direction = useRef(0);
-  const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const reset = useCallback(() => {
+  const [preview, setPreview] = useState<Tab | null>(null);
+
+  const clearTrack = useCallback(() => {
     animation.current?.cancel();
     animation.current = null;
-    if (element.current) {
-      element.current.style.transform = '';
-      element.current.style.willChange = '';
-    }
+    if (track.current) track.current.style.transform = '';
     gesture.current = null;
-    settling.current = false;
   }, []);
-  useEffect(() => () => reset(), [reset]);
-  const onTouchStart = (event: TouchEvent<HTMLElement>) => {
-    if (blocked || !tab || settling.current || event.touches.length !== 1 || window.innerWidth > 820) return;
-    const target = event.target as HTMLElement;
-    if (target.closest(BLOCKED) || target.closest('[data-horizontal-scroll]')) return;
+  const reset = useCallback(() => {
+    clearTrack();
+    setPreview(null);
+  }, [clearTrack]);
+
+  useLayoutEffect(() => {
+    reset();
+    const surface = viewport.current;
+    if (!surface || !tab || blocked) return;
+
+    const move = (event: globalThis.TouchEvent) => {
+      const g = gesture.current;
+      const node = track.current;
+      if (!g || !node) return;
+      if (event.touches.length !== 1) { reset(); return; }
+
+      const dx = event.touches[0].clientX - g.x;
+      const dy = event.touches[0].clientY - g.y;
+      if (g.axis === 'pending' && Math.hypot(dx, dy) > 9) {
+        g.axis = Math.abs(dx) > Math.abs(dy) * 1.25 ? 'horizontal' : 'vertical';
+      }
+      if (g.axis !== 'horizontal') return;
+
+      if (event.cancelable) event.preventDefault();
+      g.dx = dx;
+      if (prefersReducedMotion()) return;
+      const target = swipeDestination(tab, dx);
+      const width = surface.clientWidth;
+      g.offset = target ? Math.max(-width, Math.min(dx, width)) : dx * 0.16;
+      node.style.transform = translate(g.offset);
+      setPreview(target);
+    };
+    surface.addEventListener('touchmove', move, { passive: false });
+    return () => {
+      surface.removeEventListener('touchmove', move);
+      clearTrack();
+    };
+  }, [tab, blocked, clearTrack, reset]);
+
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 1) {
+      if (gesture.current) reset();
+      return;
+    }
+    if (blocked || !tab || !SWIPE_TABS.includes(tab) || animation.current || window.innerWidth > 820) return;
+    const target = event.target;
+    if (!(target instanceof Element) || target.closest(BLOCKED) || document.querySelector('[role="dialog"]')) return;
     // Leave horizontally scrolling components in control of their own gestures.
-    for (let node: HTMLElement | null = target; node && node !== element.current; node = node.parentElement) {
+    for (let node: Element | null = target; node && node !== viewport.current; node = node.parentElement) {
       if (node.scrollWidth > node.clientWidth + 4 && ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) return;
     }
-    gesture.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, time: performance.now(), axis: 'pending', dx: 0 };
+    gesture.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, time: performance.now(), axis: 'pending', dx: 0, offset: 0 };
   };
-  const onTouchMove = (event: TouchEvent<HTMLElement>) => {
-    const g = gesture.current;
-    if (!g || !tab || event.touches.length !== 1) return;
-    const dx = event.touches[0].clientX - g.x;
-    const dy = event.touches[0].clientY - g.y;
-    if (g.axis === 'pending' && Math.hypot(dx, dy) > 9) g.axis = Math.abs(dx) > Math.abs(dy) * 1.25 ? 'horizontal' : 'vertical';
-    if (g.axis !== 'horizontal') return;
-    g.dx = dx;
-    const allowed = swipeDestination(tab, dx);
-    const offset = allowed ? dx : dx * 0.16;
-    if (element.current && !reduceMotion()) {
-      element.current.style.willChange = 'transform';
-      element.current.style.transform = `translate3d(${offset}px,0,0)`;
-    }
-  };
+
   const onTouchEnd = () => {
     const g = gesture.current;
     gesture.current = null;
-    if (!g || g.axis !== 'horizontal' || !tab) return;
+    const node = track.current;
+    const width = viewport.current?.clientWidth;
+    if (!g || g.axis !== 'horizontal' || !tab || !node || !width) return;
+
     const target = swipeDestination(tab, g.dx);
     const elapsed = Math.max(1, performance.now() - g.time);
-    const velocity = Math.abs(g.dx) / elapsed;
-    const commit = !!target && (Math.abs(g.dx) > Math.min(110, window.innerWidth * .26) || (Math.abs(g.dx) > 35 && velocity > .5));
-    const node = element.current;
-    if (!node) return;
-    const from = getComputedStyle(node).transform === 'none' ? 'translate3d(0,0,0)' : getComputedStyle(node).transform;
-    if (reduceMotion()) {
+    const distance = Math.abs(g.dx);
+    const commit = target && (distance > Math.min(110, width * .26) || (distance > 35 && distance / elapsed > .5));
+    if (prefersReducedMotion()) {
       reset();
-      if (commit && target) navigate(target);
+      if (commit) void navigate(target);
       return;
     }
-    settling.current = true;
-    direction.current = Math.sign(g.dx);
-    const to = commit ? `translate3d(${direction.current * window.innerWidth}px,0,0)` : 'translate3d(0,0,0)';
-    animation.current = node.animate([{ transform: from }, { transform: to }], {
-      duration: commit ? 230 : 260, easing: 'cubic-bezier(.22,.75,.2,1)'
-    });
-    animation.current.onfinish = () => {
-      reset();
-      if (commit && target) navigate(target);
+    if (!g.offset) { reset(); return; }
+
+    const slide = node.animate(
+      [{ transform: translate(g.offset) }, { transform: translate(commit ? Math.sign(g.dx) * width : 0) }],
+      { duration: commit ? 230 : 260, easing: 'cubic-bezier(.22,.75,.2,1)', fill: 'forwards' },
+    );
+    animation.current = slide;
+    slide.onfinish = () => {
+      if (commit) void navigate(target);
+      else reset();
     };
-    animation.current.oncancel = () => { settling.current = false; };
   };
-  return { element, onTouchStart, onTouchMove, onTouchEnd, onTouchCancel: reset };
+
+  return { viewport, track, preview, onTouchStart, onTouchEnd, onTouchCancel: reset };
+}
+
+function translate(x: number) {
+  return `translate3d(${x}px,0,0)`;
 }
