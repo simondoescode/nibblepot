@@ -17,14 +17,14 @@ test('mobile tab bar has Lucide tabs, visible active state, More sheet and worki
   await expect(page).toHaveURL(/\/nibblepot\/planner\/$/);
   await expect(nav.getByRole('button',{name:'Planner'})).toHaveAttribute('aria-current','page');
   await nav.getByRole('button',{name:'More'}).click();
-  const sheet=page.getByRole('dialog',{name:'More Nibblepot'});
+  const sheet=page.getByRole('dialog',{name:'More Simmer'});
   await expect(sheet).toBeVisible();
   await expect(sheet.getByRole('button',{name:/Favourites/})).toBeVisible();
   await sheet.getByRole('button',{name:/Favourites/}).click();
   await expect(page).toHaveURL(/\/nibblepot\/favourites\/$/);
   await expect(nav.getByRole('button',{name:'More'})).toHaveClass(/active/);
   await nav.getByRole('button',{name:'More'}).click();
-  await expect(page.getByRole('dialog',{name:'More Nibblepot'})).toBeVisible();
+  await expect(page.getByRole('dialog',{name:'More Simmer'})).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(sheet).toHaveCount(0);
   await expect(nav.getByRole('button',{name:'More'})).toBeFocused();
@@ -39,7 +39,7 @@ test('mobile pull-to-refresh visually displaces page and springs back on a short
   await page.goto('/nibblepot/');
   const visual=page.locator('.pull-body');
   const gesture=await page.evaluate(()=>{
-    const target=document.querySelector('.hero')!;
+    const target=document.querySelector('.section-heading')!;
     const create=(x:number,y:number)=>new Touch({identifier:37,target,clientX:x,clientY:y});
     const send=(type:string, y:number)=>document.dispatchEvent(new TouchEvent(type,{
       bubbles:true,cancelable:true,touches:type==='touchend'?[]:[create(160,y)],
@@ -53,7 +53,7 @@ test('mobile pull-to-refresh visually displaces page and springs back on a short
   await expect.poll(()=>visual.evaluate(node=>Number.parseFloat((node as HTMLElement).style.getPropertyValue('--pull-shift')))).toBeGreaterThan(20);
   await expect(page.locator('.pull-native-indicator')).toBeVisible();
   await page.evaluate(()=>{
-    const target=document.querySelector('.hero')!;
+    const target=document.querySelector('.section-heading')!;
     document.dispatchEvent(new TouchEvent('touchend',{bubbles:true,cancelable:true,touches:[],
       changedTouches:[new Touch({identifier:37,target,clientX:160,clientY:160})]}));
   });
