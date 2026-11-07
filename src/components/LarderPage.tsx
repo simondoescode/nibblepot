@@ -74,10 +74,10 @@ function StockDetails({ name, quantity, date, onSave }: {
   </Dialog.Root>;
 }
 
-export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpenRecipe, onQuantity, onToggle, onFindMeals }: {
+export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpenRecipe, onQuantity, onToggle, onFindMeals, showMobileBar = true }: {
   larder: string[]; quantities?: Record<string,string>; dates?: Record<string,string>;
   onDate: (id:string,value:string)=>void; onOpenRecipe: (id:string)=>void; onQuantity: (id:string, value:string)=>void;
-  onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void;
+  onToggle: (id: string, checked: boolean) => void; onFindMeals: () => void; showMobileBar?: boolean;
 }) {
   const [query,setQuery] = useSessionState('larder-query','');
   const [filter,setFilter] = useSessionState('larder-filter','All');
@@ -128,6 +128,6 @@ export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpen
         <p className="larder-example-note">We've added a few example ingredients to get you started. Change them to match your cupboards.</p>
       </aside>
     </div>
-    {createPortal(<div className="larder-meals-bar"><Button tone="dark" onClick={onFindMeals}>Find meals with my {larder.length} ingredient{larder.length===1?'':'s'}<ArrowRight size={18} aria-hidden="true"/></Button></div>, document.body)}
+    {showMobileBar && createPortal(<div className="larder-meals-bar"><Button tone="dark" onClick={onFindMeals}>Find meals with my {larder.length} ingredient{larder.length===1?'':'s'}<ArrowRight size={18} aria-hidden="true"/></Button></div>, document.body)}
   </div>;
 }

@@ -57,6 +57,65 @@ test.describe('Swipe between mobile tabs', () => {
     await expect(page).toHaveURL(/\/planner\/$/);
   });
 
+  test('keeps page gutters and settles through repeated swipes', async ({ page }) => {
+    await page.goto('/nibblepot/planner/');
+    const main = page.locator('#main-content');
+    const track = page.locator('.swipe-track');
+    const preview = page.locator('.swipe-preview');
+    const touch = await touchGesture(page);
+    const routes = [
+      { path: 'larder', heading: 'Your larder', start: 290, end: 80 },
+      { path: 'shopping', heading: 'Shopping, sorted.', start: 290, end: 80 },
+      { path: 'larder', heading: 'Your larder', start: 80, end: 290 },
+      { path: 'planner', heading: "This week's tea.", start: 80, end: 290 },
+    ];
+
+    for (const { path, heading, start, end } of routes) {
+      await touch('touchStart', start);
+      await touch('touchMove', end);
+      await expect(preview).toContainText(heading);
+      await expect(page.locator('.larder-meals-bar')).toHaveCount(0);
+
+      const pane = (await preview.boundingBox())!;
+      const previewHeading = (await preview.locator('h2').first().boundingBox())!;
+      expect(pane.width).toBeCloseTo(page.viewportSize()!.width, 0);
+      const gutter = previewHeading.x - pane.x;
+      expect(gutter).toBeGreaterThan(0);
+      await touch('touchEnd');
+
+      await expect(page).toHaveURL(new RegExp('/' + path + '/$'));
+      await expect(preview).toHaveCount(0);
+      await expect(track).toHaveCSS('transform', 'none');
+      const title = main.getByRole('heading', { name: heading, exact: true });
+      await expect(title).toBeFocused();
+      await expect(title).toHaveCSS('outline-style', 'none');
+      expect((await title.boundingBox())!.x).toBeCloseTo(gutter, 0);
+      await expect(page.locator('.larder-meals-bar')).toHaveCount(path === 'larder' ? 1 : 0);
+    }
+
+    await page.getByRole('navigation', { name: 'Mobile navigation' })
+      .getByRole('button', { name: 'Shopping' }).tap();
+    const shopping = main.getByRole('heading', { name: 'Shopping, sorted.' });
+    await expect(shopping).toBeFocused();
+    await expect(shopping).toHaveCSS('outline-style', 'none');
+  });
+
+  test('a new swipe can interrupt a short swipe snapping back', async ({ page }) => {
+    await page.goto('/nibblepot/planner/');
+    const touch = await touchGesture(page);
+    const track = page.locator('.swipe-track');
+    await touch('touchStart', 170);
+    await touch('touchMove', 140);
+    await touch('touchEnd');
+    // Hold the rebound in progress to exercise the same race on slow devices and CI.
+    await track.evaluate(node => node.getAnimations().forEach(animation => animation.pause()));
+    await touch('touchStart', 290);
+    await touch('touchMove', 80);
+    await touch('touchEnd');
+    await expect(page).toHaveURL(/\/larder\/$/);
+    await expect(track).toHaveCSS('transform', 'none');
+  });
+
   test('switches without sliding when reduced motion is enabled', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/nibblepot/planner/');

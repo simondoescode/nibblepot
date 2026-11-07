@@ -89,3 +89,10 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
 .swipe-preview{position:absolute;inset:0 auto 0 100%;width:100%;overflow:clip;pointer-events:none}
 .swipe-preview[data-side=left]{left:-100%}
 .swipe-preview > .main{position:relative}
+
+@media(max-width:820px){
+  .swipe-viewport{touch-action:pan-y pinch-zoom}
+}
+
+main[tabindex="-1"]:focus,
+main :is(h1,h2)[tabindex="-1"]:focus{outline:none}

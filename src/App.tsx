@@ -174,14 +174,14 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
-  const renderTab = (page: Tab) => <>
+  const renderTab = (page: Tab, isPreview = false) => <>
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
       favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
       weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
     {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
-    {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
+    {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} showMobileBar={!isPreview && !swipe.preview} />}
     {page === 'planner' && <WeekPlannerPage week={selectedWeek}
       slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
       hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
@@ -204,13 +204,13 @@ export default function App() {
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
     <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
       onSearch={()=>{navigate('home');setFocusSearch(true);}} />
-    <div className={`wrap pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
+    <div className={`pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <div className="swipe-viewport" ref={swipe.viewport} onTouchStart={swipe.onTouchStart}
         onTouchEnd={swipe.onTouchEnd} onTouchCancel={swipe.onTouchCancel}>
         <div className="swipe-track" ref={swipe.track}>
           <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')}
-            className="main route-content" data-motion={motion} id="main-content">
+            className="wrap main route-content" data-motion={motion} id="main-content">
             {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
               saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
               onServingsChange={value => setData(current => ({ ...current, servings: {
@@ -228,13 +228,13 @@ export default function App() {
           </main>
           {swipe.preview && <div key={swipe.preview} className="swipe-preview" aria-hidden="true" inert
             data-side={swipeDestination(tab, -1) === swipe.preview ? 'right' : 'left'}>
-            <div className="main route-content" style={{ top: window.scrollY - tabScrollPosition(tabPath(swipe.preview)) }}>
-              {renderTab(swipe.preview)}
+            <div className="wrap main route-content" style={{ top: window.scrollY - tabScrollPosition(tabPath(swipe.preview)) }}>
+              {renderTab(swipe.preview, true)}
             </div>
           </div>}
         </div>
       </div>
-      <footer className="footer">Made for real-life tea times ✳ Simmer demo</footer>
+      <footer className="wrap footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
     <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
