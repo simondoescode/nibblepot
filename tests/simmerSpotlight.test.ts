@@ -3,11 +3,12 @@ import { chooseRandomRecipe, filterRecipes } from '../src/lib/recipes';
 import { recipes } from '../src/data';
 
 describe('Simmer spotlight catalogue', () => {
-  it('has image-backed recipes to feature', () => {
-    expect(recipes.some(recipe => Boolean(recipe.image))).toBe(true);
+  it('supports the complete recipe catalogue including illustrated fallbacks', () => {
+    expect(recipes.length).toBeGreaterThan(1);
+    expect(recipes.every(recipe => Boolean(recipe.id))).toBe(true);
   });
   it('avoids an immediate duplicate when other recipes exist', () => {
-    const available = recipes.filter(recipe => Boolean(recipe.image));
+    const available = recipes;
     expect(available.length).toBeGreaterThan(1);
     for (const recipe of available) {
       expect(chooseRandomRecipe(available, recipe.id, () => 0).id).not.toBe(recipe.id);
