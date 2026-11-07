@@ -36,14 +36,14 @@ describe('generated app icons',()=>{
     const icon=pixels(`icon-${size}-v2.png`);
     expect([icon.width,icon.height]).toEqual([size,size]);
     expect(icon.data.filter(p=>p[3]===255).length).toBeGreaterThan(size*size*.8);
-    expect(icon.data.filter(p=>p.join(',')==='252,114,78,255').length).toBeGreaterThan(size*size*.2);
+    expect(icon.data.filter(p=>p.join(',')==='243,91,32,255').length).toBeGreaterThan(size*size*.2);
     expect(readFileSync(`public/icons/icon-${size}.png`)).toEqual(readFileSync(`public/icons/icon-${size}-v2.png`));
   });
   it('maskable icon is opaque with all artwork inside the 80% safe circle',()=>{
     const icon=pixels('icon-maskable-512-v2.png');
     expect([icon.width,icon.height]).toEqual([512,512]);
     expect(icon.data.every(p=>p[3]===255)).toBe(true);
-    const artwork=icon.data.flatMap((p,index)=>p.join(',')==='255,216,97,255'?[]:[index]);
+    const artwork=icon.data.flatMap((p,index)=>p.join(',')==='243,91,32,255'? [index] : []);
     expect(artwork.length).toBeGreaterThan(10000);
     expect(artwork.every(index=>Math.hypot(index%512+.5-256,Math.floor(index/512)+.5-256)<=512*.4)).toBe(true);
   });
