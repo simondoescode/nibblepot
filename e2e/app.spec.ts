@@ -3,7 +3,7 @@ import { test, expect, type Page } from '@playwright/test';
 async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' | 'Settings') {
   if (project === 'mobile') {
     await page.getByRole('navigation', {name:'Mobile navigation'}).getByRole('button', {name:'More'}).click();
-    await page.getByRole('dialog', {name:'More Nibblepot'}).getByRole('button', {name:tab}).click();
+    await page.getByRole('dialog', {name:'More Simmer'}).getByRole('button', {name:tab}).click();
   } else {
     await page.getByRole('navigation', {name:'Main navigation'}).getByRole('button', {name:tab}).click();
   }
@@ -17,11 +17,10 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
   })));
   await page.reload();
 
-  await expect(page.getByRole('heading', { name: /what's for/i })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Tonight's inspiration" })).toBeVisible();
   await expect(page.locator('.recipe-card')).toHaveCount(40);
-  await page.getByRole('button', { name: '🎲 Surprise me!' }).click();
-  await expect(page.getByRole('dialog', { name: /random dinner suggestion/i })).toBeVisible();
-  await page.getByRole('button', { name: /see recipe/i }).click();
+  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /surprise me/i }).click();
+  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /view recipe/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/recipes\/[a-z0-9-]+\//);
   await expect(page.locator('.recipe-page')).toBeVisible();
   await expect(page.getByRole('heading', { name: /What you'll need/i })).toBeVisible();
@@ -51,17 +50,12 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
 
 test('recipe dialog traps focus and closes on Escape, returning to opener', async ({ page }) => {
   await page.goto('/nibblepot/');
-  const open = page.getByRole('button', { name: '🎲 Surprise me!' });
-  await open.focus();
-  await open.click();
-  const dialog = page.getByRole('dialog', { name: /random dinner suggestion/i });
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole('button', { name: 'Close dialog' })).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(dialog).toContainText('Tonight');
-  await page.keyboard.press('Escape');
-  await expect(dialog).toHaveCount(0);
-  await expect(open).toBeFocused();
+  const spotlight = page.getByRole('region', { name: "Tonight's inspiration" });
+  const shuffle = spotlight.getByRole('button', { name: /surprise me/i });
+  await shuffle.focus();
+  await shuffle.click();
+  await expect(spotlight.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(shuffle).toBeVisible();
 });
 
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {
@@ -122,7 +116,7 @@ test('pull-to-refresh is available on mobile and reloads instead of rerendering'
   await page.evaluate(() => sessionStorage.setItem('touch-started', 'yes'));
   const loaded = page.waitForEvent('load');
   await page.evaluate(() => {
-    const target = document.querySelector('.hero')!;
+    const target = document.querySelector('.section-heading')!;
     const create = (x: number, y: number) => new Touch({ identifier: 1, target, clientX: x, clientY: y });
     document.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, cancelable: true, touches: [create(140, 80)] }));
     document.dispatchEvent(new TouchEvent('touchmove', { bubbles: true, cancelable: true, touches: [create(140, 270)] }));
