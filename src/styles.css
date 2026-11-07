@@ -111,3 +111,19 @@
 .simmer-spotlight-image img{position:absolute;top:4%;left:42%;width:56%;height:92%;object-fit:contain;object-position:center;filter:drop-shadow(0 16px 18px rgba(17,29,24,.25));pointer-events:none}
 .simmer-spotlight:after{background:linear-gradient(90deg,rgba(8,36,30,.88),rgba(8,36,30,.58) 44%,rgba(8,36,30,.05) 85%),linear-gradient(0deg,rgba(8,36,30,.4),transparent 55%)}
 @media(max-width:600px){.simmer-spotlight-image img{left:12%;top:1%;width:82%;height:67%}.simmer-spotlight:after{background:linear-gradient(0deg,rgba(7,33,28,.96),rgba(7,33,28,.58) 43%,rgba(7,33,28,.04) 82%)}}
+
+/* Tablet-sized viewports use the same app shell as phones, with roomier content. */
+@media (min-width:821px) and (max-width:1180px){
+  .topnav{display:none}
+  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:20;justify-content:space-around;gap:0;padding:9px max(16px,env(safe-area-inset-right)) calc(9px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));background:#fffefa;border-top:2px solid var(--ink)}
+  .mobile-nav button{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;border:0;background:transparent;border-radius:11px;font-size:11px;font-weight:850;color:#797065;padding:7px 1px}
+  .mobile-nav button.active{color:#24211d;background:#fff0c5}
+  .footer{padding-bottom:100px}
+  .recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .larder-layout{grid-template-columns:1fr}
+  .larder-aside{position:static}
+}
+@media (min-width:821px) and (max-width:1180px) and (pointer:coarse){
+  .mobile-nav button{min-height:56px}
+  .navbtn,.chip{min-height:44px}
+}
