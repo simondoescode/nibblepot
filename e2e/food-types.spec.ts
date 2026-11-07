@@ -77,7 +77,7 @@ test('finding meals from the larder clears previous food restrictions',async ({p
   if(info.project.name==='mobile') await page.locator('.larder-meals-bar button').click();
   else await page.getByRole('button',{name:'What can I make?'}).click();
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('All food');
-  await expect(page.locator('.chip[aria-pressed]').getByRole('button',{name:/Use my larder/})).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('button.chip[aria-pressed]').filter({hasText:'Use my larder'})).toHaveAttribute('aria-pressed','true');
 });
 
 for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`,async ({page},info)=>{
