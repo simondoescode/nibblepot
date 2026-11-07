@@ -144,6 +144,11 @@ export default function App() {
   const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
     ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
   }));
+  const planSpotlight = (id: string, day: number) => {
+    if (!recipes.some(recipe => recipe.id === id) || !Number.isInteger(day) || day < 0 || day > 6) return;
+    changeSlot(day, {kind:'recipe', id});
+    toast(`Dinner added to ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][day]}`);
+  };
   const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
     setData(current => {
       const slots = [...(current.weekPlans?.[selectedWeek] ?? defaultWeek())];
@@ -190,7 +195,7 @@ export default function App() {
         </section>}
         {route.kind === 'tab' && route.tab === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
           favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={openRecipe}
-          onRandom={randomMeal} onLarder={() => navigate('larder')} />}
+          weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
