@@ -50,8 +50,8 @@ export default function App() {
   useEffect(() => {
     const recipe = route.kind === 'recipe' || route.kind === 'cook'
       ? recipes.find(item => item.id === route.id) : undefined;
-    document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Nibblepot` :
-      'Nibblepot — Good grub. Zero faff.';
+    document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Simmer` :
+      'Simmer — Dinner, sorted.';
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = recipe
       ? route.kind === 'cook' ? `Step-by-step cooking mode for ${recipe.title}.` :
@@ -207,7 +207,7 @@ export default function App() {
         {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
           onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
       </main>
-      <footer className="footer">Made for real-life tea times ✳ Nibblepot demo</footer>
+      <footer className="footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
     <MobileNavigation tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
