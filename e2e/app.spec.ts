@@ -60,7 +60,7 @@ test('recipe dialog traps focus and closes on Escape, returning to opener', asyn
 
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {
   await page.goto('/nibblepot/');
-  const link = page.locator('.recipe-card').first().getByRole('link', { name: /view jacket/i });
+  const link = page.locator('.recipe-card').first().getByRole('link', { name: /jacket potatoes/i });
   await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket/');
   await link.focus();
   await page.keyboard.press('Enter');

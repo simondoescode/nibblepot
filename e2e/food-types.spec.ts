@@ -43,7 +43,7 @@ test('selected categories match either type and can be removed individually',asy
 test('food selections survive opening a recipe and returning to the list',async ({page})=>{
   await page.goto('/nibblepot/');
   await chooseTypes(page,['Fish','Rice']);
-  await page.getByRole('link',{name:'View Tuna pasta bake',exact:true}).click();
+  await page.getByRole('link',{name:'Tuna pasta bake',exact:true}).click();
   await page.goBack();
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('2 selected');
   await expect(page.getByRole('button',{name:'Remove Rice filter'})).toBeVisible();

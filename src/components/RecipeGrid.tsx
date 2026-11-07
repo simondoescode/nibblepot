@@ -61,7 +61,7 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
       <div className="recipe-info">
         <div className="recipe-card-eyebrow"><Soup size={13} aria-hidden="true" /> {recipe.onePot ? 'One pot' : recipe.ing.length <= 5 ? `${recipe.ing.length} ingredients` : 'Family favourite'}</div>
         <h3><a className="recipe-card-link" href={recipePath(recipe.id)}
-          aria-label={`View ${recipe.title}`} onClick={event => visitRecipe(event, recipe.id, onOpen)}>
+          onClick={event => visitRecipe(event, recipe.id, onOpen)}>
           {recipe.title}</a></h3><p>{recipe.description}</p>
         {onAddMissing && missing.length > 0 && <div className="recipe-missing"><span>Need: {missing.map(item => ingredientName(item.id)).join(', ')}</span><button type="button" onClick={() => onAddMissing(recipe.id)}>Add missing to shopping</button></div>}
         <div className="card-foot">
