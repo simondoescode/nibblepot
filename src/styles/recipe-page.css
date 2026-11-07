@@ -49,3 +49,23 @@
 .recipe-safety-panel small{display:block;margin-top:11px;font-size:11px;line-height:1.45}
 .recipe-safety-panel a{text-decoration:underline;text-underline-offset:2px}
 .shop-pack-hint{font-size:11px;display:block;color:#7b5b3a}
+
+/* Recipe detail action hierarchy: one obvious next step, comfortable touch targets. */
+.recipe-page-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+.recipe-page-actions .btn{min-width:0;min-height:52px;white-space:normal;text-align:center;line-height:1.25}
+.recipe-page-actions .btn:first-child{grid-column:1/-1;min-height:58px;font-size:17px;background:var(--orange);color:var(--ink)}
+.recipe-page-actions .btn:not(:first-child){background:#fffaf1;border-color:#ded5c8;box-shadow:none}
+.recipe-page-actions .btn:focus-visible{outline-offset:4px}
+@media(max-width:560px){
+ .recipe-page-actions{gap:10px}
+ .recipe-page-actions .btn{flex:initial;min-height:54px;font-size:13px;padding:12px 10px;border-radius:16px;box-shadow:none;gap:7px}
+ .recipe-page-actions .btn:first-child{min-height:60px;font-size:17px;box-shadow:0 4px 0 #a83d28;border-color:#a83d28}
+ .recipe-page-actions .btn:first-child svg{width:22px;height:22px}
+ .recipe-page-actions .btn:not(:first-child){border:1.5px solid #ded5c8}
+ .servings-control{gap:10px;margin-bottom:20px}
+ .servings-control>span{margin-right:auto;font-size:14px}
+ .servings-control button{width:44px;height:44px;border:1.5px solid #e3cda4;background:#fff0d2;border-radius:13px}
+ .servings-control output{min-width:32px}
+}
+@media(max-width:350px){.recipe-page-actions .btn:not(:first-child){font-size:12px;padding:10px 6px}}
+@media(prefers-reduced-motion:reduce){.recipe-page-actions .btn{transition:none}}
