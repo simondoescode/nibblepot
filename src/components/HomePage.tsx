@@ -7,7 +7,7 @@ import { foodTypes, type FoodType } from '../lib/foodTypes';
 import { FoodTypePicker } from './FoodTypePicker';
 import type { Filter } from '../types';
 import { RecipeGrid } from './RecipeGrid';
-import { Button, FilterChip } from '../ui/controls';
+import { FilterChip } from '../ui/controls';
 
 const filters: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All recipes' },
