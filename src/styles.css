@@ -72,10 +72,6 @@
 @media(prefers-reduced-motion:reduce){.simmer-spotlight-image{animation:none}}
 
 
-.simmer-plan-picker{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:13px;padding:11px;border:1px solid #ffffff70;background:#082b25bd;border-radius:13px}
-.simmer-plan-picker label{font-size:13px;font-weight:750}
-.simmer-plan-picker select,.simmer-plan-picker button{min-height:42px;border:1px solid #ffffff80;border-radius:9px;padding:8px 11px;background:#fff7eb;color:#103b32;font-weight:750}
-.simmer-plan-picker button{background:#f35b20;color:white;border-color:#f35b20}
 .simmer-home-plan{background:#fffdf8;border:1px solid #d6dfd6;border-radius:24px;padding:24px;margin-bottom:31px;box-shadow:0 6px 22px #103b3210}
 .simmer-home-plan-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
 .simmer-plan-kicker{color:#52665e;font-size:11px;font-weight:850;letter-spacing:.1em}

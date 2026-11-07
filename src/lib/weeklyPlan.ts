@@ -23,6 +23,20 @@ export function shiftWeek(key: string, weeks: number): string {
   d.setDate(d.getDate() + weeks * 7);
   return mondayFor(d);
 }
+export const WEEK_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] as const;
+
+export function dateForWeekDay(week: string, index: number): Date {
+  const [year, month, day] = week.split('-').map(Number);
+  return new Date(year, month - 1, day + index, 12);
+}
+
+export function weekSlotTitle(slot: WeekSlot): string {
+  if (slot.kind === 'recipe') return recipes.find(recipe => recipe.id === slot.id)?.title ?? 'Choose a meal';
+  if (slot.kind === 'leftovers') return 'Leftovers night';
+  if (slot.kind === 'freezer') return 'Freezer / easy night';
+  return 'Choose a dinner';
+}
+
 export const STARTER_PLAN: WeekSlot[] = [
   {kind:'recipe',id:'jacket'}, {kind:'recipe',id:'chicken-rice'},
   {kind:'recipe',id:'sausage-bean'}, {kind:'recipe',id:'cottage'},
@@ -77,14 +91,17 @@ export function weekContributions(slots: WeekSlot[], larder: string[], stock: Re
   }
   return [...byIngredient.values()].filter(entry=>shoppingQuantity(entry,servings,stock)!=='Already in larder');
 }
-/** Replace only prior *planner* contributions. Keep hand-added shopping items/ticks. */
 /** Track which inputs the shopper last confirmed; editing a plan never silently overwrites a list. */
-export function shoppingPlanSignature(week: string, slots: WeekSlot[], larder: string[], servings: Record<string, number> = {}): string {
+export function shoppingPlanSignature(week: string, slots: WeekSlot[], larder: string[], servings: Record<string, number> = {}, stock: Record<string, string> = {}): string {
   const inPlan = [...new Set(slots.filter((slot): slot is Extract<WeekSlot, {kind:'recipe'}> => slot.kind === 'recipe')
     .map(slot => slot.id))].sort();
-  return JSON.stringify([
-    week, slots, [...larder].sort(), inPlan.map(id => [id, servings[id] ?? 4]),
-  ]);
+  const required = new Set(recipes.filter(recipe => inPlan.includes(recipe.id))
+    .flatMap(recipe => recipe.ing.filter(item => !item.optional).map(item => item.id)));
+  const quantities = Object.entries(stock).filter(([id, amount]) => required.has(id) && amount)
+    .sort(([a], [b]) => a.localeCompare(b));
+  const signature = [week, slots, [...larder].sort(), inPlan.map(id => [id, servings[id] ?? 4])];
+  if (quantities.length) signature.push(quantities);
+  return JSON.stringify(signature);
 }
 export function applyWeekToShopping(data: SavedData, slots: WeekSlot[], week?: string): SavedData {
   // Preserve purchased items when refreshing a plan: they remain visible and ticked.
@@ -102,6 +119,6 @@ export function applyWeekToShopping(data: SavedData, slots: WeekSlot[], week?: s
     }
   }
   return {...data, shopping:manual, shoppingPlan: week ? {
-    week, signature: shoppingPlanSignature(week,slots,data.larder,data.servings),
+    week, signature: shoppingPlanSignature(week,slots,data.larder,data.servings,data.larderQuantities),
   } : undefined};
 }

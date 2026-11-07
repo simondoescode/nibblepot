@@ -160,3 +160,37 @@ test.describe('Swipe between mobile tabs', () => {
     await expect(page).toHaveURL(/\/larder\/$/);
   });
 });
+
+test('touch tablets preview Recipes, settle across repeated swipes and leave edge gestures alone', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'Touch tablet simulation');
+  await page.setViewportSize({ width: 834, height: 1112 });
+  await page.goto('/nibblepot/planner/');
+  const touch = await touchGesture(page);
+  const preview = page.locator('.swipe-preview');
+
+  await touch('touchStart', 12);
+  await touch('touchMove', 310);
+  await expect(preview).toHaveCount(0);
+  await touch('touchEnd');
+  await expect(page).toHaveURL(/\/planner\/$/);
+
+  for (const [start, end, path, heading] of [
+    [180, 480, '/nibblepot/', "This week's dinners"],
+    [480, 180, '/nibblepot/planner/', "This week's tea."],
+  ] as const) {
+    await touch('touchStart', start);
+    await touch('touchMove', end);
+    await expect(preview).toContainText(heading);
+    await touch('touchEnd');
+    await expect(page).toHaveURL(url => url.pathname === path);
+    await expect(preview).toHaveCount(0);
+    await expect(page.locator('.swipe-track')).toHaveCSS('transform', 'none');
+  }
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await touch('touchStart', 480);
+  await touch('touchMove', 180);
+  await expect(preview).toHaveCount(0);
+  await touch('touchEnd');
+  await expect(page).toHaveURL(/\/larder\/$/);
+});

@@ -69,3 +69,4 @@
 }
 @media(max-width:350px){.recipe-page-actions .btn:not(:first-child){font-size:12px;padding:10px 6px}}
 @media(prefers-reduced-motion:reduce){.recipe-page-actions .btn{transition:none}}
+.recipe-page-actions .recipe-plan-action { grid-column: 1 / -1; }

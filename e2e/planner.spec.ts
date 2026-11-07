@@ -108,9 +108,9 @@ test('changing a plan flags stale shopping without replacing the existing list',
   await nav.getByRole('button',{name:'Planner'}).click();
   await expect(page.locator('.planner-sync')).toContainText('Shopping list matches this week');
   await chooseMeal(page,'Monday','Egg fried rice');
-  await expect(page.locator('.planner-sync')).toContainText('Meals changed — update your shopping list');
+  await expect(page.locator('.planner-sync')).toContainText('Update your shopping list to match this plan.');
   await page.reload();
-  await expect(page.locator('.planner-sync')).toContainText('Meals changed — update your shopping list');
+  await expect(page.locator('.planner-sync')).toContainText('Update your shopping list to match this plan.');
   await nav.getByRole('button',{name:'Shopping'}).click();
   await expect(page.locator('.shop-row').filter({hasText:'Pasta'})).toHaveCount(1);
   await nav.getByRole('button',{name:'Planner'}).click();
@@ -159,4 +159,71 @@ test('the narrow planner keeps Today and both meal actions in one row', async ({
 
   await view.click();
   await expect(page).toHaveURL(/\/recipes\/jacket\/$/);
+});
+
+test('planner shows the same shortfall as shopping and can remove an emptied week', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
+  await page.addInitScript(() => {
+    if (localStorage.getItem('nibblepot-demo-v1')) return;
+    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+      larder: ['pasta'],
+      larderQuantities: { pasta: '100 g' },
+      favorites: [],
+      shopping: [{ id: 'custom:bin bags', customName: 'Bin bags', done: false, from: [] }],
+      weekPlans: {
+        '2026-11-02': [{ kind: 'recipe', id: 'tomato-pasta' }, ...Array.from({ length: 6 }, () => ({ kind: 'empty' }))],
+      },
+    }));
+  });
+  await page.goto('/nibblepot/planner/');
+  const shoppingAction = page.getByRole('button', { name: 'Add week to shopping' });
+  await expect(shoppingAction).toBeInViewport({ ratio: 1 });
+  await expect(page.locator('.planner-preview li').filter({ hasText: 'Pasta' })).toContainText('250 g');
+  await shoppingAction.click();
+  await expect(page).toHaveURL(/\/shopping\/$/);
+  await expect(page.locator('.shop-row').filter({ hasText: 'Pasta' })).toContainText('250 g');
+  const tomatoes = page.getByRole('checkbox', { name: 'Mark Chopped tomatoes as purchased' });
+  await tomatoes.check();
+
+  await page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('button', { name: 'Planner' }).click();
+  await page.getByRole('button', { name: 'Clear week', exact: true }).click();
+  await page.getByRole('button', { name: 'Confirm clear week' }).click();
+  await page.getByRole('button', { name: 'Update shopping list' }).click();
+  await expect(page).toHaveURL(/\/shopping\/$/);
+  await expect(page.getByRole('checkbox', { name: 'Mark Pasta as purchased' })).toHaveCount(0);
+  await expect(tomatoes).toBeChecked();
+  await expect(page.getByRole('checkbox', { name: 'Mark Bin bags as purchased' })).toBeVisible();
+});
+
+test('recipe details and Tonight’s Inspiration plan a dinner for an explicit date', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
+  await page.goto('/nibblepot/recipes/tomato-pasta/');
+  const opener = page.getByRole('button', { name: 'Plan this dinner' });
+  const picker = page.getByRole('dialog', { name: 'Plan this dinner' });
+  const day = picker.getByLabel('Dinner date');
+
+  await opener.click();
+  await expect(day.locator('option:checked')).toHaveText('Monday 2 Nov');
+  await expect(picker.getByRole('status')).toContainText('Replaces Jacket potatoes');
+  await picker.getByRole('button', { name: 'Replace dinner' }).click();
+  await expect(picker).toHaveCount(0);
+  await expect(opener).toBeFocused();
+
+  await page.goto('/nibblepot/');
+  await page.getByRole('searchbox', { name: 'Search recipes', exact: true }).fill('Speedy tomato pasta');
+  await page.getByRole('button', { name: 'Add to meal plan' }).click();
+  await expect(picker.getByRole('status')).toContainText('already planned');
+  await picker.getByRole('button', { name: 'Next week' }).click();
+  await expect(day.locator('option:checked')).toHaveText('Monday 9 Nov');
+  await day.selectOption('1');
+  await expect(day.locator('option:checked')).toHaveText('Tuesday 10 Nov');
+  await expect(picker.getByRole('status')).toContainText('Replaces');
+  await picker.getByRole('button', { name: 'Replace dinner' }).click();
+  await expect(picker).toHaveCount(0);
+
+  await page.goto('/nibblepot/planner/');
+  await expect(page.getByRole('button', { name: 'Change Monday dinner' })).toContainText('Speedy tomato pasta');
+  await page.getByRole('button', { name: 'Next week' }).click();
+  await expect(page.getByRole('button', { name: 'Change Tuesday dinner' })).toContainText('Speedy tomato pasta');
 });

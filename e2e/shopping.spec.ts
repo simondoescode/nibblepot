@@ -86,7 +86,7 @@ test('adds catalogue ingredients, larder picks and custom items from an empty li
 
   await addItem.click();
   await search.fill('Washing up liquid');
-  await sheet.getByRole('button', { name: 'Add “Washing up liquid”', exact: true }).click();
+  await sheet.getByRole('button', { name: 'Add “Washing up liquid” as a custom item', exact: true }).click();
   const custom = main.getByRole('region', { name: 'Other items shopping items' });
   const checkbox = custom.getByRole('checkbox', { name: 'Mark Washing up liquid as purchased' });
   await expect(custom.getByRole('link', { name: 'Find Washing up liquid at Tesco' }))
@@ -103,4 +103,28 @@ test('adds catalogue ingredients, larder picks and custom items from an empty li
   await expect(main.getByRole('status')).toContainText('3 to buy');
   await custom.getByRole('button', { name: 'Remove Washing up liquid' }).click();
   await expect(custom).toHaveCount(0);
+});
+
+test('a partial search prioritises ingredients and Enter does not create a custom item', async ({ page }) => {
+  await page.goto('/nibblepot/shopping/');
+  const add = page.getByRole('button', { name: 'Add item', exact: true });
+  const sheet = page.getByRole('dialog', { name: 'Add a shopping item' });
+  const search = sheet.getByRole('searchbox');
+
+  await add.click();
+  await search.fill('pas');
+  const ingredient = sheet.getByRole('button', { name: 'Add Pasta', exact: true });
+  const custom = sheet.getByRole('button', { name: 'Add “pas” as a custom item' });
+  expect((await ingredient.boundingBox())!.y).toBeLessThan((await custom.boundingBox())!.y);
+  await search.press('Enter');
+  await expect(sheet).toBeVisible();
+  await sheet.getByRole('button', { name: 'My larder' }).click();
+  await search.press('Enter');
+  await expect(sheet).toBeVisible();
+  await sheet.getByRole('button', { name: 'All ingredients' }).click();
+  await ingredient.click();
+  await expect(sheet).toHaveCount(0);
+  await expect(add).toBeFocused();
+  await expect(page.getByRole('checkbox', { name: 'Mark Pasta as purchased' })).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: 'Mark pas as purchased', exact: true })).toHaveCount(0);
 });
