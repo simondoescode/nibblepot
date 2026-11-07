@@ -19,6 +19,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   const [id, setId] = useState(() => initialId(recipes));
   const [planDay, setPlanDay] = useState<number | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
+  const mouseStart = useRef<{ x: number; y: number } | null>(null);
   const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
   const show = (next: string) => {
@@ -33,7 +34,10 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   };
   const surprise = () => { if (current) show(chooseRandomRecipe(catalogue, current.id).id); };
   if (!current) return <section className="simmer-spotlight simmer-spotlight-empty" aria-label="Tonight's inspiration"><div className="simmer-spotlight-content"><span className="simmer-spotlight-kicker">TONIGHT'S INSPIRATION</span><h2>Something good is cooking</h2><p>Try clearing your filters to see more dinner ideas.</p></div></section>;
-  return <section className="simmer-spotlight" aria-label="Tonight's inspiration"
+  return <section className="simmer-spotlight" aria-label="Tonight's inspiration" data-no-pull
+    onPointerDown={event => { if (event.pointerType === 'mouse' && event.button === 0 && !(event.target as HTMLElement).closest('button,select,a')) mouseStart.current = {x:event.clientX,y:event.clientY}; }}
+    onPointerUp={event => { if (!mouseStart.current || event.pointerType !== 'mouse') return; const dx=event.clientX-mouseStart.current.x,dy=event.clientY-mouseStart.current.y; mouseStart.current=null; if (Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4) cycle(dx<0?1:-1); }}
+    onPointerCancel={() => { mouseStart.current=null; }}
     onTouchStart={event => { const touch = event.touches[0]; start.current = {x:touch.clientX,y:touch.clientY}; }}
     onTouchCancel={() => { start.current = null; }}
     onTouchEnd={event => {
