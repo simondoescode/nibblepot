@@ -1,33 +1,170 @@
+/* Weekly planner */
+.page-intro.planner-intro {
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 0 0 14px;
+  padding: 8px 0 4px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+.planner-intro .intro-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 14px;
+  background: var(--green);
+}
+.planner-intro h2 { font-size: clamp(25px, 5vw, 34px); margin: 0; }
+.planner-intro p { margin-top: 4px; color: var(--muted); font-size: 13px; }
 
-/* Nibblepot weekly meal planner — friendly editorial cards with proper mobile controls. */
-.planner-intro{background:var(--green)}
-.planner-week-head{display:flex;align-items:center;justify-content:space-between;gap:13px;margin:20px 0}
-.planner-week-picker{display:flex;align-items:center;gap:10px}
-.planner-week-picker>button{width:39px;height:39px;border-radius:12px;border:2px solid var(--ink);background:#fffefa;display:grid;place-items:center;flex:none}
-.planner-week-picker>div{display:flex;gap:8px;align-items:center;font-weight:900;font-size:15px}
-.planner-tools{display:flex;gap:11px;flex-wrap:wrap}
-.planner-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,0.85fr);gap:22px;align-items:start}
-.planner-days{display:grid;gap:11px}
-.planner-day{display:grid;grid-template-columns:110px minmax(0,1fr) auto;align-items:center;gap:13px;border:2px solid var(--ink);border-radius:17px;padding:15px;background:#fffefa;box-shadow:3px 3px 0 var(--ink)}
-.planner-day-label{display:grid;gap:3px}.planner-day-label strong{font-size:16px}.planner-day-label span{font-weight:700;font-size:12px;color:var(--muted)}
-.planner-day-main{min-width:0;display:grid;gap:5px}
-.planner-day-main select{width:100%;min-width:0;border:1.6px solid #beb4a4;border-radius:11px;padding:10px;background:var(--cream);color:var(--ink);font-weight:800;font-size:13px}
-.planner-day-hint{font-size:11px;color:var(--muted);font-weight:750}
-.planner-view{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:900;background:transparent;border:0;white-space:nowrap}
-.planner-view:hover{text-decoration:underline}.planner-occasion{font-size:20px;text-align:center;width:75px}
-.planner-summary{border:2px solid var(--ink);border-radius:20px;background:#fffefa;padding:20px;box-shadow:4px 5px 0 var(--ink)}
-.planner-summary-top{background:var(--yellow);border-radius:15px;padding:15px;margin-bottom:20px}
-.planner-summary-top>span{font-size:11px;font-weight:1000;letter-spacing:.6px}
-.planner-big{display:flex;align-items:end;gap:10px;font-size:47px;font-weight:1000;line-height:1.2}
-.planner-big small{font-size:13px;padding-bottom:9px}.planner-summary-top p{margin:5px 0 0;font-size:12px;line-height:1.4}
-.planner-summary h3{font-size:23px;margin:0 0 8px;letter-spacing:-.7px}
-.planner-note{font-size:12px;color:var(--muted);line-height:1.5}
-.planner-preview{list-style:none;margin:16px 0 19px;padding:0;display:grid;gap:8px}
-.planner-preview li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ede3d6;padding-bottom:8px;text-transform:capitalize;font-size:13px}
-.planner-preview strong{white-space:nowrap;font-size:12px}
-.planner-summary>.btn{width:100%;font-size:13px}
-.planner-footnote{font-size:13px;color:var(--muted);margin:25px 0}
-.planner-footnote button{border:0;background:transparent;text-decoration:underline;font-weight:900;color:var(--ink);padding:0}
+.planner-week-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.planner-week-picker {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  min-width: min(100%, 276px);
+  padding: 4px;
+  border: 1px solid #d2ddd1;
+  border-radius: 15px;
+  background: #edf3e9;
+}
+.planner-week-picker > button, .planner-view {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.planner-week-range { display: grid; gap: 2px; text-align: center; font-size: 15px; }
+.planner-week-range small { color: var(--muted); font-size: 11px; font-weight: 650; }
+
+.planner-tools { display: flex; flex-wrap: wrap; gap: 7px; }
+.planner-tools .btn, .planner-clear-confirm button {
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid #d9d4c8;
+  border-radius: 11px;
+  background: var(--paper);
+  box-shadow: none;
+  color: var(--ink);
+  font-weight: 700;
+}
+.planner-tools .btn:hover { transform: none; background: #f3eee3; }
+
+.planner-layout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(270px, .85fr); gap: 18px; align-items: start; }
+.planner-days { display: grid; gap: 7px; min-width: 0; }
+.planner-day {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 5px 7px 5px 12px;
+  border: 1px solid #e0dacd;
+  border-radius: 14px;
+  background: var(--paper);
+}
+.planner-day[data-today] { border-color: #92b09a; background: #edf5e9; }
+.planner-day-label { display: grid; justify-items: start; gap: 2px; }
+.planner-day-label strong { font-size: 14px; }
+.planner-day-label > .planner-day-short { display: none; }
+.planner-day-label span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.planner-day-label small {
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: var(--green);
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.planner-day-picker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  min-height: 62px;
+  padding: 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  transition: background .15s;
+}
+.planner-day-picker:only-of-type { grid-column: 2 / -1; }
+.planner-day-picker:hover, .planner-view:hover { background: #f3ecdf; }
+.planner-day-picker:active, .planner-view:active { background: #ffe4ae; }
+.planner-meal-thumb {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 50px;
+  flex: none;
+  border-radius: 9px;
+  background: #fff0d7;
+  color: var(--muted);
+  object-fit: contain;
+}
+.planner-meal-thumb[data-kind="leftovers"] { background: #e7efe1; }
+.planner-meal-thumb[data-kind="freezer"] { background: #e6eff2; }
+.planner-meal-thumb[data-kind="empty"] { background: #f1eee5; }
+.planner-picked { display: grid; gap: 3px; flex: 1; min-width: 0; }
+.planner-picked strong { font-size: 14px; line-height: 1.2; font-weight: 750; overflow-wrap: anywhere; }
+.planner-picked small { font-size: 11px; line-height: 1.25; color: var(--muted); }
+.planner-change-icon { flex: none; color: var(--muted); }
+.planner-view { background: #f5f0e7; }
+
+.planner-summary {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid #e0dacd;
+  border-radius: 16px;
+  background: var(--paper);
+}
+.planner-summary-top { padding: 11px 13px; margin-bottom: 15px; border-radius: 12px; background: #edf3e9; }
+.planner-summary-top > span { font-size: 10px; font-weight: 800; letter-spacing: .08em; color: var(--muted); }
+.planner-big { display: flex; align-items: baseline; gap: 7px; font-size: 32px; font-weight: 800; line-height: 1.15; }
+.planner-big small { font-size: 14px; }
+.planner-summary-top p { margin: 4px 0 0; font-size: 12px; line-height: 1.4; color: var(--muted); }
+.planner-summary h3 { margin: 0 0 8px; font-size: 19px; letter-spacing: -.4px; }
+.planner-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.planner-preview { display: grid; gap: 8px; margin: 12px 0; padding: 0; list-style: none; }
+.planner-preview li { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid #ede3d6; font-size: 13px; }
+.planner-preview strong { font-size: 12px; text-align: right; }
+.planner-summary > .btn { width: 100%; font-size: 13px; }
+
+@media (max-width: 767px) {
+  .planner-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .planner-week-head { flex-direction: column; align-items: stretch; margin-bottom: 12px; }
+  .planner-tools .btn { flex: 1; white-space: nowrap; font-size: 12px; }
+  .planner-day { grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 4px; padding-inline: 8px 5px; }
+  .planner-day-label > .planner-day-name { display: none; }
+  .planner-day-label > .planner-day-short { display: block; }
+  .planner-day-picker { gap: 6px; }
+  .planner-meal-thumb { width: 46px; height: 44px; }
+  .planner-picked strong { font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .planner-tools .btn { gap: 4px; padding-inline: 5px; }
+  .planner-tools .btn svg { width: 14px; }
+}
+
 .larder-searchbar{display:flex;align-items:center;gap:9px;background:#fffefa;border:2px solid var(--ink);border-radius:15px;padding:10px 13px}
 .larder-searchbar input{flex:1;min-width:0;background:transparent;border:0;outline:0;font-size:16px}
 .larder-searchbar button{border:0;background:transparent;display:grid;place-items:center}
@@ -35,23 +172,10 @@
 .larder-result-count{font-size:12px;font-weight:800;color:var(--muted);margin:9px 0 13px}
 .larder-no-results{display:grid;justify-items:start;gap:14px}
 @media(min-width:821px) and (max-width:1130px){.topnav{gap:1px}.navbtn{padding:9px 10px}.small-print{display:none}}
-@media(max-width:900px){.planner-layout{grid-template-columns:1fr}.planner-summary{position:static}}
-@media(max-width:560px){.planner-week-head{align-items:stretch;flex-direction:column}.planner-week-picker{justify-content:space-between}.planner-week-picker>div{font-size:14px}.planner-tools .btn{flex:1}.planner-day{grid-template-columns:80px minmax(0,1fr);padding:12px 10px;gap:10px}.planner-view,.planner-occasion{grid-column:2;justify-self:start}.planner-view{padding:4px 0}.planner-day-label strong{font-size:13px}.planner-day-main select{font-size:12px}.mobile-nav button{font-size:10px;min-width:0}.mobile-nav button span{font-size:19px}.mobile-nav{gap:0}}
+@media (max-width:560px){.mobile-nav button{font-size:10px;min-width:0}.mobile-nav button span{font-size:19px}.mobile-nav{gap:0}}
 
-
-/* The change-a-dinner flow replaces an unwieldy native recipe select with a useful picker. */
-.planner-day{grid-template-columns:100px minmax(0,1fr) auto}
-.planner-day-picker{display:flex;align-items:center;gap:11px;text-align:left;min-height:73px;width:100%;min-width:0;
-  background:#fffaf2;border:1.5px solid #d4c7b7;border-radius:13px;padding:8px 10px;transition:background .15s,border-color .15s}
-.planner-day-picker:hover{background:#fff0d3;border-color:var(--ink)}
-.planner-day-picker:active{background:#ffe4ae}
-.planner-day-picker img{width:70px;height:56px;object-fit:contain;flex:none;background:#fff4dc;border-radius:9px}
-.planner-picked{display:grid;gap:5px;min-width:0;flex:1}
-.planner-picked strong{font-size:14px;line-height:1.22;font-weight:1000;overflow-wrap:break-word}
-.planner-picked small{font-size:11px;color:var(--muted);font-weight:750;line-height:1.3}
-.planner-change-icon{flex:none;color:#89715d}
 .planner-clear-confirm{display:flex;align-items:center;gap:7px}
-.planner-clear-confirm button{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:10px;min-height:42px;font-size:12px;font-weight:900}
+.planner-clear-confirm button{font-size:12px}
 .planner-clear-confirm button:last-child{background:#ffd4c9}
 .planner-undo{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#eaf5df;border:1.5px solid #c3d9b1;border-radius:13px;
   padding:10px 12px;margin-bottom:17px;font-weight:850;font-size:13px}
@@ -100,14 +224,6 @@
   .planner-picker-handle{display:block;width:42px;height:5px;background:#b8ac9e;border-radius:99px;align-self:center;margin:3px 0 13px}
 }
 @media(max-width:560px){
-  .planner-day{grid-template-columns:72px minmax(0,1fr);gap:8px}
-  .planner-day-main{min-width:0}
-  .planner-day-picker{padding:7px;gap:8px;min-height:73px}
-  .planner-day-picker img{width:59px;height:54px}
-  .planner-picked strong{font-size:12px}
-  .planner-picked small{font-size:10px}
-  .planner-change-icon{width:14px}
-  .planner-view{grid-column:2;justify-self:end;min-height:34px}
   .planner-undo{font-size:11px}
   .planner-picker-shortcuts{gap:6px}
   .planner-picker-shortcuts button{font-size:11px;padding:7px}

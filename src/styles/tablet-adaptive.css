@@ -22,8 +22,6 @@
   .planner-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(245px,0.8fr);gap:16px;align-items:start}
   .planner-days,.planner-summary{min-width:0}
   .planner-summary{position:sticky;top:90px}
-  .planner-day{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:12px}
-  .planner-view{grid-column:2;justify-self:end;min-height:36px}
   .planner-week-head{flex-wrap:wrap}
   .planner-picker-dialog{width:min(720px,calc(100vw - 48px));max-height:85dvh}
   .planner-picker-results{grid-template-columns:repeat(2,minmax(0,1fr))}

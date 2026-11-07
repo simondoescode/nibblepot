@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import * as Dialog from '../ui/dialog';
-import { ArrowLeft, ArrowRight, CalendarDays, Check, Clock3, Dice5, Pencil, RotateCcw, Search, ShoppingBasket, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
 import { ingredientName, recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
 import { mondayFor, shiftWeek, shoppingPlanSignature, weekContributions } from '../lib/weeklyPlan';
@@ -8,6 +8,8 @@ import type { WeekSlot } from '../types';
 import { Button } from '../ui/controls';
 
 const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
+const weekDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 function dateFor(week: string, index: number): Date {
   const [y,m,d] = week.split('-').map(Number);
   return new Date(y,m-1,d+index,12);
@@ -119,22 +121,26 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
   },[query,filter,larder]);
 
   const preview = useMemo(() => weekContributions(slots,larder),[slots,larder]);
-  const start = dateFor(week,0);
-  const end = dateFor(week,6);
-  const range = new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(start) +
-    ' – ' + new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric'}).format(end);
+  const today = new Date();
+  const thisWeek = mondayFor(today);
+  const isThisWeek = week === thisWeek;
+  const range = weekDate.formatRange(dateFor(week, 0), dateFor(week, 6));
   return <div className="planner-page">
-    <div className="page-intro planner-intro"><div><h2>This week's tea.</h2>
-      <p>Seven days, less head-scratching. Pick dinners, plan leftovers, shop once.</p>
-    </div><div className="intro-icon" aria-hidden="true">🍲</div></div>
+    <header className="page-intro planner-intro">
+      <span className="intro-icon" aria-hidden="true"><CalendarDays size={23}/></span>
+      <div><h2>This week's tea.</h2><p>Plan dinners and shop for the week.</p></div>
+    </header>
     <div className="planner-week-head">
-      <div className="planner-week-picker">
-        <button type="button" aria-label="Previous week" onClick={() => {setDirection('back');onWeekChange(shiftWeek(week,-1));}}><ArrowLeft size={18}/></button>
-        <div><CalendarDays size={17} aria-hidden="true"/><strong>{range}</strong></div>
-        <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={18}/></button>
+      <div className="planner-week-picker" role="group" aria-label="Choose a week">
+        <button type="button" aria-label="Previous week" onClick={() => {setDirection('back');onWeekChange(shiftWeek(week,-1));}}><ArrowLeft size={19} aria-hidden="true"/></button>
+        <div className="planner-week-range" aria-live="polite">
+          <small>{isThisWeek ? 'Current week' : 'Week of ' + shortDate.format(dateFor(week, 0))}</small>
+          <strong>{range}</strong>
+        </div>
+        <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={19} aria-hidden="true"/></button>
       </div>
       <div className="planner-tools">
-        {week !== mondayFor(new Date()) && <Button size="small" onClick={()=>onWeekChange(mondayFor(new Date()))}>This week</Button>}
+        {!isThisWeek && <Button size="small" onClick={()=>onWeekChange(thisWeek)}>This week</Button>}
         <Button size="small" icon={<Dice5 size={16}/>} onClick={shuffle}>Shuffle dinners</Button>
         {clearPending ? <span className="planner-clear-confirm" role="group" aria-label="Confirm clearing the week">
           <button type="button" onClick={()=>setClearPending(false)}>Cancel</button>
@@ -156,38 +162,47 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
       <div className="planner-days" key={week} data-direction={direction}>
         {slots.map((slot,index) => {
           const recipe = slot.kind === 'recipe' ? recipes.find(r=>r.id===slot.id) : undefined;
+          const isToday = isThisWeek && index === (today.getDay() + 6) % 7;
           return <section className={`planner-day${changedDay === index ? ' just-changed' : ''}`} onAnimationEnd={() => setChangedDay(null)} key={index}
             draggable onDragStart={event=>{event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
             onDragOver={event=>{event.preventDefault();setDragOver(index);}}
             onDragLeave={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node))setDragOver(null);}}
             onDrop={event=>{event.preventDefault();dropMeal(index,event.dataTransfer.getData('text/plain'));}}
-            data-drop-target={dragOver===index ? 'true' : undefined}>
-            <div className="planner-day-label"><strong>{days[index]}</strong>
-              <span>{new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short'}).format(dateFor(week,index))}</span>
+            data-drop-target={dragOver===index ? 'true' : undefined}
+            data-today={isToday || undefined}>
+            <div className="planner-day-label" aria-current={isToday ? 'date' : undefined}>
+              <strong className="planner-day-name">{days[index]}</strong>
+              <strong className="planner-day-short">{days[index].slice(0, 3)}</strong>
+              <span>{shortDate.format(dateFor(week, index))}</span>
+              {isToday && <small>Today</small>}
             </div>
-            <div className="planner-day-main">
-              <button type="button" className="planner-day-picker"
-                aria-label={'Change '+days[index]+' dinner'} aria-haspopup="dialog"
-                onClick={event=>openPicker(event,index)}>
-                {recipe && <img alt="" width="70" height="56" loading="lazy"
-                  src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/>}
-                <span className="planner-picked"><strong>{slotTitle(slot)}</strong>
-                  <small>{recipe ? recipe.mins+' min · serves '+(servings[recipe.id]??4) :
-                    slot.kind==='leftovers'?'Make yesterday’s dinner go further':
-                    slot.kind==='freezer'?'A night off cooking':'Tap to pick a meal'}</small>
-                </span>
-                <Pencil size={17} aria-hidden="true" className="planner-change-icon"/>
-              </button>
-            </div>
-            {recipe && <button type="button" className="planner-view" onClick={()=>onRecipe(recipe.id)}>
-              View recipe <ArrowRight size={15}/></button>}
+            <button type="button" className="planner-day-picker"
+              aria-label={'Change '+days[index]+' dinner'} aria-haspopup="dialog"
+              onClick={event=>openPicker(event,index)}>
+              {recipe ? <img className="planner-meal-thumb" alt="" width="70" height="56" loading="lazy"
+                src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/> :
+                <span className="planner-meal-thumb" data-kind={slot.kind} aria-hidden="true">
+                  {slot.kind === 'leftovers' ? <RotateCcw size={18}/> :
+                    slot.kind === 'freezer' ? <Snowflake size={18}/> : <Plus size={20}/>}
+                </span>}
+              <span className="planner-picked"><strong>{slotTitle(slot)}</strong>
+                <small>{recipe ? recipe.mins+' min · serves '+(servings[recipe.id]??4) :
+                  slot.kind==='leftovers'?'Use what’s left':
+                  slot.kind==='freezer'?'A night off cooking':'Tap to pick a meal'}</small>
+              </span>
+              <Pencil size={15} aria-hidden="true" className="planner-change-icon"/>
+            </button>
+            {recipe && <button type="button" className="planner-view" aria-label={'View recipe for '+days[index]}
+              title="View recipe" onClick={()=>onRecipe(recipe.id)}>
+              <ArrowUpRight size={20} aria-hidden="true"/>
+            </button>}
           </section>;
         })}
       </div>
       <aside className="planner-summary">
-        <div className="planner-summary-top"><span>THE WEEK AT A GLANCE</span>
+        <div className="planner-summary-top"><span>DINNER PLAN</span>
           <div className="planner-big">{planned.length}<small>planned dinners</small></div>
-          <p>{slots.filter(s=>s.kind==='leftovers'||s.kind==='freezer').length} leftovers / freezer nights. No ingredients added for those nights.</p>
+          <p>{slots.filter(s=>s.kind==='leftovers'||s.kind==='freezer').length} leftovers or freezer nights</p>
         </div>
         <h3>What you'll need</h3>
         {preview.length ? <>
