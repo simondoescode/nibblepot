@@ -100,3 +100,13 @@
 .recipe-card{border:1px solid #d6dfd6;box-shadow:0 6px 22px #103b3212}
 .recipe-card:hover{transform:translateY(-2px)}
 @media(max-width:600px){.brand{font-size:25px}.brand-pot{width:39px;height:39px}}
+
+
+/* Generated photographic backdrops are WebP only; the gradient remains visible until assets are deployed. */
+.simmer-spotlight-image{background-color:#123d35;background-image:linear-gradient(135deg,#153d38,#1e393d 55%,#6c503a);background-size:cover;background-position:center}
+.simmer-spotlight-image[data-backdrop="navy-tartan"]{background-image:url("/nibblepot/backgrounds/navy-tartan.webp"),linear-gradient(135deg,#102c39,#234b44)}
+.simmer-spotlight-image[data-backdrop="forest-table"]{background-image:url("/nibblepot/backgrounds/forest-table.webp"),linear-gradient(135deg,#103b32,#28614b)}
+.simmer-spotlight-image[data-backdrop="cream-linen"]{background-image:url("/nibblepot/backgrounds/cream-linen.webp"),linear-gradient(135deg,#dbc7a5,#9b8667)}
+.simmer-spotlight-image[data-backdrop="rustic-wood"]{background-image:url("/nibblepot/backgrounds/rustic-wood.webp"),linear-gradient(135deg,#4a3023,#916344)}
+.simmer-spotlight-image[data-backdrop="slate-kitchen"]{background-image:url("/nibblepot/backgrounds/slate-kitchen.webp"),linear-gradient(135deg,#172a32,#40575a)}
+.simmer-spotlight-image[data-backdrop="navy-tiles"]{background-image:url("/nibblepot/backgrounds/navy-tiles.webp"),linear-gradient(135deg,#0e293b,#21475c)}
