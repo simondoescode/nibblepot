@@ -23,7 +23,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
   // Raster backgrounds are optional until the generated WebP asset pack is added to public/backgrounds.
-  const backdrop = current ? ['navy-tartan','forest-table','cream-linen','rustic-wood','slate-kitchen','navy-tiles'][Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % 6] : 'forest-table';
+  const backdrop = current ? ['golden-stone','cream-linen','honey-wood','navy-tartan'][Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % 4] : 'golden-stone';
   const show = (next: string) => {
     setPlanDay(null);
     setId(next);
