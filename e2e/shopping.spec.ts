@@ -34,3 +34,29 @@ test('shopping rows toggle by name and the To buy filter tracks remaining items'
   await shopping.getByRole('button', { name: 'Remove ticked items' }).click();
   await expect(shopping.getByRole('heading', { name: 'Your list is empty' })).toBeVisible();
 });
+
+test('two-digit shopping count fits the mobile tab badge', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'mobile', 'Mobile-only badge');
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.addInitScript(() => {
+    const ids = ['potatoes', 'baked-beans', 'rice', 'pasta', 'chopped-tomatoes', 'onion',
+      'garlic', 'stock', 'paprika', 'gravy', 'wraps', 'bread'];
+    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+      favorites: [], larder: [], shopping: ids.map(id => ({ id, done: false, from: [] })),
+    }));
+  });
+  await page.goto('/nibblepot/shopping/');
+
+  const tab = page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('button', { name: 'Shopping' });
+  const badge = tab.locator('.mob-count');
+  await expect(badge).toHaveText('12');
+  await expect(badge).toHaveCSS('font-size', '10px');
+  await expect(badge).toHaveCSS('line-height', '10px');
+
+  const badgeBox = (await badge.boundingBox())!;
+  const iconBox = (await tab.locator('svg').boundingBox())!;
+  const labelBox = (await tab.locator('.mob-label').boundingBox())!;
+  expect(badgeBox.y).toBeLessThan(iconBox.y);
+  expect(badgeBox.x + badgeBox.width / 2).toBeGreaterThan(iconBox.x + iconBox.width / 2);
+  expect(badgeBox.y + badgeBox.height).toBeLessThan(labelBox.y);
+});
