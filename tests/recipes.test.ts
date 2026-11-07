@@ -25,11 +25,14 @@ describe('recipe catalogue', () => {
     expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.length <= 5)).toBe(true);
     expect(filterRecipes(recipes, '', 'onepot', []).every(recipe => recipe.onePot)).toBe(true);
   });
-  it('ranks meals by percentage of ingredients in the larder', () => {
+  it('only shows recipes with every required ingredient in the larder', () => {
     const pantry = ['potatoes', 'baked-beans', 'cheese', 'butter'];
     const matches = filterRecipes(recipes, '', 'larder', pantry);
-    expect(matches[0].id).toBe('jacket');
-    expect(inLarder(matches[0], pantry)).toBe(4);
+    expect(matches.some(recipe => recipe.id === 'jacket')).toBe(true);
+    expect(matches.every(recipe => missingRequired(recipe, pantry) === 0)).toBe(true);
+    expect(inLarder(recipes.find(recipe => recipe.id === 'jacket')!, pantry)).toBe(4);
+    expect(filterRecipes(recipes, '', 'larder', [])).toEqual([]);
+    expect(filterRecipes(recipes, '', 'all', [])).toHaveLength(recipes.length);
   });
   it('ignores optional toppings when ranking dinner availability', () => {
     const sample = recipes.find(r => r.ing.some(i=>i.optional))!;
