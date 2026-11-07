@@ -102,11 +102,12 @@
 @media(max-width:600px){.brand{font-size:25px}.brand-pot{width:39px;height:39px}}
 
 
-/* Generated photographic backdrops are WebP only; the gradient remains visible until assets are deployed. */
-.simmer-spotlight-image{background-color:#123d35;background-image:linear-gradient(135deg,#153d38,#1e393d 55%,#6c503a);background-size:cover;background-position:center}
-.simmer-spotlight-image[data-backdrop="navy-tartan"]{background-image:url("/nibblepot/backgrounds/navy-tartan.webp"),linear-gradient(135deg,#102c39,#234b44)}
-.simmer-spotlight-image[data-backdrop="forest-table"]{background-image:url("/nibblepot/backgrounds/forest-table.webp"),linear-gradient(135deg,#103b32,#28614b)}
-.simmer-spotlight-image[data-backdrop="cream-linen"]{background-image:url("/nibblepot/backgrounds/cream-linen.webp"),linear-gradient(135deg,#dbc7a5,#9b8667)}
-.simmer-spotlight-image[data-backdrop="rustic-wood"]{background-image:url("/nibblepot/backgrounds/rustic-wood.webp"),linear-gradient(135deg,#4a3023,#916344)}
-.simmer-spotlight-image[data-backdrop="slate-kitchen"]{background-image:url("/nibblepot/backgrounds/slate-kitchen.webp"),linear-gradient(135deg,#172a32,#40575a)}
-.simmer-spotlight-image[data-backdrop="navy-tiles"]{background-image:url("/nibblepot/backgrounds/navy-tiles.webp"),linear-gradient(135deg,#0e293b,#21475c)}
+/* Final editorial food photography: background photos are separate from transparent food cut-outs. */
+.simmer-spotlight-image{background-color:#cba476;background-image:linear-gradient(135deg,#e7c18b,#bc8553);background-size:cover;background-position:center}
+.simmer-spotlight-image[data-backdrop="golden-stone"]{background-image:url("/nibblepot/backgrounds/golden-stone.webp"),linear-gradient(135deg,#e7c18b,#bc8553)}
+.simmer-spotlight-image[data-backdrop="cream-linen"]{background-image:url("/nibblepot/backgrounds/cream-linen.webp"),linear-gradient(135deg,#f5e5cb,#bba383)}
+.simmer-spotlight-image[data-backdrop="honey-wood"]{background-image:url("/nibblepot/backgrounds/honey-wood.webp"),linear-gradient(135deg,#a97443,#5b3a26)}
+.simmer-spotlight-image[data-backdrop="navy-tartan"]{background-image:url("/nibblepot/backgrounds/navy-tartan.webp"),linear-gradient(135deg,#183e3c,#112c3d)}
+.simmer-spotlight-image img{position:absolute;top:4%;left:42%;width:56%;height:92%;object-fit:contain;object-position:center;filter:drop-shadow(0 16px 18px rgba(17,29,24,.25));pointer-events:none}
+.simmer-spotlight:after{background:linear-gradient(90deg,rgba(8,36,30,.88),rgba(8,36,30,.58) 44%,rgba(8,36,30,.05) 85%),linear-gradient(0deg,rgba(8,36,30,.4),transparent 55%)}
+@media(max-width:600px){.simmer-spotlight-image img{left:12%;top:1%;width:82%;height:67%}.simmer-spotlight:after{background:linear-gradient(0deg,rgba(7,33,28,.96),rgba(7,33,28,.58) 43%,rgba(7,33,28,.04) 82%)}}
