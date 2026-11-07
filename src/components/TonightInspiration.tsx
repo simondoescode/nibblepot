@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Clock3, Heart, Shuffle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Clock3, Heart, Shuffle, CalendarPlus } from 'lucide-react';
 import type { Recipe } from '../types';
 import { chooseRandomRecipe } from '../lib/recipes';
 
-type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void };
+type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, day: number) => void };
 const sessionKey = 'simmer-spotlight-v1';
 function initialId(recipes: readonly Recipe[]): string {
   if (!recipes.length) return '';
@@ -15,13 +15,15 @@ function initialId(recipes: readonly Recipe[]): string {
 }
 
 /** A self-contained gesture surface: horizontal swipes here do not navigate app tabs. */
-export function TonightInspiration({ recipes, favorites, onFavorite, onOpen }: Props) {
+export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
   const [id, setId] = useState(() => initialId(recipes));
+  const [planDay, setPlanDay] = useState<number | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
   const eligible = recipes.filter(recipe => Boolean(recipe.image));
   const catalogue = eligible.length ? eligible : [...recipes];
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
   const show = (next: string) => {
+    setPlanDay(null);
     setId(next);
     try { sessionStorage.setItem(sessionKey, next); } catch { /* No persistence available. */ }
   };
@@ -56,7 +58,9 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen }: P
           aria-pressed={favorites.includes(current.id)} onClick={() => onFavorite(current.id)}>
           <Heart size={20} fill={favorites.includes(current.id) ? 'currentColor' : 'none'} aria-hidden="true"/>
         </button>
+        <button type="button" className="simmer-save" aria-label="Add to meal plan" aria-expanded={planDay !== null} onClick={() => setPlanDay(value => value === null ? 0 : null)}><CalendarPlus size={20} aria-hidden="true"/></button>
       </div>
+      {planDay !== null && <div className="simmer-plan-picker"><label htmlFor="simmer-plan-day">Plan for</label><select id="simmer-plan-day" value={planDay} onChange={event => setPlanDay(Number(event.target.value))}>{['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map((day,index)=><option key={day} value={index}>{day}</option>)}</select><button type="button" onClick={() => {onPlan(current.id,planDay);setPlanDay(null);}}>Add dinner</button></div>}
     </div>
     <div className="simmer-spotlight-controls">
       <button type="button" aria-label="Previous inspiration" disabled={catalogue.length < 2} onClick={() => cycle(-1)}><ArrowLeft size={19}/></button>
