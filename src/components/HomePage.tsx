@@ -43,7 +43,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     <div className="recipe-food-toolbar">
       <FoodTypePicker selected={selectedFoodTypes} onChange={setSelectedFoodTypes}/>
       {(selectedFoodTypes.length > 0 || filter !== 'all' || search.trim()) && <button type="button" className="recipe-clear-filters" onClick={clearFilters}>Clear filters</button>}
-      <p className="recipe-result-count" role="status">{filter === 'larder' ? `${ready.length} ready to cook · ${nearly.length} nearly there` : `${filtered.length} of ${recipes.length} recipes`}</p>
+      <p className="recipe-result-count" role="status">{filter === 'larder' ? `${ready.length} ready to cook · ${nearly.length} nearly there` : `${filtered.length === recipes.length ? recipes.length : `${filtered.length} of ${recipes.length}`} recipes`}</p>
     </div>
     {selectedFoodTypes.length > 0 && <div className="selected-food-types" aria-label="Selected food types">
       {foodTypes.filter(type=>selectedFoodTypes.includes(type.id)).map(type=><button key={type.id} type="button" aria-label={`Remove ${type.label} filter`}

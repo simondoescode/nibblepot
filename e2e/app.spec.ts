@@ -62,12 +62,38 @@ test('opening a recipe navigates to its own page and Back returns to listing', a
   await page.goto('/nibblepot/');
   const link = page.locator('.recipe-card').first().getByRole('link', { name: /view jacket/i });
   await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket/');
-  await link.click();
+  await link.focus();
+  await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.getByRole('button', { name: /back to recipes/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/$/);
   await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(link).toBeFocused();
+});
+
+test('mobile recipe card opens from the image, description and larder status', async ({ page, isMobile }) => {
+  test.skip(!isMobile);
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/nibblepot/');
+  const card = page.locator('.recipe-card').first();
+  await expect(card.getByRole('link')).toHaveCount(1);
+  const favourite = card.getByRole('button', { name: /add to favourites/i });
+  await expect(favourite).toHaveCSS('width', '44px');
+  await favourite.tap();
+  await expect(card.getByRole('button', { name: /remove from favourites/i })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page).toHaveURL(/\/nibblepot\/$/);
+
+  for (const area of ['.recipe-illustration', '.recipe-info p', '.foot-meta']) {
+    const target = card.locator(area);
+    await target.scrollIntoViewIfNeeded();
+    const bounds = (await target.boundingBox())!;
+    await page.touchscreen.tap(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+    await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+    await page.getByRole('button', { name: /back to recipes/i }).click();
+    await expect(page).toHaveURL(/\/nibblepot\/$/);
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
 });
 
 test('settings backup, restore, and confirmed reset persist across reloads', async ({ page }, testInfo) => {
