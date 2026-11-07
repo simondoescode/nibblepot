@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
+import type { WeekSlot } from '../types';
+import { TonightInspiration } from './TonightInspiration';
 import { recipes } from '../data';
 import { filterRecipes } from '../lib/recipes';
 import { foodTypes, type FoodType } from '../lib/foodTypes';
 import { FoodTypePicker } from './FoodTypePicker';
 import type { Filter } from '../types';
-import { PotMascot } from './PotArt';
 import { RecipeGrid } from './RecipeGrid';
-import { Button, FilterChip } from '../ui/controls';
+import { FilterChip } from '../ui/controls';
 
 const filters: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All recipes' },
@@ -20,25 +21,15 @@ type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
   favorites: string[]; larder: string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void;
-  onRandom: () => void; onLarder: () => void;
+  weekSlots: WeekSlot[]; onPlan: (id: string, day: number) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, onRandom, onLarder }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes), [search, filter, larder, selectedFoodTypes]);
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   return <>
-    <section className="hero">
-      <div className="hero-content"><span className="eyebrow">✳️ Good grub. Zero faff.</span>
-        <h1>What's for<br /><em>tea?</em></h1>
-        <p>Easy, budget-friendly family dinners. No waffle, no weird ingredients. Just food.</p>
-        <div className="actions"><Button tone="primary" onClick={onRandom}>🎲 Surprise me!</Button>
-          <Button onClick={onLarder}>🫙 My larder</Button></div>
-      </div>
-      <div className="hero-art" aria-hidden="true"><div className="art-disk" /><div className="art-squiggle" />
-        <div className="hero-pot"><PotMascot /></div><span className="float-food ff-1">🥕</span>
-        <span className="float-food ff-2">🍅</span><span className="float-food ff-3">🥦</span><span className="mini-burst">✳</span><div className="hero-copy-speech">GOOD GRUB.<br/>ZERO FAFF.</div>
-      </div>
-    </section>
+    <TonightInspiration recipes={filtered} favorites={favorites} onFavorite={onFavorite} onOpen={onOpen} onPlan={onPlan} />
+    <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><div><span className="simmer-plan-kicker">MAKE THE WEEK EASIER</span><h2>This week's dinners</h2></div><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">{weekSlots.map((slot,index) => {const meal=slot.kind === 'recipe' ? recipes.find(recipe=>recipe.id===slot.id) : undefined;return <button type="button" key={index} onClick={onPlanner}><span>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}</span><strong>{meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner')}</strong></button>;})}</div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
       <p>{recipes.length} easy recipes, all made for real life.</p></div>
       <label className="search"><span aria-hidden="true">🔎</span>

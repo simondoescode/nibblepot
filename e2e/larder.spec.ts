@@ -80,6 +80,6 @@ for (const width of [320,390,430]) {
     expect((await action.boundingBox())!.y).toBeCloseTo(before!.y,0);
     await action.getByRole('button').click();
     await expect(page).toHaveURL(/\/nibblepot\/$/);
-    await expect(page.getByRole('button',{name:/Use my larder/})).toHaveAttribute('aria-pressed','true');
+    await expect(page.locator('button.chip[aria-pressed]').filter({hasText:'Use my larder'})).toHaveAttribute('aria-pressed','true');
   });
 }

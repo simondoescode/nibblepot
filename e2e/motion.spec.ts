@@ -4,7 +4,7 @@ const navigation = (page:Page, project:string) => page.getByRole('navigation',{n
 
 async function pull(page:Page, release=false) {
   await page.evaluate((release) => {
-    const target=document.querySelector('.hero')!;
+    const target=document.querySelector('.section-heading')!;
     const touch=(y:number)=>new Touch({identifier:91,target,clientX:140,clientY:y});
     document.dispatchEvent(new TouchEvent('touchstart',{bubbles:true,cancelable:true,touches:[touch(80)]}));
     document.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[touch(160)]}));
@@ -79,7 +79,7 @@ test('reduced motion suppresses route, sheet, press and gesture movement and res
     await pull(page);
     await expect(page.locator('.pull-native-indicator')).toBeVisible();
     const initial=await page.locator('.pull-native-indicator').evaluate(el=>getComputedStyle(el).transform);
-    await page.evaluate(()=>document.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[new Touch({identifier:91,target:document.querySelector('.hero')!,clientX:140,clientY:185})]})));
+    await page.evaluate(()=>document.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[new Touch({identifier:91,target:document.querySelector('.section-heading')!,clientX:140,clientY:185})]})));
     expect(await page.locator('.pull-native-indicator').evaluate(el=>getComputedStyle(el).transform)).toBe(initial);
     expect(await page.locator('.pull-body').evaluate(el=>getComputedStyle(el).transform)).toBe('none');
     expect(await page.locator('.pull-native-icon svg').evaluate(el=>getComputedStyle(el).transform)).toBe('none');

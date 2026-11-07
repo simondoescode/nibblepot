@@ -1,11 +1,8 @@
 export function PotIcon() {
   return <svg viewBox="0 0 80 80" aria-hidden="true">
-    <path d="M13 27h54l-5 35a10 10 0 0 1-10 9H28a10 10 0 0 1-10-9z" fill="#fc724e" stroke="#25231e" strokeWidth="4" strokeLinejoin="round" />
-    <path d="M8 27h64" stroke="#25231e" strokeWidth="6" strokeLinecap="round" />
-    <path d="M32 20c-9-12 8-12 0-21M51 21c-8-11 7-12 0-21" stroke="#25231e" strokeWidth="4" strokeLinecap="round" fill="none" />
-    <circle cx="32" cy="45" r="3.5" fill="#25231e" /><circle cx="51" cy="45" r="3.5" fill="#25231e" />
-    <path d="M35 54q6 7 13 0" stroke="#25231e" strokeWidth="3" strokeLinecap="round" fill="none" />
-    <ellipse cx="24" cy="52" rx="5" ry="3" fill="#fbad9f" /><ellipse cx="58" cy="52" rx="5" ry="3" fill="#fbad9f" />
+    <path d="M27 20c-8-8 7-11 0-18M41 20c-8-8 7-11 0-18M55 20c-8-8 7-11 0-18" fill="none" stroke="#fff7eb" strokeWidth="3.5" strokeLinecap="round" />
+    <path d="M13 32h54l-5 31a10 10 0 0 1-10 9H28a10 10 0 0 1-10-9z" fill="#f35b20" stroke="#103b32" strokeWidth="4" strokeLinejoin="round" />
+    <path d="M10 32h60" stroke="#103b32" strokeWidth="6" strokeLinecap="round" />
   </svg>;
 }
 

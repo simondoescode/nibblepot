@@ -27,11 +27,11 @@ for(const width of [320,390,430]) test(`mobile app bar stays visible at ${width}
 test('mobile welcome card stays compact and header does not move with pull gesture',async({page},info)=>{
   test.skip(info.project.name!=='mobile');
   await page.goto('/nibblepot/');
-  expect((await page.locator('.hero').boundingBox())!.height).toBeLessThan(260);
+  expect((await page.locator('.simmer-spotlight').boundingBox())!.height).toBeGreaterThan(260);
   const header=page.locator('.app-header-shell');
   const before=await header.boundingBox();
   await page.evaluate(()=>{
-    const target=document.querySelector('.hero')!;
+    const target=document.querySelector('.section-heading')!;
     const touch=(y:number)=>new Touch({identifier:4,target,clientX:140,clientY:y});
     document.dispatchEvent(new TouchEvent('touchstart',{bubbles:true,cancelable:true,touches:[touch(100)]}));
     document.dispatchEvent(new TouchEvent('touchmove',{bubbles:true,cancelable:true,touches:[touch(170)]}));

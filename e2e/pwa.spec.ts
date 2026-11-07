@@ -68,7 +68,7 @@ test('manifest shortcuts and icons stay inside the GitHub Pages scope', async ({
   const manifest = await (await request.get('/nibblepot/manifest.webmanifest')).json();
   expect(manifest.id).toBe('/nibblepot/');
   expect(manifest.display).toBe('standalone');
-  expect(manifest.name).toBe('Nibblepot');
+  expect(manifest.name).toBe('Simmer');
   expect(manifest.icons.map((icon: {purpose:string})=>icon.purpose)).toEqual(['any','any','maskable']);
   expect(manifest.shortcuts.map((shortcut: { url: string }) => shortcut.url)).toEqual(['planner/', 'shopping/', 'favourites/']);
   for (const icon of manifest.icons) {

@@ -1,9 +1,9 @@
 {
-  "name": "nibblepot",
+  "name": "simmer",
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Good grub. Zero faff. Colourful family recipe-book PWA.",
+  "description": "Dinner, sorted. A food-first family recipe and meal-planning PWA.",
   "engines": {
     "node": ">=22.12.0"
   },

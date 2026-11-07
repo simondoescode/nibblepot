@@ -50,8 +50,8 @@ export default function App() {
   useEffect(() => {
     const recipe = route.kind === 'recipe' || route.kind === 'cook'
       ? recipes.find(item => item.id === route.id) : undefined;
-    document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Nibblepot` :
-      'Nibblepot — Good grub. Zero faff.';
+    document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Simmer` :
+      'Simmer — Dinner, sorted.';
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = recipe
       ? route.kind === 'cook' ? `Step-by-step cooking mode for ${recipe.title}.` :
@@ -144,6 +144,11 @@ export default function App() {
   const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
     ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
   }));
+  const planSpotlight = (id: string, day: number) => {
+    if (!recipes.some(recipe => recipe.id === id) || !Number.isInteger(day) || day < 0 || day > 6) return;
+    changeSlot(day, {kind:'recipe', id});
+    toast(`Dinner added to ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][day]}`);
+  };
   const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
     setData(current => {
       const slots = [...(current.weekPlans?.[selectedWeek] ?? defaultWeek())];
@@ -190,7 +195,7 @@ export default function App() {
         </section>}
         {route.kind === 'tab' && route.tab === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
           favorites={data.favorites} larder={data.larder} onFavorite={toggleFavorite} onOpen={openRecipe}
-          onRandom={randomMeal} onLarder={() => navigate('larder')} />}
+          weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
         {route.kind === 'tab' && route.tab === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
           onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
         {route.kind === 'tab' && route.tab === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} />}
@@ -207,7 +212,7 @@ export default function App() {
         {route.kind === 'tab' && route.tab === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
           onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
       </main>
-      <footer className="footer">Made for real-life tea times ✳ Nibblepot demo</footer>
+      <footer className="footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
     <MobileNavigation tab={tab} shoppingCount={data.shopping.length} onNavigate={navigate} />
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}

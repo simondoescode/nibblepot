@@ -32,7 +32,7 @@ test('selected categories match either type and can be removed individually',asy
   await chooseTypes(page,['Chicken','Fish']);
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('2 selected');
   await expect(page.getByRole('heading',{name:'Tuna pasta bake',exact:true})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'One-pot chicken rice',exact:true})).toBeVisible();
+  await expect(page.locator('#home-results').getByRole('heading',{name:'One-pot chicken rice',exact:true})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Speedy tomato pasta',exact:true})).toHaveCount(0);
   await page.getByRole('button',{name:'Remove Chicken filter',exact:true}).click();
   await expect(page.locator('.recipe-card')).toHaveCount(4);
@@ -77,7 +77,7 @@ test('finding meals from the larder clears previous food restrictions',async ({p
   if(info.project.name==='mobile') await page.locator('.larder-meals-bar button').click();
   else await page.getByRole('button',{name:'What can I make?'}).click();
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('All food');
-  await expect(page.getByRole('button',{name:/Use my larder/})).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('button.chip[aria-pressed]').filter({hasText:'Use my larder'})).toHaveAttribute('aria-pressed','true');
 });
 
 for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`,async ({page},info)=>{

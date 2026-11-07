@@ -46,19 +46,19 @@ function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, 
 const pages = [
   ...recipes.map(recipe => ({
     route: 'recipes/' + recipe.id + '/cook',
-    title: 'Cook ' + recipe.title + ' | Nibblepot',
+    title: 'Cook ' + recipe.title + ' | Simmer',
     description: 'Step-by-step cooking mode for ' + recipe.title + '.',
     canonicalPath: base + 'recipes/' + recipe.id + '/',
     noindex: true,
   })),
   ...recipes.map(recipe => ({
-    route: 'recipes/' + recipe.id, title: recipe.title + ' | Nibblepot',
+    route: 'recipes/' + recipe.id, title: recipe.title + ' | Simmer',
     description: recipe.description + ' Ingredients and simple steps for four.',
     recipe,
   })),
   ...[
     ['favourites', 'Favourites'], ['larder', 'Larder'], ['planner', 'Meal planner'], ['shopping', 'Shopping list'], ['settings', 'Settings']
-  ].map(([route,title]) => ({route,title: title + ' | Nibblepot', description: 'Nibblepot — Good grub. Zero faff.'})),
+  ].map(([route,title]) => ({route,title: title + ' | Simmer', description: 'Simmer — Dinner, sorted.'})),
 ];
 for (const page of pages) {
   const folder = path.join(dist, ...page.route.split('/'));
