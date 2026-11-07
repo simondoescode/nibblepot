@@ -16,7 +16,7 @@ function initialId(recipes: readonly Recipe[]): string {
 
 /** A self-contained gesture surface: horizontal swipes here do not navigate app tabs. */
 export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
-  const [id, setId] = useState(() => initialId(recipes));
+  const [id, setId] = useState(() => initialId(recipes.filter(recipe => Boolean(recipe.image)).length ? recipes.filter(recipe => Boolean(recipe.image)) : recipes));
   const [planDay, setPlanDay] = useState<number | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
   const eligible = recipes.filter(recipe => Boolean(recipe.image));
@@ -36,6 +36,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   if (!current) return null;
   return <section className="simmer-spotlight" aria-label="Tonight's inspiration"
     onTouchStart={event => { const touch = event.touches[0]; start.current = {x:touch.clientX,y:touch.clientY}; }}
+    onTouchCancel={() => { start.current = null; }}
     onTouchEnd={event => {
       if (!start.current) return;
       const touch = event.changedTouches[0];
