@@ -240,7 +240,7 @@
   font: inherit;
 }
 
-.shopping-add-custom { overflow-wrap: anywhere; }
+.shopping-add-custom { margin-top: 8px; min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
 
 .shopping-add-filter {
   display: flex;

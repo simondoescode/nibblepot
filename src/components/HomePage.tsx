@@ -21,7 +21,7 @@ type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
   favorites: string[]; larder: string[]; stock: Record<string,string>; servings: Record<string,number>; onAddMissing: (id: string) => void; onFavorite: (id: string) => void; onOpen: (id: string) => void;
-  weekSlots: WeekSlot[]; onPlan: (id: string, day: number) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
+  weekSlots: WeekSlot[]; onPlan: (id: string, opener: HTMLButtonElement) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
 export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, servings, onAddMissing, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {

@@ -145,7 +145,19 @@
 .planner-preview { display: grid; gap: 8px; margin: 12px 0; padding: 0; list-style: none; }
 .planner-preview li { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 8px; border-bottom: 1px solid #ede3d6; font-size: 13px; }
 .planner-preview strong { font-size: 12px; text-align: right; }
-.planner-summary > .btn { width: 100%; font-size: 13px; }
+.planner-shopping-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid #d2ddd1;
+  border-radius: 15px;
+  background: #edf3e9;
+}
+.planner-shopping-action > .btn { min-height: 44px; }
 
 @media (max-width: 767px) {
   .planner-layout { grid-template-columns: minmax(0, 1fr); }
@@ -181,9 +193,9 @@
   padding:10px 12px;margin-bottom:17px;font-weight:850;font-size:13px}
 .planner-undo span,.planner-undo button{display:flex;align-items:center;gap:7px}
 .planner-undo button{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;min-height:38px;padding:7px 11px;font-weight:900}
-.planner-sync{display:flex;align-items:center;gap:8px;padding:12px;margin:14px 0;background:#fff2d9;border:1px solid #e8d6aa;border-radius:12px;font-size:12px;line-height:1.4;font-weight:850}
-.planner-sync.is-synced{background:#e7f4df;border-color:#b6d1a9;color:#406736}
-.planner-sync.needs-update{background:#fff0d9;border-color:#eac78d;color:#795021}
+.planner-sync { margin: 3px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.planner-sync.is-synced { color: #406736; }
+.planner-sync.needs-update { color: #795021; }
 .planner-picker-overlay{position:fixed;inset:0;background:rgba(28,24,18,.52);z-index:70}
 .planner-picker-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:71;
   display:flex;flex-direction:column;width:min(680px,calc(100vw - 32px));max-height:min(88dvh,900px);
@@ -233,3 +245,17 @@
   .planner-meal-copy small{font-size:11px}
 }
 @media(prefers-reduced-motion:reduce){.planner-day-picker{transition:none}}
+
+.plan-dinner-dialog .planner-week-picker { margin-bottom: 14px; }
+.plan-dinner-day { display: grid; gap: 6px; font-size: 14px; font-weight: 750; }
+.plan-dinner-day select {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #d2ddd1;
+  border-radius: 11px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+.plan-dinner-dialog > .btn { width: 100%; min-height: 44px; }

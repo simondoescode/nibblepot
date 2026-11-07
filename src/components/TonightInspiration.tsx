@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Clock3, Heart, Shuffle, CalendarPlus } from 'luc
 import type { Recipe } from '../types';
 import { chooseRandomRecipe } from '../lib/recipes';
 
-type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, day: number) => void };
+type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, opener: HTMLButtonElement) => void };
 const sessionKey = 'simmer-spotlight-v1';
 // The swipe preview and the mounted Recipes tab need the same initial pick.
 const initialRandom = Math.random();
@@ -19,7 +19,6 @@ function initialId(recipes: readonly Recipe[]): string {
 /** Supports recipe cycling when a gesture is not claimed by tab navigation. */
 export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
   const [id, setId] = useState(() => initialId(recipes));
-  const [planDay, setPlanDay] = useState<number | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
   const mouseStart = useRef<{ x: number; y: number } | null>(null);
   const catalogue = recipes;
@@ -27,7 +26,6 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   // Stable per-recipe rotation across four locally cached editorial WebP backdrops.
   const backdrop = current ? ['golden-stone','cream-linen','honey-wood','navy-tartan'][Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % 4] : 'golden-stone';
   const show = (next: string) => {
-    setPlanDay(null);
     setId(next);
     try { sessionStorage.setItem(sessionKey, next); } catch { /* No persistence available. */ }
   };
@@ -67,9 +65,8 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
           aria-pressed={favorites.includes(current.id)} onClick={() => onFavorite(current.id)}>
           <Heart size={20} fill={favorites.includes(current.id) ? 'currentColor' : 'none'} aria-hidden="true"/>
         </button>
-        <button type="button" className="simmer-save" aria-label="Add to meal plan" aria-expanded={planDay !== null} onClick={() => setPlanDay(value => value === null ? 0 : null)}><CalendarPlus size={20} aria-hidden="true"/></button>
+        <button type="button" className="simmer-save" aria-label="Add to meal plan" aria-haspopup="dialog" onClick={event => onPlan(current.id, event.currentTarget)}><CalendarPlus size={20} aria-hidden="true"/></button>
       </div>
-      {planDay !== null && <div className="simmer-plan-picker"><label htmlFor="simmer-plan-day">Plan for</label><select id="simmer-plan-day" value={planDay} onChange={event => setPlanDay(Number(event.target.value))}>{['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map((day,index)=><option key={day} value={index}>{day}</option>)}</select><button type="button" onClick={() => {onPlan(current.id,planDay);setPlanDay(null);}}>Add dinner</button></div>}
     </div>
     <div className="simmer-spotlight-controls">
       <button type="button" aria-label="Previous inspiration" disabled={catalogue.length < 2} onClick={() => cycle(-1)}><ArrowLeft size={19}/></button>

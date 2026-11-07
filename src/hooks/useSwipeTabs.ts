@@ -4,6 +4,8 @@ import type { Tab } from '../types';
 import { prefersReducedMotion } from './useReducedMotion';
 
 export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping'];
+const MOBILE_NAV_QUERY = '(max-width: 1180px)';
+const SYSTEM_EDGE_INSET = 24;
 const BLOCKED = 'input,textarea,select,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';
 
 export function swipeDestination(tab: Tab, delta: number): Tab | null {
@@ -71,7 +73,9 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       if (gesture.current) reset();
       return;
     }
-    if (blocked || !tab || !SWIPE_TABS.includes(tab) || animation.current?.committing || window.innerWidth > 820) return;
+    if (blocked || !tab || !SWIPE_TABS.includes(tab) || animation.current?.committing || !window.matchMedia(MOBILE_NAV_QUERY).matches) return;
+    const { clientX, clientY } = event.touches[0];
+    if (clientX < SYSTEM_EDGE_INSET || clientX > window.innerWidth - SYSTEM_EDGE_INSET) return;
     const target = event.target;
     if (!(target instanceof Element) || target.closest(BLOCKED) || document.querySelector('[role="dialog"]')) return;
     // Leave horizontally scrolling components in control of their own gestures.
@@ -79,7 +83,7 @@ export function useSwipeTabs(tab: Tab | null, navigate: (tab: Tab) => Promise<vo
       if (node.scrollWidth > node.clientWidth + 4 && ['auto', 'scroll'].includes(getComputedStyle(node).overflowX)) return;
     }
     if (animation.current) reset();
-    gesture.current = { x: event.touches[0].clientX, y: event.touches[0].clientY, time: performance.now(), axis: 'pending', dx: 0, offset: 0 };
+    gesture.current = { x: clientX, y: clientY, time: performance.now(), axis: 'pending', dx: 0, offset: 0 };
   };
 
   const onTouchEnd = () => {

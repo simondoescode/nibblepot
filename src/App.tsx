@@ -11,7 +11,7 @@ import { addMissingIngredients, chooseRandomRecipe } from './lib/recipes';
 import { readSavedData, writeSavedData } from './lib/storage';
 import { shoppingItemName } from './lib/shopping';
 import { BASE_SERVINGS, clampServings, shoppingQuantity } from './lib/quantities';
-import { applyWeekToShopping, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
+import { applyWeekToShopping, dateForWeekDay, defaultWeek, mondayFor, shuffleWeek } from './lib/weeklyPlan';
 import { refreshPwa } from './lib/refresh';
 import { cookingPath, recipePath, tabPath } from './lib/routes';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
@@ -26,6 +26,7 @@ import { LarderPage } from './components/LarderPage';
 import { WeekPlannerPage } from './components/WeekPlannerPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
+import { PlanDinnerDialog } from './components/PlanDinnerDialog';
 import { CookingMode } from './components/CookingMode';
 import { RandomRecipeDialog } from './components/RandomRecipeDialog';
 import { SettingsPage } from './components/SettingsPage';
@@ -41,6 +42,8 @@ export default function App() {
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
+  const [dinnerPicker, setDinnerPicker] = useState<{id: string; open: boolean}>();
+  const dinnerPickerOpener = useRef<HTMLButtonElement | null>(null);
   const [notice, setNotice] = useState('');
   const [noticeVersion,setNoticeVersion] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
@@ -162,17 +165,27 @@ export default function App() {
   const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
     ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
   }));
-  const planSpotlight = (id: string, day: number) => {
-    if (!recipes.some(recipe => recipe.id === id) || !Number.isInteger(day) || day < 0 || day > 6) return;
-    changeSlot(day, {kind:'recipe', id});
-    toast(`Dinner added to ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][day]}`);
+  const currentWeek = mondayFor(new Date());
+  const currentWeekSlots = data.weekPlans?.[currentWeek] ?? defaultWeek();
+  const plannedRecipe = dinnerPicker && recipes.find(recipe => recipe.id === dinnerPicker.id);
+  const openDinnerPicker = (id: string, opener: HTMLButtonElement) => {
+    dinnerPickerOpener.current = opener;
+    setDinnerPicker({ id, open: true });
   };
-  const changeSlot = (index: number, slot: typeof weekSlots[number]) =>
+  const setDinnerPickerOpen = (open: boolean) => setDinnerPicker(current => current && { ...current, open });
+  const changeSlot = (index: number, slot: typeof weekSlots[number], week = selectedWeek) =>
     setData(current => {
-      const slots = [...(current.weekPlans?.[selectedWeek] ?? defaultWeek())];
+      const slots = [...(current.weekPlans?.[week] ?? defaultWeek())];
       slots[index] = slot;
-      return {...current,weekPlans:{...current.weekPlans,[selectedWeek]:slots}};
+      return {...current,weekPlans:{...current.weekPlans,[week]:slots}};
     });
+  const planDinner = (week: string, day: number) => {
+    if (!plannedRecipe) return;
+    changeSlot(day, { kind: 'recipe', id: plannedRecipe.id }, week);
+    setDinnerPickerOpen(false);
+    const date = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'short' });
+    toast(`Dinner planned for ${date.format(dateForWeekDay(week, day))}`);
+  };
   const shuffleCurrentWeek = () => setData(current => ({
     ...current, weekPlans:{...current.weekPlans,
       [selectedWeek]:shuffleWeek(current.weekPlans?.[selectedWeek] ?? defaultWeek(),Math.random,current.larder)}
@@ -190,12 +203,12 @@ export default function App() {
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
       favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
-      weekSlots={weekSlots} onPlan={planSpotlight} onPlanner={() => navigate('planner')} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
+      weekSlots={currentWeekSlots} onPlan={openDinnerPicker} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
     {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
     {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} showMobileBar={!isPreview && !swipe.preview} />}
     {page === 'planner' && <WeekPlannerPage week={selectedWeek}
-      slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} shoppingPlan={data.shoppingPlan}
+      slots={weekSlots} larder={data.larder} servings={data.servings ?? {}} stock={data.larderQuantities} shoppingPlan={data.shoppingPlan}
       hasGeneratedShopping={data.shopping.some(item => item.planGenerated || !!item.weekCounts)}
       onWeekChange={setSelectedWeek} onChange={changeSlot} onReplace={replaceSlots} onShuffle={shuffleCurrentWeek}
       onClear={clearCurrentWeek} onAdd={addWeek} onRecipe={openRecipe} />}
@@ -229,7 +242,7 @@ export default function App() {
                 ...current.servings, [activeRecipe.id]: clampServings(value),
               } }))} onBack={backToRecipes}
               onAddMissing={optionalIds => addMissing(activeRecipe.id, optionalIds)}
-              onFavorite={() => toggleFavorite(activeRecipe.id)} onCook={() => startCooking(activeRecipe.id)}
+              onFavorite={() => toggleFavorite(activeRecipe.id)} onPlan={opener => openDinnerPicker(activeRecipe.id, opener)} onCook={() => startCooking(activeRecipe.id)}
               notify={toast} />}
             {(route.kind === 'not-found' || (route.kind === 'recipe' && !activeRecipe) || (route.kind === 'cook' && !activeCookRecipe)) && <section className="recipe-page-not-found">
               <h1>That recipe's not in the pot</h1>
@@ -251,6 +264,9 @@ export default function App() {
     <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
       onReopen={() => setRandomId(lastRandom.current!.id)} onClose={() => setRandomId(null)} onView={() => { if (lastRandom.current) openRecipe(lastRandom.current.id); }} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
+    <PlanDinnerDialog recipe={plannedRecipe}
+      open={!!dinnerPicker?.open} weekPlans={data.weekPlans} onOpenChange={setDinnerPickerOpen} onPlan={planDinner}
+      returnFocus={() => dinnerPickerOpener.current?.focus()} />
     {notice && <Toast key={noticeVersion} message={notice} />}
   </>;
 }

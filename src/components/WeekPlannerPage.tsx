@@ -3,17 +3,12 @@ import * as Dialog from '../ui/dialog';
 import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
 import { ingredientName, recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
-import { mondayFor, shiftWeek, shoppingPlanSignature, weekContributions } from '../lib/weeklyPlan';
+import { dateForWeekDay, mondayFor, shiftWeek, shoppingPlanSignature, weekContributions, WEEK_DAYS as days, weekSlotTitle } from '../lib/weeklyPlan';
 import type { WeekSlot } from '../types';
 import { Button } from '../ui/controls';
 
-const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 const weekDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-function dateFor(week: string, index: number): Date {
-  const [y,m,d] = week.split('-').map(Number);
-  return new Date(y,m-1,d+index,12);
-}
 
 type MealFilter = 'all' | 'quick' | 'onepot' | 'larder';
 const filters: { key: MealFilter; label: string }[] = [
@@ -23,13 +18,8 @@ const filters: { key: MealFilter; label: string }[] = [
 function sameSlot(a: WeekSlot,b: WeekSlot): boolean {
   return a.kind === b.kind && (a.kind !== 'recipe' || (b.kind === 'recipe' && a.id === b.id));
 }
-function slotTitle(slot: WeekSlot): string {
-  if (slot.kind === 'recipe') return recipes.find(item=>item.id===slot.id)?.title ?? 'Choose a meal';
-  return slot.kind==='leftovers'?'Leftovers night':slot.kind==='freezer'?'Freezer / easy night':'Choose a dinner';
-}
-
-export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, hasGeneratedShopping, onWeekChange, onChange, onReplace, onShuffle, onClear, onAdd, onRecipe }: {
-  week: string; slots: WeekSlot[]; larder: string[]; servings: Record<string,number>;
+export function WeekPlannerPage({ week, slots, larder, servings, stock, shoppingPlan, hasGeneratedShopping, onWeekChange, onChange, onReplace, onShuffle, onClear, onAdd, onRecipe }: {
+  week: string; slots: WeekSlot[]; larder: string[]; servings: Record<string,number>; stock?: Record<string,string>;
   shoppingPlan?: {week:string;signature:string}; hasGeneratedShopping:boolean;
   onWeekChange: (week: string) => void;
   onChange: (index: number, value: WeekSlot) => void; onReplace: (slots: WeekSlot[]) => void;
@@ -95,8 +85,10 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
   const planned = slots.filter(slot => slot.kind === 'recipe');
   const hasShoppingHistory = hasGeneratedShopping || !!shoppingPlan;
   const synced = shoppingPlan?.week === week && shoppingPlan.signature ===
-    shoppingPlanSignature(week,slots,larder,servings);
+    shoppingPlanSignature(week,slots,larder,servings,stock);
   const shoppingNeedsUpdate = hasShoppingHistory && !synced;
+  const shoppingForAnotherWeek = !!shoppingPlan && shoppingPlan.week !== week;
+  const canUpdateShopping = planned.length > 0 || (shoppingNeedsUpdate && !shoppingForAnotherWeek);
   const usedOn = new Map<string,string[]>();
   slots.forEach((slot,index)=>{
     if(slot.kind!=='recipe' || index===editingDay) return;
@@ -120,11 +112,11 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
     return found;
   },[query,filter,larder]);
 
-  const preview = useMemo(() => weekContributions(slots,larder),[slots,larder]);
+  const preview = useMemo(() => weekContributions(slots,larder,stock,servings),[slots,larder,stock,servings]);
   const today = new Date();
   const thisWeek = mondayFor(today);
   const isThisWeek = week === thisWeek;
-  const range = weekDate.formatRange(dateFor(week, 0), dateFor(week, 6));
+  const range = weekDate.formatRange(dateForWeekDay(week, 0), dateForWeekDay(week, 6));
   return <div className="planner-page">
     <header className="page-intro planner-intro">
       <span className="intro-icon" aria-hidden="true"><CalendarDays size={23}/></span>
@@ -134,7 +126,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
       <div className="planner-week-picker" role="group" aria-label="Choose a week">
         <button type="button" aria-label="Previous week" onClick={() => {setDirection('back');onWeekChange(shiftWeek(week,-1));}}><ArrowLeft size={19} aria-hidden="true"/></button>
         <div className="planner-week-range" aria-live="polite">
-          <small>{isThisWeek ? 'Current week' : 'Week of ' + shortDate.format(dateFor(week, 0))}</small>
+          <small>{isThisWeek ? 'Current week' : 'Week of ' + shortDate.format(dateForWeekDay(week, 0))}</small>
           <strong>{range}</strong>
         </div>
         <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={19} aria-hidden="true"/></button>
@@ -148,6 +140,18 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
         </span> : <Button size="small" icon={<Trash2 size={15}/>} onClick={()=>setClearPending(true)}>Clear week</Button>}
       </div>
     </div>
+    <section className="planner-shopping-action" aria-label="Shopping for this week">
+      <div>
+        <strong>{preview.length} ingredient{preview.length === 1 ? '' : 's'} to buy</strong>
+        <p className={'planner-sync '+(shoppingNeedsUpdate?'needs-update':synced?'is-synced':'')} role="status">
+          {synced ? 'Shopping list matches this week' : shoppingForAnotherWeek ? 'Shopping list is for a different week.' :
+            shoppingNeedsUpdate ? 'Update your shopping list to match this plan.' :
+            canUpdateShopping ? 'Generate a list from this week.' : 'Choose a dinner to start a shopping list.'}
+        </p>
+      </div>
+      <Button tone="primary" icon={<ShoppingBasket size={18}/>} onClick={onAdd}
+        disabled={!canUpdateShopping}>{hasShoppingHistory?'Update shopping list':'Add week to shopping'}</Button>
+    </section>
     {undo?.week===week && <div className="planner-undo" role="status">
       <span><Check size={17} aria-hidden="true"/> {undo.description}. Saved on this device.</span>
       <button type="button" onClick={revert}><RotateCcw size={15} aria-hidden="true"/> Undo</button>
@@ -173,7 +177,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
             <div className="planner-day-label" aria-current={isToday ? 'date' : undefined}>
               <strong className="planner-day-name">{days[index]}</strong>
               <strong className="planner-day-short">{days[index].slice(0, 3)}</strong>
-              <span>{shortDate.format(dateFor(week, index))}</span>
+              <span>{shortDate.format(dateForWeekDay(week, index))}</span>
               {isToday && <small>Today</small>}
             </div>
             <button type="button" className="planner-day-picker"
@@ -185,7 +189,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
                   {slot.kind === 'leftovers' ? <RotateCcw size={18}/> :
                     slot.kind === 'freezer' ? <Snowflake size={18}/> : <Plus size={20}/>}
                 </span>}
-              <span className="planner-picked"><strong>{slotTitle(slot)}</strong>
+              <span className="planner-picked"><strong>{weekSlotTitle(slot)}</strong>
                 <small>{recipe ? recipe.mins+' min · serves '+(servings[recipe.id]??4) :
                   slot.kind==='leftovers'?'Use what’s left':
                   slot.kind==='freezer'?'A night off cooking':'Tap to pick a meal'}</small>
@@ -207,19 +211,10 @@ export function WeekPlannerPage({ week, slots, larder, servings, shoppingPlan, h
         <h3>What you'll need</h3>
         {preview.length ? <>
           <p className="planner-note">{preview.length} missing ingredients across your planned dinners.</p>
-          <ul className="planner-preview">{preview.slice(0,9).map(item=><li key={item.id}><span>{ingredientName(item.id)}</span><strong>{shoppingQuantity(item,servings)}</strong></li>)}</ul>
-          {preview.length>9&&<p className="planner-note">+ {preview.length-9} more in your shopping list</p>}
-        </> : <p className="planner-note">Nothing to buy yet — choose meals or check your larder.</p>}
-        <div className={'planner-sync '+(shoppingNeedsUpdate?'needs-update':synced?'is-synced':'')}>
-          {synced ? <><Check size={16}/> Shopping list matches this week</> :
-            shoppingNeedsUpdate ? <><ShoppingBasket size={16}/> {
-              shoppingPlan?.week===week?'Meals changed — update your shopping list':
-              'Shopping list is for a different plan — update it'}</> :
-            'Ready when you are. Generate a list from this week.'}
-        </div>
-        <Button tone="primary" icon={<ShoppingBasket size={18}/>} onClick={onAdd}
-          disabled={planned.length===0}>{hasShoppingHistory?'Update shopping list':'Add week to shopping'}</Button>
-        <p className="planner-note">Changing dinners saves your plan. Shopping updates only when you tap above. Manually added items stay.</p>
+          <ul className="planner-preview">{preview.slice(0,9).map(item=><li key={item.id}><span>{ingredientName(item.id)}</span><strong>{shoppingQuantity(item,servings,stock)}</strong></li>)}</ul>
+          {preview.length>9&&<p className="planner-note">+ {preview.length-9} more when you update your shopping list</p>}
+        </> : <p className="planner-note">Nothing to buy for this plan.</p>}
+        <p className="planner-note">Shopping updates when you tap the button above. Manually added items stay.</p>
       </aside>
     </div>
     <Dialog.Root historyKey="planner-meal-picker" open={editingDay !== null} onOpenChange={open=>setEditingDay(open ? lastEditing.current : null)}>
