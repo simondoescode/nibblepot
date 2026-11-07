@@ -1,0 +1,8 @@
+/* Keep controls reachable in installed landscape mode and on notched tablets. */
+@media (orientation:landscape) and (max-height:650px) and (max-width:1180px){
+  .app-header-shell{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+  .mobile-nav{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  .main{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  .pwa-update{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(78px + env(safe-area-inset-bottom));max-height:calc(100dvh - 100px);overflow:auto}
+  .cook-screen{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+}

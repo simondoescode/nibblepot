@@ -13,22 +13,22 @@ test('install offer is user-triggered, dismissible and remains available in Sett
     });
     window.dispatchEvent(event);
   });
-  await expect(page.getByRole('button', { name: 'Install Nibblepot', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Install Simmer', exact: true })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { installCalls: number }).installCalls)).toBe(0);
   await page.getByRole('button', { name: 'Maybe later' }).click();
-  await expect(page.getByRole('region', { name: 'Install Nibblepot' })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Install Simmer' })).toHaveCount(0);
   await page.reload();
-  await expect(page.getByRole('region', { name: 'Install Nibblepot' })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Install Simmer' })).toHaveCount(0);
   await page.goto('/nibblepot/settings/');
   await page.evaluate(() => {
     const event = new Event('beforeinstallprompt', { cancelable: true });
     Object.assign(event, { prompt: async () => { (window as unknown as { installCalls: number }).installCalls++; }, userChoice: Promise.resolve({ outcome: 'accepted' }) });
     window.dispatchEvent(event);
   });
-  await page.getByRole('button', { name: 'Install Nibblepot', exact: true }).click();
+  await page.getByRole('button', { name: 'Install Simmer', exact: true }).click();
   expect(await page.evaluate(() => (window as unknown as { installCalls: number }).installCalls)).toBe(1);
   await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')));
-  await expect(page.getByText('Nibblepot is on your home screen')).toBeVisible();
+  await expect(page.getByText('Simmer is on your home screen')).toBeVisible();
 });
 
 test('iPhone visitors get manual instructions and installed apps hide the offer', async ({ page }) => {
@@ -39,7 +39,7 @@ test('iPhone visitors get manual instructions and installed apps hide the offer'
   await page.getByRole('button', { name: 'How to install', exact: true }).click();
   await expect(page.getByText('Add to Home Screen', { exact: true })).toBeVisible();
   await page.evaluate(() => window.dispatchEvent(new Event('appinstalled')));
-  await expect(page.getByRole('region', { name: 'Install Nibblepot' })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Install Simmer' })).toHaveCount(0);
 });
 
 test('recipes, images, deep links and saved lists survive going offline', async ({ page, context }) => {
@@ -82,7 +82,7 @@ test('manifest shortcuts and icons stay inside the GitHub Pages scope', async ({
 
 test('install artwork decodes in the page and Apple touch icon has a PNG response', async ({page,request})=>{
   await page.goto('/nibblepot/settings/');
-  const artwork=page.getByRole('region',{name:'Install Nibblepot'}).locator('img');
+  const artwork=page.getByRole('region',{name:'Install Simmer'}).locator('img');
   await expect(artwork).toBeVisible();
   await expect(artwork).toHaveAttribute('src','/nibblepot/icons/icon-192-v2.png');
   expect(await artwork.evaluate((image:HTMLImageElement)=>image.complete && image.naturalWidth===192)).toBe(true);
