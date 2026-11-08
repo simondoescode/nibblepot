@@ -169,7 +169,6 @@ export function CookingMode({ recipe, servings, onExit }: {
       </header>
       {awakeError && <p className="cook-awake-note" role="status">Screen awake isn't supported or allowed on this device. Check your display settings.</p>}
       <div className="cook-heading">
-        <p>GOOD GRUB. ZERO FAFF.</p>
         <h1>{recipe.title}</h1>
       </div>
       <div className="cook-layout">
@@ -185,7 +184,6 @@ export function CookingMode({ recipe, servings, onExit }: {
             </div>
             <div className="cook-step-announcement" aria-live="polite" aria-atomic="true">
             <div key={progress.step} data-direction={direction} className="cook-step-content">
-              <span className="cook-step-number">{String(progress.step + 1).padStart(2, '0')}</span>
               <p>{recipe.steps[progress.step]}</p>
             </div></div>
             {compact && <div className="cook-mobile-tools" aria-label="Cooking tools">

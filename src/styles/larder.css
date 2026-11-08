@@ -48,3 +48,20 @@
   .larder-sheet{top:auto;bottom:0;left:0;transform:none;width:100%;max-height:calc(100dvh - 12px);border-radius:24px 24px 0 0;padding:10px 20px calc(20px + env(safe-area-inset-bottom))}
   .larder-sheet-handle{display:block;width:40px;height:5px;border-radius:10px;background:#c9beb1;margin:0 auto 14px}
 }
+
+.larder-intro.page-intro h2 { font: 600 32px/36px var(--font-display); }
+.larder-intro .intro-icon { background: var(--selected); color: var(--brand); border-radius: var(--radius-card); }
+.larder-tools { top: var(--mobile-header-height); background: var(--bg); }
+.larder-tools .larder-searchbar { border-color: var(--control-edge); border-radius: var(--radius-control); }
+.larder-searchbar button { min-width: 44px; min-height: 44px; }
+.larder-group .item-grid, .larder-group .larder-item { border-color: var(--divider); }
+.larder-group .larder-item:has(input:checked) { background: var(--selected); }
+.larder-stock-toggle input { accent-color: var(--brand); }
+.larder-amount { color: var(--brand); font-variant-numeric: tabular-nums; }
+.larder-sheet { background: var(--surface); border-color: var(--divider); }
+.larder-sheet :is(input, select) { border-color: var(--control-edge); }
+.larder-sheet select:focus-visible { outline-width: 2px; outline-offset: 2px; }
+.larder-meals-bar { bottom: var(--mobile-tab-height); background: var(--surface); border-color: var(--divider); }
+@media (min-width: 768px) {
+  .larder-intro.page-intro h2 { font-size: 40px; line-height: 44px; }
+}

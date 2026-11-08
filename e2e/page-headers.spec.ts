@@ -5,7 +5,7 @@ const pageTitles = [
   {route: 'favourites', heading: 'Saved for later.'},
   {route: 'larder', heading: "Your larder"},
   {route: 'planner', heading: "This week's dinners"},
-  {route: 'shopping', heading: 'Shopping, sorted.'},
+  {route: 'shopping', heading: 'Shopping list'},
   {route: 'settings', heading: 'Little tweaks.'},
 ] as const;
 

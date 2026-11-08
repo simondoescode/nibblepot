@@ -289,3 +289,28 @@
   .page-intro.shopping-heading { gap: 7px; }
   .shopping-heading .intro-icon { width: 34px; height: 34px; }
 }
+
+.shopping-heading h2 { font: 600 32px/36px var(--font-display); }
+.shopping-heading .intro-icon { background: var(--selected); color: var(--brand); }
+.shopping-summary { border-color: var(--divider); background: var(--surface); }
+.shopping-summary strong, .shopping-group .shop-quantity { color: var(--brand); }
+.shopping-summary progress { accent-color: var(--brand); background: var(--selected); }
+.shopping-summary progress::-webkit-progress-bar { background: var(--selected); }
+.shopping-summary progress::-webkit-progress-value { background: var(--brand); }
+.shopping-summary progress::-moz-progress-bar { background: var(--brand); }
+.shopping-filter { background: var(--bg); }
+.shopping-filter button { min-height: 44px; }
+.shopping-filter button[aria-pressed="true"] { background: var(--selected); color: var(--brand); box-shadow: none; }
+.shopping-group, .shopping-group .shop-row + .shop-row { border-color: var(--divider); }
+.shopping-group .shop-row.done { background: var(--selected); }
+.shopping-group .shop-row input { accent-color: var(--brand); }
+.shopping-group .shop-quantity { font-variant-numeric: tabular-nums; }
+.shopping-group .tesco-link { min-width: 44px; color: var(--brand); }
+.shopping-add-sheet { background: var(--surface); border-color: var(--divider); }
+@media (min-width: 768px) {
+  .shopping-heading h2 { font-size: 40px; line-height: 44px; }
+}
+@media (max-width: 420px) {
+  .shopping-heading .intro-icon { display: none; }
+  .shopping-heading .shopping-add-trigger { padding-inline: 10px; }
+}

@@ -96,7 +96,7 @@ test.describe('Swipe between mobile tabs', () => {
     const touch = await touchGesture(page);
     const routes = [
       { path: 'larder', heading: 'Your larder', start: 290, end: 80 },
-      { path: 'shopping', heading: 'Shopping, sorted.', start: 290, end: 80 },
+      { path: 'shopping', heading: 'Shopping list', start: 290, end: 80 },
       { path: 'larder', heading: 'Your larder', start: 80, end: 290 },
       { path: 'planner', heading: "This week's dinners", start: 80, end: 290 },
     ];
@@ -126,7 +126,7 @@ test.describe('Swipe between mobile tabs', () => {
 
     await page.getByRole('navigation', { name: 'Mobile navigation' })
       .getByRole('button', { name: 'Shopping' }).tap();
-    const shopping = main.getByRole('heading', { name: 'Shopping, sorted.' });
+    const shopping = main.getByRole('heading', { name: 'Shopping list' });
     await expect(shopping).toBeFocused();
     await expect(shopping).toHaveCSS('outline-style', 'none');
   });
