@@ -1589,5 +1589,64 @@
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
     "image": "recipes/chicken-tomato-pasta.webp"
+  },
+  {
+    "id": "ham-cabbage-mac-and-cheese",
+    "title": "Ham & cabbage mac and cheese",
+    "description": "Creamy cheddar macaroni with shredded cabbage and diced cooked ham or leftover gammon.",
+    "emoji": "🍝",
+    "color": "#f2d7a6",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "300 g"
+      },
+      {
+        "id": "cabbage",
+        "qty": "250 g"
+      },
+      {
+        "id": "ham",
+        "qty": "200 g"
+      },
+      {
+        "id": "butter",
+        "qty": "40 g"
+      },
+      {
+        "id": "plain-flour",
+        "qty": "40 g"
+      },
+      {
+        "id": "milk",
+        "qty": "500 ml"
+      },
+      {
+        "id": "cheese",
+        "qty": "175 g"
+      },
+      {
+        "id": "mustard",
+        "qty": "1 tsp",
+        "optional": true
+      },
+      {
+        "id": "black-pepper",
+        "qty": "0.25 tsp",
+        "optional": true
+      }
+    ],
+    "steps": [
+      "Shred the cabbage finely, dice the cooked ham and grate the mature cheddar. Boil the macaroni according to the packet, add the cabbage for the last 3 minutes, then drain both together.",
+      "While the pasta cooks, melt the butter in a large saucepan over medium heat. Stir in the plain flour and cook for 1 minute. Gradually whisk in the milk and simmer for 3–5 minutes, stirring, until the sauce coats the back of a spoon.",
+      "Turn the heat to low and stir in the cheddar, plus Dijon or English mustard and black pepper if you like. Stir in the cooked ham, macaroni and cabbage until piping hot throughout. Add a splash of milk if the sauce is too thick, then taste before adding salt.",
+      "Serve straight from the pan or spoon into a grill-safe dish, scatter over a little extra cheddar and grill for 3–5 minutes until bubbling and golden."
+    ],
+    "onePot": false,
+    "image": "recipes/ham-cabbage-mac-and-cheese.webp",
+    "safety": "Use ready-to-eat cooked ham or cooked gammon and heat the finished dish until steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout. If using leftover gammon, serve the mac and cheese freshly made.",
+    "reviewedOn": "2026-11-08"
   }
 ]
