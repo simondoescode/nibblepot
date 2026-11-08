@@ -2,7 +2,7 @@
 
 ## 1. Check the recipe and ingredients
 
-Check [the recipe catalogue](src/data/recipes.json) for an existing version. Choose a short, unique, lower-kebab-case ID such as `lentil-bolognese`. Keep existing IDs stable because favourites, shopping lists and meal plans refer to them.
+Check [the recipe catalogue](src/data/recipes.json) for an existing version. Choose a short, unique, lower-kebab-case ID such as `garlic-butter-pea-pasta`. Keep existing IDs stable because favourites, shopping lists and meal plans refer to them.
 
 Write the recipe for four servings. Include prep time in the total, name the ingredients clearly and give cooking times and signs of doneness in the method. Simmer scales the ingredient list when servings change, so keep quantities out of the steps unless they are needed for a technique or a safety instruction.
 
@@ -14,31 +14,29 @@ Append one object to the JSON array in [src/data/recipes.json](src/data/recipes.
 
 ```json
 {
-  "id": "lentil-bolognese",
-  "title": "Easy lentil bolognese",
-  "description": "Red lentils simmered in a simple tomato sauce.",
+  "id": "garlic-butter-pea-pasta",
+  "title": "Garlic butter pea pasta",
+  "description": "A quick pasta with sweet peas and garlic butter.",
   "emoji": "🍝",
   "color": "#eacaa9",
-  "mins": 35,
+  "mins": 20,
   "ing": [
-    { "id": "red-lentils", "qty": "200 g" },
     { "id": "pasta", "qty": "350 g" },
-    { "id": "chopped-tomatoes", "qty": "2 tins" },
-    { "id": "onion", "qty": "1" },
+    { "id": "frozen-peas", "qty": "200 g" },
+    { "id": "butter", "qty": "40 g" },
     { "id": "garlic", "qty": "2 cloves" },
-    { "id": "oil", "qty": "1 tbsp" },
     { "id": "cheese", "qty": "40 g", "optional": true }
   ],
   "steps": [
-    "Rinse the lentils. Finely chop the onion and garlic, then soften the onion in the oil over medium heat for 5 minutes. Add the garlic and stir for 30 seconds.",
-    "Add the lentils, tomatoes and 400 ml water. Simmer gently for 20–25 minutes until the lentils are tender, stirring occasionally and adding a splash of water if the sauce gets too thick.",
-    "While the sauce simmers, cook the pasta according to the packet. Drain and serve with the lentil sauce and grated cheese, if using."
+    "Cook the pasta according to the packet. Add the frozen peas for the final few minutes, following the packet instructions for the peas.",
+    "Scoop out a mug of pasta water, then drain the pasta and peas. Melt the butter in the empty pan over medium-low heat and stir the finely chopped garlic for 30 seconds.",
+    "Return the pasta and peas to the pan with a splash of pasta water. Toss until coated and piping hot, then serve with grated cheese if using."
   ],
-  "onePot": false,
-  "safety": "Cook the lentils until tender and serve the sauce piping hot throughout.",
+  "onePot": true,
+  "safety": "Cook the frozen peas according to the packet and serve the dish steaming hot throughout.",
   "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
   "reviewedOn": "2026-11-08",
-  "image": "recipes/lentil-bolognese.webp"
+  "image": "recipes/garlic-butter-pea-pasta.webp"
 }
 ```
 
