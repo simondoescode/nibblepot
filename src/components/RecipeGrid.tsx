@@ -35,6 +35,10 @@ export function RecipeArt({ recipe, saved, onFavorite, large = false }: {
     src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
     alt="" width="800" height="504"
     loading={large ? 'eager' : 'lazy'} decoding="async"
+    onError={event => {
+      const fallback = `${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`;
+      if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback;
+    }}
   />;
   return <div className={large ? 'modal-art illustrated-art' : 'recipe-pic illustrated-art'}>
     {image}

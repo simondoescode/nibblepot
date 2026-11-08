@@ -123,3 +123,60 @@
   .mobile-nav button{min-height:56px}
   .navbtn,.chip{min-height:44px}
 }
+
+/* Editorial recipe discovery */
+.simmer-spotlight {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  grid-template-areas: "copy image" "controls image";
+  min-height: 0;
+  margin: 8px 0 24px;
+  border-radius: var(--radius-spotlight);
+  background: var(--brand);
+  color: var(--surface);
+  box-shadow: none;
+}
+.simmer-spotlight::after { display: none; }
+.simmer-spotlight .simmer-spotlight-image { grid-area: image; position: relative; z-index: auto; min-height: 210px; }
+.simmer-spotlight .simmer-spotlight-image img { inset: 0; width: 100%; height: 100%; }
+.simmer-spotlight .simmer-spotlight-content { grid-area: copy; position: static; padding: 32px 32px 12px; }
+.simmer-spotlight h1 { font: 600 56px/60px var(--font-display); letter-spacing: -.04em; margin: 8px 0; }
+.simmer-spotlight h2 { font: 600 40px/44px var(--font-display); margin: 8px 0; }
+.simmer-spotlight p { color: var(--surface); margin-bottom: 14px; }
+.simmer-spotlight .simmer-spotlight-kicker { color: var(--highlight); }
+.simmer-spotlight .simmer-spotlight-controls {
+  grid-area: controls;
+  position: static;
+  gap: 4px;
+  padding: 0 32px 20px;
+}
+.simmer-spotlight .simmer-view { min-height: 48px; background: var(--action); color: var(--surface); border-color: transparent; }
+.simmer-spotlight .simmer-view:hover { background: var(--action-pressed); }
+.simmer-spotlight .simmer-save, .simmer-spotlight .simmer-spotlight-controls button {
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 8px;
+  background: transparent;
+  color: var(--surface);
+  border-color: transparent;
+}
+.simmer-spotlight .simmer-save:hover, .simmer-spotlight .simmer-spotlight-controls button:hover { border-color: var(--highlight); }
+.simmer-spotlight .simmer-spotlight-controls span { min-width: 0; font-size: 12px; }
+.simmer-spotlight .simmer-spotlight-controls .simmer-shuffle { white-space: nowrap; }
+.simmer-spotlight button:focus-visible { outline: 2px solid var(--focus-ring-dark); outline-offset: 2px; }
+.simmer-spotlight.simmer-spotlight-empty { display: block; padding-bottom: 20px; }
+.simmer-home-plan-heading h2, .recipe-info h3 { font-family: var(--font-display); font-weight: 600; }
+.recipe-grid .recipe-card { border-radius: var(--radius-card); border-color: var(--divider); box-shadow: none; background: var(--surface); }
+.recipe-grid .recipe-card:hover { transform: none; border-color: var(--control-edge); box-shadow: none; }
+.recipe-card .recipe-pic {
+  background: var(--bg) url("/nibblepot/backgrounds/cream-linen.webp") center / cover;
+  border-bottom: 1px solid var(--divider);
+}
+.recipe-card .heart { width: 44px; height: 44px; }
+@media (max-width: 767px) {
+  .simmer-spotlight { grid-template-columns: minmax(0, 1fr); grid-template-areas: "image" "copy" "controls"; }
+  .simmer-spotlight .simmer-spotlight-image { min-height: 150px; aspect-ratio: 2.5; }
+  .simmer-spotlight .simmer-spotlight-content { padding: 16px 16px 4px; }
+  .simmer-spotlight .simmer-spotlight-controls { padding: 0 12px 8px; }
+  .simmer-spotlight h1 { font-size: 40px; line-height: 44px; }
+}

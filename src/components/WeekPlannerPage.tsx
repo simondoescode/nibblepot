@@ -120,7 +120,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
   return <div className="planner-page">
     <header className="page-intro planner-intro">
       <span className="intro-icon" aria-hidden="true"><CalendarDays size={23}/></span>
-      <div><h2>This week's tea.</h2><p>Plan dinners and shop for the week.</p></div>
+      <div><h2>This week's dinners</h2><p>Plan dinners and shop for the week.</p></div>
     </header>
     <div className="planner-week-head">
       <div className="planner-week-picker" role="group" aria-label="Choose a week">

@@ -53,13 +53,13 @@
 /* Recipe detail action hierarchy: one obvious next step, comfortable touch targets. */
 .recipe-page-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
 .recipe-page-actions .btn{min-width:0;min-height:52px;white-space:normal;text-align:center;line-height:1.25}
-.recipe-page-actions .btn:first-child{grid-column:1/-1;min-height:58px;font-size:17px;background:var(--orange);color:var(--ink)}
+.recipe-page-actions .btn:first-child{grid-column:1/-1;min-height:58px;font-size:17px;background:var(--action);color:var(--surface)}
 .recipe-page-actions .btn:not(:first-child){background:#fffaf1;border-color:#ded5c8;box-shadow:none}
 .recipe-page-actions .btn:focus-visible{outline-offset:4px}
 @media(max-width:560px){
  .recipe-page-actions{gap:10px}
  .recipe-page-actions .btn{flex:initial;min-height:54px;font-size:13px;padding:12px 10px;border-radius:16px;box-shadow:none;gap:7px}
- .recipe-page-actions .btn:first-child{min-height:60px;font-size:17px;box-shadow:0 4px 0 #a83d28;border-color:#a83d28}
+ .recipe-page-actions .btn:first-child{min-height:60px;font-size:17px;box-shadow:none;border-color:var(--action)}
  .recipe-page-actions .btn:first-child svg{width:22px;height:22px}
  .recipe-page-actions .btn:not(:first-child){border:1.5px solid #ded5c8}
  .servings-control{gap:10px;margin-bottom:20px}
@@ -70,3 +70,29 @@
 @media(max-width:350px){.recipe-page-actions .btn:not(:first-child){font-size:12px;padding:10px 6px}}
 @media(prefers-reduced-motion:reduce){.recipe-page-actions .btn{transition:none}}
 .recipe-page-actions .recipe-plan-action { grid-column: 1 / -1; }
+
+.recipe-page .recipe-page-hero,
+.recipe-page .recipe-detail-panel,
+.recipe-page .recipe-safety-panel {
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: none;
+}
+.recipe-page .recipe-page-image {
+  background: var(--bg) url("/nibblepot/backgrounds/cream-linen.webp") center / cover;
+  border-color: var(--divider);
+  border-width: 1px;
+}
+.recipe-page .recipe-page-image img { object-fit: contain; }
+.recipe-page .recipe-page-intro h1 { font: 600 40px/44px var(--font-display); letter-spacing: -.035em; }
+.recipe-page .recipe-page-eyebrow { color: var(--action); }
+.recipe-page .recipe-page-actions { gap: 8px; }
+.recipe-page-actions .recipe-plan-action { grid-column: auto; }
+.recipe-page .servings-control { margin-block: 12px; }
+.recipe-page .ingredient-line { min-height: 56px; border-color: var(--divider); }
+.recipe-page .steps { max-width: 68ch; }
+@media (max-width: 767px) {
+  .recipe-page .recipe-page-intro h1 { font-size: 32px; line-height: 36px; }
+  .recipe-page-actions :is(.btn-primary, .recipe-plan-action) { grid-column: 1 / -1; }
+}

@@ -259,3 +259,15 @@
   font: inherit;
 }
 .plan-dinner-dialog > .btn { width: 100%; min-height: 44px; }
+
+.planner-intro .intro-icon { background: var(--selected); color: var(--brand); }
+.planner-intro h2 { font: 600 32px/36px var(--font-display); }
+.planner-week-picker, .planner-shopping-action { border-color: var(--divider); background: var(--selected); }
+.planner-day, .planner-summary { border-color: var(--divider); border-radius: var(--radius-card); box-shadow: none; }
+.planner-day { min-height: 56px; }
+.planner-day[data-today] { background: var(--selected); }
+.planner-picker-dialog.plan-dinner-dialog { border: 1px solid var(--divider); box-shadow: var(--shadow); }
+@media (min-width: 768px) {
+  .planner-intro h2 { font-size: 40px; line-height: 44px; }
+  .planner-layout { grid-template-columns: minmax(420px, 1fr) minmax(260px, .46fr); gap: 16px; }
+}
