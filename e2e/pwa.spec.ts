@@ -84,10 +84,10 @@ test('install artwork decodes in the page and Apple touch icon has a PNG respons
   await page.goto('/nibblepot/settings/');
   const artwork=page.getByRole('region',{name:'Install Simmer'}).locator('img');
   await expect(artwork).toBeVisible();
-  await expect(artwork).toHaveAttribute('src','/nibblepot/icons/icon-192-v2.png');
+  await expect(artwork).toHaveAttribute('src','/nibblepot/icons/icon-192-v3.png');
   expect(await artwork.evaluate((image:HTMLImageElement)=>image.complete && image.naturalWidth===192)).toBe(true);
   const touch=await page.locator('link[rel=apple-touch-icon]').getAttribute('href');
-  expect(touch).toBe('/nibblepot/icons/apple-touch-180-v2.png');
+  expect(touch).toBe('/nibblepot/icons/apple-touch-180-v3.png');
   const response=await request.get(touch!);
   expect(response.headers()['content-type']).toContain('image/png');
 });

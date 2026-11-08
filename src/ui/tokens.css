@@ -1,17 +1,47 @@
-/* Simmer design tokens; existing component contracts remain stable. */
 :root {
-  --ink: #102c27;
-  --muted: #52665e;
-  --cream: #fff7eb;
-  --paper: #fffdf8;
-  --yellow: #ffc66c;
+  --bg: #f7f1e6;
+  --surface: #fffcf6;
+  --text: #192c24;
+  --text-muted: #536157;
+  --brand: #153c32;
+  --action: #a63d24;
+  --action-pressed: #84301d;
+  --highlight: #f5d2aa;
+  --selected: #e2eadf;
+  --divider: #ded6c7;
+  --control-edge: #81776b;
+  --focus-ring: #1d6675;
+  --focus-ring-dark: var(--highlight);
+  --warning-text: #70450e;
+  --warning-surface: #f7e6c9;
+  --error-text: #8e302a;
+  --error-surface: #f7e2de;
+  --success-text: var(--brand);
+  --success-surface: var(--selected);
+  --font-display: Fraunces, Georgia, serif;
+  --font-ui: "DM Sans", system-ui, sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-sheet: 24px;
+  --radius-spotlight: 28px;
+
+  /* Compatibility aliases for screens that still use the previous token names. */
+  --ink: var(--text);
+  --muted: var(--text-muted);
+  --cream: var(--bg);
+  --paper: var(--surface);
+  --yellow: var(--highlight);
   --orange: #f35b20;
-  --green: #c6dec9;
+  --green: var(--selected);
   --lavender: #dcd0ff;
   --blue: #c7e8f5;
-  --line: #103b32;
-  --shadow: 0 6px 22px rgba(16,59,50,.12);
-  --radius-control: 15px;
-  --radius-card: 22px;
-  --focus-ring: #156f89;
+  --line: var(--brand);
+  --shadow: 0 6px 22px rgba(21, 60, 50, .12);
 }

@@ -1,6 +1,6 @@
-# Nibblepot agent instructions
+# Simmer agent instructions
 
-**Project:** a playful, colourful, no-fuss UK family recipe PWA, built with React + Vite + TypeScript, custom CSS, Radix accessible dialogs and Lucide utility icons.
+**Project:** a warm, editorial UK family recipe PWA, built with React + Vite + TypeScript, custom CSS, Radix accessible dialogs and Lucide utility icons.
 
 ## Mandatory guides
 
@@ -11,7 +11,7 @@
 
 ## Non-negotiable guardrails
 
-- Keep the recognisable Nibblepot art direction: warm, minimal, characterful; not generic AI UI or a large design-system migration.
+- Follow The Weeknight Cookbook direction. Keep recipe discovery editorial and everyday tasks easy to scan. Use the shared Simmer tokens and primitives.
 - Keep the static, offline-capable PWA and the GitHub Pages **`/nibblepot/`** base path; use `import.meta.env.BASE_URL` for local images.
 - Preserve recipe IDs, `nibblepot-demo-v1` localStorage data, favourites, larder, shopping and working refresh controls.
 - Use the existing JSON recipe and ingredient models. Keep ingredients and instructions accurate; don't hallucinate food quantities, allergens or food-safety rules.

@@ -2,6 +2,7 @@ import './lib/install';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import './ui/fonts.css';
 import './ui/tokens.css';
 import './styles.css';
 import './styles/recipe-refresh.css';

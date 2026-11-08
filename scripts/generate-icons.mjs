@@ -28,29 +28,41 @@ const insideRoundRect = (x, y, x1, y1, x2, y2, r) => {
   const cy = Math.max(y1 + r, Math.min(y, y2 - r));
   return (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
 };
-const insideEllipse = (x, y, cx, cy, rx, ry) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1;
+// Shared silhouette for the header, favicon and raster install icons.
+const body = [[15, 41], [65, 41], [60, 62], [58, 66], [54, 70], [47, 71], [33, 71], [26, 70], [22, 66], [20, 62]];
+const lid = [[10, 41], [70, 41]];
+const steam = [32, 47].map(x => [[x, 30], [x - 2, 26], [x - 2, 23], [x + 2, 16], [x + 2, 11]]);
+const brand = '#153c32';
+const highlight = '#f5d2aa';
+const path = points => points.map(([x, y], i) => (i === 0 ? 'M' : 'L') + x + ' ' + y).join(' ');
+const mark = `<path fill="${highlight}" d="${path(body)} Z"/><path fill="none" stroke="${highlight}" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" d="${[lid, ...steam].map(path).join(' ')}"/>`;
+const hasFill = (x, y) => body.reduce((inside, [ax, ay], i) => {
+  const [bx, by] = body[(i + 1) % body.length];
+  const crosses = (ay > y) !== (by > y) && x < (bx - ax) * (y - ay) / (by - ay) + ax;
+  return crosses ? !inside : inside;
+}, false);
+const segments = [lid, ...steam].flatMap(points => points.slice(1).map((end, i) => [points[i], end]));
+const hasStroke = (x, y) => segments.some(([[ax, ay], [bx, by]]) => {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const progress = Math.max(0, Math.min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)));
+  return (x - ax - progress * dx) ** 2 + (y - ay - progress * dy) ** 2 <= 2.25 ** 2;
+});
 // Every painted colour needs an explicit opaque alpha channel.
 const hex = h => [...[1, 3, 5].map(i => Number.parseInt(h.slice(i, i + 2), 16)), 255];
 function potIcon(size, maskable = false, opaque = false) {
   const raw = Buffer.alloc(size * (size * 4 + 1));
-  const dark = hex('#103b32'), yellow = hex('#103b32'), orange = hex('#f35b20');
+  const tile = hex(brand);
+  const ink = hex(highlight);
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
-      // Draw at a fixed virtual 80x80 scale, independent of the PNG resolution.
-      const scale = maskable ? .62 : 1;
-      const xx = ((x + .5) * 80 / size - 40) / scale + 40;
-      const yy = ((y + .5) * 80 / size - 40) / scale + 40;
-      // Maskable icons have a full-bleed background and artwork inside the safe circle.
-      let col = maskable || opaque ? yellow : [0, 0, 0, 0];
-      if (insideRoundRect(xx, yy, 1, 1, 79, 79, 19)) col = dark;
-      if (insideRoundRect(xx, yy, 3, 3, 77, 77, 17)) col = yellow;
-      const halfWidth = 27 - Math.max(0, yy - 27) * .14;
-      if (yy >= 24 && yy <= 70 && Math.abs(xx - 40) <= halfWidth + 2) col = dark;
-      if (yy >= 28 && yy <= 67 && Math.abs(xx - 40) <= halfWidth - 2) col = orange;
-      if (insideRoundRect(xx, yy, 8, 23, 72, 29, 3)) col = dark;
-      // Simmer's pot is intentionally minimal rather than a character mascot.
-      // Three soft steam strokes above the lid.
-      if (yy >= 9 && yy < 22 && [29,40,51].some(cx => Math.abs(xx - (cx + Math.sin(yy * .38) * 2)) < 1.8)) col = hex('#fff7eb');
+      const scale = maskable ? .82 : 1;
+      const tileX = (x + .5) * 80 / size;
+      const tileY = (y + .5) * 80 / size;
+      const xx = (tileX - 40) / scale + 40;
+      const yy = (tileY - 40) / scale + 40;
+      let col = maskable || opaque || insideRoundRect(tileX, tileY, 1, 1, 79, 79, 19) ? tile : [0, 0, 0, 0];
+      if (hasFill(xx, yy) || hasStroke(xx, yy)) col = ink;
       const p = y * (size * 4 + 1) + 1 + x * 4;
       raw[p] = col[0]; raw[p + 1] = col[1]; raw[p + 2] = col[2]; raw[p + 3] = col[3];
     }
@@ -66,11 +78,18 @@ function potIcon(size, maskable = false, opaque = false) {
 
 
 await mkdir(out(''), { recursive: true });
+const svg = contents => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">${contents}</svg>
+`;
+await writeFile(out('simmer-pot.svg'), svg(mark));
+await writeFile(out('favicon.svg'), svg(`<rect width="80" height="80" rx="19" fill="${brand}"/>${mark}`));
 for (const size of [192, 512]) {
   // Keep original URLs working for older manifests and installed shortcuts.
   await writeFile(out(`icon-${size}.png`), potIcon(size));
   await writeFile(out(`icon-${size}-v2.png`), potIcon(size));
+  await writeFile(out(`icon-${size}-v3.png`), potIcon(size));
 }
 await writeFile(out('icon-maskable-512-v2.png'), potIcon(512, true));
 await writeFile(out('apple-touch-180-v2.png'), potIcon(180, false, true));
+await writeFile(out('icon-maskable-512-v3.png'), potIcon(512, true));
+await writeFile(out('apple-touch-180-v3.png'), potIcon(180, false, true));
 console.log('Generated visible PWA, maskable and Apple touch icons');

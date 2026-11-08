@@ -7,8 +7,8 @@ html{scroll-padding-top:12px}
   .app-header-shell{position:sticky;top:0;z-index:40;padding-top:env(safe-area-inset-top);background:rgba(255,250,241,.97);border-bottom:1px solid #e7dfd1;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
   .app-header-shell .header{min-height:64px;padding:8px 0;gap:10px}
   .app-header-shell .brand{font-size:23px;gap:9px;min-height:44px}
-  .app-header-shell .brand-pot{width:34px;height:34px;border-radius:12px;box-shadow:1px 2px 0 var(--ink)}
-  .app-header-shell .brand-pot svg{width:28px;height:28px}
+  .app-header-shell .brand-pot{width:34px;height:34px;border-radius:12px;box-shadow:none}
+  .app-header-shell .brand-pot img{width:28px;height:28px}
   .app-header-shell .small-print{display:none}
   .mobile-header-actions{display:flex;align-items:center;gap:4px;margin-left:auto}
   .mobile-header-actions button{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:14px;background:transparent;color:var(--ink);touch-action:manipulation}
