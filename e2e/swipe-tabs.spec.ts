@@ -15,7 +15,7 @@ test.describe('Swipe between mobile tabs', () => {
   test('shows the neighbouring page in either direction before committing', async ({ page }) => {
     await page.goto('/nibblepot/planner/');
     const main = page.locator('#main-content');
-    await expect(main.getByRole('heading', { name: "This week's tea." })).toBeVisible();
+    await expect(main.getByRole('heading', { name: "This week's dinners" })).toBeVisible();
     const touch = await touchGesture(page);
     const preview = page.locator('.swipe-preview');
 
@@ -40,7 +40,7 @@ test.describe('Swipe between mobile tabs', () => {
     await expect(main).toHaveAttribute('data-motion', 'swipe');
     await expect(preview).toHaveCount(0);
     await page.goBack();
-    await expect(main.getByRole('heading', { name: "This week's tea." })).toBeVisible();
+    await expect(main.getByRole('heading', { name: "This week's dinners" })).toBeVisible();
   });
 
   test('swipes from a Planner meal card into the same Recipes page it previews', async ({ page }) => {
@@ -76,7 +76,7 @@ test.describe('Swipe between mobile tabs', () => {
 
   test('returns to the current tab after a short swipe', async ({ page }) => {
     await page.goto('/nibblepot/planner/');
-    await expect(page.locator('#main-content h2').first()).toHaveText("This week's tea.");
+    await expect(page.locator('#main-content h2').first()).toHaveText("This week's dinners");
     const touch = await touchGesture(page);
     await touch('touchStart', 170);
     await touch('touchMove', 140);
@@ -98,7 +98,7 @@ test.describe('Swipe between mobile tabs', () => {
       { path: 'larder', heading: 'Your larder', start: 290, end: 80 },
       { path: 'shopping', heading: 'Shopping, sorted.', start: 290, end: 80 },
       { path: 'larder', heading: 'Your larder', start: 80, end: 290 },
-      { path: 'planner', heading: "This week's tea.", start: 80, end: 290 },
+      { path: 'planner', heading: "This week's dinners", start: 80, end: 290 },
     ];
 
     for (const { path, heading, start, end } of routes) {
@@ -150,7 +150,7 @@ test.describe('Swipe between mobile tabs', () => {
   test('switches without sliding when reduced motion is enabled', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/nibblepot/planner/');
-    await expect(page.locator('#main-content h2').first()).toHaveText("This week's tea.");
+    await expect(page.locator('#main-content h2').first()).toHaveText("This week's dinners");
     const touch = await touchGesture(page);
     await touch('touchStart', 270);
     await touch('touchMove', 80);
@@ -176,7 +176,7 @@ test('touch tablets preview Recipes, settle across repeated swipes and leave edg
 
   for (const [start, end, path, heading] of [
     [180, 480, '/nibblepot/', "This week's dinners"],
-    [480, 180, '/nibblepot/planner/', "This week's tea."],
+    [480, 180, '/nibblepot/planner/', "This week's dinners"],
   ] as const) {
     await touch('touchStart', start);
     await touch('touchMove', end);

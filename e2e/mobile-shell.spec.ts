@@ -27,7 +27,13 @@ for(const width of [320,390,430]) test(`mobile app bar stays visible at ${width}
 test('mobile welcome card stays compact and header does not move with pull gesture',async({page},info)=>{
   test.skip(info.project.name!=='mobile');
   await page.goto('/nibblepot/');
-  expect((await page.locator('.simmer-spotlight').boundingBox())!.height).toBeGreaterThan(260);
+  const spotlight = page.locator('.simmer-spotlight');
+  const hero = (await spotlight.boundingBox())!;
+  const art = (await spotlight.locator('.simmer-spotlight-image').boundingBox())!;
+  const title = (await spotlight.getByRole('heading', { level: 1 }).boundingBox())!;
+  expect(title.y).toBeGreaterThanOrEqual(art.y + art.height);
+  expect(title.y + title.height).toBeLessThan(hero.y + hero.height);
+  await expect(spotlight.getByRole('button', { name: 'View recipe' })).toBeInViewport();
   const header=page.locator('.app-header-shell');
   const before=await header.boundingBox();
   await page.evaluate(()=>{

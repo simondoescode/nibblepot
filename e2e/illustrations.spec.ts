@@ -15,7 +15,7 @@ test('recipe catalogue illustrations load on mobile and desktop', async ({ page 
   await expect(recipe).toBeVisible();
   await expect(recipe.locator('.recipe-page-image img')).toHaveCount(1);
   await expect(recipe.locator('.recipe-detail-panel')).toHaveCount(2);
-  await expect(recipe.getByRole('heading', { name: /let's make it/i })).toBeVisible();
+  await expect(recipe.getByRole('heading', { name: 'Method' })).toBeVisible();
   await recipe.getByRole('button', { name: /back to recipes/i }).click();
   await expect(recipe).toHaveCount(0);
 });

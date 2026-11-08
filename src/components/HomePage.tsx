@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import { useMemo } from 'react';
 import type { WeekSlot } from '../types';
 import { TonightInspiration } from './TonightInspiration';
@@ -35,7 +36,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><div><span className="simmer-plan-kicker">MAKE THE WEEK EASIER</span><h2>This week's dinners</h2></div><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">{weekSlots.map((slot,index) => {const meal=slot.kind === 'recipe' ? recipes.find(recipe=>recipe.id===slot.id) : undefined;return <button type="button" key={index} onClick={onPlanner}><span>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}</span><strong>{meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner')}</strong></button>;})}</div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
       <p>{recipes.length} easy recipes, all made for real life.</p></div>
-      <label className="search"><span aria-hidden="true">🔎</span>
+      <label className="search"><Search size={20} aria-hidden="true" />
         <input type="search" id="search" placeholder="Search meals or ingredients" value={search}
           onChange={event => setSearch(event.target.value)} aria-label="Search recipes" /></label>
     </div>

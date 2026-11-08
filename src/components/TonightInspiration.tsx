@@ -4,6 +4,7 @@ import type { Recipe } from '../types';
 import { chooseRandomRecipe } from '../lib/recipes';
 
 type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, opener: HTMLButtonElement) => void };
+const backdrops = ['navy-tartan', 'navy-tartan', 'honey-wood', 'golden-stone'] as const;
 const sessionKey = 'simmer-spotlight-v1';
 // The swipe preview and the mounted Recipes tab need the same initial pick.
 const initialRandom = Math.random();
@@ -23,15 +24,13 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
   const mouseStart = useRef<{ x: number; y: number } | null>(null);
   const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
-  // Stable per-recipe rotation across four locally cached editorial WebP backdrops.
-  const backdrop = current ? ['golden-stone','cream-linen','honey-wood','navy-tartan'][Math.max(0,catalogue.findIndex(recipe => recipe.id === current.id)) % 4] : 'golden-stone';
+  const index = current ? catalogue.indexOf(current) : 0;
   const show = (next: string) => {
     setId(next);
     try { sessionStorage.setItem(sessionKey, next); } catch { /* No persistence available. */ }
   };
   const cycle = (direction: number) => {
     if (!current || catalogue.length < 2) return;
-    const index = catalogue.findIndex(recipe => recipe.id === current.id);
     show(catalogue[(index + direction + catalogue.length) % catalogue.length].id);
   };
   const surprise = () => { if (current) show(chooseRandomRecipe(catalogue, current.id).id); };
@@ -50,7 +49,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
       start.current = null;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) cycle(dx < 0 ? 1 : -1);
     }}>
-    <div className="simmer-spotlight-image" key={current.id} data-backdrop={backdrop}>
+    <div className="simmer-spotlight-image" key={current.id} data-backdrop={backdrops[index % backdrops.length]}>
       <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
@@ -58,7 +57,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     <div className="simmer-spotlight-content">
       <span className="simmer-spotlight-kicker">TONIGHT'S INSPIRATION</span>
       <h1>{current.title}</h1>
-      <p><Clock3 size={16} aria-hidden="true"/> {current.mins} mins · {current.onePot ? 'One-pot favourite' : 'Family dinner'}</p>
+      <p><Clock3 size={16} aria-hidden="true"/> {current.mins} mins · Serves 4</p>
       <div className="simmer-spotlight-actions">
         <button type="button" className="simmer-view" onClick={() => onOpen(current.id)}>View recipe <ArrowRight size={18} aria-hidden="true"/></button>
         <button type="button" className="simmer-save" aria-label={favorites.includes(current.id) ? 'Remove from favourites' : 'Save to favourites'}
@@ -70,7 +69,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     </div>
     <div className="simmer-spotlight-controls">
       <button type="button" aria-label="Previous inspiration" disabled={catalogue.length < 2} onClick={() => cycle(-1)}><ArrowLeft size={19}/></button>
-      <span aria-live="polite" aria-atomic="true">{catalogue.findIndex(recipe => recipe.id === current.id) + 1} / {catalogue.length}: {current.title}</span>
+      <span aria-live="polite" aria-atomic="true">{index + 1} / {catalogue.length}: {current.title}</span>
       <button type="button" aria-label="Next inspiration" disabled={catalogue.length < 2} onClick={() => cycle(1)}><ArrowRight size={19}/></button>
       <button type="button" className="simmer-shuffle" disabled={catalogue.length < 2} onClick={surprise}><Shuffle size={17}/> Surprise me</button>
     </div>

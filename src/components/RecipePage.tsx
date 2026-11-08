@@ -38,24 +38,20 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
       <div className="recipe-page-image">
         <img src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
           className={recipe.image ? 'recipe-photo' : ''} alt={`Finished ${recipe.title}`}
-          width="800" height="504" decoding="async" />
+          width="800" height="504" decoding="async"
+          onError={event => {
+            const fallback = `${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`;
+            if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback;
+          }} />
       </div>
       <div className="recipe-page-intro">
-        <span className="recipe-page-eyebrow">✳ GOOD GRUB. ZERO FAFF.</span>
+        <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
         <h1>{recipe.title}</h1>
         <p>{recipe.description}</p>
         <div className="recipe-page-facts">
           <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes</span>
           <span>🍽️ Serves {servings}</span>
           <span>🫙 {recipe.ing.filter(i => larder.includes(i.id)).length} of {recipe.ing.length} in larder</span>
-        </div>
-        <div className="servings-control" aria-label="Adjust recipe servings">
-          <span>Servings</span>
-          <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
-            disabled={servings <= MIN_SERVINGS} aria-label="Fewer servings"><Minus size={17} /></button>
-          <output aria-live="polite" aria-label="Servings count">{servings}</output>
-          <button type="button" onClick={() => onServingsChange(Math.min(MAX_SERVINGS, servings + 1))}
-            disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
         </div>
         <div className="recipe-page-actions">
           <Button tone="primary" icon={<ChefHat size={18} />} onClick={onCook}>Start cooking</Button>
@@ -70,6 +66,14 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
     <div className="recipe-page-sections">
       <section className="recipe-detail-panel recipe-page-ingredients">
         <h2>What you'll need <span>{servings} servings</span></h2>
+        <div className="servings-control" aria-label="Adjust recipe servings">
+          <span>Servings</span>
+          <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
+            disabled={servings <= MIN_SERVINGS} aria-label="Fewer servings"><Minus size={17} /></button>
+          <output aria-live="polite" aria-label="Servings count">{servings}</output>
+          <button type="button" onClick={() => onServingsChange(Math.min(MAX_SERVINGS, servings + 1))}
+            disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
+        </div>
         <div className="recipe-ingredients">{recipe.ing.map(item => {
           const owned = larder.includes(item.id);
           return <div className="ingredient-line" key={item.id}>
@@ -88,7 +92,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
         })}</div>
       </section>
       <section className="recipe-detail-panel recipe-page-method">
-        <h2>Let's make it <span>Easy peasy</span></h2>
+        <h2>Method</h2>
         <ol className="steps">{recipe.steps.map((step, index) =>
           <li key={index}><span className="step-number" aria-hidden="true">{index + 1}</span><span>{step}</span></li>
         )}</ol>
