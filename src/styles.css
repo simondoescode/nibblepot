@@ -107,8 +107,8 @@
 .simmer-spotlight-image {
   grid-area: image;
   position: relative;
-  height: clamp(120px, 36vw, 200px);
-  background: var(--bg);
+  height: clamp(144px, 42vw, 224px);
+  background: var(--bg) center / cover no-repeat;
 }
 .simmer-spotlight-image img {
   position: absolute;
@@ -163,7 +163,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas: "copy image";
   }
-  .simmer-spotlight-image { height: auto; min-height: 210px; }
+  .simmer-spotlight-image { height: auto; min-height: 234px; }
   .simmer-spotlight-content { align-self: center; padding: var(--space-8); }
   .simmer-spotlight h1 { font-size: clamp(36px, 4vw, 52px); }
 }
