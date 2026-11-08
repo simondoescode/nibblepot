@@ -48,14 +48,21 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
   await expect(page.locator('.larder-item').filter({ hasText: 'Potatoes' }).getByRole('checkbox')).not.toBeChecked();
 });
 
-test('recipe dialog traps focus and closes on Escape, returning to opener', async ({ page }) => {
+test('spotlight changes recipe and keeps keyboard focus on Surprise me', async ({ page }) => {
   await page.goto('/nibblepot/');
   const spotlight = page.getByRole('region', { name: "Tonight's inspiration" });
   const shuffle = spotlight.getByRole('button', { name: /surprise me/i });
+  const title = spotlight.getByRole('heading', { level: 1 });
+  await expect(title).toBeVisible();
+  const originalTitle = await title.innerText();
+  await expect(spotlight.getByRole('button')).toHaveCount(2);
   await shuffle.focus();
-  await shuffle.click();
-  await expect(spotlight.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(shuffle).toBeVisible();
+  await shuffle.press('Enter');
+  await expect(title).not.toHaveText(originalTitle);
+  await expect(shuffle).toBeFocused();
+  const shuffledTitle = await title.innerText();
+  await page.reload();
+  await expect(title).toHaveText(shuffledTitle);
 });
 
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {

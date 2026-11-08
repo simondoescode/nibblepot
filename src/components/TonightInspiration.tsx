@@ -1,10 +1,9 @@
 import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Clock3, Heart, Shuffle, CalendarPlus } from 'lucide-react';
+import { Button } from '../ui/controls';
 import type { Recipe } from '../types';
 import { chooseRandomRecipe } from '../lib/recipes';
 
-type Props = { recipes: readonly Recipe[]; favorites: readonly string[]; onFavorite: (id: string) => void; onOpen: (id: string) => void; onPlan: (id: string, opener: HTMLButtonElement) => void };
-const backdrops = ['navy-tartan', 'navy-tartan', 'honey-wood', 'golden-stone'] as const;
+type Props = { recipes: readonly Recipe[]; onOpen: (id: string) => void };
 const sessionKey = 'simmer-spotlight-v1';
 // The swipe preview and the mounted Recipes tab need the same initial pick.
 const initialRandom = Math.random();
@@ -18,7 +17,7 @@ function initialId(recipes: readonly Recipe[]): string {
 }
 
 /** Supports recipe cycling when a gesture is not claimed by tab navigation. */
-export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onPlan }: Props) {
+export function TonightInspiration({ recipes, onOpen }: Props) {
   const [id, setId] = useState(() => initialId(recipes));
   const start = useRef<{ x: number; y: number } | null>(null);
   const mouseStart = useRef<{ x: number; y: number } | null>(null);
@@ -34,7 +33,7 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
     show(catalogue[(index + direction + catalogue.length) % catalogue.length].id);
   };
   const surprise = () => { if (current) show(chooseRandomRecipe(catalogue, current.id).id); };
-  if (!current) return <section className="simmer-spotlight simmer-spotlight-empty" aria-label="Tonight's inspiration"><div className="simmer-spotlight-content"><span className="simmer-spotlight-kicker">TONIGHT'S INSPIRATION</span><h2>Something good is cooking</h2><p>Try clearing your filters to see more dinner ideas.</p></div></section>;
+  if (!current) return <section className="simmer-spotlight simmer-spotlight-empty" aria-label="Tonight's inspiration"><div className="simmer-spotlight-content"><span className="simmer-spotlight-kicker">Tonight's inspiration</span><h2>Something good is cooking</h2><p>Try clearing your filters to see more dinner ideas.</p></div></section>;
   return <section className="simmer-spotlight" aria-label="Tonight's inspiration" data-no-pull
     onPointerDown={event => { if (event.pointerType === 'mouse' && event.button === 0 && !(event.target as HTMLElement).closest('button,select,a')) mouseStart.current = {x:event.clientX,y:event.clientY}; }}
     onPointerUp={event => { if (!mouseStart.current || event.pointerType !== 'mouse') return; const dx=event.clientX-mouseStart.current.x,dy=event.clientY-mouseStart.current.y; mouseStart.current=null; if (Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4) cycle(dx<0?1:-1); }}
@@ -49,29 +48,19 @@ export function TonightInspiration({ recipes, favorites, onFavorite, onOpen, onP
       start.current = null;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) cycle(dx < 0 ? 1 : -1);
     }}>
-    <div className="simmer-spotlight-image" key={current.id} data-backdrop={backdrops[index % backdrops.length]}>
+    <div className="simmer-spotlight-image" key={current.id}>
       <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
     </div>
     <div className="simmer-spotlight-content">
-      <span className="simmer-spotlight-kicker">TONIGHT'S INSPIRATION</span>
-      <h1>{current.title}</h1>
-      <p><Clock3 size={16} aria-hidden="true"/> {current.mins} mins · Serves 4</p>
+      <span className="simmer-spotlight-kicker">Tonight's inspiration</span>
+      <h1 aria-live="polite" aria-atomic="true">{current.title}</h1>
+      <p>{current.mins} mins · Serves 4</p>
       <div className="simmer-spotlight-actions">
-        <button type="button" className="simmer-view" onClick={() => onOpen(current.id)}>View recipe <ArrowRight size={18} aria-hidden="true"/></button>
-        <button type="button" className="simmer-save" aria-label={favorites.includes(current.id) ? 'Remove from favourites' : 'Save to favourites'}
-          aria-pressed={favorites.includes(current.id)} onClick={() => onFavorite(current.id)}>
-          <Heart size={20} fill={favorites.includes(current.id) ? 'currentColor' : 'none'} aria-hidden="true"/>
-        </button>
-        <button type="button" className="simmer-save" aria-label="Add to meal plan" aria-haspopup="dialog" onClick={event => onPlan(current.id, event.currentTarget)}><CalendarPlus size={20} aria-hidden="true"/></button>
+        <Button tone="primary" onClick={() => onOpen(current.id)}>View recipe</Button>
+        {catalogue.length > 1 && <button type="button" className="simmer-shuffle" onClick={surprise}>Surprise me</button>}
       </div>
-    </div>
-    <div className="simmer-spotlight-controls">
-      <button type="button" aria-label="Previous inspiration" disabled={catalogue.length < 2} onClick={() => cycle(-1)}><ArrowLeft size={19}/></button>
-      <span aria-live="polite" aria-atomic="true">{index + 1} / {catalogue.length}: {current.title}</span>
-      <button type="button" aria-label="Next inspiration" disabled={catalogue.length < 2} onClick={() => cycle(1)}><ArrowRight size={19}/></button>
-      <button type="button" className="simmer-shuffle" disabled={catalogue.length < 2} onClick={surprise}><Shuffle size={17}/> Surprise me</button>
     </div>
   </section>;
 }

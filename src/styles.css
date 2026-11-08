@@ -48,30 +48,6 @@
 @media(prefers-reduced-motion:reduce){.pull-spinning{animation:none}}
 
 
-/* Simmer: editorial food-first spotlight */
-.simmer-spotlight{position:relative;isolation:isolate;min-height:390px;margin:4px 0 34px;border-radius:28px;overflow:hidden;background:#103b32;color:white;box-shadow:0 12px 32px rgba(16,59,50,.17);touch-action:pan-y}
-.simmer-spotlight:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(6,31,25,.93),rgba(6,31,25,.44) 64%,rgba(6,31,25,.1)),linear-gradient(0deg,rgba(6,31,25,.65),transparent 55%);pointer-events:none}
-.simmer-spotlight-image{position:absolute;inset:0;z-index:-2;animation:simmer-reveal .24s ease-out both}
-.simmer-spotlight-image img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.simmer-spotlight-content{position:relative;padding:62px 38px 80px;max-width:570px}
-.simmer-spotlight-kicker{font-size:12px;letter-spacing:.13em;font-weight:850;color:#ffe0b8}
-.simmer-spotlight h1{font-size:clamp(35px,5vw,65px);line-height:1.04;letter-spacing:-.045em;margin:17px 0}
-.simmer-spotlight p{display:flex;align-items:center;gap:7px;color:#fff5e8;font-size:15px;margin:0 0 23px}
-.simmer-spotlight-actions{display:flex;gap:12px;align-items:center}
-.simmer-view,.simmer-save,.simmer-spotlight-controls button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(255,255,255,.4);min-height:44px;border-radius:14px;font-weight:800}
-.simmer-view{background:#f35b20;color:white;border-color:#f35b20;padding:12px 20px}
-.simmer-save,.simmer-spotlight-controls button{background:rgba(13,47,39,.68);color:white;backdrop-filter:blur(9px);padding:10px 13px}
-.simmer-save[aria-pressed=true]{color:#ffb7a0}
-.simmer-spotlight-controls{position:absolute;bottom:17px;left:38px;right:26px;display:flex;align-items:center;gap:9px}
-.simmer-spotlight-controls span{font-size:13px;font-variant-numeric:tabular-nums;min-width:38px;text-align:center}
-.simmer-spotlight-controls .simmer-shuffle{margin-left:auto;font-size:13px}
-.simmer-spotlight button:disabled{opacity:.4;cursor:not-allowed}
-.simmer-spotlight button:focus-visible{outline:3px solid #ffcb78;outline-offset:3px}
-@keyframes simmer-reveal{from{opacity:.7;transform:scale(1.025)}to{opacity:1;transform:scale(1)}}
-@media(max-width:600px){.simmer-spotlight{min-height:clamp(340px,47svh,470px);border-radius:22px;margin:0 -8px 25px}.simmer-spotlight:after{background:linear-gradient(0deg,rgba(5,27,23,.94),rgba(5,27,23,.28) 85%)}.simmer-spotlight-content{position:absolute;bottom:52px;padding:20px 23px 12px;max-width:100%}.simmer-spotlight h1{font-size:clamp(31px,8vw,44px)}.simmer-spotlight-controls{left:23px;right:20px;bottom:12px}.simmer-spotlight-controls .simmer-shuffle{font-size:12px}}
-@media(prefers-reduced-motion:reduce){.simmer-spotlight-image{animation:none}}
-
-
 .simmer-home-plan{background:#fffdf8;border:1px solid #d6dfd6;border-radius:24px;padding:24px;margin-bottom:31px;box-shadow:0 6px 22px #103b3210}
 .simmer-home-plan-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
 .simmer-plan-kicker{color:#52665e;font-size:11px;font-weight:850;letter-spacing:.1em}
@@ -98,16 +74,6 @@
 @media(max-width:600px){.brand{font-size:25px}.brand-pot{width:39px;height:39px}}
 
 
-/* Final editorial food photography: background photos are separate from transparent food cut-outs. */
-.simmer-spotlight-image{background-color:#cba476;background-image:linear-gradient(135deg,#e7c18b,#bc8553);background-size:cover;background-position:center}
-.simmer-spotlight-image[data-backdrop="golden-stone"]{background-image:url("/nibblepot/backgrounds/golden-stone.webp"),linear-gradient(135deg,#e7c18b,#bc8553)}
-.simmer-spotlight-image[data-backdrop="cream-linen"]{background-image:url("/nibblepot/backgrounds/cream-linen.webp"),linear-gradient(135deg,#f5e5cb,#bba383)}
-.simmer-spotlight-image[data-backdrop="honey-wood"]{background-image:url("/nibblepot/backgrounds/honey-wood.webp"),linear-gradient(135deg,#a97443,#5b3a26)}
-.simmer-spotlight-image[data-backdrop="navy-tartan"]{background-image:url("/nibblepot/backgrounds/navy-tartan.webp"),linear-gradient(135deg,#183e3c,#112c3d)}
-.simmer-spotlight-image img{position:absolute;top:4%;left:42%;width:56%;height:92%;object-fit:contain;object-position:center;filter:drop-shadow(0 16px 18px rgba(17,29,24,.25));pointer-events:none}
-.simmer-spotlight:after{background:linear-gradient(90deg,rgba(8,36,30,.88),rgba(8,36,30,.58) 44%,rgba(8,36,30,.05) 85%),linear-gradient(0deg,rgba(8,36,30,.4),transparent 55%)}
-@media(max-width:600px){.simmer-spotlight-image img{left:12%;top:1%;width:82%;height:67%}.simmer-spotlight:after{background:linear-gradient(0deg,rgba(7,33,28,.96),rgba(7,33,28,.58) 43%,rgba(7,33,28,.04) 82%)}}
-
 /* Tablet-sized viewports use the same app shell as phones, with roomier content. */
 @media (min-width:821px) and (max-width:1180px){
   .topnav{display:none}
@@ -126,45 +92,81 @@
 
 /* Editorial recipe discovery */
 .simmer-spotlight {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
-  grid-template-areas: "copy image" "controls image";
-  min-height: 0;
-  margin: 8px 0 24px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "image" "copy";
+  margin: var(--space-2) 0 var(--space-6);
+  overflow: hidden;
+  border: 1px solid var(--divider);
   border-radius: var(--radius-spotlight);
-  background: var(--brand);
-  color: var(--surface);
-  box-shadow: none;
+  background: var(--surface);
+  color: var(--text);
+  touch-action: pan-y;
 }
-.simmer-spotlight::after { display: none; }
-.simmer-spotlight .simmer-spotlight-image { grid-area: image; position: relative; z-index: auto; min-height: 210px; }
-.simmer-spotlight .simmer-spotlight-image img { inset: 0; width: 100%; height: 100%; }
-.simmer-spotlight .simmer-spotlight-content { grid-area: copy; position: static; padding: 32px 32px 12px; }
-.simmer-spotlight h1 { font: 600 56px/60px var(--font-display); letter-spacing: -.04em; margin: 8px 0; }
-.simmer-spotlight h2 { font: 600 40px/44px var(--font-display); margin: 8px 0; }
-.simmer-spotlight p { color: var(--surface); margin-bottom: 14px; }
-.simmer-spotlight .simmer-spotlight-kicker { color: var(--highlight); }
-.simmer-spotlight .simmer-spotlight-controls {
-  grid-area: controls;
-  position: static;
-  gap: 4px;
-  padding: 0 32px 20px;
+.simmer-spotlight-image {
+  grid-area: image;
+  position: relative;
+  height: clamp(120px, 36vw, 200px);
+  background: var(--bg);
 }
-.simmer-spotlight .simmer-view { min-height: 48px; background: var(--action); color: var(--surface); border-color: transparent; }
-.simmer-spotlight .simmer-view:hover { background: var(--action-pressed); }
-.simmer-spotlight .simmer-save, .simmer-spotlight .simmer-spotlight-controls button {
-  min-width: 44px;
+.simmer-spotlight-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.simmer-spotlight-content {
+  grid-area: copy;
+  padding: var(--space-4);
+}
+.simmer-spotlight-kicker {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.simmer-spotlight h1, .simmer-spotlight h2 {
+  margin: var(--space-1) 0;
+  font: 600 clamp(28px, 8vw, 36px)/1.1 var(--font-display);
+  letter-spacing: -.03em;
+  text-wrap: balance;
+}
+.simmer-spotlight p {
+  margin: 0 0 var(--space-3);
+  color: var(--text-muted);
+  font-size: 15px;
+}
+.simmer-spotlight-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+.simmer-shuffle {
   min-height: 44px;
-  padding-inline: 8px;
+  padding: 0 var(--space-1);
+  border: 0;
+  border-radius: var(--radius-control);
   background: transparent;
-  color: var(--surface);
-  border-color: transparent;
+  color: var(--brand);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .2em;
 }
-.simmer-spotlight .simmer-save:hover, .simmer-spotlight .simmer-spotlight-controls button:hover { border-color: var(--highlight); }
-.simmer-spotlight .simmer-spotlight-controls span { min-width: 0; font-size: 12px; }
-.simmer-spotlight .simmer-spotlight-controls .simmer-shuffle { white-space: nowrap; }
-.simmer-spotlight button:focus-visible { outline: 2px solid var(--focus-ring-dark); outline-offset: 2px; }
-.simmer-spotlight.simmer-spotlight-empty { display: block; padding-bottom: 20px; }
+.simmer-shuffle:hover, .simmer-shuffle:active { background: var(--selected); }
+.simmer-spotlight button:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.simmer-spotlight-empty { display: block; }
+@media (min-width: 768px) {
+  .simmer-spotlight {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "copy image";
+  }
+  .simmer-spotlight-image { height: auto; min-height: 210px; }
+  .simmer-spotlight-content { align-self: center; padding: var(--space-8); }
+  .simmer-spotlight h1 { font-size: clamp(36px, 4vw, 52px); }
+}
 .simmer-home-plan-heading h2, .recipe-info h3 { font-family: var(--font-display); font-weight: 600; }
 .recipe-grid .recipe-card { border-radius: var(--radius-card); border-color: var(--divider); box-shadow: none; background: var(--surface); }
 .recipe-grid .recipe-card:hover { transform: none; border-color: var(--control-edge); box-shadow: none; }
@@ -173,10 +175,3 @@
   border-bottom: 1px solid var(--divider);
 }
 .recipe-card .heart { width: 44px; height: 44px; }
-@media (max-width: 767px) {
-  .simmer-spotlight { grid-template-columns: minmax(0, 1fr); grid-template-areas: "image" "copy" "controls"; }
-  .simmer-spotlight .simmer-spotlight-image { min-height: 150px; aspect-ratio: 2.5; }
-  .simmer-spotlight .simmer-spotlight-content { padding: 16px 16px 4px; }
-  .simmer-spotlight .simmer-spotlight-controls { padding: 0 12px 8px; }
-  .simmer-spotlight h1 { font-size: 40px; line-height: 44px; }
-}
