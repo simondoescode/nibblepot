@@ -30,7 +30,7 @@ export function ShoppingPage({ shopping, larder, servings, stock, onAdd, onToggl
   return <div className="shopping-screen">
     <header className="page-intro shopping-heading">
       <span className="intro-icon" aria-hidden="true"><ShoppingBasket size={22} /></span>
-      <h2>Shopping, sorted.</h2>
+      <h2>Shopping list</h2>
       <AddShoppingItem larder={larder} onAdd={onAdd} />
     </header>
     {shopping.length > 0 ? <>
@@ -92,7 +92,7 @@ export function ShoppingPage({ shopping, larder, servings, stock, onAdd, onToggl
       </details>
     </> : <div className="empty"><h3>Your list is empty</h3>
       <p>Add an item yourself or bring ingredients over from a recipe.</p>
-      <Button tone="primary" size="small" onClick={onBrowse}>Browse recipes</Button>
+      <Button size="small" onClick={onBrowse}>Browse recipes</Button>
     </div>}
   </div>;
 }

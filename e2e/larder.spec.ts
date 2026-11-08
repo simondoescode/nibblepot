@@ -75,7 +75,8 @@ for (const width of [320,390,430]) {
     expect(tools?.y).toBeCloseTo(header!.height,0);
     const action=page.locator('.larder-meals-bar');
     const before=await action.boundingBox();
-    expect(before!.y+before!.height).toBeLessThanOrEqual(730);
+    const navigation = (await page.getByRole('navigation', { name: 'Mobile navigation' }).boundingBox())!;
+    expect(before!.y + before!.height).toBeLessThanOrEqual(navigation.y + 1);
     await page.evaluate(()=>window.scrollTo(0,1000));
     expect((await action.boundingBox())!.y).toBeCloseTo(before!.y,0);
     await action.getByRole('button').click();

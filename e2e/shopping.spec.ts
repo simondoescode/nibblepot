@@ -35,21 +35,21 @@ test('shopping rows toggle by name and the To buy filter tracks remaining items'
   await expect(shopping.getByRole('heading', { name: 'Your list is empty' })).toBeVisible();
 });
 
-test('two-digit shopping count fits the mobile tab badge', async ({ page }, testInfo) => {
+for (const count of [12, 105]) test(`shopping count of ${count} fits the mobile tab badge`, async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Mobile-only badge');
   await page.setViewportSize({ width: 320, height: 640 });
-  await page.addInitScript(() => {
-    const ids = ['potatoes', 'baked-beans', 'rice', 'pasta', 'chopped-tomatoes', 'onion',
-      'garlic', 'stock', 'paprika', 'gravy', 'wraps', 'bread'];
-    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
-      favorites: [], larder: [], shopping: ids.map(id => ({ id, done: false, from: [] })),
+  await page.addInitScript(count => {
+    const shopping = Array.from({ length: count }, (_, index) => ({
+      id: `custom:item ${index}`, customName: `Item ${index}`, done: false, from: [],
     }));
-  });
+    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: [], larder: [], shopping }));
+  }, count);
   await page.goto('/nibblepot/shopping/');
 
   const tab = page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('button', { name: 'Shopping' });
   const badge = tab.locator('.mob-count');
-  await expect(badge).toHaveText('12');
+  await expect(badge).toHaveText(count > 99 ? '99+' : String(count));
+  await expect(tab).toHaveAccessibleDescription(`${count} to buy`);
   await expect(badge).toHaveCSS('font-size', '10px');
   await expect(badge).toHaveCSS('line-height', '10px');
 
