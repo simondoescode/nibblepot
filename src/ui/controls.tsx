@@ -6,7 +6,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: ReactNode;
 };
 
-/** Shared Nibblepot button styling; native button behaviour stays intact. */
+/** Shared Simmer button styling; native button behaviour stays intact. */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button({
   tone = 'cream', size = 'normal', icon, className = '', type = 'button', children, ...rest
 }, ref) {
@@ -24,7 +24,7 @@ type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton({
   label, type = 'button', className = '', children, ...rest
 }, ref) {
-  return <button ref={ref} aria-label={label} type={type} className={className} {...rest}>{children}</button>;
+  return <button ref={ref} aria-label={label} type={type} className={`icon-button ${className}`.trim()} {...rest}>{children}</button>;
 });
 
 export function FilterChip({ selected, onClick, children }: {

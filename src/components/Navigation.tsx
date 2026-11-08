@@ -28,10 +28,10 @@ export function Header({ tab, shoppingCount, onNavigate, onSearch }: { tab: Tab;
     <nav className="topnav" aria-label="Main navigation">
       {desktopLinks.map(({ id, label }) => <button type="button" key={id}
         className={`navbtn ${tab === id ? 'active' : ''}`}
-        aria-label={label} aria-current={tab === id ? 'page' : undefined}
+        aria-label={label} aria-description={id === 'shopping' && shoppingCount > 0 ? `${shoppingCount} to buy` : undefined} aria-current={tab === id ? 'page' : undefined}
         onClick={() => onNavigate(id)}>
         {label}
-        {id === 'shopping' && shoppingCount > 0 && <span className="nav-count">{shoppingCount}</span>}
+        {id === 'shopping' && shoppingCount > 0 && <span className="nav-count">{shoppingCount > 99 ? '99+' : shoppingCount}</span>}
       </button>)}
     </nav>
     <span className="small-print">DINNER, SORTED.</span>
@@ -53,9 +53,9 @@ export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab;
     <nav className="mobile-nav" aria-label="Mobile navigation">
       {mobileLinks.map(({ id, label, icon: Icon }) => <button type="button" key={id}
         className={`mobbtn ${tab === id ? 'active' : ''}`}
-        aria-label={label} aria-current={tab === id ? 'page' : undefined}
+        aria-label={label} aria-description={id === 'shopping' && shoppingCount > 0 ? `${shoppingCount} to buy` : undefined} aria-current={tab === id ? 'page' : undefined}
         onClick={() => choose(id)}>
-        <span className="mob-icon" aria-hidden="true"><Icon size={23} strokeWidth={tab === id ? 2.6 : 2} />
+        <span className="mob-icon" aria-hidden="true"><Icon size={20} strokeWidth={2} />
           {id === 'shopping' && shoppingCount > 0 && <span className="mob-count">{shoppingCount > 99 ? '99+' : shoppingCount}</span>}
         </span>
         <span className="mob-label">{label}</span>
@@ -63,7 +63,7 @@ export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab;
       <button ref={moreButton} type="button" className={`mobbtn ${moreActive ? 'active' : ''}`}
         aria-label="More" aria-haspopup="dialog" aria-expanded={moreOpen}
         onClick={() => {leavingMore.current=false;setMoreOpen(true);}}>
-        <span className="mob-icon" aria-hidden="true"><Ellipsis size={24} strokeWidth={moreActive ? 2.6 : 2} /></span>
+        <span className="mob-icon" aria-hidden="true"><Ellipsis size={20} strokeWidth={2} /></span>
         <span className="mob-label">More</span>
       </button>
     </nav>
