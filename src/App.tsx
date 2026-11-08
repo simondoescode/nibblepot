@@ -203,7 +203,7 @@ export default function App() {
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
       favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
-      weekSlots={currentWeekSlots} onPlan={openDinnerPicker} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
+      weekSlots={currentWeekSlots} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
     {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
     {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} showMobileBar={!isPreview && !swipe.preview} />}

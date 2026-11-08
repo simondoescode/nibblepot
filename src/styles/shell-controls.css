@@ -43,7 +43,7 @@ button.icon-button { min-width: 44px; min-height: 44px; }
 .search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
 .search input:focus-visible { outline: none; }
 .motion-sheet { border-radius: var(--radius-sheet); }
-:where(.simmer-spotlight, .cook-nav) :is(button, a):focus-visible {
+:where(.cook-nav) :is(button, a):focus-visible {
   outline: 2px solid var(--focus-ring-dark);
   outline-offset: 2px;
 }

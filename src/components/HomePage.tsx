@@ -22,17 +22,17 @@ type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
   favorites: string[]; larder: string[]; stock: Record<string,string>; servings: Record<string,number>; onAddMissing: (id: string) => void; onFavorite: (id: string) => void; onOpen: (id: string) => void;
-  weekSlots: WeekSlot[]; onPlan: (id: string, opener: HTMLButtonElement) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
+  weekSlots: WeekSlot[]; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, servings, onAddMissing, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, servings, onAddMissing, onFavorite, onOpen, weekSlots, onPlanner, onLarder, onShopping }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
   const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
   const nearly = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length > 0) : [];
   const resultCount = filtered.length === recipes.length ? `${recipes.length}` : `${filtered.length} of ${recipes.length}`;
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   return <>
-    <TonightInspiration recipes={ready} favorites={favorites} onFavorite={onFavorite} onOpen={onOpen} onPlan={onPlan} />
+    <TonightInspiration recipes={ready} onOpen={onOpen} />
     <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><div><span className="simmer-plan-kicker">MAKE THE WEEK EASIER</span><h2>This week's dinners</h2></div><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">{weekSlots.map((slot,index) => {const meal=slot.kind === 'recipe' ? recipes.find(recipe=>recipe.id===slot.id) : undefined;return <button type="button" key={index} onClick={onPlanner}><span>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}</span><strong>{meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner')}</strong></button>;})}</div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
       <p>{recipes.length} easy recipes, all made for real life.</p></div>

@@ -196,7 +196,7 @@ test('planner shows the same shortfall as shopping and can remove an emptied wee
   await expect(page.getByRole('checkbox', { name: 'Mark Bin bags as purchased' })).toBeVisible();
 });
 
-test('recipe details and Tonight’s Inspiration plan a dinner for an explicit date', async ({ page }) => {
+test('recipe details can plan a dinner for an explicit date after opening from home', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
   await page.goto('/nibblepot/recipes/tomato-pasta/');
   const opener = page.getByRole('button', { name: 'Plan this dinner' });
@@ -212,7 +212,9 @@ test('recipe details and Tonight’s Inspiration plan a dinner for an explicit d
 
   await page.goto('/nibblepot/');
   await page.getByRole('searchbox', { name: 'Search recipes', exact: true }).fill('Speedy tomato pasta');
-  await page.getByRole('button', { name: 'Add to meal plan' }).click();
+  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: 'View recipe' }).click();
+  await expect(page).toHaveURL(/\/recipes\/tomato-pasta\/$/);
+  await opener.click();
   await expect(picker.getByRole('status')).toContainText('already planned');
   await picker.getByRole('button', { name: 'Next week' }).click();
   await expect(day.locator('option:checked')).toHaveText('Monday 9 Nov');
