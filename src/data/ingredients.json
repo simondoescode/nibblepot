@@ -162,5 +162,21 @@
   "curry-powder": [
     "Curry powder",
     "Cupboard"
+  ],
+  "cabbage": [
+    "Cabbage",
+    "Fridge"
+  ],
+  "plain-flour": [
+    "Plain flour",
+    "Cupboard"
+  ],
+  "mustard": [
+    "Mustard",
+    "Cupboard"
+  ],
+  "black-pepper": [
+    "Black pepper",
+    "Cupboard"
   ]
 }

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import ingredients from '../src/data/ingredients.json' with { type: 'json' };
 
 test('stock details save atomically, cancel safely and survive reload', async ({page}) => {
   await page.goto('/nibblepot/larder/');
@@ -41,7 +42,7 @@ test('filters combine with search and stock changes without losing hidden items'
   await page.getByRole('searchbox').fill('Potatoes');
   await expect(page.locator('.larder-item')).toHaveCount(0);
   await page.getByRole('button',{name:'Show all ingredients'}).click();
-  await expect(page.locator('.larder-item')).toHaveCount(41);
+  await expect(page.locator('.larder-item')).toHaveCount(Object.keys(ingredients).length);
   await expect(page.getByRole('checkbox',{name:'Potatoes',exact:true})).not.toBeChecked();
 });
 

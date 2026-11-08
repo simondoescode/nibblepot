@@ -15,16 +15,16 @@ test('multiple food types combine with search and quick filters and can be clear
   await page.getByRole('searchbox',{name:'Search recipes'}).fill('tomato');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
   await expect(page.locator('.recipe-card h3')).toHaveText('Chicken & tomato pasta');
-  await expect(page.locator('.recipe-result-count')).toHaveText('1 of 40 recipes');
+  await expect(page.locator('.recipe-result-count')).toHaveText('1 of 41 recipes');
   await chooseTypes(page,['Fish']);
   await expect(page.getByRole('heading',{name:'No recipes found'})).toBeVisible();
   await page.getByRole('button',{name:'Show everything'}).click();
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('All food');
   await expect(page.getByRole('searchbox')).toHaveValue('');
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
   await chooseTypes(page,['Rice']);
   await page.getByRole('button',{name:'Clear filters',exact:true}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
 });
 
 test('selected categories match either type and can be removed individually',async ({page})=>{
@@ -37,7 +37,7 @@ test('selected categories match either type and can be removed individually',asy
   await page.getByRole('button',{name:'Remove Chicken filter',exact:true}).click();
   await expect(page.locator('.recipe-card')).toHaveCount(4);
   await page.getByRole('button',{name:'Remove Fish filter',exact:true}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
 });
 
 test('food selections survive opening a recipe and returning to the list',async ({page})=>{
@@ -58,7 +58,7 @@ test('picker cancels on Escape and restores focus without applying draft changes
   await sheet.getByRole('checkbox',{name:'Fish',exact:true}).check();
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
   await trigger.click();
   await expect(sheet.getByRole('checkbox',{name:'Fish',exact:true})).not.toBeChecked();
   await sheet.getByRole('checkbox',{name:'Fish',exact:true}).check();
@@ -66,7 +66,7 @@ test('picker cancels on Escape and restores focus without applying draft changes
   await trigger.click();
   await sheet.getByRole('button',{name:'Clear selection'}).click();
   await sheet.getByRole('button',{name:'Apply filters'}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
 });
 
 test('finding meals from the larder clears previous food restrictions',async ({page},info)=>{

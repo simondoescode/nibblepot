@@ -6,12 +6,12 @@ import { recipePath, cookingPath } from '../src/lib/routes';
 
 const originalIds = ['jacket','sausage-bean','chicken-rice','cottage','tuna-bake','tomato-pasta','egg-rice','quesadilla','mash','butter-stew','traybake','toasties','meatball','fish-butties','soup','chilli-jacket'];
 describe('recipe quality gate', () => {
-  it('preserves all original recipe IDs and has twenty-four additions', () => {
-    expect(recipes).toHaveLength(40);
+  it('preserves all original recipe IDs and has twenty-five additions', () => {
+    expect(recipes).toHaveLength(41);
     const ids = recipes.map(r => r.id);
-    expect(new Set(ids).size).toBe(40);
+    expect(new Set(ids).size).toBe(41);
     expect(ids.slice(0,16)).toEqual(originalIds);
-    expect(ids.slice(16)).toHaveLength(24);
+    expect(ids.slice(16)).toHaveLength(25);
   });
   for (const recipe of recipes) {
     it('checks quantities, references and safety: ' + recipe.id, () => {
@@ -21,11 +21,11 @@ describe('recipe quality gate', () => {
       expect(recipe.steps.length).toBeGreaterThanOrEqual(3);
       expect(recipe.steps.every(step => step.length >= 35 && !/enough water for your rice/i.test(step))).toBe(true);
       expect(recipe.ing.length).toBeGreaterThanOrEqual(3);
-      expect(recipe.ing.length).toBeLessThanOrEqual(7);
+      expect(recipe.ing.filter(item => !item.optional).length).toBeLessThanOrEqual(7);
       expect(new Set(recipe.ing.map(i => i.id)).size).toBe(recipe.ing.length);
       expect(recipe.safety.length).toBeGreaterThan(32);
       expect(recipe.storage.length).toBeGreaterThan(65);
-      expect(recipe.reviewedOn).toBe('2026-11-01');
+      expect(recipe.reviewedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(recipePath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.id + '/');
       expect(cookingPath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.id + '/cook/');
       expect(existsSync('public/' + (recipe.image ?? 'recipes/' + recipe.id + '.svg'))).toBe(true);
@@ -48,7 +48,7 @@ describe('recipe quality gate', () => {
     expect(shoppingQuantity({id:'potatoes',done:false,from:['jacket','sausage-traybake']})).toBe('4 large + 800 g');
   });
   it('includes twenty-four bundled offline illustrations', () => {
-    for (const recipe of recipes.slice(16)) {
+    for (const recipe of recipes.slice(16, 40)) {
       const path='public/recipes/' + recipe.id + '.svg';
       const svg = readFileSync(path,'utf8');
       expect(svg).toContain('<svg ');

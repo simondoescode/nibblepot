@@ -29,7 +29,7 @@ test('browser back and forward restore recipe and catalogue', async ({ page }) =
   await page.getByRole('link', { name: /jacket potatoes/i }).first().click();
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.goBack();
-  await expect(page.locator('.recipe-card')).toHaveCount(40);
+  await expect(page.locator('.recipe-card')).toHaveCount(41);
   await page.goForward();
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
 });
