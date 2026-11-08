@@ -17,7 +17,7 @@ export default defineConfig(() => {
         workbox: {
           clientsClaim: true,
           skipWaiting: false,
-          globPatterns: ['**/*.{js,css,html,svg,png,webp,ico}'],
+          globPatterns: ['**/*.{js,css,html,svg,png,webp,ico,woff2}'],
           navigateFallback: '/nibblepot/index.html',
           navigateFallbackDenylist: [/^\/nibblepot\/assets\//, /^\/nibblepot\/icons\//],
         },
@@ -35,16 +35,16 @@ export default defineConfig(() => {
           prefer_related_applications: false,
           categories: ['food', 'lifestyle'],
           shortcuts: [
-            { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
-            { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
-            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192-v2.png', sizes: '192x192' }] },
+            { name: 'Plan the week', url: 'planner/', icons: [{ src: 'icons/icon-192-v3.png', sizes: '192x192' }] },
+            { name: 'Shopping list', url: 'shopping/', icons: [{ src: 'icons/icon-192-v3.png', sizes: '192x192' }] },
+            { name: 'Favourites', url: 'favourites/', icons: [{ src: 'icons/icon-192-v3.png', sizes: '192x192' }] },
           ],
-          background_color: '#fff7eb',
-          theme_color: '#103b32',
+          background_color: '#f7f1e6',
+          theme_color: '#153c32',
           icons: [
-            { src: 'icons/icon-192-v2.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-            { src: 'icons/icon-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-            { src: 'icons/icon-maskable-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+            { src: 'icons/icon-192-v3.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+            { src: 'icons/icon-512-v3.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+            { src: 'icons/icon-maskable-512-v3.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
           ]
         }
       })
