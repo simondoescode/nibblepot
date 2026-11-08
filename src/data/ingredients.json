@@ -178,5 +178,57 @@
   "black-pepper": [
     "Black pepper",
     "Cupboard"
+  ],
+  "honey": [
+    "Honey",
+    "Cupboard"
+  ],
+  "sweet-potatoes": [
+    "Sweet potatoes",
+    "Cupboard"
+  ],
+  "coconut-milk": [
+    "Coconut milk",
+    "Cupboard"
+  ],
+  "chicken-mince": [
+    "Chicken mince",
+    "Freezer"
+  ],
+  "courgette": [
+    "Courgette",
+    "Fridge"
+  ],
+  "lamb-mince": [
+    "Lamb mince",
+    "Freezer"
+  ],
+  "cucumber": [
+    "Cucumber",
+    "Fridge"
+  ],
+  "yoghurt": [
+    "Plain yoghurt",
+    "Fridge"
+  ],
+  "diced-lamb": [
+    "Diced lamb",
+    "Freezer"
+  ],
+  "salmon": [
+    "Salmon fillets",
+    "Freezer"
+  ],
+  "white-fish": [
+    "Boneless white fish fillets",
+    "Freezer"
+  ],
+  "breadcrumbs": [
+    "Breadcrumbs",
+    "Cupboard"
+  ],
+  "lemon": [
+    "Lemon",
+    "Fridge"
   ]
 }

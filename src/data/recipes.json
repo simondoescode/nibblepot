@@ -1648,5 +1648,650 @@
     "safety": "Use ready-to-eat cooked ham or cooked gammon and heat the finished dish until steaming hot throughout.",
     "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout. If using leftover gammon, serve the mac and cheese freshly made.",
     "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "creamy-chicken-broccoli-rice",
+    "title": "Creamy Chicken & Broccoli Rice",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍗",
+    "color": "#e9d7ba",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500 g"
+      },
+      {
+        "id": "rice",
+        "qty": "300 g"
+      },
+      {
+        "id": "broccoli",
+        "qty": "300 g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "120 g"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      }
+    ],
+    "steps": [
+      "Dice chicken and onion, then cook together in a deep pan for 7–8 minutes, stirring until lightly browned.",
+      "Stir in dry rice, stock dissolved in 650 ml boiling water and chopped broccoli. Cover and simmer for 18–22 minutes until rice is tender.",
+      "Stir through cream cheese and heat until bubbling; check chicken is cooked through and serve immediately."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "sticky-honey-garlic-chicken",
+    "title": "Sticky Honey Garlic Chicken",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍗",
+    "color": "#e9d7ba",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500 g"
+      },
+      {
+        "id": "rice",
+        "qty": "300 g"
+      },
+      {
+        "id": "honey",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "garlic",
+        "qty": "2 cloves"
+      },
+      {
+        "id": "soy-sauce",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "carrots",
+        "qty": "250 g"
+      }
+    ],
+    "steps": [
+      "Cook the rice according to the packet and prepare the carrots in thin slices.",
+      "Brown bite-sized chicken pieces in a pan for 8 minutes, add carrots and a splash of water, then cover and cook for 8 minutes.",
+      "Add honey, finely chopped garlic and reduced-salt soy sauce; bubble until glossy and chicken is cooked through, then serve over rice."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "mild-chicken-sweet-potato-curry",
+    "title": "Mild Chicken & Sweet Potato Curry",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍗",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "chicken",
+        "qty": "500 g"
+      },
+      {
+        "id": "sweet-potatoes",
+        "qty": "500 g"
+      },
+      {
+        "id": "coconut-milk",
+        "qty": "1 tin"
+      },
+      {
+        "id": "curry-powder",
+        "qty": "2 tsp"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "rice",
+        "qty": "300 g"
+      }
+    ],
+    "steps": [
+      "Dice the onion and chicken, peel and cube the sweet potatoes, then soften the onion in a deep pan.",
+      "Add chicken, mild curry powder, sweet potatoes and coconut milk with 150 ml water. Cover and simmer for 20–25 minutes until tender.",
+      "Cook rice according to the packet; check chicken is cooked through and serve the mild curry piping hot over rice."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "chicken-veggie-meatballs",
+    "title": "Chicken & Veggie Meatballs",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍗",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "chicken-mince",
+        "qty": "500 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "150 g"
+      },
+      {
+        "id": "courgette",
+        "qty": "150 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "eggs",
+        "qty": "1"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Mix chicken mince with finely grated carrot, squeezed courgette and beaten egg, then form 16 small meatballs.",
+      "Bake on a lined tray for 20–25 minutes, turning once, until cooked right through. Simmer tomatoes in a saucepan for 12 minutes.",
+      "Cook pasta to packet instructions, add meatballs to bubbling tomato sauce, check they are cooked throughout and serve over pasta."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "mini-shepherds-pies",
+    "title": "Mini Shepherd's Pies",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍲",
+    "color": "#e9d7ba",
+    "mins": 55,
+    "ing": [
+      {
+        "id": "lamb-mince",
+        "qty": "500 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "200 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "gravy",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Boil peeled chopped potatoes until soft, then drain and mash.",
+      "Brown lamb mince and chopped onion thoroughly, add grated carrot, peas and gravy granules mixed with 300 ml boiling water; simmer 10 minutes.",
+      "Divide filling between four ovenproof dishes, cover with mash and bake for 20 minutes until bubbling and golden."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "mild-lamb-koftas",
+    "title": "Mild Lamb Koftas",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍲",
+    "color": "#e9d7ba",
+    "mins": 35,
+    "ing": [
+      {
+        "id": "lamb-mince",
+        "qty": "500 g"
+      },
+      {
+        "id": "wraps",
+        "qty": "4"
+      },
+      {
+        "id": "cucumber",
+        "qty": "1"
+      },
+      {
+        "id": "yoghurt",
+        "qty": "200 g"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      },
+      {
+        "id": "garlic",
+        "qty": "1 clove"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Mix lamb mince with paprika and crushed garlic, then shape into 12 short koftas.",
+      "Bake on a lined tray for 18–22 minutes, turning once, until cooked through with no raw centre.",
+      "Grate cucumber into plain yoghurt and serve the cooked koftas with warmed wraps and cucumber yoghurt."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "lamb-sweet-potato-stew",
+    "title": "Slow-Cooked Lamb & Sweet Potato Stew",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🍲",
+    "color": "#e9d7ba",
+    "mins": 70,
+    "ing": [
+      {
+        "id": "diced-lamb",
+        "qty": "600 g"
+      },
+      {
+        "id": "sweet-potatoes",
+        "qty": "500 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "250 g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "1 tin"
+      }
+    ],
+    "steps": [
+      "Brown diced lamb in a heavy pot, then add chopped onion and cook for 5 minutes until softened.",
+      "Add diced sweet potato, sliced carrots, tomatoes and stock dissolved in 400 ml boiling water. Cover and simmer gently for 55–60 minutes.",
+      "Check the lamb is tender and cooked throughout and vegetables are soft; serve hot, with extra water if the stew becomes too thick."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "hidden-veg-beef-bolognese",
+    "title": "Hidden-Veg Beef Bolognese",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🥘",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500 g"
+      },
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "200 g"
+      },
+      {
+        "id": "courgette",
+        "qty": "200 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "red-lentils",
+        "qty": "100 g"
+      }
+    ],
+    "steps": [
+      "Brown beef mince in a deep pan until no raw pink remains, then add grated carrots and courgette.",
+      "Add chopped tomatoes, rinsed red lentils and 300 ml water. Simmer 25 minutes, stirring and adding water as needed until lentils are tender.",
+      "Cook pasta according to the packet, check sauce is piping hot and serve the beef and vegetable bolognese over pasta."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "cheesy-beef-rice-bowls",
+    "title": "Cheesy Beef & Rice Bowls",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🥘",
+    "color": "#e9d7ba",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500 g"
+      },
+      {
+        "id": "rice",
+        "qty": "300 g"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "200 g"
+      },
+      {
+        "id": "kidney-beans",
+        "qty": "1 tin"
+      },
+      {
+        "id": "cheese",
+        "qty": "100 g"
+      },
+      {
+        "id": "paprika",
+        "qty": "1 tsp"
+      }
+    ],
+    "steps": [
+      "Cook rice according to the packet and drain; keep hot while preparing the beef.",
+      "Brown beef mince in a deep pan, stir in paprika, drained kidney beans and sweetcorn, and cook until everything is steaming hot.",
+      "Divide rice between four bowls, spoon over cooked beef mixture and finish with a small sprinkle of grated cheese."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "beef-potato-hotpot",
+    "title": "Beef & Potato Hotpot",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🥘",
+    "color": "#e9d7ba",
+    "mins": 70,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "250 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      },
+      {
+        "id": "gravy",
+        "qty": "2 tbsp"
+      }
+    ],
+    "steps": [
+      "Heat oven to 190°C (170°C fan). Brown beef mince with diced onion, then add carrots, peas and gravy made with 350 ml boiling water.",
+      "Transfer to a baking dish and arrange very thin potato slices over the top, overlapping slightly. Cover tightly with foil.",
+      "Bake for 45 minutes, remove foil and bake for 15–20 minutes more until potatoes are soft, topping is golden and filling bubbles."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "beef-meatballs-tomato-sauce",
+    "title": "Beef Meatballs in Tomato Sauce",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🥘",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500 g"
+      },
+      {
+        "id": "eggs",
+        "qty": "1"
+      },
+      {
+        "id": "carrots",
+        "qty": "150 g"
+      },
+      {
+        "id": "chopped-tomatoes",
+        "qty": "2 tins"
+      },
+      {
+        "id": "potatoes",
+        "qty": "750 g"
+      },
+      {
+        "id": "onion",
+        "qty": "1"
+      }
+    ],
+    "steps": [
+      "Mix beef mince with beaten egg and finely grated carrot, shape into 16 meatballs and heat oven to 200°C (180°C fan).",
+      "Bake meatballs for 20–25 minutes until cooked through. Simmer chopped onion and tomatoes for 15 minutes, then add meatballs.",
+      "Boil peeled potatoes until soft and mash; serve alongside the meatballs and hot tomato sauce."
+    ],
+    "onePot": false,
+    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "salmon-potato-fishcakes",
+    "title": "Salmon & Potato Fishcakes",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🐟",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "salmon",
+        "qty": "400 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "600 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "eggs",
+        "qty": "1"
+      },
+      {
+        "id": "breadcrumbs",
+        "qty": "100 g"
+      }
+    ],
+    "steps": [
+      "Boil peeled potatoes until tender and drain. Cook salmon thoroughly according to its thickness, then remove skin and check carefully for bones.",
+      "Mash potato with cooked peas and flaked boneless salmon, shape into eight patties, brush with beaten egg and coat lightly in breadcrumbs.",
+      "Bake at 200°C (180°C fan) for 15–20 minutes until golden and steaming hot throughout; cool slightly before serving children."
+    ],
+    "onePot": false,
+    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "creamy-fish-pie",
+    "title": "Creamy Fish Pie",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🐟",
+    "color": "#e9d7ba",
+    "mins": 55,
+    "ing": [
+      {
+        "id": "white-fish",
+        "qty": "500 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "150 g"
+      },
+      {
+        "id": "carrots",
+        "qty": "150 g"
+      },
+      {
+        "id": "milk",
+        "qty": "400 ml"
+      },
+      {
+        "id": "plain-flour",
+        "qty": "30 g"
+      },
+      {
+        "id": "butter",
+        "qty": "30 g"
+      }
+    ],
+    "steps": [
+      "Heat oven to 200°C (180°C fan). Boil potatoes until soft and mash; carefully check fish fillets for bones and cut into bite-sized pieces.",
+      "Melt butter, stir in flour for 1 minute, whisk in milk and simmer until thick. Add diced carrots, peas and fish, then transfer to a baking dish.",
+      "Cover with mashed potato and bake for 25–30 minutes until fish is fully cooked, filling bubbles and the centre is piping hot."
+    ],
+    "onePot": false,
+    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "homemade-fish-fingers-wedges",
+    "title": "Homemade Fish Fingers & Wedges",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🐟",
+    "color": "#e9d7ba",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "white-fish",
+        "qty": "500 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "eggs",
+        "qty": "1"
+      },
+      {
+        "id": "breadcrumbs",
+        "qty": "120 g"
+      },
+      {
+        "id": "oil",
+        "qty": "2 tbsp"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      }
+    ],
+    "steps": [
+      "Heat oven to 210°C (190°C fan). Cut potatoes into wedges, toss with oil and bake on a tray for 30–35 minutes, turning halfway.",
+      "Check boneless white fish carefully for remaining bones, cut into strips, dip in beaten egg and coat with breadcrumbs.",
+      "Bake fish strips on a separate lined tray for 15–20 minutes until fully cooked; cook peas to packet directions and serve everything hot."
+    ],
+    "onePot": false,
+    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "creamy-salmon-pea-pasta",
+    "title": "Creamy Salmon & Pea Pasta",
+    "description": "A mild, family-friendly dinner for four.",
+    "emoji": "🐟",
+    "color": "#e9d7ba",
+    "mins": 30,
+    "ing": [
+      {
+        "id": "salmon",
+        "qty": "400 g"
+      },
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "150 g"
+      },
+      {
+        "id": "milk",
+        "qty": "100 ml"
+      },
+      {
+        "id": "lemon",
+        "qty": "1"
+      }
+    ],
+    "steps": [
+      "Cook pasta according to the packet, adding frozen peas for the final few minutes as directed on the peas packet.",
+      "Cook salmon thoroughly in a covered pan, carefully remove any bones and flake into small pieces.",
+      "Warm cream cheese with milk in a saucepan, add flaked salmon and a little lemon juice, then stir through drained pasta and peas until piping hot."
+    ],
+    "onePot": false,
+    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08"
   }
 ]
