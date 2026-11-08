@@ -21,3 +21,15 @@ test('desktop navigation remains available above tablet widths', async ({ page }
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeHidden();
 });
+
+test('the rebranded shell switches navigation at 1180px without changing app-bar height', async ({ page }) => {
+  await page.setViewportSize({ width: 1180, height: 900 });
+  await page.goto('/nibblepot/');
+  const header = page.locator('.app-header-shell');
+  await expect(header).toHaveCSS('position', 'sticky');
+  await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeVisible();
+  await page.setViewportSize({ width: 1181, height: 900 });
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeHidden();
+  await expect(header).toHaveCSS('height', '64px');
+});

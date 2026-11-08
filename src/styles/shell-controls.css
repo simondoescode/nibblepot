@@ -1,0 +1,86 @@
+/* Shared shell and control rules apply after page-specific legacy CSS. */
+:root {
+  --mobile-header-height: calc(64px + env(safe-area-inset-top));
+  --mobile-tab-height: calc(64px + env(safe-area-inset-bottom));
+}
+
+html { scroll-padding-top: calc(var(--mobile-header-height) + 12px); }
+.app-header-shell {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  padding-top: env(safe-area-inset-top);
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+  backdrop-filter: none;
+}
+.app-header-shell .header { min-height: 63px; padding-block: 7px; }
+.brand, .navbtn { min-height: 44px; }
+.navbtn { color: var(--text-muted); font-weight: 600; }
+.navbtn:hover { background: var(--bg); }
+.navbtn.active, .mobile-header-actions button[aria-current="page"] { background: var(--selected); }
+
+.btn {
+  min-height: 44px;
+  border-width: 1px;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+  box-shadow: none;
+}
+.btn.btn-primary { min-height: 48px; }
+.btn.btn-primary:not(:disabled):hover, .btn.btn-primary:not(:disabled):active {
+  background: var(--action-pressed);
+  border-color: var(--action-pressed);
+}
+.btn.btn-cream { background: var(--surface); color: var(--brand); border-color: var(--control-edge); }
+.btn:hover, .btn:active { transform: none; box-shadow: none !important; }
+.btn:disabled { cursor: default; opacity: .55; }
+button.icon-button { min-width: 44px; min-height: 44px; }
+.btn-icon svg, .icon-button svg { width: 20px; height: 20px; stroke-width: 2px; }
+.chip { min-height: 44px; border: 1px solid var(--control-edge); background: var(--surface); color: var(--text); font-weight: 600; }
+.chip.selected { background: var(--selected); color: var(--brand); }
+.search, .search:focus-within { border-color: var(--control-edge); }
+.search:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.search input:focus-visible { outline: none; }
+.motion-sheet { border-radius: var(--radius-sheet); }
+:where(.simmer-spotlight, .cook-nav) :is(button, a):focus-visible {
+  outline: 2px solid var(--focus-ring-dark);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1180px) {
+  html { scroll-padding-bottom: calc(var(--mobile-tab-height) + 12px); }
+  .mobile-nav {
+    min-height: var(--mobile-tab-height);
+    padding-block: 4px calc(4px + env(safe-area-inset-bottom));
+    background: var(--surface);
+    border-top: 1px solid var(--divider);
+  }
+  .mobile-nav .mobbtn {
+    min-height: 54px;
+    color: var(--text-muted);
+    background: transparent;
+  }
+  .mobile-nav .mobbtn.active { color: var(--brand); background: transparent; }
+  .mobile-nav .mobbtn.active .mob-icon {
+    background: var(--selected);
+    border-radius: 999px;
+    transform: none;
+  }
+  .mobile-nav .mob-count {
+    min-width: 20px;
+    padding-inline: 4px;
+    background: var(--action);
+    color: var(--surface);
+    font-variant-numeric: tabular-nums;
+  }
+}
+@media (min-width: 768px) and (max-width: 1180px) {
+  .wrap { padding-inline: 24px; }
+}
+@media (max-width: 767px) {
+  .wrap { padding-inline: 16px; }
+}
+@media (max-width: 820px) {
+  .motion-sheet { border-radius: var(--radius-sheet) var(--radius-sheet) 0 0; }
+}

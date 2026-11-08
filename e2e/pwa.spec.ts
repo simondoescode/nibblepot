@@ -55,6 +55,11 @@ test('recipes, images, deep links and saved lists survive going offline', async 
   await page.goto('/nibblepot/recipes/jacket/');
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();
   await expect(page.getByText('You’re offline.', { exact: false })).toBeVisible();
+  expect(await page.evaluate(async () => {
+    const ui = await document.fonts.load('400 16px "DM Sans"');
+    const display = await document.fonts.load('700 24px Fraunces');
+    return [ui.length, display.length];
+  })).toEqual([1, 1]);
   expect(await page.evaluate(async () => (await fetch('/nibblepot/recipes/jacket.webp')).ok)).toBe(true);
   await page.goto('/nibblepot/favourites/');
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();

@@ -34,3 +34,5 @@ import './styles/cooking-awake.css';
 import './styles/pwa-landscape.css';
 
 import './styles/shopping.css';
+
+import './styles/shell-controls.css';
