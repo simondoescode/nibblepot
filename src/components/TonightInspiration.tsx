@@ -4,6 +4,7 @@ import type { Recipe } from '../types';
 import { chooseRandomRecipe } from '../lib/recipes';
 
 type Props = { recipes: readonly Recipe[]; onOpen: (id: string) => void };
+const backdrops = ['cream-linen', 'golden-stone', 'honey-wood'] as const;
 const sessionKey = 'simmer-spotlight-v1';
 // The swipe preview and the mounted Recipes tab need the same initial pick.
 const initialRandom = Math.random();
@@ -34,6 +35,7 @@ export function TonightInspiration({ recipes, onOpen }: Props) {
   };
   const surprise = () => { if (current) show(chooseRandomRecipe(catalogue, current.id).id); };
   if (!current) return <section className="simmer-spotlight simmer-spotlight-empty" aria-label="Tonight's inspiration"><div className="simmer-spotlight-content"><span className="simmer-spotlight-kicker">Tonight's inspiration</span><h2>Something good is cooking</h2><p>Try clearing your filters to see more dinner ideas.</p></div></section>;
+  const backdrop = backdrops[index % backdrops.length];
   return <section className="simmer-spotlight" aria-label="Tonight's inspiration" data-no-pull
     onPointerDown={event => { if (event.pointerType === 'mouse' && event.button === 0 && !(event.target as HTMLElement).closest('button,select,a')) mouseStart.current = {x:event.clientX,y:event.clientY}; }}
     onPointerUp={event => { if (!mouseStart.current || event.pointerType !== 'mouse') return; const dx=event.clientX-mouseStart.current.x,dy=event.clientY-mouseStart.current.y; mouseStart.current=null; if (Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4) cycle(dx<0?1:-1); }}
@@ -48,7 +50,8 @@ export function TonightInspiration({ recipes, onOpen }: Props) {
       start.current = null;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) cycle(dx < 0 ? 1 : -1);
     }}>
-    <div className="simmer-spotlight-image" key={current.id}>
+    <div className="simmer-spotlight-image" key={current.id}
+      style={{ backgroundImage: `url("${import.meta.env.BASE_URL}backgrounds/${backdrop}.webp")` }}>
       <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />

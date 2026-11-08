@@ -49,8 +49,11 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
 });
 
 test('spotlight changes recipe and keeps keyboard focus on Surprise me', async ({ page }) => {
+  const backdropResponse = page.waitForResponse(response => /\/nibblepot\/backgrounds\/[^/]+\.webp$/.test(response.url()));
   await page.goto('/nibblepot/');
   const spotlight = page.getByRole('region', { name: "Tonight's inspiration" });
+  await expect(spotlight.locator('.simmer-spotlight-image')).toHaveCSS('background-image', /\/nibblepot\/backgrounds\/[^/]+\.webp/);
+  expect((await backdropResponse).ok()).toBe(true);
   const shuffle = spotlight.getByRole('button', { name: /surprise me/i });
   const title = spotlight.getByRole('heading', { level: 1 });
   await expect(title).toBeVisible();
