@@ -148,7 +148,9 @@ All 40 recipes now use individual food photos. The 25 replacement photos were ge
 
 ## Share a week
 
-In Planner, choose a week and tap **Share week**. Use **Share link** on supported devices, or **Copy link**. The unique link opens a read-only snapshot of the selected dates, seven dinner slots and serving counts, including leftovers, freezer and empty nights. Recipe links remain available. Viewing a shared week never imports or replaces the recipient's saved planner.
+In Planner, choose a week and tap **Share week**. Use **Share link** on supported devices, or **Copy link**. The unique link opens a preview of the selected dates, seven dinner slots and serving counts, including leftovers, freezer and empty nights. Recipe links remain available. Viewing alone leaves the recipient's saved data unchanged.
+
+The fixed **Update my planner** controls show which dated week will be replaced. Importing copies those dinners into that week while keeping the recipient's own serving sizes, larder, favourites and other weeks. **Also update my shopping list** is optional and unticked by default. When selected, it uses the existing weekly shopping calculation with the recipient's larder and serving sizes, retaining extras and purchased ticks. Shared meal cards have a separate layout from draggable planner rows so recipe titles remain readable on phones and tablets.
 
 Each share creates a new snapshot; editing the sender's plan does not update older links. The versioned plan is compressed into the URL fragment under `/nibblepot/planner/shared/`, so sharing works with static GitHub Pages and requires no account or database. Only planned recipe IDs, servings and the week date are included. Anyone holding the complete link can read it; it is not an encrypted or revocable link. The share page has a physical, noindex HTML entrypoint, and malformed links show a recovery message. If clipboard access fails, the full URL stays selectable in the share dialog.
 

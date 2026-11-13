@@ -1,6 +1,72 @@
 import { expect, test } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 
+async function sharedWeekLink(page: import('@playwright/test').Page) {
+  await page.goto('/nibblepot/planner/');
+  await page.getByRole('button', { name: 'Share week', exact: true }).click();
+  return page.getByRole('textbox', { name: 'Week share link', exact: true }).inputValue();
+}
+
+test('shared dinners stay readable and import controls remain above the mobile navigation', async ({ page }, testInfo) => {
+  const link = await sharedWeekLink(page);
+  for (const width of [320, 390, 768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(link);
+    const title = page.locator('.shared-week-meal .planner-picked strong').first();
+    expect((await title.boundingBox())!.width).toBeGreaterThan(100);
+    expect((await page.locator('.shared-week-day').first().boundingBox())!.height).toBeLessThan(200);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    await expect(page.getByRole('checkbox', { name: 'Also update my shopping list', exact: true })).not.toBeChecked();
+    const action = page.getByRole('button', { name: 'Update my planner', exact: true });
+    const before = await action.boundingBox();
+    if (width === 390 || width === 1280) await page.screenshot({ path: `test-results/shared-week-${testInfo.project.name}-${width}.png` });
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    const after = await action.boundingBox();
+    expect(Math.abs(before!.y - after!.y)).toBeLessThan(1);
+    const bar = await page.locator('.shared-week-actions').boundingBox();
+    const lastRow = await page.locator('.shared-week-day').last().boundingBox();
+    expect(lastRow!.y + lastRow!.height).toBeLessThanOrEqual(bar!.y);
+    if (width <= 1180) {
+      const nav = await page.locator('.mobile-nav').boundingBox();
+      expect(bar!.y + bar!.height).toBeLessThanOrEqual(nav!.y + 1);
+    }
+  }
+});
+
+test('update my planner imports the dated week without changing shopping unless chosen', async ({ page }) => {
+  const link = await sharedWeekLink(page);
+  const seed = { larder: ['potatoes'], favorites: ['jacket'], servings: { jacket: 6 },
+    shopping: [{ id: 'pasta', done: true, from: [] }, { id: 'eggs', done: false, from: [] }],
+    weekPlans: { '2026-11-02': Array.from({ length: 7 }, () => ({ kind: 'freezer' })) } };
+  for (const updateShopping of [false, true]) {
+    await page.goto('/nibblepot/');
+    await page.evaluate(value => localStorage.setItem('nibblepot-demo-v1', JSON.stringify(value)), seed);
+    await page.goto(link);
+    await expect(page.locator('.mobile-nav .mobbtn.active')).toContainText('Planner');
+    const week = await page.locator('.planner-intro p').textContent();
+    if (updateShopping) await page.getByRole('checkbox', { name: 'Also update my shopping list', exact: true }).check();
+    await page.getByRole('button', { name: 'Update my planner', exact: true }).click();
+    await expect(page).toHaveURL(/\/planner\/$/);
+    await expect(page.locator('.planner-week-range strong')).toHaveText(week!);
+    await expect(page.locator('.shared-week-actions')).toHaveCount(0);
+    await expect(page.locator('.planner-day').first()).toContainText('Jacket potatoes');
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('nibblepot-demo-v1')!));
+    expect(saved.favorites).toEqual(seed.favorites);
+    expect(saved.larder).toEqual(seed.larder);
+    expect(saved.servings).toEqual(seed.servings);
+    expect(saved.weekPlans['2026-11-02']).toEqual(seed.weekPlans['2026-11-02']);
+    if (!updateShopping) expect(saved.shopping).toEqual(seed.shopping);
+    else {
+      expect(saved.shoppingPlan).toBeDefined();
+      expect(saved.shopping.find((item: { id: string }) => item.id === 'pasta').done).toBe(true);
+      expect(saved.shopping.some((item: { id: string }) => item.id === 'potatoes')).toBe(false);
+      expect(saved.shopping.some((item: { id: string }) => item.id === 'baked-beans')).toBe(true);
+    }
+    await page.reload();
+    await expect(page.locator('.planner-day').first()).toContainText('Jacket potatoes');
+  }
+});
+
 test('shared week has a static, noindex Pages entrypoint', () => {
   expect(existsSync('dist/planner/shared/index.html')).toBe(true);
   expect(readFileSync('dist/planner/shared/index.html', 'utf8')).toContain('noindex,follow');

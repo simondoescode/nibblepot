@@ -6,18 +6,11 @@
   border: 1px solid var(--control-edge); border-radius: var(--radius-control); color: var(--text); background: var(--surface); font: inherit; font-size: 16px; }
 .week-share-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .week-share-dialog [role="status"] { min-height: 24px; margin-bottom: 0; }
-.shared-week-page { max-width: 850px; margin-inline: auto; }
-.shared-week-page h1 { font-size: clamp(25px, 5vw, 34px); margin: 0; }
+.shared-week-page { max-width: 850px; margin-inline: auto; padding-bottom: calc(var(--shared-week-action-height, 148px) + 16px); }
+.shared-week-page h1 { font: 600 clamp(27px, 5vw, 36px)/1.15 var(--font-display); margin: 0; text-wrap: balance; }
 .shared-week-note { color: var(--text-muted); line-height: 1.55; margin-bottom: 20px; }
-.shared-week-page > .btn { margin-top: 24px; }
-.shared-week-meal { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 8px 0; }
-.shared-week-meal .planner-picked { min-width: 0; overflow-wrap: anywhere; }
-@media (max-width: 520px) {
-  .shared-week-page .planner-day { grid-template-columns: 68px minmax(0, 1fr) 44px; padding-left: 8px; }
-  .shared-week-page .planner-day-label strong { font-size: 12px; }
-  .shared-week-page .planner-day-label span { white-space: normal; }
-  .shared-week-meal { flex-wrap: wrap; gap: 4px; }
-}
+.shared-week-meal { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.shared-week-meal .planner-picked { min-width: 0; }
 .page-intro.planner-intro {
   justify-content: flex-start;
   gap: 12px;
@@ -278,6 +271,58 @@
   font: inherit;
 }
 .plan-dinner-dialog > .btn { width: 100%; min-height: 44px; }
+
+/* Shared snapshots have no move handle; keep their grid independent of planner drag rows. */
+.shared-week-page .planner-days { gap: 10px; }
+.shared-week-page .shared-week-day {
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 10px 12px;
+  padding: 14px;
+  align-items: center;
+}
+.shared-week-page .planner-day-label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.shared-week-page .planner-day-label strong { font-size: 14px; }
+.shared-week-page .planner-day-label span { font-size: 12px; }
+.shared-week-page .shared-week-meal { grid-column: 1; grid-row: 2; }
+.shared-week-page .planner-meal-thumb { width: 56px; height: 52px; }
+.shared-week-page .planner-picked strong { font-size: 15px; line-height: 1.35; overflow-wrap: break-word; }
+.shared-week-page .planner-picked small { font-size: 12px; line-height: 1.4; }
+.shared-week-page .planner-view { grid-column: 2; grid-row: 2; min-height: 44px; }
+.shared-week-page .planner-view:focus-visible { outline-offset: 3px; }
+.shared-week-page .planner-view { scroll-margin-block: 100px calc(var(--shared-week-action-height, 148px) + 100px); }
+.shared-week-actions {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 35;
+  padding: 10px max(16px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  border-top: 1px solid var(--divider);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 -4px 20px #192c2408;
+}
+.shared-week-actions-inner { max-width: 850px; margin-inline: auto; }
+.shared-week-actions-inner > p { margin: 0; color: var(--text-muted); font-size: 12px; line-height: 1.5; }
+.shared-week-shopping-option { display: flex; align-items: center; gap: 10px; min-height: 44px; padding-block: 8px; font-size: 14px; line-height: 1.4; cursor: pointer; }
+.shared-week-shopping-option input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--brand); }
+.shared-week-actions-inner > .btn { width: 100%; min-height: 48px; }
+@media (max-width: 1180px) {
+  .shared-week-actions { bottom: var(--mobile-tab-height); padding-bottom: 12px; }
+}
+@media (min-width: 821px) {
+  .shared-week-actions-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0 24px; }
+  .shared-week-actions-inner > .btn { grid-column: 2; grid-row: 1 / 3; min-width: 240px; }
+}
+@media (max-width: 360px) {
+  .shared-week-page .shared-week-day { padding: 12px; gap: 8px; }
+  .shared-week-page .shared-week-meal { gap: 8px; }
+  .shared-week-page .planner-meal-thumb { width: 44px; height: 44px; }
+}
 
 .planner-intro .intro-icon { background: var(--selected); color: var(--brand); }
 .planner-intro h2 { font: 600 32px/36px var(--font-display); }
