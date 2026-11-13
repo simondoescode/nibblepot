@@ -28,6 +28,6 @@ describe('Simmer spotlight catalogue', () => {
     expect(quick.every(recipe => recipe.mins <= 30)).toBe(true);
   });
   it('does not change legacy recipe identifiers used by saved plans', () => {
-    expect(recipes.some(recipe => recipe.id === 'jacket')).toBe(true);
+    expect(recipes.some(recipe => recipe.id === 'dahn')).toBe(true);
   });
 });
