@@ -30,12 +30,12 @@ describe('installation lifecycle', () => {
     const install = await import('../src/lib/install');
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-11-06T12:00:00Z'));
-    localStorage.setItem('nibblepot-demo-v1', 'saved recipes');
+    localStorage.setItem('simmer-recipes-v2', 'saved recipes');
     install.dismissInstall();
     expect(install.installDismissed()).toBe(true);
     vi.advanceTimersByTime(7 * 86400000);
     expect(install.installDismissed()).toBe(false);
-    expect(localStorage.getItem('nibblepot-demo-v1')).toBe('saved recipes');
+    expect(localStorage.getItem('simmer-recipes-v2')).toBe('saved recipes');
   });
   it('keeps installation usable when storage is blocked', async () => {
     const install = await import('../src/lib/install');
