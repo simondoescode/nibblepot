@@ -1,7 +1,7 @@
 
 import type { Tab } from '../types';
 
-export type PageRoute = { kind: 'tab'; tab: Tab } | { kind: 'recipe'; id: string } | { kind: 'cook'; id: string } | { kind: 'not-found' };
+export type PageRoute = { kind: 'tab'; tab: Tab } | { kind: 'recipe'; id: string } | { kind: 'cook'; id: string } | { kind: 'shared-week' } | { kind: 'not-found' };
 const segments: Record<Tab, string> = { home: '', favorites: 'favourites', larder: 'larder', planner: 'planner', shopping: 'shopping', settings: 'settings' };
 // Vitest defaults BASE_URL to '/' even though the deployed Pages site lives under /nibblepot/.
 export const basePath = import.meta.env.BASE_URL === '/' ? '/nibblepot/' : import.meta.env.BASE_URL;
@@ -14,6 +14,7 @@ export function parseRoute(pathname: string, base = basePath): PageRoute {
   if (!normalized.startsWith(base)) return { kind: 'not-found' };
   const route = normalized.slice(base.length).replace(/\/+$/, '');
   if (!route) return { kind: 'tab', tab: 'home' };
+  if (route === 'planner/shared') return { kind: 'shared-week' };
   const tab = (Object.keys(segments) as Tab[]).find(key => segments[key] && segments[key] === route);
   if (tab) return { kind: 'tab', tab };
   const cook = /^recipes\/([a-z0-9-]+)\/cook$/.exec(route);

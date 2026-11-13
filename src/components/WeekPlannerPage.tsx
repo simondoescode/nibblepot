@@ -6,6 +6,7 @@ import { shoppingQuantity } from '../lib/quantities';
 import { dateForWeekDay, mondayFor, shiftWeek, shoppingPlanSignature, weekContributions, WEEK_DAYS as days, weekSlotTitle } from '../lib/weeklyPlan';
 import type { WeekSlot } from '../types';
 import { Button } from '../ui/controls';
+import { WeekShareDialog } from './WeekShareDialog';
 
 const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 const weekDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -132,6 +133,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
         <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={19} aria-hidden="true"/></button>
       </div>
       <div className="planner-tools">
+        <WeekShareDialog week={week} slots={slots} servings={servings}/>
         {!isThisWeek && <Button size="small" onClick={()=>onWeekChange(thisWeek)}>This week</Button>}
         <Button size="small" icon={<Dice5 size={16}/>} onClick={shuffle}>Shuffle dinners</Button>
         {clearPending ? <span className="planner-clear-confirm" role="group" aria-label="Confirm clearing the week">

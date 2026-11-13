@@ -44,6 +44,7 @@ function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, 
   return titled.replace('</head>', meta.join(String.fromCharCode(10)) + String.fromCharCode(10) + '</head>');
 }
 const pages = [
+  { route: 'planner/shared', title: 'A shared week of dinners | Simmer', description: 'View a shared Simmer dinner plan for the week.', noindex: true },
   ...recipes.map(recipe => ({
     route: 'recipes/' + recipe.id + '/cook',
     title: 'Cook ' + recipe.title + ' | Simmer',

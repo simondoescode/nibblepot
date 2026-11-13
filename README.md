@@ -145,3 +145,9 @@ Updates wait for an explicit Update app or existing Refresh app action. The upda
 On mobile and tablet widths the app bar stays visible while the page scrolls. It offers direct search and favourites actions, with safe-area spacing, a compact welcome card and larger touch targets. Larder search sticks below the app bar, while the header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
 
 All 40 recipes now use individual food photos. The 25 replacement photos were generated separately with the built-in image tool, checked against the recipe ingredients, then exported as 800×504 transparent WebPs (under 250,000 bytes each; 974,904 bytes combined). Existing SVG artwork remains in the repository. The exact generation prompts and export specification are recorded in [the photo prompt manifest](docs/recipe-photo-prompts-2026-11-06.json).
+
+## Share a week
+
+In Planner, choose a week and tap **Share week**. Use **Share link** on supported devices, or **Copy link**. The unique link opens a read-only snapshot of the selected dates, seven dinner slots and serving counts, including leftovers, freezer and empty nights. Recipe links remain available. Viewing a shared week never imports or replaces the recipient's saved planner.
+
+Each share creates a new snapshot; editing the sender's plan does not update older links. The versioned plan is embedded in the URL fragment under `/nibblepot/planner/shared/`, so sharing works with static GitHub Pages and requires no account or database. Only planned recipe IDs, servings and the week date are included. Anyone holding the complete link can read it; it is not an encrypted or revocable link. The share page has a physical, noindex HTML entrypoint, and malformed links show a recovery message. If clipboard access fails, the full URL stays selectable in the share dialog.
