@@ -1720,8 +1720,8 @@
       "Transfer the hot filling to a shallow ovenproof dish. Spoon the prepared stuffing evenly over the top in small loose pieces. Bake for 25–30 minutes, or the stuffing packet time if longer, until golden on top and steaming hot in the centre."
     ],
     "onePot": false,
-    "safety": "Use ready-to-eat cooked chicken, not raw chicken. Heat until steaming hot throughout. If using leftover cooked chicken, this is its one reheat; serve freshly made.",
-    "storage": "If using leftover cooked chicken, eat the pie freshly made and do not reheat again. Otherwise cool and refrigerate within two hours, eat within 48 hours or freeze, and reheat only once until steaming hot throughout.",
+    "safety": "Use ready-to-eat cooked chicken, not raw chicken. Heat until steaming hot throughout. This recipe reheats the cooked chicken, so serve freshly made and do not reheat again.",
+    "storage": "Make only what you need and serve freshly made: the cooked chicken is reheated during baking. Do not reheat the finished pie again. Follow the cooked chicken pack storage and use-by instructions before making the pie.",
     "reviewedOn": "2026-11-13",
     "image": "recipes/chicken-stuffing-pie.webp"
   },
@@ -1767,7 +1767,7 @@
     "description": "Tender potato cubes, beef mince and peas in a little savoury gravy.",
     "emoji": "🍲",
     "color": "#e7cda3",
-    "mins": 35,
+    "mins": 40,
     "ing": [
       {
         "id": "beef",
