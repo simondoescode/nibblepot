@@ -25,6 +25,7 @@ import { FavouritesPage } from './components/FavouritesPage';
 import { LarderPage } from './components/LarderPage';
 import { WeekPlannerPage } from './components/WeekPlannerPage';
 import { SharedWeekPage } from './components/SharedWeekPage';
+import { importSharedWeek, type SharedWeek } from './lib/weekShare';
 import { SharedShoppingPage } from './components/SharedShoppingPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
@@ -152,7 +153,7 @@ export default function App() {
     catch { toast('Copy not available here'); }
   };
 
-  const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
+  const tab: Tab = route.kind === 'tab' ? route.tab : route.kind === 'shared-week' ? 'planner' : lastTab.current;
   const swipe = useSwipeTabs(
     route.kind === 'tab' ? route.tab : null,
     target => changeRoute(tabPath(target), { kind: 'tab', tab: target }, 'swipe'),
@@ -202,6 +203,12 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
+  const updateFromSharedWeek = (plan: SharedWeek, updateShopping: boolean) => {
+    setData(current => importSharedWeek(current, plan, updateShopping));
+    setSelectedWeek(plan.week);
+    navigate('planner');
+    toast(updateShopping ? 'Planner and shopping list updated' : 'Planner updated. Shopping list unchanged.');
+  };
   const renderTab = (page: Tab, isPreview = false) => <>
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
@@ -239,7 +246,7 @@ export default function App() {
         <div className="swipe-track" ref={swipe.track}>
           <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')}
             className="wrap main route-content" data-motion={motion} id="main-content">
-            {route.kind === 'shared-week' && <SharedWeekPage onRecipe={openRecipe} onPlanner={() => navigate('planner')}/>}
+            {route.kind === 'shared-week' && <SharedWeekPage onRecipe={openRecipe} onPlanner={() => navigate('planner')} onImport={updateFromSharedWeek}/>}
             {route.kind === 'shared-shopping' && <SharedShoppingPage onShopping={() => navigate('shopping')}/>}
             {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
               saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}

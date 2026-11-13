@@ -1,7 +1,7 @@
 import { recipes } from '../data';
-import type { WeekSlot } from '../types';
+import type { SavedData, WeekSlot } from '../types';
 import { basePath } from './routes';
-import { validMondayKey } from './weeklyPlan';
+import { applyWeekToShopping, validMondayKey } from './weeklyPlan';
 import { decodeShareData, encodeShareData } from './shareCodec';
 
 export interface SharedWeek {
@@ -13,6 +13,13 @@ export interface SharedWeek {
 }
 export const sharedWeekPath = () => basePath + 'planner/shared/';
 const recipeIds = new Set(recipes.map(recipe => recipe.id));
+
+/** Copy dinners only: the recipient keeps their serving sizes and larder. */
+export function importSharedWeek(data: SavedData, plan: SharedWeek, updateShopping: boolean): SavedData {
+  const slots = plan.slots.map(slot => ({ ...slot }));
+  const updated = { ...data, weekPlans: { ...data.weekPlans, [plan.week]: slots } };
+  return updateShopping ? applyWeekToShopping(updated, slots, plan.week) : updated;
+}
 
 /** A self-contained snapshot: only this week's meals and serving counts leave the device. */
 export function createWeekShareLink(origin: string, week: string, slots: WeekSlot[], servings: Record<string, number>): string {

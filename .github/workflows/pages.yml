@@ -36,6 +36,14 @@ jobs:
       - name: Check preinstalled Chrome
         run: google-chrome --version
       - run: npm run test:e2e
+      - name: Upload shared-week layout previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-week-layouts
+          path: test-results/shared-week-*.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload static site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
