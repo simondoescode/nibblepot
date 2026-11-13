@@ -30,7 +30,7 @@ export function SharedWeekPage({ onRecipe, onPlanner }: { onRecipe: (id: string)
         return <article className="planner-day" key={index}>
           <div className="planner-day-label"><strong>{WEEK_DAYS[index]}</strong><span>{date.format(dateForWeekDay(plan.week, index))}</span></div>
           <div className="shared-week-meal">
-            {recipe && <img className="planner-meal-thumb" src={import.meta.env.BASE_URL + (recipe.image ?? `recipes/${recipe.id}.svg`)} alt="" width="70" height="56"/>}
+            {recipe && <img className="planner-meal-thumb" src={import.meta.env.BASE_URL + (recipe.image ?? 'recipes/jacket.svg')} alt="" width="70" height="56"/>}
             <div className="planner-picked"><strong>{slot.kind === 'empty' ? 'No dinner planned' : weekSlotTitle(slot)}</strong>
               {recipe && <small>{recipe.mins} min · serves {plan.servings[recipe.id]}</small>}
             </div>
