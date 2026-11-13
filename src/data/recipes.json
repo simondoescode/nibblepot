@@ -636,8 +636,8 @@
   },
   {
     "id": "sausage-traybake",
-    "title": "Sausage & potato traybake",
-    "description": "All on one tray, nothing fancy.",
+    "title": "Sausage, potato & carrot traybake",
+    "description": "Sausages and chunky vegetables roasted together, with only ten minutes of prep.",
     "emoji": "🌭",
     "color": "#e7cda3",
     "mins": 55,
@@ -671,7 +671,7 @@
     "onePot": false,
     "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01",
+    "reviewedOn": "2026-11-13",
     "image": "recipes/sausage-traybake.webp"
   },
   {
@@ -1648,5 +1648,157 @@
     "safety": "Use ready-to-eat cooked ham or cooked gammon and heat the finished dish until steaming hot throughout.",
     "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout. If using leftover gammon, serve the mac and cheese freshly made.",
     "reviewedOn": "2026-11-08"
+  },
+  {
+    "id": "one-pot-cheesy-tomato-pasta",
+    "title": "One-pot cheesy tomato pasta",
+    "description": "Pasta, peas and melted cheddar in a simple tomato sauce, all cooked in one pan.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 25,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "passata",
+        "qty": "500 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      },
+      {
+        "id": "cheese",
+        "qty": "100 g"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Put the pasta and passata in a large, deep saucepan. Crumble in the stock and add 600 ml boiling water per stock cube. Bring to a gentle boil, stirring well.",
+      "Simmer uncovered for 12–15 minutes, stirring frequently so the pasta does not stick. Add a splash more hot water whenever the sauce looks dry before the pasta is tender.",
+      "Stir in the frozen peas and cook for the time stated on their packet, until the pasta is tender and the peas are piping hot. Take off the heat and stir in the grated cheddar until melted."
+    ],
+    "onePot": true,
+    "safety": "Cook frozen peas according to their packet and serve the finished pasta steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/one-pot-cheesy-tomato-pasta.webp"
+  },
+  {
+    "id": "chicken-stuffing-pie",
+    "title": "Cheat’s chicken & stuffing pie",
+    "description": "Cooked chicken and frozen vegetables in gravy, with a crisp stuffing topping.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 45,
+    "ing": [
+      {
+        "id": "cooked-chicken",
+        "qty": "400 g"
+      },
+      {
+        "id": "frozen-mixed-veg",
+        "qty": "400 g"
+      },
+      {
+        "id": "gravy",
+        "qty": "4 tbsp"
+      },
+      {
+        "id": "stuffing-mix",
+        "qty": "170 g"
+      }
+    ],
+    "steps": [
+      "Heat the oven to 200°C (180°C fan). Prepare the sage and onion stuffing mix with the boiling water specified on its packet, then leave it to stand while you make the filling.",
+      "Make the chicken gravy in a large saucepan using the granules and the water amount on their packet. Add the frozen mixed vegetables and simmer for their packet cooking time. Stir in bite-size pieces of cooked chicken and heat until steaming hot.",
+      "Transfer the hot filling to a shallow ovenproof dish. Spoon the prepared stuffing evenly over the top in small loose pieces. Bake for 25–30 minutes, or the stuffing packet time if longer, until golden on top and steaming hot in the centre."
+    ],
+    "onePot": false,
+    "safety": "Use ready-to-eat cooked chicken, not raw chicken. Heat until steaming hot throughout. This recipe reheats the cooked chicken, so serve freshly made and do not reheat again.",
+    "storage": "Make only what you need and serve freshly made: the cooked chicken is reheated during baking. Do not reheat the finished pie again. Follow the cooked chicken pack storage and use-by instructions before making the pie.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/chicken-stuffing-pie.webp"
+  },
+  {
+    "id": "creamy-tuna-sweetcorn-pasta",
+    "title": "Creamy tuna & sweetcorn pasta",
+    "description": "A quick, creamy cupboard dinner with no oven needed.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "pasta",
+        "qty": "350 g"
+      },
+      {
+        "id": "tuna",
+        "qty": "2 tins"
+      },
+      {
+        "id": "sweetcorn",
+        "qty": "200 g"
+      },
+      {
+        "id": "cream-cheese",
+        "qty": "200 g"
+      }
+    ],
+    "steps": [
+      "Boil the pasta according to its packet. Add the frozen sweetcorn for the cooking time stated on its packet, so both finish together.",
+      "Scoop out a mug of pasta water before draining. Return the pasta and sweetcorn to the same saucepan over a low heat, then stir in the cream cheese and a splash of pasta water.",
+      "Drain and flake the tinned tuna, then gently stir it through the pasta. Add a little more reserved pasta water if needed and heat, stirring, until the sauce is smooth and everything is steaming hot."
+    ],
+    "onePot": true,
+    "safety": "Use tinned tuna and cook frozen sweetcorn according to its packet. Heat the finished dish until steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/creamy-tuna-sweetcorn-pasta.webp"
+  },
+  {
+    "id": "beef-potato-hash",
+    "title": "One-pan beef & potato hash",
+    "description": "Tender potato cubes, beef mince and peas in a little savoury gravy.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "qty": "500 g"
+      },
+      {
+        "id": "potatoes",
+        "qty": "800 g"
+      },
+      {
+        "id": "frozen-onions",
+        "qty": "150 g"
+      },
+      {
+        "id": "frozen-peas",
+        "qty": "200 g"
+      },
+      {
+        "id": "stock",
+        "qty": "1 cube"
+      }
+    ],
+    "steps": [
+      "Scrub the potatoes and cut into small 1 cm cubes. Brown the beef mince in a large deep non-stick frying pan over medium-high heat for 6–8 minutes, breaking up clumps. Stir in the frozen onions and cook for another 3 minutes.",
+      "Add the potato cubes and stock, using 400 ml boiling water per stock cube. Cover and simmer gently for 15–20 minutes, stirring occasionally, until the potatoes are tender. Add a splash more water if the pan starts to dry out.",
+      "Stir in the frozen peas and cook for their packet cooking time. Remove the lid and simmer off excess liquid if needed, until the mince is cooked throughout, the potatoes are soft and everything is steaming hot."
+    ],
+    "onePot": true,
+    "safety": "Cook beef mince thoroughly with no pink remaining. Cook frozen vegetables according to their packets and serve steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/beef-potato-hash.webp"
   }
 ]

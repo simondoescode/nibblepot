@@ -2,11 +2,11 @@ import { expect, test } from '@playwright/test';
 
 test('recipe catalogue illustrations load on mobile and desktop', async ({ page }) => {
   await page.goto('/nibblepot/');
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   const art = page.locator('.recipe-card .recipe-illustration');
-  await expect(art).toHaveCount(41);
+  await expect(art).toHaveCount(45);
   await expect(art.first()).toHaveAttribute('src', /\/nibblepot\/recipes\/jacket\.webp/);
-  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(41);
+  await expect(page.locator('.recipe-card img.recipe-photo')).toHaveCount(45);
   await expect(page.locator('.recipe-card .recipe-illustration[src$="/recipes/traybake.webp"]')).toHaveCount(1);
   await art.first().scrollIntoViewIfNeeded();
   await expect.poll(() => art.first().evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);

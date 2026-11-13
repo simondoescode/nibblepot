@@ -42,7 +42,7 @@ test('Back dismisses sheets before navigation and Forward reopens them',async({p
   await page.goBack();
   await expect(sheet).toHaveCount(0);
   await expect(page).toHaveURL(/\/nibblepot\/$/);
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   await page.goForward();
   await expect(sheet).toBeVisible();
   await expect(sheet.getByRole('checkbox',{name:'Fish',exact:true})).not.toBeChecked();
