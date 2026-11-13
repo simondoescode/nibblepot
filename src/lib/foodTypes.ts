@@ -14,11 +14,11 @@ export const foodTypes = [
 export type FoodType = typeof foodTypes[number]['id'];
 
 const ingredientsByType = {
-  chicken: ['chicken'], beef: ['beef'], pork: ['sausages', 'ham'],
+  chicken: ['chicken', 'cooked-chicken'], beef: ['beef'], pork: ['sausages', 'ham'],
   fish: ['tuna', 'fish-fingers'], pasta: ['pasta', 'noodles'],
   rice: ['rice'], potatoes: ['potatoes'],
 };
-const meatAndFish = new Set(['chicken', 'beef', 'sausages', 'ham', 'meatballs', 'tuna', 'fish-fingers']);
+const meatAndFish = new Set(['chicken', 'cooked-chicken', 'beef', 'sausages', 'ham', 'meatballs', 'tuna', 'fish-fingers']);
 
 /** Categories can overlap: chicken pasta belongs to both Chicken and Pasta.
  * Match catalogue IDs rather than titles, and do not infer a meatball's meat.

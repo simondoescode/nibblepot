@@ -8,6 +8,8 @@ const recipe = (id: string) => recipes.find(item=>item.id===id)!;
 describe('food type filters',()=>{
   it('uses ingredients and allows overlapping categories',()=>{
     expect(matchesFoodType(recipe('chicken-tomato-pasta'),'chicken')).toBe(true);
+    expect(matchesFoodType(recipe('chicken-stuffing-pie'),'chicken')).toBe(true);
+    expect(matchesFoodType(recipe('chicken-stuffing-pie'),'meat-free')).toBe(false);
     expect(matchesFoodType(recipe('chicken-tomato-pasta'),'pasta')).toBe(true);
     expect(matchesFoodType(recipe('chicken-tomato-pasta'),'rice')).toBe(false);
     expect(matchesFoodType(recipe('ham-pea-pasta'),'pork')).toBe(true);
@@ -25,7 +27,7 @@ describe('food type filters',()=>{
   it('offers populated food types without changing default catalogue results',()=>{
     expect(filterRecipes(recipes,'','all',[])).toEqual(filterRecipes(recipes,'','all',[],['all']));
     for(const type of foodTypes) expect(filterRecipes(recipes,'','all',[],[type.id]).length).toBeGreaterThan(0);
-    expect(filterRecipes(recipes,'','all',[],['fish']).map(item=>item.id)).toEqual(['tuna-bake','fish-butties','tuna-jackets','fish-wedges']);
+    expect(filterRecipes(recipes,'','all',[],['fish']).map(item=>item.id)).toEqual(['tuna-bake','fish-butties','tuna-jackets','fish-wedges','creamy-tuna-sweetcorn-pasta']);
   });
   it('combines food type with search, quick filters and larder ranking',()=>{
     expect(filterRecipes(recipes,'tomato','quick',[],['chicken']).map(item=>item.id)).toEqual(['chicken-tomato-pasta']);
