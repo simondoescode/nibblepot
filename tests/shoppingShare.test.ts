@@ -7,11 +7,11 @@ import { parseRoute } from '../src/lib/routes';
 import type { ShoppingEntry } from '../src/types';
 
 const entries = (): ShoppingEntry[] => [
-  { id: 'pasta', from: ['tomato-pasta'], done: false },
+  { id: 'pasta', from: ['hdfl'], done: false },
   { id: 'milk', from: [], done: true },
   { id: 'custom:café', customName: 'Café crème & 牛奶', from: [], done: false },
 ];
-const create = () => createShoppingShareLink('https://example.com', entries(), { 'tomato-pasta': 2 }, { pasta: '100 g' });
+const create = () => createShoppingShareLink('https://example.com', entries(), { 'hdfl': 2 }, { pasta: '100 g' });
 const read = (link: string) => parseSharedShopping(new URL(link).hash)!;
 const encode = (value: unknown) => '#list=' + encodeShareData(value);
 
@@ -33,7 +33,7 @@ describe('compressed shopping snapshots', () => {
     list[0].done = true; list[2].customName = 'Changed';
     expect(read(link).items[0].done).toBe(false);
     expect(read(link).items[2].name).toBe('Café crème & 牛奶');
-    const pastry = read(createShoppingShareLink('https://example.com', [{ id: 'puff-pastry', from: ['chicken-pie'], done: false }], { 'chicken-pie': 1 }));
+    const pastry = read(createShoppingShareLink('https://example.com', [{ id: 'puff-pastry', from: ['v8e7'], done: false }], { 'v8e7': 1 }));
     expect(pastry.items[0].hint).toContain('whole pastry sheet');
   });
   it('rejects invalid items, types, versions, sections and oversized lists', () => {
