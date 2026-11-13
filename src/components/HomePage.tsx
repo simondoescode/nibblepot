@@ -33,7 +33,7 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     return count > 0 && count <= 2;
   }) : [];
   const other = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length > 2) : [];
-  const useSoon = (recipe: typeof recipes[number]) => recipe.ing.filter(i => !i.optional && larder.includes(i.id) && dates[i.id] && dates[i.id] >= new Date().toLocaleDateString('en-CA') && (Date.parse(dates[i.id] + 'T12:00:00Z') - Date.now()) / 86400000 <= 3).length;
+  const useSoon = (recipe: typeof recipes[number]) => recipe.ing.filter(i => !i.optional && larder.includes(i.id) && dates[i.id] && dates[i.id] >= new Date().toISOString().slice(0,10) && (Date.parse(dates[i.id] + 'T12:00:00Z') - Date.now()) / 86400000 <= 3).length;
   const byUseSoon = (a: typeof recipes[number], b: typeof recipes[number]) => useSoon(b) - useSoon(a) || a.prepMins - b.prepMins || a.mins - b.mins;
   if (filter === 'larder') { ready.sort(byUseSoon); nearly.sort(byUseSoon); other.sort(byUseSoon); }
   const resultCount = filtered.length === recipes.length ? `${recipes.length}` : `${filtered.length} of ${recipes.length}`;
@@ -64,6 +64,8 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
           {ready.length ? <RecipeGrid recipes={ready} favorites={favorites} larder={larder} stock={stock} servings={servings} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No meals ready yet. Add ingredients to your larder.</p>}</section>
         <section aria-label="Nearly there"><h2>Nearly there</h2><p>Just one or two required ingredients to pick up.</p>
           {nearly.length ? <RecipeGrid recipes={nearly} favorites={favorites} larder={larder} stock={stock} servings={servings} onAddMissing={onAddMissing} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No close matches right now.</p>}</section>
+        <section aria-label="Other inspiration"><h2>Other inspiration</h2><p>More dinner ideas for when you next stock up.</p>
+          {other.length ? <RecipeGrid recipes={other} favorites={favorites} larder={larder} stock={stock} servings={servings} onAddMissing={onAddMissing} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No other matches.</p>}</section>
       </> : <RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} onReset={clearFilters} />}
     </div>
   </>;
