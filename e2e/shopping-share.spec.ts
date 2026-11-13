@@ -8,12 +8,12 @@ test('shopping share has a static noindex route', () => {
 test('a compressed shopping snapshot opens in another browser with quantities and independent persistent ticks', async ({ page, browser }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value: string) => { (window as unknown as { copied: string }).copied = value; } } }));
   await page.goto('/nibblepot/shopping/');
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
     favorites: [], larder: ['pasta'], shopping: [
-      { id: 'pasta', from: ['tomato-pasta'], done: false },
+      { id: 'pasta', from: ['hdfl'], done: false },
       { id: 'milk', from: [], done: true },
       { id: 'custom:café crème', customName: 'Café crème', from: [], done: false },
-    ], servings: { 'tomato-pasta': 2 }, larderQuantities: { pasta: '100 g' },
+    ], servings: { 'hdfl': 2 }, larderQuantities: { pasta: '100 g' },
   })));
   await page.reload();
   await page.getByRole('button', { name: 'Share shopping list', exact: true }).click();
@@ -22,14 +22,14 @@ test('a compressed shopping snapshot opens in another browser with quantities an
   expect(link).toContain('/shopping/shared/#list=z.');
   await dialog.getByRole('button', { name: 'Copy link', exact: true }).click();
   expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toBe(link);
-  const senderBefore = await page.evaluate(() => localStorage.getItem('nibblepot-demo-v1'));
+  const senderBefore = await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'));
 
   const recipient = await browser.newContext({ baseURL: new URL(page.url()).origin });
   const other = await recipient.newPage();
   await other.goto('/nibblepot/shopping/');
-  await other.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: ['jacket'], larder: [], shopping: [{ id: 'baked-beans', from: [], done: false }] })));
+  await other.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({ favorites: ['dahn'], larder: [], shopping: [{ id: 'baked-beans', from: [], done: false }] })));
   await other.reload();
-  const before = await other.evaluate(() => localStorage.getItem('nibblepot-demo-v1'));
+  const before = await other.evaluate(() => localStorage.getItem('simmer-recipes-v2'));
   await other.goto(link);
   await expect(other.getByRole('heading', { name: 'A shared shopping list', exact: true })).toBeVisible();
   await expect(other.locator('.shop-row')).toHaveCount(3);
@@ -40,8 +40,8 @@ test('a compressed shopping snapshot opens in another browser with quantities an
   await expect(other.locator('.shopping-summary [role="status"]')).toContainText('1 to buy');
   await other.reload();
   await expect(other.getByRole('checkbox', { name: 'Mark Pasta as purchased', exact: true })).toBeChecked();
-  expect(await other.evaluate(() => localStorage.getItem('nibblepot-demo-v1'))).toBe(before);
-  expect(await page.evaluate(() => localStorage.getItem('nibblepot-demo-v1'))).toBe(senderBefore);
+  expect(await other.evaluate(() => localStorage.getItem('simmer-recipes-v2'))).toBe(before);
+  expect(await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'))).toBe(senderBefore);
   await other.getByRole('button', { name: 'Open my shopping list', exact: true }).click();
   await expect(other.locator('.shop-row')).toHaveCount(1);
   await expect(other.locator('.shop-row')).toContainText('Baked beans');
@@ -55,7 +55,7 @@ test('shopping links support native sharing, clipboard fallback, and a 320px che
   });
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto('/nibblepot/shopping/');
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: [], larder: [], shopping: [{ id: 'pasta', done: false, from: ['tomato-pasta'] }] })));
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({ favorites: [], larder: [], shopping: [{ id: 'pasta', done: false, from: ['hdfl'] }] })));
   await page.reload();
   await page.getByRole('button', { name: 'Share shopping list', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Share shopping list', exact: true });
