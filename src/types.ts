@@ -5,13 +5,18 @@ export type Filter = 'all' | 'quick' | 'simple' | 'onepot' | 'larder';
 
 export interface RecipeIngredient {
   id: IngredientId;
-  qty: string;
+  /** Numeric recipe quantity for four servings. */
+  amount: number;
+  unit: 'each' | 'large' | 'g' | 'kg' | 'ml' | 'l' | 'tsp' | 'tbsp' | 'tin' | 'small tin' | 'slice' | 'clove' | 'cube' | 'sheet' | 'leaf';
+  note?: 'dry';
   /** Optional toppings or accompaniments are excluded from shopping unless chosen. */
   optional?: boolean;
 }
 
 export interface Recipe {
   id: RecipeId;
+  /** Human-readable, stable route segment. */
+  slug: string;
   title: string;
   description: string;
   emoji: string;
@@ -19,6 +24,9 @@ export interface Recipe {
   /** Local image relative to the Vite base (e.g. recipes/jacket.webp). */
   image?: string;
   mins: number;
+  prepMins: number;
+  cookMins: number;
+  tags: Array<'budget' | 'batch-friendly' | 'freezer-friendly' | 'kid-friendly' | 'minimal-prep'>;
   ing: RecipeIngredient[];
   steps: string[];
   onePot: boolean;
