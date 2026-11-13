@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import * as Dialog from '../ui/dialog';
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, GripVertical, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
 import { ingredientName, recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
 import { dateForWeekDay, mondayFor, shiftWeek, shoppingPlanSignature, weekContributions, WEEK_DAYS as days, weekSlotTitle } from '../lib/weeklyPlan';
@@ -37,9 +37,15 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
   const [clearPending,setClearPending] = useState(false);
   const [dragOver,setDragOver] = useState<number|null>(null);
   const [undo,setUndo] = useState<{week:string;before:WeekSlot[];description:string}|null>(null);
+  const [movingDay,setMovingDay] = useState<number|null>(null);
+  const pointerMove = useRef<{from:number;x:number;y:number;active:boolean}|null>(null);
+  const suppressMoveClick = useRef(false);
   const opener = useRef<HTMLButtonElement|null>(null);
   useEffect(() => {
     setEditingDay(null);
+    setMovingDay(null);
+    setDragOver(null);
+    pointerMove.current=null;
     setChangedDay(null);
     setClearPending(false);
     setUndo(null);
@@ -164,18 +170,51 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
         onDragStart={event=>{event.dataTransfer.setData('text/plain','recipe:'+recipe.id);event.dataTransfer.effectAllowed='copy';}}>
         {recipe.title}</div>)}</div>
     </section>
+    <p id="planner-move-help" className="planner-move-help">Drag the grip to swap dinners, or tap it and choose a day.</p>
+    {movingDay!==null && <div className="planner-move-options" role="group" aria-label={'Move '+days[movingDay]+' dinner'}>
+      <strong>Swap {days[movingDay]} with</strong>
+      {days.map((day,index)=>index!==movingDay && <button key={day} type="button" onClick={()=>{dropMeal(index,'day:'+movingDay);setMovingDay(null);}}>{day}</button>)}
+      <button type="button" onClick={()=>setMovingDay(null)}>Cancel move</button>
+    </div>}
     <div className="planner-layout">
       <div className="planner-days" key={week} data-direction={direction}>
         {slots.map((slot,index) => {
           const recipe = slot.kind === 'recipe' ? recipes.find(r=>r.id===slot.id) : undefined;
           const isToday = isThisWeek && index === (today.getDay() + 6) % 7;
           return <section className={`planner-day${changedDay === index ? ' just-changed' : ''}`} onAnimationEnd={() => setChangedDay(null)} key={index}
-            draggable onDragStart={event=>{event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
+            data-day-index={index} draggable onDragStart={event=>{if(pointerMove.current){event.preventDefault();return;}event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
             onDragOver={event=>{event.preventDefault();setDragOver(index);}}
             onDragLeave={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node))setDragOver(null);}}
             onDrop={event=>{event.preventDefault();dropMeal(index,event.dataTransfer.getData('text/plain'));}}
             data-drop-target={dragOver===index ? 'true' : undefined}
             data-today={isToday || undefined}>
+            <button type="button" className="planner-move-handle" data-no-tab-swipe data-no-pull
+              aria-label={'Move '+days[index]+' dinner'} aria-describedby="planner-move-help" aria-pressed={movingDay===index}
+              onDragStart={event=>event.preventDefault()}
+              onClick={()=>{if(suppressMoveClick.current){suppressMoveClick.current=false;return;}setMovingDay(movingDay===index?null:index);}}
+              onPointerDown={event=>{if(event.button!==0)return;event.stopPropagation();suppressMoveClick.current=false;pointerMove.current={from:index,x:event.clientX,y:event.clientY,active:false};event.currentTarget.setPointerCapture(event.pointerId);}}
+              onPointerMove={event=>{
+                const move=pointerMove.current;if(!move)return;
+                if(!move.active && Math.hypot(event.clientX-move.x,event.clientY-move.y)<8)return;
+                move.active=true;
+                const target=document.elementFromPoint(event.clientX,event.clientY)?.closest<HTMLElement>('[data-day-index]');
+                setDragOver(target ? Number(target.dataset.dayIndex) : null);
+                if(event.clientY>window.innerHeight-80)window.scrollBy(0,12);
+                else if(event.clientY<100)window.scrollBy(0,-12);
+              }}
+              onPointerUp={event=>{
+                const move=pointerMove.current;pointerMove.current=null;
+                if(move?.active){
+                  suppressMoveClick.current=true;
+                  const target=document.elementFromPoint(event.clientX,event.clientY)?.closest<HTMLElement>('[data-day-index]');
+                  if(target)dropMeal(Number(target.dataset.dayIndex),'day:'+move.from);
+                  setMovingDay(null);
+                }
+                setDragOver(null);
+              }}
+              onPointerCancel={()=>{pointerMove.current=null;setDragOver(null);}}
+              onLostPointerCapture={()=>{pointerMove.current=null;setDragOver(null);}}
+            ><GripVertical size={18} aria-hidden="true"/></button>
             <div className="planner-day-label" aria-current={isToday ? 'date' : undefined}>
               <strong className="planner-day-name">{days[index]}</strong>
               <strong className="planner-day-short">{days[index].slice(0, 3)}</strong>

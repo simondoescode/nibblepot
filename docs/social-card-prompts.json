@@ -1,0 +1,23 @@
+{
+  "tool": "built-in image generation",
+  "output": "1200x630 JPEG, quality 88, optimised, below 250 KB",
+  "common": "Create ONE final Open Graph sharing card for Simmer, a premium warm UK family dinner planning app. Landscape exactly 1.905:1 composition, destined for 1200x630 pixels. Must be eye catching and readable at 300x157 WhatsApp thumbnail: huge bold editorial type, only the specified short copy, very high contrast, generous 70px safe margins, clear left text / right single visual, no fine print, no busy detail, no device mockups, no watermark. Consistent deep forest green #153c32, warm cream #fff4e1 and peach #f3ad7c brand palette. Small but bold 'Simmer' brand at top left. ",
+  "variants": [
+    [
+      "shopping",
+      "Use warm cream background and huge dark green exact headline on two lines 'Shopping,\\nsorted.' A striking editorial photographic paper grocery bag on right with a few colourful everyday vegetables and a baguette, restrained realistic food styling. One peach accent. No other text."
+    ],
+    [
+      "meal-plan",
+      "Use deep forest green background with huge cream exact headline on two lines 'Your week,\\nsorted.' On right a bold simple cream weekly planner card with seven chunky peach checkmarks and green horizontal strokes, no dates or tiny words, subtly paired with a ceramic bowl of pasta at lower right. Premium editorial graphic mixed with realistic food photo. No other text."
+    ],
+    [
+      "recipe",
+      "Use warm peach background, huge dark green exact headline on two lines 'You need\\nto try this.' On right one generous appetising bowl of tomato pasta with basil photographed at low three-quarter angle, strong simple silhouette, soft natural shadow. Premium cookbook photography. No other text."
+    ],
+    [
+      "general",
+      "Use forest green background, huge warm cream exact headline on two lines 'Dinner,\\nsorted.' On right a beautiful cream ceramic casserole pot with simple family dinner, warm golden colours and subtle steam, premium editorial food photo. One restrained peach curved accent, simple striking composition. No other text."
+    ]
+  ]
+}
