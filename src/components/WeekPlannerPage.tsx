@@ -225,7 +225,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
               aria-label={'Change '+days[index]+' dinner'} aria-haspopup="dialog"
               onClick={event=>openPicker(event,index)}>
               {recipe ? <img className="planner-meal-thumb" alt="" width="70" height="56" loading="lazy"
-                src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/> :
+                src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/jacket.svg')}/> :
                 <span className="planner-meal-thumb" data-kind={slot.kind} aria-hidden="true">
                   {slot.kind === 'leftovers' ? <RotateCcw size={18}/> :
                     slot.kind === 'freezer' ? <Snowflake size={18}/> : <Plus size={20}/>}
@@ -296,7 +296,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
                 aria-label={'Choose '+recipe.title} aria-pressed={selected}
                 onClick={()=>chooseMeal({kind:'recipe',id:recipe.id})}>
                 <img width="100" height="80" alt="" loading="lazy"
-                  src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/>
+                  src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/jacket.svg')}/>
                 <span className="planner-meal-copy"><strong>{recipe.title}</strong>
                   <small><Clock3 size={13} aria-hidden="true"/> {recipe.mins} min · {owned}/{required} ingredients in larder</small>
                   {used?.length ? <em>Also on {used.join(', ')}</em>:null}
