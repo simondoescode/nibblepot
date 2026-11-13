@@ -29,26 +29,26 @@ describe('weekly meal planner',()=>{
     const slots=defaultWeek();
     const pantry=['potatoes','baked-beans','cheese','butter'];
     const shuffled=shuffleWeek(slots,()=>0,pantry);
-    expect(shuffled[0]).toEqual({kind:'recipe',id:'jacket'});
+    expect(shuffled[0]).toEqual({kind:'recipe',id:'dahn'});
     expect(new Set(shuffled.filter(s=>s.kind==='recipe').map(s=>s.kind==='recipe'?s.id:'')).size).toBe(5);
   });
   it('generates missing ingredients with correct counts for repeated recipes',()=>{
     const repeated: WeekSlot[]=[
-      {kind:'recipe',id:'tomato-pasta'}, {kind:'recipe',id:'tomato-pasta'},
+      {kind:'recipe',id:'hdfl'}, {kind:'recipe',id:'hdfl'},
       {kind:'leftovers'}, {kind:'freezer'}, {kind:'empty'}, {kind:'empty'}, {kind:'empty'},
     ];
     const preview=weekContributions(repeated,[]);
-    expect(preview.find(i=>i.id==='pasta')?.weekCounts).toEqual({'tomato-pasta':2});
+    expect(preview.find(i=>i.id==='pasta')?.weekCounts).toEqual({'hdfl':2});
     expect(shoppingQuantity(preview.find(i=>i.id==='pasta')!)).toBe('700 g');
-    expect(preview.find(i=>i.id==='chopped-tomatoes')?.weekCounts).toEqual({'tomato-pasta':2});
+    expect(preview.find(i=>i.id==='chopped-tomatoes')?.weekCounts).toEqual({'hdfl':2});
     expect(weekContributions(repeated,['pasta']).some(i=>i.id==='pasta')).toBe(false);
   });
   it('preserves manually added shopping sources and ticks while replacing an old week',()=>{
-    const planA: WeekSlot[]=Array.from({length:7},(_,i)=>i===0?{kind:'recipe',id:'tomato-pasta'}:{kind:'empty'});
-    const planB: WeekSlot[]=Array.from({length:7},(_,i)=>i===0?{kind:'recipe',id:'chicken-rice'}:{kind:'empty'});
+    const planA: WeekSlot[]=Array.from({length:7},(_,i)=>i===0?{kind:'recipe',id:'hdfl'}:{kind:'empty'});
+    const planB: WeekSlot[]=Array.from({length:7},(_,i)=>i===0?{kind:'recipe',id:'5sg6'}:{kind:'empty'});
     const manual: SavedData={
       ...emptyData,
-      shopping:[{id:'pasta',done:true,from:['tuna-bake']},{id:'eggs',done:false,from:[]}],
+      shopping:[{id:'pasta',done:true,from:['gf6b']},{id:'eggs',done:false,from:[]}],
     };
     const first=applyWeekToShopping(manual,planA);
     expect(shoppingQuantity(first.shopping.find(x=>x.id==='pasta')!)).toBe('700 g');
@@ -61,8 +61,8 @@ describe('weekly meal planner',()=>{
     expect(applyWeekToShopping(next,planB).shopping.length).toBe(next.shopping.length);
   });
   it('keeps purchased planner items and their quantities when replacing the week',()=>{
-    const first: WeekSlot[]=[{kind:'recipe',id:'tomato-pasta'},...Array.from({length:6},()=>({kind:'empty' as const}))];
-    const next: WeekSlot[]=[{kind:'recipe',id:'chicken-rice'},...Array.from({length:6},()=>({kind:'empty' as const}))];
+    const first: WeekSlot[]=[{kind:'recipe',id:'hdfl'},...Array.from({length:6},()=>({kind:'empty' as const}))];
+    const next: WeekSlot[]=[{kind:'recipe',id:'5sg6'},...Array.from({length:6},()=>({kind:'empty' as const}))];
     const generated=applyWeekToShopping(emptyData,first);
     const ticked={...generated,shopping:generated.shopping.map(item=>item.id==='pasta'?{...item,done:true}:item)};
     const refreshed=applyWeekToShopping(ticked,next);
@@ -83,24 +83,24 @@ describe('weekly meal planner',()=>{
     expect(shoppingPlanSignature(week,slots,['rice','pasta'],{}))
       .toBe(shoppingPlanSignature(week,slots,['pasta','rice'],{}));
     const updated=slots.map(slot=>({...slot}));
-    updated[0]={kind:'recipe',id:'egg-rice'};
+    updated[0]={kind:'recipe',id:'41r8'};
     expect(shoppingPlanSignature(week,updated,[],{})).not.toBe(current.shoppingPlan?.signature);
-    expect(shoppingPlanSignature(week,slots,[],{'jacket':2})).not.toBe(current.shoppingPlan?.signature);
-    expect(shoppingPlanSignature(week,slots,[],{'toasties':8})).toBe(current.shoppingPlan?.signature);
+    expect(shoppingPlanSignature(week,slots,[],{'dahn':2})).not.toBe(current.shoppingPlan?.signature);
+    expect(shoppingPlanSignature(week,slots,[],{'0iaz':8})).toBe(current.shoppingPlan?.signature);
     expect(shoppingPlanSignature('2026-11-02',slots,[],{})).not.toBe(current.shoppingPlan?.signature);
     const restored=parseSavedData(current);
     expect(restored.shoppingPlan).toEqual(current.shoppingPlan);
   });
   it('does not double-count a recipe selected manually and scheduled once',()=>{
-    const single: WeekSlot[]=[{kind:'recipe',id:'tomato-pasta'},...Array.from({length:6},()=>({kind:'empty' as const}))];
-    const manual={...emptyData, shopping:[{id:'pasta',done:false,from:['tomato-pasta']}]};
+    const single: WeekSlot[]=[{kind:'recipe',id:'hdfl'},...Array.from({length:6},()=>({kind:'empty' as const}))];
+    const manual={...emptyData, shopping:[{id:'pasta',done:false,from:['hdfl']}]};
     const next=applyWeekToShopping(manual,single);
     expect(shoppingQuantity(next.shopping.find(x=>x.id==='pasta')!)).toBe('350 g');
   });
   it('restores valid weekly data from backups and drops invalid entries',()=>{
     const saved=parseSavedData({
       larder:[],favorites:[],shopping:[
-        {id:'pasta',done:false,from:[],weekCounts:{'tomato-pasta':2,unknown:4},planGenerated:true}
+        {id:'pasta',done:false,from:[],weekCounts:{'hdfl':2,unknown:4},planGenerated:true}
       ],
       weekPlans:{
         '2026-10-26':defaultWeek(),
@@ -111,6 +111,6 @@ describe('weekly meal planner',()=>{
     expect(saved.weekPlans?.['2026-10-26']).toHaveLength(7);
     expect(saved.weekPlans?.['2026-10-27']).toBeUndefined();
     expect(saved.weekPlans?.['2026-11-02']).toBeUndefined();
-    expect(saved.shopping[0].weekCounts).toEqual({'tomato-pasta':2});
+    expect(saved.shopping[0].weekCounts).toEqual({'hdfl':2});
   });
 });
