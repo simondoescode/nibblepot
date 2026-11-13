@@ -58,14 +58,14 @@ export function SharedWeekPage({ onRecipe, onPlanner, onImport }: {
         </article>;
       })}
     </div>
-    {createPortal(<div className="shared-week-actions" ref={actionBar} aria-label="Save shared week">
+    {createPortal(<div className="shared-week-actions" ref={actionBar} role="region" aria-label="Save shared week">
       <div className="shared-week-actions-inner">
-        <p>Replaces <strong>{weekLabel}</strong> in your planner</p>
+        <p id="shared-week-replace-note">Replaces <strong>{weekLabel}</strong> in your planner</p>
         <label className="shared-week-shopping-option">
           <input type="checkbox" checked={updateShopping} onChange={event => setUpdateShopping(event.target.checked)}/>
           <span>Also update my shopping list</span>
         </label>
-        <Button tone="primary" onClick={() => onImport(plan, updateShopping)} icon={<CalendarDays size={20}/>}>Update my planner</Button>
+        <Button tone="primary" aria-describedby="shared-week-replace-note" onClick={() => onImport(plan, updateShopping)} icon={<CalendarDays size={20}/>}>Update my planner</Button>
       </div>
     </div>, document.body)}
   </section>;
