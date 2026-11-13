@@ -17,7 +17,7 @@ test('every cooking route is a physical GitHub Pages entry with noindex and reci
 });
 
 test('start cooking opens a dedicated route with next, previous and completion controls', async ({page}, testInfo) => {
-  await page.goto('/nibblepot/recipes/tomato-pasta/');
+  await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
   await page.getByRole('button',{name:'Start cooking'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/recipes\/tomato-pasta\/cook\/$/);
   await expect(page.getByText(/Put the pasta in a pan of boiling water/)).toBeVisible();
@@ -46,7 +46,7 @@ test('start cooking opens a dedicated route with next, previous and completion c
 });
 
 test('direct cooking link and refresh keep step and checked ingredients for the same tab', async ({page}, testInfo) => {
-  const response=await page.goto('/nibblepot/recipes/jacket/cook/');
+  const response=await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   expect(response?.status()).toBe(200);
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open ingredient checklist'}).click();
   await page.locator('.cook-checklist label').filter({hasText:'Potatoes'}).getByRole('checkbox').check();
@@ -62,7 +62,7 @@ test('direct cooking link and refresh keep step and checked ingredients for the 
 });
 
 test('explicit step duration starts and pauses a countdown, survives a refresh, and resets', async ({page}, testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/cook/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open kitchen timer'}).click();
   await page.getByRole('button',{name:'50 min',exact:true}).click();
   await expect(page.locator('.cook-timer-time')).toHaveText('50:00');
@@ -83,7 +83,7 @@ test('explicit step duration starts and pauses a countdown, survives a refresh, 
 
 test('mobile cooking controls stay thumb-reachable while scrolling, sheets close on Escape', async ({page}, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Fixed thumb controls are mobile-only');
-  await page.goto('/nibblepot/recipes/sausage-bean/cook/');
+  await page.goto('/nibblepot/recipes/sausage-and-bean-casserole/cook/');
   const dock = page.locator('.cook-step-actions');
   const tools = page.locator('.cook-mobile-tools');
   await expect(dock).toBeVisible();
@@ -109,7 +109,7 @@ test('mobile cooking controls stay thumb-reachable while scrolling, sheets close
 });
 
 test('mobile timer chip reflects countdown while sheet is closed and the desktop keeps both panels', async ({page},testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/cook/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   if (testInfo.project.name === 'mobile') {
     await page.getByRole('button',{name:'Open kitchen timer'}).click();
     await page.getByRole('button',{name:'Start timer'}).click();
