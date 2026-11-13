@@ -2,6 +2,11 @@
   max-width: 800px;
   margin-inline: auto;
 }
+.shopping-share-action { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 16px; }
+.shopping-share-action [role="alert"] { flex-basis: 100%; margin: 0; color: var(--error-text); }
+.shared-shopping-page .shopping-heading h1 { font-size: clamp(24px, 5vw, 32px); margin: 0; }
+.shared-shopping-page .shop-list h2 { font-size: 18px; margin: 18px 0 8px; }
+.shared-shopping-page > .btn { margin-top: 24px; }
 
 .page-intro.shopping-heading {
   justify-content: flex-start;

@@ -45,6 +45,7 @@ function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, 
 }
 const pages = [
   { route: 'planner/shared', title: 'A shared week of dinners | Simmer', description: 'View a shared Simmer dinner plan for the week.', noindex: true },
+  { route: 'shopping/shared', title: 'A shared shopping list | Simmer', description: 'Open a shared Simmer shopping list and tick off items as you shop.', noindex: true },
   ...recipes.map(recipe => ({
     route: 'recipes/' + recipe.id + '/cook',
     title: 'Cook ' + recipe.title + ' | Simmer',
