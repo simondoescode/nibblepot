@@ -38,9 +38,9 @@ export function weekSlotTitle(slot: WeekSlot): string {
 }
 
 export const STARTER_PLAN: WeekSlot[] = [
-  {kind:'recipe',id:'jacket'}, {kind:'recipe',id:'chicken-rice'},
-  {kind:'recipe',id:'sausage-bean'}, {kind:'recipe',id:'cottage'},
-  {kind:'recipe',id:'tuna-bake'}, {kind:'leftovers'}, {kind:'freezer'}
+  {kind:'recipe',id:'dahn'}, {kind:'recipe',id:'5sg6'},
+  {kind:'recipe',id:'ruxx'}, {kind:'recipe',id:'4khq'},
+  {kind:'recipe',id:'gf6b'}, {kind:'leftovers'}, {kind:'freezer'}
 ];
 export const defaultWeek = (): WeekSlot[] => STARTER_PLAN.map(slot => ({...slot}));
 /** A weekly plan should reuse ingredients, not just optimise each dinner in isolation. */
