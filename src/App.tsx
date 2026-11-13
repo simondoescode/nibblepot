@@ -24,6 +24,7 @@ import { HomePage } from './components/HomePage';
 import { FavouritesPage } from './components/FavouritesPage';
 import { LarderPage } from './components/LarderPage';
 import { WeekPlannerPage } from './components/WeekPlannerPage';
+import { SharedWeekPage } from './components/SharedWeekPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
 import { PlanDinnerDialog } from './components/PlanDinnerDialog';
@@ -56,7 +57,7 @@ export default function App() {
     const recipe = route.kind === 'recipe' || route.kind === 'cook'
       ? recipes.find(item => item.id === route.id) : undefined;
     document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Simmer` :
-      'Simmer — Dinner, sorted.';
+      route.kind === 'shared-week' ? 'A shared week of dinners | Simmer' : 'Simmer — Dinner, sorted.';
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = recipe
       ? route.kind === 'cook' ? `Step-by-step cooking mode for ${recipe.title}.` :
@@ -236,6 +237,7 @@ export default function App() {
         <div className="swipe-track" ref={swipe.track}>
           <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')}
             className="wrap main route-content" data-motion={motion} id="main-content">
+            {route.kind === 'shared-week' && <SharedWeekPage onRecipe={openRecipe} onPlanner={() => navigate('planner')}/>}
             {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
               saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
               onServingsChange={value => setData(current => ({ ...current, servings: {
