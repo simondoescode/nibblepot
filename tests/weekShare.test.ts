@@ -4,7 +4,7 @@ import { defaultWeek } from '../src/lib/weeklyPlan';
 import { parseRoute } from '../src/lib/routes';
 import { encodeShareData } from '../src/lib/shareCodec';
 
-const create = () => createWeekShareLink('https://example.com', '2026-11-09', defaultWeek(), { jacket: 2, 'chicken-rice': 6, 'beef-chilli': 8 });
+const create = () => createWeekShareLink('https://example.com', '2026-11-09', defaultWeek(), { jacket: 2, '5sg6': 6, '65ej': 8 });
 const encode = (value: unknown) => '#plan=' + encodeShareData(value);
 
 describe('week share snapshots', () => {
@@ -16,7 +16,7 @@ describe('week share snapshots', () => {
     const plan = parseSharedWeek(url.hash)!;
     expect(plan.week).toBe('2026-11-09');
     expect(plan.slots).toEqual(defaultWeek());
-    expect(plan.servings).toEqual({ jacket: 2, 'chicken-rice': 6, 'sausage-bean': 4, cottage: 4, 'tuna-bake': 4 });
+    expect(plan.servings).toEqual({ jacket: 2, '5sg6': 6, 'ruxx': 4, cottage: 4, 'gf6b': 4 });
     expect(Object.keys(plan).sort()).toEqual(['id', 'servings', 'slots', 'v', 'week']);
   });
   it('creates a unique link each time and keeps earlier snapshots unchanged', () => {
@@ -26,7 +26,7 @@ describe('week share snapshots', () => {
     expect(link).not.toBe(create());
     slots[0] = { kind: 'empty' }; servings.jacket = 8;
     const plan = parseSharedWeek(new URL(link).hash)!;
-    expect(plan.slots[0]).toEqual({ kind: 'recipe', id: 'jacket' });
+    expect(plan.slots[0]).toEqual({ kind: 'recipe', id: 'dahn' });
     expect(plan.servings.jacket).toBe(2);
   });
   it('retains empty, leftover and freezer nights, including repeated recipes', () => {
