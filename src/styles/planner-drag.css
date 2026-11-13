@@ -9,3 +9,27 @@
 .planner-move-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
 .planner-move-options button{min-height:44px;padding:8px 12px;border:1px solid var(--divider);background:var(--paper);border-radius:10px;color:var(--ink)}
 @media(max-width:767px){.planner-day{grid-template-columns:44px minmax(0,1fr) 44px}.planner-move-handle{grid-column:1;grid-row:2}.planner-day-label{grid-column:2 / -1;grid-row:1;display:flex;align-items:center;gap:8px}.planner-day-picker{grid-column:2;grid-row:2}.planner-view{grid-column:3;grid-row:2}}
+
+/* Lift the dinner out of its slot; keep the day and destination stable. */
+.planner-day{position:relative}
+.planner-day[data-drag-source=true]{border-style:dashed;background:var(--selected)}
+.planner-day[data-drag-source=true] .planner-day-picker,
+.planner-day[data-drag-source=true] .planner-view{opacity:.3}
+.planner-day[data-drop-target=true]{outline:2px solid var(--brand);outline-offset:2px;background:var(--selected)}
+.planner-drop-ghost{position:absolute;z-index:2;inset:4px 4px 4px 144px;display:grid;grid-template-columns:58px minmax(0,1fr);align-content:center;align-items:center;column-gap:8px;padding:6px 12px;border:2px dashed var(--brand);border-radius:var(--radius-control);background:var(--surface);color:var(--brand);pointer-events:none;animation:planner-ghost-in 140ms ease-out}
+.planner-drop-ghost img{grid-row:1 / 3;width:58px;height:46px;object-fit:contain}
+.planner-drop-ghost strong{font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.planner-drop-ghost small{font-size:11px;line-height:1.3;color:var(--text-muted)}
+.planner-drag-symbol{display:grid;place-items:center;grid-row:1 / 3;width:58px;height:46px;background:var(--selected);border-radius:10px}
+.planner-drag-layer{position:fixed;inset:0;z-index:120;pointer-events:none;user-select:none}
+.planner-drag-float{position:absolute;top:0;left:0;overflow:hidden;border:1px solid var(--divider);border-radius:var(--radius-card);background:var(--surface);color:var(--text);box-shadow:0 16px 38px #153c3238,0 3px 8px #153c3220;will-change:transform}
+.planner-drag-float-meal{display:flex;align-items:center;gap:8px;padding:10px 12px;min-height:68px;animation:planner-drag-lift 160ms ease-out}
+.planner-drag-float-meal>svg{flex:none;color:var(--brand)}
+.planner-drag-float-meal img{width:64px;height:48px;object-fit:contain;flex:none}
+.planner-drag-float-meal strong{font-size:15px;line-height:1.3;overflow-wrap:anywhere}
+.planner-drag-float-caption{display:block;padding:7px 12px;background:var(--brand);color:var(--surface);font-size:11px;font-weight:700;line-height:1.4}
+.planner-drag-announcement{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@keyframes planner-ghost-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+@keyframes planner-drag-lift{from{opacity:.7;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@media(max-width:767px){.planner-drop-ghost{inset:26px 4px 4px 48px;padding:4px 8px;grid-template-columns:48px minmax(0,1fr)}.planner-drop-ghost img,.planner-drop-ghost .planner-drag-symbol{width:48px;height:40px}}
+@media(prefers-reduced-motion:reduce){.planner-drop-ghost,.planner-drag-float-meal{animation:none}.planner-drag-float{will-change:auto}}
