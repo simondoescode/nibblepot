@@ -108,3 +108,13 @@ export function shoppingPackHint(entry: ShoppingEntry, servings: Record<string, 
   const count = Math.ceil(amount);
   return 'Buy ' + count + ' whole ' + (count === 1 ? label : label + 's') + '; check pack size';
 }
+
+/** Explain exact missing amounts when stock is measured, without inventing pack conversions. */
+export function formatMissingAmount(item: RecipeIngredient, stock: string | undefined, servings = BASE_SERVINGS): string {
+  const wanted = ingredientQuantity(item);
+  const needed = wanted.value * clampServings(servings) / BASE_SERVINGS;
+  const owned = stock ? parseQuantity(stock) : undefined;
+  if (owned?.value !== undefined && owned.unit === wanted.unit)
+    return amountLabel(Math.max(0, needed - owned.value), wanted.unit);
+  return formatRecipeQuantity(item, servings);
+}
