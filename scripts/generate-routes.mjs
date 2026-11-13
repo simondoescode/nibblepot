@@ -51,7 +51,7 @@ function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, 
       '@context': 'https://schema.org',
       '@type': 'Recipe', name: recipe.title, description: recipe.description,
       image: origin + base + (recipe.image ?? 'recipes/' + recipe.id + '.svg'), recipeYield: '4 servings', totalTime: 'PT' + recipe.mins + 'M',
-      recipeIngredient: recipe.ing.map(item => item.qty + ' ' + (ingredients[item.id]?.[0] ?? item.id)),
+      recipeIngredient: recipe.ing.map(item => String(item.amount) + (item.unit === 'each' ? ' ' : ' ' + item.unit + ' ') + (ingredients[item.id]?.[0] ?? item.id)),
       recipeInstructions: recipe.steps.map(step => ({ '@type': 'HowToStep', text: step })),
     };
     meta.push('<script type="application/ld+json">' + JSON.stringify(schema).replaceAll('<', '\\u003c') + '</script>');
@@ -68,14 +68,14 @@ const pages = [
   { route: 'planner/shared', title: 'A shared week of dinners | Simmer', description: 'View a shared Simmer dinner plan for the week.', noindex: true },
   { route: 'shopping/shared', title: 'A shared shopping list | Simmer', description: 'Open a shared Simmer shopping list and tick off items as you shop.', noindex: true },
   ...recipes.map(recipe => ({
-    route: 'recipes/' + recipe.id + '/cook',
+    route: 'recipes/' + recipe.slug + '/cook',
     title: 'Cook ' + recipe.title + ' | Simmer',
     description: 'Step-by-step cooking mode for ' + recipe.title + '.',
-    canonicalPath: base + 'recipes/' + recipe.id + '/',
+    canonicalPath: base + 'recipes/' + recipe.slug + '/',
     noindex: true,
   })),
   ...recipes.map(recipe => ({
-    route: 'recipes/' + recipe.id, title: recipe.title + ' | Simmer',
+    route: 'recipes/' + recipe.slug, title: recipe.title + ' | Simmer',
     description: recipe.description + ' Ingredients and simple steps for four.',
     recipe,
   })),
