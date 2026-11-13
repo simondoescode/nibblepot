@@ -2,6 +2,7 @@ import { recipes } from '../data';
 import type { WeekSlot } from '../types';
 import { basePath } from './routes';
 import { validMondayKey } from './weeklyPlan';
+import { decodeShareData, encodeShareData } from './shareCodec';
 
 export interface SharedWeek {
   v: 1;
@@ -18,16 +19,14 @@ export function createWeekShareLink(origin: string, week: string, slots: WeekSlo
   const counts: Record<string, number> = {};
   slots.forEach(slot => { if (slot.kind === 'recipe') counts[slot.id] = servings[slot.id] ?? 4; });
   const snapshot: SharedWeek = { v: 1, id: crypto.randomUUID(), week, slots: slots.map(slot => ({ ...slot })), servings: counts };
-  const encoded = btoa(JSON.stringify(snapshot)).replaceAll('+', '-').replaceAll('/', '_').replace(/=+$/, '');
+  const encoded = encodeShareData(snapshot);
   if (!parseSharedWeek('#plan=' + encoded)) throw new Error('Invalid week plan');
   return origin + sharedWeekPath() + '#plan=' + encoded;
 }
 
 export function parseSharedWeek(hash: string): SharedWeek | null {
   try {
-    const encoded = new URLSearchParams(hash.replace(/^#/, '')).get('plan');
-    if (!encoded || encoded.length > 4000 || !/^[A-Za-z0-9_-]+$/.test(encoded)) return null;
-    const value = JSON.parse(atob(encoded.replaceAll('-', '+').replaceAll('_', '/'))) as SharedWeek;
+    const value = decodeShareData(hash, 'plan', 4000, 7000) as SharedWeek;
     if (!value || value.v !== 1 || typeof value.id !== 'string' || !/^[a-f0-9-]{36}$/.test(value.id) ||
       typeof value.week !== 'string' || !validMondayKey(value.week) || !Array.isArray(value.slots) || value.slots.length !== 7 ||
       !value.servings || typeof value.servings !== 'object' || Array.isArray(value.servings)) return null;

@@ -2,15 +2,17 @@ import { describe, expect, it } from 'vitest';
 import { createWeekShareLink, parseSharedWeek } from '../src/lib/weekShare';
 import { defaultWeek } from '../src/lib/weeklyPlan';
 import { parseRoute } from '../src/lib/routes';
+import { encodeShareData } from '../src/lib/shareCodec';
 
 const create = () => createWeekShareLink('https://example.com', '2026-11-09', defaultWeek(), { jacket: 2, 'chicken-rice': 6, 'beef-chilli': 8 });
-const encode = (value: unknown) => '#plan=' + btoa(JSON.stringify(value)).replaceAll('+','-').replaceAll('/','_').replace(/=+$/, '');
+const encode = (value: unknown) => '#plan=' + encodeShareData(value);
 
 describe('week share snapshots', () => {
   it('round-trips seven dated slots and only serving counts for the shared recipes', () => {
     const url = new URL(create());
     expect(parseRoute(url.pathname)).toEqual({ kind: 'shared-week' });
     expect(url.search).toBe('');
+    expect(url.hash).toMatch(/^#plan=z\./);
     const plan = parseSharedWeek(url.hash)!;
     expect(plan.week).toBe('2026-11-09');
     expect(plan.slots).toEqual(defaultWeek());

@@ -7,6 +7,8 @@ import { shoppingItemName } from '../lib/shopping';
 import type { ShoppingEntry } from '../types';
 import { AddShoppingItem } from './AddShoppingItem';
 import { Button, IconButton } from '../ui/controls';
+import { SnapshotShareDialog } from './SnapshotShareDialog';
+import { createShoppingShareLink } from '../lib/shoppingShare';
 
 const sections = ['Cupboard', 'Fridge', 'Freezer', 'Other items'] as const;
 
@@ -34,6 +36,13 @@ export function ShoppingPage({ shopping, larder, servings, stock, onAdd, onToggl
       <AddShoppingItem larder={larder} onAdd={onAdd} />
     </header>
     {shopping.length > 0 ? <>
+      <div className="shopping-share-action">
+        <SnapshotShareDialog subject="shopping" buttonLabel="Share shopping list" title="Share shopping list"
+          description="Send your items, quantities and ticked-off status. Anyone with the link can open this snapshot."
+          note="Later changes won’t update this link. The person receiving it can tick items off on their own device."
+          inputLabel="Shopping list share link" shareText="Here’s our shopping list."
+          createLink={() => createShoppingShareLink(window.location.origin, shopping, servings, stock)}/>
+      </div>
       <div className="shopping-summary">
         <p role="status"><strong>{remaining.length} to buy</strong><span>{checkedCount} of {shopping.length} ticked off</span></p>
         <progress aria-label="Shopping progress" value={checkedCount} max={shopping.length} />

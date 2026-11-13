@@ -18,6 +18,7 @@ test('share the selected week, open in another browser, refresh and return from 
   await page.getByRole('button', { name: 'Share week', exact: true }).click();
   const share = page.getByRole('dialog', { name: 'Share this week', exact: true });
   const link = await share.getByRole('textbox', { name: 'Week share link', exact: true }).inputValue();
+  expect(link).toContain('#plan=z.');
   await share.getByRole('button', { name: 'Copy link', exact: true }).click();
   await expect(share.getByRole('status')).toHaveText('Link copied. Ready to send.');
   expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toBe(link);
