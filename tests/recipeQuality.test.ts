@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { ingredients, recipes } from '../src/data';
-import { formatRecipeQuantity, parseQuantity, shoppingQuantity, shoppingPackHint } from '../src/lib/quantities';
+import { formatRecipeQuantity, shoppingQuantity, shoppingPackHint } from '../src/lib/quantities';
 import { recipePath, cookingPath } from '../src/lib/routes';
 
 const originalIds = ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9'];
@@ -49,7 +49,7 @@ describe('recipe quality gate', () => {
   });
   it('includes twenty-four bundled offline illustrations', () => {
     for (const recipe of recipes.slice(16, 40)) {
-      const path='public/' + recipe.image.replace(/\.webp$/, '.svg');
+      const path='public/' + recipe.image!.replace(/\.webp$/, '.svg');
       const svg = readFileSync(path,'utf8');
       expect(svg).toContain('<svg ');
       expect(svg).toContain('<title ');
