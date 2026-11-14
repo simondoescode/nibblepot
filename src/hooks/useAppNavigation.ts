@@ -1,5 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { parseRoute, type PageRoute } from '../lib/routes';
+import { parseRoute, recipePath, type PageRoute } from '../lib/routes';
 import { dismissSheet } from '../lib/sheetHistory';
 import type { Tab } from '../types';
 
@@ -46,7 +46,7 @@ export function useAppNavigation() {
   useLayoutEffect(() => {
     window.scrollTo({ top: destinationScroll.current, behavior: 'instant' });
     if (motion === 'direct') return;
-    const link = returnRecipe.current && document.querySelector<HTMLElement>(`a.recipe-card-link[href$="/recipes/${returnRecipe.current}/"]`);
+    const link = returnRecipe.current && document.querySelector<HTMLElement>(`a.recipe-card-link[href="${recipePath(returnRecipe.current)}"]`);
     const main = document.querySelector<HTMLElement>('main');
     const focus = link || main?.querySelector<HTMLElement>('h1, h2') || main;
     if (focus) { if (!link) focus.tabIndex = -1; focus.focus({ preventScroll: true }); }
