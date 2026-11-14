@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { recipes } from '../src/data';
-import { formatRecipeQuantity, shoppingQuantity, shoppingPackHint, parseQuantity, clampServings } from '../src/lib/quantities';
+import { formatRecipeQuantity, shoppingQuantity, shoppingPackHint, parseQuantity, clampServings, formatMissingAmount } from '../src/lib/quantities';
 import { addMissingIngredients } from '../src/lib/recipes';
 import { parseSavedData } from '../src/lib/storage';
 
@@ -41,6 +41,11 @@ describe('servings and shopping quantities', () => {
     const withOptional = addMissingIngredients(find('dahn'), { ...initial, shopping: first.shopping }, ['cheese']);
     expect(withOptional.shopping.map(x=>x.id)).toContain('cheese');
     expect(shoppingQuantity(shopping('potatoes',['dahn']), initial.servings)).toBe('2 large');
+  });
+  it('converts compatible measured units and explains stock shortfalls', () => {
+    expect(shoppingQuantity(shopping('pasta',['gf6b']), {}, {pasta:'0.1 kg'})).toBe('250 g');
+    expect(formatMissingAmount(find('gf6b').ing[0], '0.1 kg', 4)).toBe('250 g');
+    expect(shoppingQuantity(shopping('pasta',['gf6b']), {}, {pasta:'2 tins'})).toBe('350 g');
   });
   it('subtracts only matching measured stock without guessing unit conversions', () => {
     expect(shoppingQuantity(shopping('pasta',['gf6b']),{}, {pasta:'100 g'})).toBe('250 g');
