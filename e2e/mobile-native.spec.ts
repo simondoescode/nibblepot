@@ -1,11 +1,11 @@
 import {test, expect} from '@playwright/test';
 
-test('mobile tab bar has Lucide tabs, visible active state, More sheet and working secondary navigation', async ({page}, testInfo) => {
+test('mobile tab bar has Lucide tabs, visible active state, direct favourites and recipes settings', async ({page}, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Mobile-only tab bar');
   await page.goto('/nibblepot/');
   const nav=page.getByRole('navigation',{name:'Mobile navigation'});
   await expect(nav.getByRole('button')).toHaveCount(5);
-  for (const label of ['Recipes','Planner','Larder','Shopping','More']) {
+  for (const label of ['Recipes','Planner','Larder','Shopping','Favourites']) {
     const button=nav.getByRole('button',{name:label});
     await expect(button).toBeVisible();
     await expect(button.locator('svg')).toHaveCount(1);
@@ -16,20 +16,13 @@ test('mobile tab bar has Lucide tabs, visible active state, More sheet and worki
   await nav.getByRole('button',{name:'Planner'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/planner\/$/);
   await expect(nav.getByRole('button',{name:'Planner'})).toHaveAttribute('aria-current','page');
-  await nav.getByRole('button',{name:'More'}).click();
-  const sheet=page.getByRole('dialog',{name:'More Simmer'});
-  await expect(sheet).toBeVisible();
-  await expect(sheet.getByRole('button',{name:/Favourites/})).toBeVisible();
-  await sheet.getByRole('button',{name:/Favourites/}).click();
+  await nav.getByRole('button',{name:'Favourites'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/favourites\/$/);
-  await expect(nav.getByRole('button',{name:'More'})).toHaveClass(/active/);
-  await nav.getByRole('button',{name:'More'}).click();
-  await expect(page.getByRole('dialog',{name:'More Simmer'})).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(sheet).toHaveCount(0);
-  await expect(nav.getByRole('button',{name:'More'})).toBeFocused();
-  await nav.getByRole('button',{name:'More'}).click();
-  await sheet.getByRole('button',{name:/Settings/}).click();
+  await expect(nav.getByRole('button',{name:'Favourites'})).toHaveAttribute('aria-current','page');
+  await expect(nav.getByRole('button',{name:'More'})).toHaveCount(0);
+  await expect(page.locator('.app-header-shell')).toBeHidden();
+  await nav.getByRole('button',{name:'Recipes'}).click();
+  await page.getByRole('button',{name:'Open settings'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
   await expect(page.getByRole('heading',{name:/little tweaks/i})).toBeVisible();
 });

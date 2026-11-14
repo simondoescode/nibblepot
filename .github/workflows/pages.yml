@@ -52,6 +52,14 @@ jobs:
           path: test-results/shared-week-*.png
           if-no-files-found: ignore
           retention-days: 7
+      - name: Upload mobile navigation previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-navigation-previews
+          path: test-results/mobile-navigation-*.png
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Upload static site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3

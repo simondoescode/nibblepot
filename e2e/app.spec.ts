@@ -2,8 +2,11 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' | 'Settings') {
   if (project === 'mobile') {
-    await page.getByRole('navigation', {name:'Mobile navigation'}).getByRole('button', {name:'More'}).click();
-    await page.getByRole('dialog', {name:'More Simmer'}).getByRole('button', {name:tab}).click();
+    const nav = page.getByRole('navigation', {name:'Mobile navigation'});
+    if (tab === 'Settings') {
+      await nav.getByRole('button', {name:'Recipes', exact:true}).click();
+      await page.getByRole('button', {name:'Open settings', exact:true}).click();
+    } else await nav.getByRole('button', {name:tab, exact:true}).click();
   } else {
     await page.getByRole('navigation', {name:'Main navigation'}).getByRole('button', {name:tab}).click();
   }
