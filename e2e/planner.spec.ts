@@ -24,8 +24,8 @@ test('planner has seven days, shuffles, saves and updates a consolidated list', 
     .getByRole('button',{name:'Leftovers'}).click();
   await expect(page.locator('.planner-big')).toContainText('2planned dinners');
   // Start with a blank larder so pasta is actually missing.
-  await page.evaluate(()=>localStorage.setItem('nibblepot-demo-v1',JSON.stringify({
-    larder:[], favorites:[], shopping:[], weekPlans:JSON.parse(localStorage.getItem('nibblepot-demo-v1')||'{}').weekPlans
+  await page.evaluate(()=>localStorage.setItem('simmer-recipes-v2',JSON.stringify({
+    larder:[], favorites:[], shopping:[], weekPlans:JSON.parse(localStorage.getItem('simmer-recipes-v2')||'{}').weekPlans
   })));
   await page.reload();
   await expect(page.getByRole('button',{name:'Change Monday dinner'})).toContainText('Speedy tomato pasta');
@@ -96,7 +96,7 @@ test('changing a dinner is searchable, filtered, undoable and keyboard accessibl
 
 test('changing a plan flags stale shopping without replacing the existing list', async ({page},testInfo) => {
   await page.goto('/nibblepot/planner/');
-  await page.evaluate(()=>localStorage.setItem('nibblepot-demo-v1',JSON.stringify({
+  await page.evaluate(()=>localStorage.setItem('simmer-recipes-v2',JSON.stringify({
     larder:[], favorites:[], shopping:[],
   })));
   await page.reload();
@@ -159,21 +159,21 @@ test('the narrow planner keeps Today and both meal actions in one row', async ({
   await expect(today).toHaveCount(1);
 
   await view.click();
-  await expect(page).toHaveURL(/\/recipes\/jacket\/$/);
+  await expect(page).toHaveURL(/\/recipes\/jacket-potatoes-and-beans\/$/);
 });
 
 test('planner shows the same shortfall as shopping and can remove an emptied week', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
   await page.addInitScript(() => {
-    if (localStorage.getItem('nibblepot-demo-v1')) return;
-    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+    if (localStorage.getItem('simmer-recipes-v2')) return;
+    localStorage.setItem('simmer-recipes-v2', JSON.stringify({
       larder: ['pasta'],
       larderQuantities: { pasta: '100 g' },
       favorites: [],
       shopping: [{ id: 'custom:bin bags', customName: 'Bin bags', done: false, from: [] }],
       weekPlans: {
-        '2026-11-02': [{ kind: 'recipe', id: 'tomato-pasta' }, ...Array.from({ length: 6 }, () => ({ kind: 'empty' }))],
+        '2026-11-02': [{ kind: 'recipe', id: 'hdfl' }, ...Array.from({ length: 6 }, () => ({ kind: 'empty' }))],
       },
     }));
   });
@@ -199,7 +199,7 @@ test('planner shows the same shortfall as shopping and can remove an emptied wee
 
 test('recipe details can plan a dinner for an explicit date after opening from home', async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-11-02T12:00:00Z'));
-  await page.goto('/nibblepot/recipes/tomato-pasta/');
+  await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
   const opener = page.getByRole('button', { name: 'Plan this dinner' });
   const picker = page.getByRole('dialog', { name: 'Plan this dinner' });
   const day = picker.getByLabel('Dinner date');
@@ -214,7 +214,7 @@ test('recipe details can plan a dinner for an explicit date after opening from h
   await page.goto('/nibblepot/');
   await page.getByRole('searchbox', { name: 'Search recipes', exact: true }).fill('Speedy tomato pasta');
   await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: 'View recipe' }).click();
-  await expect(page).toHaveURL(/\/recipes\/tomato-pasta\/$/);
+  await expect(page).toHaveURL(/\/recipes\/speedy-tomato-pasta\/$/);
   await opener.click();
   await expect(picker.getByRole('status')).toContainText('already planned');
   await picker.getByRole('button', { name: 'Next week' }).click();

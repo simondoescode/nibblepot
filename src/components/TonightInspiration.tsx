@@ -52,9 +52,9 @@ export function TonightInspiration({ recipes, onOpen }: Props) {
     }}>
     <div className="simmer-spotlight-image" key={current.id}
       style={{ backgroundImage: `url("${import.meta.env.BASE_URL}backgrounds/${backdrop}.webp")` }}>
-      <img src={`${import.meta.env.BASE_URL}${current.image ?? `recipes/${current.id}.svg`}`}
+      <img src={`${import.meta.env.BASE_URL}${current.image ?? 'recipes/jacket.svg'}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
-        onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/${current.id}.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
+        onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/jacket.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
     </div>
     <div className="simmer-spotlight-content">
       <span className="simmer-spotlight-kicker">Tonight's inspiration</span>

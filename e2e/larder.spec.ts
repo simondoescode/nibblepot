@@ -49,9 +49,9 @@ test('filters combine with search and stock changes without losing hidden items'
 test('legacy custom amounts remain intact when changing just the date', async ({page}) => {
   await page.goto('/nibblepot/larder/');
   await page.evaluate(()=>{
-    const data=JSON.parse(localStorage.getItem('nibblepot-demo-v1') || '{}');
+    const data=JSON.parse(localStorage.getItem('simmer-recipes-v2') || '{}');
     data.larderQuantities={potatoes:'2 small tins'};
-    localStorage.setItem('nibblepot-demo-v1',JSON.stringify(data));
+    localStorage.setItem('simmer-recipes-v2',JSON.stringify(data));
   });
   await page.reload();
   await page.getByRole('button',{name:'Edit Potatoes stock details'}).click();

@@ -38,9 +38,9 @@ export function weekSlotTitle(slot: WeekSlot): string {
 }
 
 export const STARTER_PLAN: WeekSlot[] = [
-  {kind:'recipe',id:'jacket'}, {kind:'recipe',id:'chicken-rice'},
-  {kind:'recipe',id:'sausage-bean'}, {kind:'recipe',id:'cottage'},
-  {kind:'recipe',id:'tuna-bake'}, {kind:'leftovers'}, {kind:'freezer'}
+  {kind:'recipe',id:'dahn'}, {kind:'recipe',id:'5sg6'},
+  {kind:'recipe',id:'ruxx'}, {kind:'recipe',id:'4khq'},
+  {kind:'recipe',id:'gf6b'}, {kind:'leftovers'}, {kind:'freezer'}
 ];
 export const defaultWeek = (): WeekSlot[] => STARTER_PLAN.map(slot => ({...slot}));
 /** A weekly plan should reuse ingredients, not just optimise each dinner in isolation. */
@@ -60,7 +60,7 @@ export function shuffleWeek(slots: WeekSlot[], random = Math.random, larder: rea
       const newItems = missing.filter(id=>!shared.has(id)).length;
       const overlap = missing.length-newItems;
       // Penalise new purchases; reuse previously selected ingredients as a tie-breaker.
-      return {recipe,required,score:newItems*10 + missing.length*2 - overlap};
+      return {recipe,required,score:newItems*10 + missing.length*2 - overlap + Math.floor(recipe.prepMins/5)};
     });
     const best = Math.min(...scored.map(option=>option.score));
     const tied = scored.filter(option=>option.score===best);

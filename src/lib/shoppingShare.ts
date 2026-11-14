@@ -13,7 +13,7 @@ export interface SharedShoppingItem {
   done: boolean;
   hint: string;
 }
-export interface SharedShopping { v: 1; id: string; items: SharedShoppingItem[] }
+export interface SharedShopping { v: 2; id: string; items: SharedShoppingItem[] }
 export const sharedShoppingPath = () => basePath + 'shopping/shared/';
 
 export function createShoppingShareLink(origin: string, shopping: ShoppingEntry[], servings: Record<string, number>, stock?: Record<string, string>): string {
@@ -25,21 +25,36 @@ export function createShoppingShareLink(origin: string, shopping: ShoppingEntry[
     done: item.done,
     hint: shoppingPackHint(item, servings) ?? '',
   }));
-  const link = origin + sharedShoppingPath() + '#list=' + encodeShareData({ v: 1, id: crypto.randomUUID(), items });
+  // Compact wire format: [ingredient ID, quantity, done, pack hint, custom name?].
+  // Catalogue-backed names and sections need not be repeated in every shared URL.
+  const compact = shopping.map((item, index) => [
+    item.id, items[index].quantity, items[index].done ? 1 : 0, items[index].hint,
+    ...(ingredients[item.id] ? [] : [items[index].name]),
+  ]);
+  const link = origin + sharedShoppingPath() + '#list=' + encodeShareData({ v: 2, id: crypto.randomUUID(), items: compact });
   if (!parseSharedShopping(new URL(link).hash)) throw new Error('Could not share this list. Use Copy list instead.');
   return link;
 }
 
 export function parseSharedShopping(hash: string): SharedShopping | null {
-  const value = decodeShareData(hash, 'list') as SharedShopping;
-  if (!value || value.v !== 1 || typeof value.id !== 'string' || !/^[a-f0-9-]{36}$/.test(value.id) ||
+  const value = decodeShareData(hash, 'list') as {v?:number; id?:string; items?:unknown[]}|null;
+  if(!value || value.v !== 2 || typeof value.id !== 'string' || !/^[a-f0-9-]{36}$/.test(value.id) ||
     !Array.isArray(value.items) || !value.items.length || value.items.length > 100) return null;
   const items: SharedShoppingItem[] = [];
-  for (const item of value.items) {
-    if (!item || typeof item !== 'object' || typeof item.name !== 'string' || !item.name.trim() || item.name.length > 80 ||
-      typeof item.quantity !== 'string' || item.quantity.length > 160 || typeof item.hint !== 'string' || item.hint.length > 160 ||
-      typeof item.done !== 'boolean' || !SHOPPING_SECTIONS.includes(item.section)) return null;
-    items.push({ name: item.name, quantity: item.quantity, section: item.section, done: item.done, hint: item.hint });
+  for(const row of value.items) {
+    if(!Array.isArray(row) || row.length < 4 || row.length > 5) return null;
+    const [id, quantity, done, hint, customName] = row;
+    if(typeof id !== 'string' || id.length > 100 || typeof quantity !== 'string' || quantity.length > 160 ||
+      (done !== 0 && done !== 1) || typeof hint !== 'string' || hint.length > 160) return null;
+    const known = ingredients[id];
+    if(!known && (!id.startsWith('custom:') || typeof customName !== 'string' ||
+      !customName.trim() || customName.length > 80)) return null;
+    if(known && row.length !== 4) return null;
+    items.push({
+      name: known ? known[0] : customName as string,
+      quantity, done: done === 1, hint,
+      section: known ? known[1] : 'Other items',
+    });
   }
-  return { v: 1, id: value.id, items };
+  return { v:2, id:value.id, items };
 }

@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 
-const ids = ['one-pot-cheesy-tomato-pasta', 'sausage-traybake', 'chicken-stuffing-pie', 'creamy-tuna-sweetcorn-pasta', 'beef-potato-hash'];
-const meals = (JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; title: string; image: string }[]).filter(r => ids.includes(r.id));
+const ids = ['subg', 'awbe', 'es36', '04do', 'le74'];
+const meals = (JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; slug: string; title: string; image: string }[]).filter(r => ids.includes(r.id));
 
 test('low-effort meals have working direct routes, transparent photos and cooking pages offline', async ({ page, context }) => {
   await page.goto('/nibblepot/');
@@ -12,7 +12,7 @@ test('low-effort meals have working direct routes, transparent photos and cookin
   });
   await context.setOffline(true);
   for (const meal of meals) {
-    await page.goto(`/nibblepot/recipes/${meal.id}/`);
+    await page.goto(`/nibblepot/recipes/${meal.slug}/`);
     await expect(page.locator('.recipe-page h1')).toHaveText(meal.title);
     const photo = page.locator('.recipe-page-image img');
     await expect(photo).toHaveAttribute('src', `/nibblepot/${meal.image}`);
@@ -24,13 +24,13 @@ test('low-effort meals have working direct routes, transparent photos and cookin
     })).toEqual([0,0,0,0]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await page.getByRole('button', { name: 'Start cooking', exact: true }).click();
-    await expect(page).toHaveURL(new RegExp(`/recipes/${meal.id}/cook/`));
+    await expect(page).toHaveURL(new RegExp(`/recipes/${meal.slug}/cook/`));
   }
 });
 
 test('stuffing pie scales cooked chicken and adds it to shopping separately from raw chicken', async ({ page }, info) => {
-  await page.goto('/nibblepot/recipes/chicken-stuffing-pie/');
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ larder: ['chicken'], favorites: [], shopping: [] })));
+  await page.goto('/nibblepot/recipes/cheats-chicken-and-stuffing-pie/');
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({ larder: ['chicken'], favorites: [], shopping: [] })));
   await page.reload();
   await page.getByRole('button', { name: 'Fewer servings' }).click();
   await page.getByRole('button', { name: 'Fewer servings' }).click();
@@ -40,5 +40,5 @@ test('stuffing pie scales cooked chicken and adds it to shopping separately from
   await page.getByRole('navigation', { name: info.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' }).getByRole('button', { name: 'Shopping', exact: true }).click();
   await expect(page.locator('.shop-row').filter({ hasText: 'Cooked chicken' })).toContainText('200 g');
   await page.reload();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('nibblepot-demo-v1')!).favorites)).toContain('chicken-stuffing-pie');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('simmer-recipes-v2')!).favorites)).toContain('es36');
 });

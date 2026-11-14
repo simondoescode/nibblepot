@@ -49,10 +49,10 @@ test('recipes, images, deep links and saved lists survive going offline', async 
   await page.reload();
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   await page.evaluate(() => {
-    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: ['jacket'], larder: ['beans'], shopping: [] }));
+    localStorage.setItem('simmer-recipes-v2', JSON.stringify({ favorites: ['dahn'], larder: ['beans'], shopping: [] }));
   });
   await context.setOffline(true);
-  await page.goto('/nibblepot/recipes/jacket/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/');
   await expect(page.getByRole('heading', { name: 'Jacket potatoes & beans', exact: true })).toBeVisible();
   await expect(page.getByText('You’re offline.', { exact: false })).toBeVisible();
   expect(await page.evaluate(async () => {

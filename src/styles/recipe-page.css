@@ -96,3 +96,7 @@
   .recipe-page .recipe-page-intro h1 { font-size: 32px; line-height: 36px; }
   .recipe-page-actions :is(.btn-primary, .recipe-plan-action) { grid-column: 1 / -1; }
 }
+
+/* Small, scannable cooking metadata on recipe pages. */
+.recipe-page-intro>.recipe-tags{display:flex;flex-wrap:wrap;gap:7px;margin:-5px 0 14px}
+.recipe-tags span{display:inline-flex;align-items:center;border:1px solid #decfba;border-radius:999px;background:#f7f0e6;padding:5px 9px;color:#634e3e;font-size:11px;font-weight:850;text-transform:capitalize;line-height:1.2}

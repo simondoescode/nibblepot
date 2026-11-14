@@ -14,7 +14,7 @@ describe('cooking routes', () => {
       expect(parseRoute(path)).toEqual({kind:'cook',id:recipe.id});
       expect(parseRoute(path.slice(0,-1))).toEqual({kind:'cook',id:recipe.id});
     }
-    expect(parseRoute('/nibblepot/recipes/jacket/cook/extra/')).toEqual({kind:'not-found'});
+    expect(parseRoute('/nibblepot/recipes/jacket-potatoes-and-beans/cook/extra/')).toEqual({kind:'not-found'});
   });
 });
 

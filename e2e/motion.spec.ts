@@ -98,7 +98,7 @@ test('reduced motion suppresses route, sheet, press and gesture movement and res
 
 test('shopping check marks preserve row position',async({page})=>{
   await page.goto('/nibblepot/');
-  await page.evaluate(()=>localStorage.setItem('nibblepot-demo-v1',JSON.stringify({favorites:[],larder:[],shopping:[{id:'pasta',done:false,from:[]},{id:'rice',done:false,from:[]}]})));
+  await page.evaluate(()=>localStorage.setItem('simmer-recipes-v2',JSON.stringify({favorites:[],larder:[],shopping:[{id:'pasta',done:false,from:[]},{id:'rice',done:false,from:[]}]})));
   await page.goto('/nibblepot/shopping/');
   const checkbox=page.getByRole('checkbox',{name:'Mark Pasta as purchased',exact:true});
   const before=await checkbox.boundingBox();
@@ -108,7 +108,7 @@ test('shopping check marks preserve row position',async({page})=>{
 });
 
 test('direct recipe entry has a safe back fallback; history forward and rapid tab changes agree with URL',async({page},info)=>{
-  await page.goto('/nibblepot/recipes/jacket/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/');
   await page.getByRole('button',{name:'Back to recipes',exact:true}).click();
   await expect(page).toHaveURL(/\/nibblepot\/$/);
   await page.getByRole('link',{name:'Jacket potatoes & beans',exact:true}).click();

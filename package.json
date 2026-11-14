@@ -11,12 +11,13 @@
     "generate:icons": "node scripts/generate-icons.mjs",
     "predev": "npm run generate:icons",
     "dev": "vite",
-    "prebuild": "npm run generate:icons",
+    "prebuild": "npm run generate:icons && npm run check:recipes",
     "build": "tsc --noEmit && vite build && node scripts/generate-routes.mjs",
     "preview": "vite preview",
     "test": "vitest run tests",
     "test:e2e": "playwright test",
-    "check": "npm run build && npm run test && npm run test:e2e"
+    "check": "npm run build && npm run test && npm run test:e2e",
+    "check:recipes": "node scripts/validate-recipes.mjs"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "1.3.1",
