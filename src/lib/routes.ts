@@ -17,7 +17,7 @@ export function parseRoute(pathname: string, base = basePath): PageRoute {
   if (!normalized.startsWith(base)) return { kind: 'not-found' };
   const route = normalized.slice(base.length).replace(/\/+$/, '');
   if (!route) return { kind: 'tab', tab: 'home' };
-  if (route === 'planner/shared') return { kind: 'shared-week' };
+  if (route === 'plan') return { kind: 'shared-week' };
   if (route === 'shopping/shared') return { kind: 'shared-shopping' };
   const tab = (Object.keys(segments) as Tab[]).find(key => segments[key] && segments[key] === route);
   if (tab) return { kind: 'tab', tab };
