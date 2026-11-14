@@ -9,8 +9,12 @@ for (const width of [834, 1024, 1180]) {
     await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeHidden();
     await mobile.getByRole('button', { name: 'Larder' }).click();
     await expect(page).toHaveURL(/\/nibblepot\/larder\/$/);
-    await mobile.getByRole('button', { name: 'More' }).click();
-    await expect(page.getByRole('dialog', { name: 'More Simmer' })).toBeVisible();
+    await expect(page.locator('.app-header-shell')).toBeHidden();
+    await mobile.getByRole('button', { name: 'Favourites' }).click();
+    await expect(page).toHaveURL(/\/favourites\/$/);
+    await mobile.getByRole('button', { name: 'Recipes' }).click();
+    await page.getByRole('button', { name: 'Open settings' }).click();
+    await expect(page).toHaveURL(/\/settings\/$/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   });
 }

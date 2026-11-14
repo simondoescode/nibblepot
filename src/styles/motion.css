@@ -51,7 +51,7 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
   @keyframes sheet-out{from{translate:0 0}to{translate:0 100%}}
   .motion-sheet-grip{display:flex;align-items:center;justify-content:center;width:100%;min-height:28px;border:0;background:transparent;touch-action:none;cursor:grab;padding:8px;margin:0 auto 4px}
   .motion-sheet-grip span{display:block;width:42px;height:5px;border-radius:99px;background:#b8ac9e}
-  .mobile-more-handle,.larder-sheet-handle,.planner-picker-handle,.cook-sheet-handle{display:none}
+  .larder-sheet-handle,.planner-picker-handle,.cook-sheet-handle{display:none}
   button:not(:disabled){transition:scale var(--motion-press) var(--motion-ease),background-color var(--motion-feedback)}
   button:not(:disabled):active{scale:.97}
   .btn:active{transform:none;box-shadow:1px 2px 0 var(--ink)!important}

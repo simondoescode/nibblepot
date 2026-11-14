@@ -62,7 +62,7 @@ Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable butto
 
 ## Settings and refreshing the PWA
 
-Open **Settings** in the desktop or mobile navigation. The page provides a **Refresh app** action, data backup/restore, a summary of local favourites/larder/shopping, and an explicitly confirmed local data reset.
+Open **Settings** from the desktop navigation or the gear button beside the Simmer logo on the mobile Recipes page. The page provides a **Refresh app** action, data backup/restore, a summary of local favourites/larder/shopping, and an explicitly confirmed local data reset.
 
 On touch devices, drag down from the top of the page until **Release to refresh** appears. This uses the same PWA refresh operation as the Settings button: check the service worker for an update, allow any waiting worker to activate, then reload the complete app (not only React state). Pulling on inputs or in recipe dialogs won't trigger it. Offline reloads fall back to the cached PWA shell. Saved data stays under the existing localStorage key.
 
@@ -122,7 +122,7 @@ On screens up to 750px, Cooking Mode uses a **fixed bottom Previous/Next action 
 
 ## Native-feeling mobile navigation
 
-The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and More. More opens a keyboard-accessible sheet for Favourites and Settings. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
+The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and Favourites. Favourites opens directly and follows Shopping in the swipe order. Settings is available from the Recipes header. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
 
 Pull-to-refresh applies a resistance-limited translation to the app's content (not its fixed tab bar) with a spring-like release animation; it still calls the existing full PWA reload. Scrollable inputs, horizontal swipe gestures, dialogs and cooking mode don't start a refresh, and pull animation is disabled for reduced-motion users. This is a web approximation of iOS overscroll, not a promise of native haptics or exact Safari bounce behaviour.
 
@@ -142,7 +142,7 @@ Updates wait for an explicit Update app or existing Refresh app action. The upda
 
 ## Mobile app bar and complete food photography
 
-On mobile and tablet widths the app bar stays visible while the page scrolls. It offers direct search and favourites actions, with safe-area spacing, a compact welcome card and larger touch targets. Larder search sticks below the app bar, while the header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
+On mobile and tablet widths only the Recipes landing page has a sticky app bar, showing the Simmer logo and a Settings gear. Other pages, including recipe details, have no global app bar or reserved header space. Larder search sticks to the top edge; page-specific controls remain available. The Recipes header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
 
 All 40 recipes now use individual food photos. The 25 replacement photos were generated separately with the built-in image tool, checked against the recipe ingredients, then exported as 800×504 transparent WebPs (under 250,000 bytes each; 974,904 bytes combined). Existing SVG artwork remains in the repository. The exact generation prompts and export specification are recorded in [the photo prompt manifest](docs/recipe-photo-prompts-2026-11-06.json).
 

@@ -41,7 +41,6 @@ export default function App() {
   const [filter, setFilter] = useSessionState<Filter>('recipe-filter', 'all');
   const [selectedFoodTypes, setSelectedFoodTypes] = useSessionState<FoodType[]>('food-types', []);
   const [search, setSearch] = useSessionState('recipe-search', '');
-  const [focusSearch, setFocusSearch] = useState(false);
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
@@ -93,13 +92,6 @@ export default function App() {
   const navigate = useCallback((target: Tab) => {
     void changeRoute(tabPath(target), { kind: 'tab', tab: target });
   }, [changeRoute]);
-  useEffect(() => {
-    if (!focusSearch || route.kind !== 'tab' || route.tab !== 'home') return;
-    const input = document.querySelector<HTMLInputElement>('#search');
-    input?.focus({preventScroll:true});
-    input?.scrollIntoView({block:'center',behavior:'auto'});
-    setFocusSearch(false);
-  }, [route, focusSearch]);
   const openRecipe = useCallback((id: string) => {
     changeRoute(recipePath(id), { kind: 'recipe', id });
   }, [changeRoute]);
@@ -238,7 +230,7 @@ export default function App() {
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
     <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
-      onSearch={()=>{navigate('home');setFocusSearch(true);}} />
+      mobileVisible={route.kind === 'tab' && route.tab === 'home'}/>
     <div className={`pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <div className="swipe-viewport" ref={swipe.viewport} onTouchStart={swipe.onTouchStart}
