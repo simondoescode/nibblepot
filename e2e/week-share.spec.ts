@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 
 test('shared week has a static, noindex Pages entrypoint', () => {
-  expect(existsSync('dist/planner/shared/index.html')).toBe(true);
-  expect(readFileSync('dist/planner/shared/index.html', 'utf8')).toContain('noindex,follow');
+  expect(existsSync('dist/plan/index.html')).toBe(true);
+  expect(readFileSync('dist/plan/index.html', 'utf8')).toContain('noindex,follow');
 });
 
 test('share the selected week, open in another browser, refresh and return from a recipe without changing saved plans', async ({ page, browser }) => {
@@ -18,7 +18,8 @@ test('share the selected week, open in another browser, refresh and return from 
   await page.getByRole('button', { name: 'Share week', exact: true }).click();
   const share = page.getByRole('dialog', { name: 'Share this week', exact: true });
   const link = await share.getByRole('textbox', { name: 'Week share link', exact: true }).inputValue();
-  expect(link).toContain('#plan=z.');
+  expect(link).toMatch(/#p=[A-Za-z0-9_-]{39}$/);
+  expect(link.length).toBeLessThan(100);
   await share.getByRole('button', { name: 'Copy link', exact: true }).click();
   await expect(share.getByRole('status')).toHaveText('Link copied. Ready to send.');
   expect(await page.evaluate(() => (window as unknown as { copied: string }).copied)).toBe(link);
@@ -74,7 +75,7 @@ test('copy failure offers selectable link, Escape restores focus and mobile layo
 test('broken links show a recovery message and leave saved plans alone', async ({ page }) => {
   await page.goto('/nibblepot/');
   const before = await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'));
-  await page.goto('/nibblepot/planner/shared/#plan=broken');
+  await page.goto('/nibblepot/plan/#plan=broken');
   await expect(page.getByRole('heading', { name: 'This week link isn’t complete' })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'))).toBe(before);
   await page.getByRole('button', { name: 'Open my planner', exact: true }).click();

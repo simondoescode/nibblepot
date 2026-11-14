@@ -15,7 +15,7 @@ const escapeHTML = value => String(value).replaceAll('&', '&amp;').replaceAll('<
   .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, noindex = false) {
   const card = recipe || urlPath.includes('/recipes/') ? 'recipe'
-    : urlPath.includes('/planner/') ? 'meal-plan'
+    : (urlPath.includes('/planner/') || urlPath.includes('/plan/')) ? 'meal-plan'
     : urlPath.includes('/shopping/') ? 'shopping' : 'general';
   const image = origin + base + 'social/simmer-' + card + '-og.jpg';
   const imageAlt = {
@@ -65,7 +65,7 @@ function metaPage(title, description, urlPath, recipe, canonicalPath = urlPath, 
   return titled.replace('</head>', meta.join(String.fromCharCode(10)) + String.fromCharCode(10) + '</head>');
 }
 const pages = [
-  { route: 'planner/shared', title: 'A shared week of dinners | Simmer', description: 'View a shared Simmer dinner plan for the week.', noindex: true },
+  { route: 'plan', title: 'A shared week of dinners | Simmer', description: 'View a shared Simmer dinner plan for the week.', noindex: true },
   { route: 'shopping/shared', title: 'A shared shopping list | Simmer', description: 'Open a shared Simmer shopping list and tick off items as you shop.', noindex: true },
   ...recipes.map(recipe => ({
     route: 'recipes/' + recipe.slug + '/cook',

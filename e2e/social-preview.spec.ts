@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-for(const route of ['', 'planner/shared/', 'planner/', 'shopping/', 'recipes/speedy-tomato-pasta/']){
+for(const route of ['', 'plan/', 'planner/', 'shopping/', 'recipes/speedy-tomato-pasta/']){
   test(`static share metadata is readable without JavaScript: ${route||'home'}`,async({request})=>{
     const response=await request.get('/nibblepot/'+route);
     expect(response.ok()).toBe(true);
@@ -13,7 +13,7 @@ for(const route of ['', 'planner/shared/', 'planner/', 'shopping/', 'recipes/spe
     const asset=await request.get(new URL(image).pathname);
     expect(asset.ok()).toBe(true);
     expect(asset.headers()['content-type']).toMatch(/image\//);
-    const card=route.startsWith('recipes')?'recipe':route.startsWith('planner')?'meal-plan':route.startsWith('shopping')?'shopping':'general';
+    const card=route.startsWith('recipes')?'recipe':(route.startsWith('planner')||route.startsWith('plan'))?'meal-plan':route.startsWith('shopping')?'shopping':'general';
     expect(image).toContain(`social/simmer-${card}-og.jpg`);
     expect(html).toContain('property="og:image:width" content="1200"');
     const bytes=await asset.body();
