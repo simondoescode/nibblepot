@@ -201,6 +201,7 @@ test('hero labels the shared dates relative to the person opening the link', asy
     ['2026-11-21', 'Last week’s dinners'],
     ['2026-12-01', 'Dinners for the week of 9 Nov 2026'],
   ]) {
+    await page.goto('/nibblepot/');
     await page.clock.setFixedTime(new Date(today + 'T12:00:00Z'));
     await page.goto(link);
     await expect(page.getByRole('heading', { name: heading, exact: true })).toBeVisible();
