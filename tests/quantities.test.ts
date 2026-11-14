@@ -52,12 +52,12 @@ describe('servings and shopping quantities', () => {
     const partial=addMissingIngredients(find('gf6b'),{...saved,shopping:[]});
     expect(partial.shopping.some(item=>item.id==='pasta')).toBe(true);
   });
-  it('preserves legacy saves, and validates new serving settings', () => {
+  it('validates current saved servings and drops unknown IDs', () => {
     const legacy = parseSavedData({ larder: [], favorites: ['dahn'], shopping: [{ id: 'pasta', done: false, from: ['gf6b'] }] });
     expect(legacy.servings).toBeUndefined();
     expect(shoppingQuantity(legacy.shopping[0], legacy.servings)).toBe('350 g');
-    const modern = parseSavedData({ ...legacy, servings: { jacket: 2, 'gf6b': 8, nope: 4, soup: 20 } });
-    expect(modern.servings).toEqual({ jacket: 2, 'gf6b': 8 });
+    const modern = parseSavedData({ ...legacy, servings: { 'dahn': 2, 'gf6b': 8, nope: 4, soup: 20 } });
+    expect(modern.servings).toEqual({ 'dahn': 2, 'gf6b': 8 });
     expect(clampServings(999)).toBe(8);
   });
 });
