@@ -19,6 +19,16 @@
 - Existing SVGs are fallbacks; new WebP images are optional via the recipe `image` field. Avoid external image CDNs and large source PNGs under `public/`.
 - Prefer small, reviewed changes. Maintain keyboard accessibility and responsive behaviour.
 
+## Versioning and user-facing releases
+
+- Read [docs/releases.md](docs/releases.md) before preparing or changing a release. Use Conventional Commit PR titles so Release Please can select the appropriate SemVer bump.
+- `package.json.version` is the single source of truth for the app version. Settings imports it directly; never hardcode a separate display version or use a Git SHA/deployment number as the release version.
+- Every versioned release must update `package.json`, the root/package version entries in `package-lock.json`, `.release-please-manifest.json` and `CHANGELOG.md` together through the reviewed release PR. The Git tag and GitHub Release must use that same version.
+- Include short, friendly user-facing release notes for every version, accessible offline from **Settings → What's new?**. Review the generated changelog's first three visible bullets; do not show notes newer than the installed app version.
+- A feature merge or GitHub Pages deployment alone does not bump the app version. Distinguish “deployed changes” from a completed versioned release; do not claim that Settings has a new version until the release PR is merged and its deployment succeeds.
+- Before calling a release complete, verify that the release tag, package/lockfile/manifest versions, changelog section, deployed Settings version and newest visible release-note version agree. Verify the PWA's explicit update/refresh path as well; an older installed/cached app can keep its old version until updated. Preserve saved data and do not interrupt an active cooking session to force an update.
+- Check the release workflow result as well as build/deploy checks. If publication is blocked (for example, GitHub Actions cannot create release PRs), report the exact blocker and which version remains installed; do not invent a version or silently bypass the release process.
+
 ## Before merge
 
 Run `npm run build`, `npm test` and `npm run test:e2e` for UI/image changes; ensure the CI workflow passes. Do not claim generation, merge, successful deployment or real alpha unless independently verified.
