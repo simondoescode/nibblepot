@@ -1,7 +1,7 @@
 import { recipes } from '../data';
-import type { WeekSlot } from '../types';
+import type { SavedData, WeekSlot } from '../types';
 import { basePath } from './routes';
-import { validMondayKey } from './weeklyPlan';
+import { applyWeekToShopping, dateForWeekDay, mondayFor, shiftWeek, validMondayKey } from './weeklyPlan';
 
 /**
  * Each shared week is self-contained: one version byte, two bytes for the week,
@@ -118,4 +118,22 @@ export function parseSharedWeek(hash: string): SharedWeek | null {
     }
     return {v: 2, id, week, slots, servings};
   } catch { return null; }
+}
+
+export function importSharedWeek(data: SavedData, plan: SharedWeek, updateShopping: boolean): SavedData {
+  const slots = plan.slots.map(slot => ({ ...slot }));
+  const updated = { ...data, weekPlans: { ...data.weekPlans, [plan.week]: slots } };
+  return updateShopping ? applyWeekToShopping(updated, slots, plan.week) : updated;
+}
+
+
+/** Calendar comparisons use local Mondays, including across DST and year boundaries. */
+export function sharedWeekTitle(week: string, today = new Date()): string {
+  const current = mondayFor(today);
+  if (week === current) return 'This week’s dinners';
+  if (week === shiftWeek(current, 1)) return 'Next week’s dinners';
+  if (week === shiftWeek(current, -1)) return 'Last week’s dinners';
+  return 'Dinners for the week of ' + new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric',
+  }).format(dateForWeekDay(week, 0));
 }

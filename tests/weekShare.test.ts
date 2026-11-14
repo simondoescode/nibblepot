@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { createWeekShareLink, parseSharedWeek } from '../src/lib/weekShare';
+import { createWeekShareLink, parseSharedWeek, importSharedWeek, sharedWeekTitle } from '../src/lib/weekShare';
 import { defaultWeek } from '../src/lib/weeklyPlan';
 import { parseRoute } from '../src/lib/routes';
-import type { WeekSlot } from '../src/types';
+import type { SavedData, WeekSlot } from '../src/types';
 
 const make = (slots = defaultWeek(), servings: Record<string, number> = {'dahn': 2, '5sg6': 6, '65ej': 8}) =>
   createWeekShareLink('https://simondoescode.github.io', '2026-11-09', slots, servings);
@@ -62,5 +62,48 @@ describe('compact self-contained week share links', () => {
     expect(read(future)?.week).toBe('2099-11-02');
     expect(() => createWeekShareLink('https://example.com','1999-12-27',defaultWeek(),{})).toThrow();
     expect(() => createWeekShareLink('https://example.com','2026-11-10',defaultWeek(),{})).toThrow();
+  });
+});
+
+describe('adopt shared week', () => {
+  it('imports only the selected week and leaves shopping, serving sizes and other saved data alone by default', () => {
+    const plan = parseSharedWeek(new URL(make()).hash)!;
+    const data: SavedData = { larder: ['rice'], favorites: ['dahn'], servings: { dahn: 6 },
+      shopping: [{ id: 'pasta', done: true, from: [] }],
+      weekPlans: { '2026-11-02': defaultWeek(), [plan.week]: Array.from({ length: 7 }, () => ({ kind: 'empty' })) } };
+    const imported = importSharedWeek(data, plan, false);
+    expect(imported.weekPlans?.[plan.week]).toEqual(plan.slots);
+    expect(imported.weekPlans?.['2026-11-02']).toEqual(data.weekPlans?.['2026-11-02']);
+    expect(imported.shopping).toBe(data.shopping);
+    expect(imported.servings).toBe(data.servings);
+    expect(imported.larder).toBe(data.larder);
+    expect(imported.favorites).toBe(data.favorites);
+    expect(data.weekPlans?.[plan.week][0]).toEqual({ kind: 'empty' });
+    imported.weekPlans![plan.week][0] = { kind: 'freezer' };
+    expect(plan.slots[0]).toEqual({ kind: 'recipe', id: 'dahn' });
+  });
+  it('optionally rebuilds planned shopping using the recipient’s larder while preserving extras and purchased items', () => {
+    const plan = parseSharedWeek(new URL(make()).hash)!;
+    const data: SavedData = { larder: ['potatoes'], favorites: [], servings: { dahn: 6 },
+      shopping: [{ id: 'pasta', done: true, from: [] }, { id: 'custom:milk', customName: 'Milk', done: false, from: [] }] };
+    const imported = importSharedWeek(data, plan, true);
+    expect(imported.shoppingPlan?.week).toBe(plan.week);
+    expect(imported.shopping.find(item => item.id === 'pasta')?.done).toBe(true);
+    expect(imported.shopping.find(item => item.customName === 'Milk')).toEqual(data.shopping[1]);
+    expect(imported.shopping.find(item => item.id === 'baked-beans')?.weekCounts).toEqual({ dahn: 1, 'ruxx': 1 });
+    expect(imported.shopping.some(item => item.id === 'potatoes')).toBe(false);
+    expect(imported.servings).toEqual({ dahn: 6 });
+  });
+});
+
+describe('shared week headings', () => {
+  it('labels nearby weeks against the recipient’s local calendar, including Sundays and year boundaries', () => {
+    const sunday = new Date(2026, 10, 15, 23, 59);
+    expect(sharedWeekTitle('2026-11-09', sunday)).toBe('This week’s dinners');
+    expect(sharedWeekTitle('2026-11-16', sunday)).toBe('Next week’s dinners');
+    expect(sharedWeekTitle('2026-11-02', sunday)).toBe('Last week’s dinners');
+    expect(sharedWeekTitle('2026-11-23', sunday)).toBe('Dinners for the week of 23 Nov 2026');
+    expect(sharedWeekTitle('2027-01-04', new Date(2027, 0, 3))).toBe('Next week’s dinners');
+    expect(sharedWeekTitle('2026-10-26', new Date(2026, 9, 25))).toBe('Next week’s dinners');
   });
 });
