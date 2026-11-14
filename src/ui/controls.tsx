@@ -1,3 +1,4 @@
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -30,6 +31,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
 export function FilterChip({ selected, onClick, children }: {
   selected: boolean; onClick: () => void; children: ReactNode;
 }) {
-  return <button type="button" className={`chip ${selected ? 'selected' : ''}`}
+  const ref = useChangeMotion<HTMLButtonElement>(selected, 'select', selected);
+  return <button ref={ref} type="button" className={`chip ${selected ? 'selected' : ''}`}
     aria-pressed={selected} onClick={onClick}>{children}</button>;
 }
