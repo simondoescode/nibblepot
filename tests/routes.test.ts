@@ -16,6 +16,7 @@ describe('shareable recipe routes', () => {
     expect(parseRoute('/nibblepot/favourites/')).toEqual({ kind: 'tab', tab: 'favorites' });
     expect(parseRoute('/nibblepot/recipes/jacket-potatoes-and-beans')).toEqual({ kind: 'recipe', id: 'dahn' });
     expect(parseRoute('/nibblepot/recipes/')).toEqual({ kind: 'not-found' });
+    expect(parseRoute('/nibblepot/recipes/dahn/')).toEqual({ kind: 'not-found' });
     expect(parseRoute('/not-nibblepot/recipes/jacket-potatoes-and-beans/')).toEqual({ kind: 'not-found' });
   });
 });
