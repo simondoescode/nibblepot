@@ -10,14 +10,6 @@
 .shared-week-page h1 { font-size: clamp(25px, 5vw, 34px); margin: 0; }
 .shared-week-note { color: var(--text-muted); line-height: 1.55; margin-bottom: 20px; }
 .shared-week-page > .btn { margin-top: 24px; }
-.shared-week-meal { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 8px 0; }
-.shared-week-meal .planner-picked { min-width: 0; overflow-wrap: anywhere; }
-@media (max-width: 520px) {
-  .shared-week-page .planner-day { grid-template-columns: 68px minmax(0, 1fr) 44px; padding-left: 8px; }
-  .shared-week-page .planner-day-label strong { font-size: 12px; }
-  .shared-week-page .planner-day-label span { white-space: normal; }
-  .shared-week-meal { flex-wrap: wrap; gap: 4px; }
-}
 .page-intro.planner-intro {
   justify-content: flex-start;
   gap: 12px;
@@ -289,4 +281,132 @@
 @media (min-width: 768px) {
   .planner-intro h2 { font-size: 40px; line-height: 44px; }
   .planner-layout { grid-template-columns: minmax(420px, 1fr) minmax(260px, .46fr); gap: 16px; }
+}
+
+
+/* Shared snapshots use their own layout, not the editable planner's compact grid. */
+.shared-week-days {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.shared-week-day {
+  display: grid;
+  grid-template-columns: 120px 76px minmax(0, 1fr) 44px;
+  grid-template-areas: "date visual meal action";
+  align-items: center;
+  column-gap: 14px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.shared-week-day--rest {
+  grid-template-areas: "date visual meal meal";
+}
+.shared-week-day-date {
+  grid-area: date;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.shared-week-day-date strong {
+  font-size: 14px;
+  line-height: 1.25;
+  color: var(--text);
+}
+.shared-week-day-date span {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+.shared-week-day-visual {
+  grid-area: visual;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 76px;
+  height: 68px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--selected);
+  color: var(--brand);
+}
+.shared-week-day-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.shared-week-day-meal {
+  grid-area: meal;
+  display: grid;
+  gap: 6px;
+  align-content: center;
+  min-width: 0;
+}
+.shared-week-day-meal strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 750;
+  line-height: 1.3;
+  color: var(--text);
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.shared-week-day-meal small {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+.shared-week-day-action {
+  grid-area: action;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: var(--selected);
+  color: var(--brand);
+}
+.shared-week-day-action:hover,
+.shared-week-day-action:active { background: var(--green); }
+.shared-week-day-action:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .shared-week-page .planner-intro { align-items: center; }
+  .shared-week-page .planner-intro > div { min-width: 0; }
+  .shared-week-page h1 { font-size: clamp(24px, 6.5vw, 30px); line-height: 1.12; }
+  .shared-week-note { font-size: 14px; line-height: 1.5; }
+  .shared-week-days { gap: 10px; }
+  .shared-week-day {
+    grid-template-columns: 64px minmax(0, 1fr) 44px;
+    grid-template-areas: "date date date" "visual meal action";
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 12px;
+    border-radius: 17px;
+  }
+  .shared-week-day--rest {
+    grid-template-areas: "date date date" "visual meal meal";
+  }
+  .shared-week-day-date { flex-direction: row; align-items: baseline; gap: 9px; }
+  .shared-week-day-date strong { font-size: 13px; }
+  .shared-week-day-date span { font-size: 12px; }
+  .shared-week-day-visual { width: 64px; height: 64px; }
+  .shared-week-day-meal strong { font-size: 15px; line-height: 1.3; }
+  .shared-week-day-meal small { font-size: 12px; }
+}
+@media (max-width: 360px) {
+  .shared-week-day { grid-template-columns: 58px minmax(0, 1fr) 44px; gap: 8px; padding: 11px; }
+  .shared-week-day-visual { width: 58px; height: 58px; }
+  .shared-week-day-meal strong { font-size: 14px; }
 }
