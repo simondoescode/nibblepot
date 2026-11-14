@@ -1,17 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 
-const recipeIds = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as {id:string;title:string}[];
+const recipeIds = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as {id:string;slug:string;title:string}[];
 
 test('every cooking route is a physical GitHub Pages entry with noindex and recipe canonical', () => {
   for (const recipe of recipeIds) {
-    const filename = `dist/recipes/${recipe.id}/cook/index.html`;
+    const filename = `dist/recipes/${recipe.slug}/cook/index.html`;
     expect(existsSync(filename), filename).toBe(true);
     const html = readFileSync(filename,'utf8');
     expect(html).toContain('Cook ' + recipe.title.replaceAll('&','&amp;'));
     expect(html).toContain('name="robots" content="noindex,follow"');
     expect(html).toContain(
-      'rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.id + '/"'
+      'rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.slug + '/"'
     );
   }
 });
@@ -19,7 +19,7 @@ test('every cooking route is a physical GitHub Pages entry with noindex and reci
 test('start cooking opens a dedicated route with next, previous and completion controls', async ({page}, testInfo) => {
   await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
   await page.getByRole('button',{name:'Start cooking'}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/tomato-pasta\/cook\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/speedy-tomato-pasta\/cook\/$/);
   await expect(page.getByText(/Put the pasta in a pan of boiling water/)).toBeVisible();
   await expect(page.getByRole('navigation',{name:'Main navigation'})).toHaveCount(0);
   if (testInfo.project.name === 'mobile') {
@@ -42,7 +42,7 @@ test('start cooking opens a dedicated route with next, previous and completion c
   await page.getByRole('button',{name:'Cook again'}).click();
   await expect(page.getByText(/Put the pasta in a pan of boiling water/)).toBeVisible();
   await page.getByRole('button',{name:'Recipe',exact:true}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/tomato-pasta\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/speedy-tomato-pasta\/$/);
 });
 
 test('direct cooking link and refresh keep step and checked ingredients for the same tab', async ({page}, testInfo) => {
@@ -54,7 +54,7 @@ test('direct cooking link and refresh keep step and checked ingredients for the 
   await page.getByRole('button',{name:'Next step'}).click();
   await expect(page.getByText(/About 5 minutes before serving, heat the baked beans/)).toBeVisible();
   await page.reload();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/cook\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/cook\/$/);
   await expect(page.getByText(/About 5 minutes before serving, heat the baked beans/)).toBeVisible();
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open ingredient checklist'}).click();
   await expect(page.locator('.cook-checklist label').filter({hasText:'Potatoes'}).getByRole('checkbox')).toBeChecked();
