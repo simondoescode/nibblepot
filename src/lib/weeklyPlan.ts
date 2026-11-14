@@ -60,7 +60,7 @@ export function shuffleWeek(slots: WeekSlot[], random = Math.random, larder: rea
       const newItems = missing.filter(id=>!shared.has(id)).length;
       const overlap = missing.length-newItems;
       // Penalise new purchases; reuse previously selected ingredients as a tie-breaker.
-      return {recipe,required,score:newItems*10 + missing.length*2 - overlap};
+      return {recipe,required,score:newItems*10 + missing.length*2 - overlap + Math.floor(recipe.prepMins/5)};
     });
     const best = Math.min(...scored.map(option=>option.score));
     const tied = scored.filter(option=>option.score===best);
