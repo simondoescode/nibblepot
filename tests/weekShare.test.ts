@@ -48,9 +48,9 @@ describe('compact self-contained week share links', () => {
   });
   it('rejects malformed, mutated, old-format and incomplete links', () => {
     const hash = new URL(make()).hash;
-    const original = hash.slice(-1);
-    const damaged = hash.slice(0, -1) + (original === 'A' ? 'B' : 'A');
-    for (const bad of ['', '#plan=z.old', '#p=bad', '#p='+'a'.repeat(4000), '#p='+hash.slice(3), damaged]) {
+    const original = hash[15];
+    const damaged = hash.slice(0, 15) + (original === 'A' ? 'B' : 'A') + hash.slice(16);
+    for (const bad of ['', '#plan=z.old', '#p=bad', '#p='+'a'.repeat(4000), '#p='+hash.slice(4), damaged]) {
       expect(parseSharedWeek(bad),bad).toBeNull();
     }
     expect(() => make(defaultWeek().slice(1))).toThrow();
