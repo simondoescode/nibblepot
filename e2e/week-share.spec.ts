@@ -36,10 +36,10 @@ test('share the selected week, open in another browser, refresh and return from 
   await other.goto(link);
   await expect(other.getByRole('heading', { name: 'A shared week of dinners' })).toBeVisible();
   await expect(other.locator('.planner-intro p')).toHaveText(weekLabel!);
-  await expect(other.locator('.planner-day').first()).toContainText('No dinner planned');
-  await expect(other.locator('.planner-day')).toHaveCount(7);
+  await expect(other.locator('.shared-week-day').first()).toContainText('No dinner planned');
+  await expect(other.locator('.shared-week-day')).toHaveCount(7);
   await other.reload();
-  await expect(other.locator('.planner-day').first()).toContainText('No dinner planned');
+  await expect(other.locator('.shared-week-day').first()).toContainText('No dinner planned');
   await other.getByRole('button', { name: 'View recipe for Tuesday', exact: true }).click();
   await expect(other.locator('.recipe-page h1')).toHaveText('One-pot chicken rice');
   await other.getByRole('button', { name: 'Back to recipes', exact: true }).click();
@@ -68,7 +68,7 @@ test('copy failure offers selectable link, Escape restores focus and mobile layo
   await expect(share).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Share week', exact: true })).toBeFocused();
   await page.goto(link);
-  await expect(page.locator('.planner-day')).toHaveCount(7);
+  await expect(page.locator('.shared-week-day')).toHaveCount(7);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
 });
 
@@ -94,4 +94,34 @@ test('native sharing receives the same snapshot URL and cancellation leaves it a
   expect(await page.evaluate(() => (window as unknown as { sharedUrl: string }).sharedUrl)).toBe(link);
   await expect(page.getByRole('dialog', { name: 'Share this week' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Copy link', exact: true })).toBeEnabled();
+});
+
+test('shared dinner cards stay readable at narrow phone, phone and tablet widths', async ({ page }) => {
+  await page.goto('/nibblepot/planner/');
+  await page.getByRole('button', { name: 'Share week', exact: true }).click();
+  const link = await page.getByRole('textbox', { name: 'Week share link' }).inputValue();
+  for (const width of [320, 393, 768]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(link);
+    await expect(page.locator('.shared-week-day')).toHaveCount(7);
+    await expect(page.getByRole('heading', { name: 'A shared week of dinners' })).toBeVisible();
+    const cards = await page.locator('.shared-week-day').evaluateAll(elements => elements.map(element => {
+      const card = element.getBoundingClientRect();
+      const photo = element.querySelector<HTMLElement>('.shared-week-day-visual')!.getBoundingClientRect();
+      const title = element.querySelector<HTMLElement>('.shared-week-day-meal strong')!.getBoundingClientRect();
+      const action = element.querySelector<HTMLElement>('.shared-week-day-action')?.getBoundingClientRect();
+      return {
+        height: card.height,
+        titleWidth: title.width,
+        photoEndsBeforeTitle: photo.right + 4 <= title.left,
+        titleEndsBeforeAction: !action || title.right + 4 <= action.left,
+        actionInsideCard: !action || action.right <= card.right,
+      };
+    }));
+    expect(cards.every(card => card.height < 190), `Oversized card at ${width}px: ${JSON.stringify(cards)}`).toBe(true);
+    expect(cards.every(card => card.titleWidth >= 100), `Unreadable title width at ${width}px: ${JSON.stringify(cards)}`).toBe(true);
+    expect(cards.every(card => card.photoEndsBeforeTitle && card.titleEndsBeforeAction && card.actionInsideCard),
+      `Overlapping columns at ${width}px: ${JSON.stringify(cards)}`).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  }
 });
