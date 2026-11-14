@@ -64,17 +64,12 @@ export function formatRecipeQuantity(ingredient: RecipeIngredient, servings: num
 /** Combine compatible units while preserving distinct quantities (e.g. 4 large + 750 g potatoes). */
 export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, number> = {}, stock?: Record<string, string>): string {
   const amounts = new Map<string, number>();
-  const unknown: string[] = [];
   const sourceIds = new Set([...entry.from, ...Object.keys(entry.weekCounts ?? {})]);
   for (const sourceId of sourceIds) {
     const recipe = recipes.find(item => item.id === sourceId);
     const ingredient = recipe?.ing.find(item => item.id === entry.id);
     if (!ingredient) continue;
     const p = ingredientQuantity(ingredient);
-    if (p.value === undefined) {
-      if (!unknown.includes(p.raw)) unknown.push(p.raw);
-      continue;
-    }
     amounts.set(p.unit, (amounts.get(p.unit) ?? 0) + p.value * Math.max(entry.from.includes(sourceId) ? 1 : 0, entry.weekCounts?.[sourceId] ?? 0) * clampServings(servings[sourceId] ?? BASE_SERVINGS) / BASE_SERVINGS);
   }
   const owned = stock?.[entry.id] ? parseQuantity(stock[entry.id]) : undefined;
@@ -83,7 +78,7 @@ export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, 
     if (needed !== undefined) amounts.set(owned.unit, Math.max(0, needed - owned.value));
   }
   const formatted = [...amounts].filter(([,total])=>total>0).map(([unit, total]) => amountLabel(total, unit));
-  return [...formatted, ...unknown].join(' + ') || (amounts.size ? 'Already in larder' : 'Quantity not set');
+  return formatted.join(' + ') || (amounts.size ? 'Already in larder' : 'Quantity not set');
 }
 
 /**
