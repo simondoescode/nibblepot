@@ -33,7 +33,7 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
       .join(' ').toLocaleLowerCase('en-GB').includes(q))
   );
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
-  if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
+  if (filter === 'simple') found = found.filter(recipe => recipe.ing.filter(item=>!item.optional).length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
   if (filter === 'budget') found = found.filter(recipe => recipe.tags.includes('budget'));
   if (filter === 'batch') found = found.filter(recipe => recipe.tags.includes('batch-friendly'));
