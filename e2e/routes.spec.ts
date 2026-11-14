@@ -8,7 +8,7 @@ test('all forty GitHub Pages recipe routes are physical HTML entrypoints', () =>
     expect(existsSync(path), 'Missing static deep link ' + path).toBe(true);
     const html = readFileSync(path, 'utf8');
     expect(html).toContain(recipe.title.replaceAll('&', '&amp;').replaceAll('’', '’'));
-    expect(html).toContain('rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.id + '/"');
+    expect(html).toContain('rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.slug + '/"');
     expect(html).toContain('application/ld+json');
   }
 });
@@ -17,7 +17,7 @@ test('direct link refresh keeps the same recipe URL and displays the full page',
   const response = await page.goto('/nibblepot/recipes/one-pot-chicken-rice/');
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'One-pot chicken rice' })).toBeVisible();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/chicken-rice\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/one-pot-chicken-rice\/$/);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'One-pot chicken rice' })).toBeVisible();
   await expect(page.locator('.recipe-page-method .steps li')).toHaveCount(3);
