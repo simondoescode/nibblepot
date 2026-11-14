@@ -36,3 +36,11 @@ When preparing a release, review the generated changelog in the Release Please P
 - "Your shopping list is a little smarter about leftovers."
 
 The display removes issue numbers and links, and gives each release a friendly heading. Avoid developer jargon and do not add claims about unreleased features. The initial `0.2.0` notes are curated; future version sections are added automatically by Release Please.
+
+## Next feature release: Dinner, with a little bounce
+
+Suggested first user-facing bullet for the generated release section:
+
+- “Dinner has a little bounce: playful recipe reveals, happy hearts and satisfying meal planning.”
+
+The motion feature PR uses a Conventional Commit `feat:` title so Release Please can include it in the next minor release. Review the generated release PR before publishing; version numbers remain owned by that workflow. Settings continues to show only released notes for the installed version.

@@ -1,4 +1,7 @@
+import { MotionCheckbox } from '../ui/MotionCheckbox';
 import { useEffect, useRef, useState } from 'react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
+import { MotionSparks } from '../ui/MotionMark';
 import * as Dialog from '../ui/dialog';
 import { ArrowLeft, ArrowRight, Check, CheckCheck, ChefHat, Clock3, Minus, Pause, Play, Plus, RotateCcw, X } from 'lucide-react';
 import { ingredientName } from '../data';
@@ -54,6 +57,7 @@ export function CookingMode({ recipe, servings, onExit }: {
   const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
   const lastTool = useRef<'timer'|'ingredients'>('ingredients');
   const [progress, setProgress] = useState<CookingProgress>(() => restoreProgress(recipe));
+  const completeRef = useChangeMotion<HTMLSpanElement>(progress.finished, 'celebrate', progress.finished);
   const [now, setNow] = useState(() => Date.now());
   const compact = useCompactLayout();
   const [activeTool, setActiveTool] = useState<'timer' | 'ingredients' | null>(null);
@@ -149,7 +153,7 @@ export function CookingMode({ recipe, servings, onExit }: {
             <summary><span><CheckCheck size={20} aria-hidden="true"/> Ingredients</span><strong>{checkedCount}/{recipe.ing.length}</strong></summary>
             <div className="cook-checklist">
               {recipe.ing.map(item => <label key={item.id} className={progress.checked.includes(item.id) ? 'is-checked' : ''}>
-                <input type="checkbox" checked={progress.checked.includes(item.id)}
+                <MotionCheckbox checked={progress.checked.includes(item.id)}
                   onChange={event => toggleIngredient(item.id, event.target.checked)}/>
                 <span><strong>{formatRecipeQuantity(item, servings)}</strong> {ingredientName(item.id)}
                   {item.optional && <small>Optional</small>}</span>
@@ -220,7 +224,7 @@ export function CookingMode({ recipe, servings, onExit }: {
                     Next step <ArrowRight size={20} aria-hidden="true"/></button>}
             </div>
           </> : <div className="cook-complete">
-            <span aria-hidden="true">🎉</span>
+            <span ref={completeRef} className="motion-mark cooking-complete-mark" aria-hidden="true"><CheckCheck size={40}/><MotionSparks/></span>
             <h2>Dinner's ready!</h2>
             <p>Time to dish up. You made it.</p>
             <button type="button" className="cook-primary" onClick={restart}><RotateCcw size={18}/> Cook again</button>

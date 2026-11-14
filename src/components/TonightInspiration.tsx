@@ -1,3 +1,5 @@
+import { Shuffle } from 'lucide-react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import { useRef, useState } from 'react';
 import { Button } from '../ui/controls';
 import type { Recipe } from '../types';
@@ -24,6 +26,10 @@ export function TonightInspiration({ recipes, onOpen }: Props) {
   const mouseStart = useRef<{ x: number; y: number } | null>(null);
   const catalogue = recipes;
   const current = catalogue.find(recipe => recipe.id === id) ?? catalogue[0];
+  const [loadedId, setLoadedId] = useState(current?.id);
+  const imageRef = useChangeMotion<HTMLImageElement>(loadedId, 'reveal', loadedId === current?.id);
+  const titleRef = useChangeMotion<HTMLHeadingElement>(current?.id, 'reveal');
+  const shuffleRef = useChangeMotion<HTMLSpanElement>(current?.id, 'shuffle');
   const index = current ? catalogue.indexOf(current) : 0;
   const show = (next: string) => {
     setId(next);
@@ -50,19 +56,20 @@ export function TonightInspiration({ recipes, onOpen }: Props) {
       start.current = null;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) cycle(dx < 0 ? 1 : -1);
     }}>
-    <div className="simmer-spotlight-image" key={current.id}
+    <div className="simmer-spotlight-image"
       style={{ backgroundImage: `url("${import.meta.env.BASE_URL}backgrounds/${backdrop}.webp")` }}>
-      <img src={`${import.meta.env.BASE_URL}${current.image ?? 'recipes/jacket.svg'}`}
+      <img ref={imageRef} src={`${import.meta.env.BASE_URL}${current.image ?? 'recipes/jacket.svg'}`}
         alt="" width="800" height="504" decoding="async" fetchPriority="high"
+        onLoad={() => setLoadedId(current.id)}
         onError={event => { const fallback = `${import.meta.env.BASE_URL}recipes/jacket.svg`; if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback; }} />
     </div>
     <div className="simmer-spotlight-content">
       <span className="simmer-spotlight-kicker">Tonight's inspiration</span>
-      <h1 aria-live="polite" aria-atomic="true">{current.title}</h1>
+      <h1 ref={titleRef} aria-live="polite" aria-atomic="true">{current.title}</h1>
       <p>{current.mins} mins · Serves 4</p>
       <div className="simmer-spotlight-actions">
         <Button tone="primary" onClick={() => onOpen(current.id)}>View recipe</Button>
-        {catalogue.length > 1 && <button type="button" className="simmer-shuffle" onClick={surprise}>Surprise me</button>}
+        {catalogue.length > 1 && <button type="button" className="simmer-shuffle" onClick={surprise}><span ref={shuffleRef} className="shuffle-icon" aria-hidden="true"><Shuffle size={17}/></span>Surprise me</button>}
       </div>
     </div>
   </section>;

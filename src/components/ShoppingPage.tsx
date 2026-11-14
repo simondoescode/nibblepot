@@ -1,3 +1,4 @@
+import { MotionCheckbox } from '../ui/MotionCheckbox';
 import { useState } from 'react';
 import { ClipboardCopy, ExternalLink, ListX, ShoppingBasket, X } from 'lucide-react';
 import { ingredients } from '../data';
@@ -74,7 +75,7 @@ export function ShoppingPage({ shopping, larder, servings, stock, onAdd, onToggl
                 const packHint = shoppingPackHint(item, servings);
                 return <li className={`shop-row ${item.done ? 'done' : ''}`} key={item.id}>
                   <label className="shopping-toggle">
-                    <input type="checkbox" checked={item.done} aria-label={`Mark ${name} as purchased`}
+                    <MotionCheckbox checked={item.done} aria-label={`Mark ${name} as purchased`}
                       onChange={event => onToggle(item.id, event.target.checked)} />
                     <span className="shop-item">
                       <strong>{name}</strong>

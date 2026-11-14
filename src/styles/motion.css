@@ -1,5 +1,5 @@
 /* One motion language. Loaded last to also cover legacy interaction styles. */
-:root{--motion-press:110ms;--motion-feedback:160ms;--motion-step:170ms;--motion-screen:240ms;--motion-sheet:240ms;--motion-exit:200ms;--motion-ease:cubic-bezier(.2,.7,.2,1);--motion-pull:530ms}
+:root{--motion-press:110ms;--motion-feedback:160ms;--motion-step:170ms;--motion-screen:240ms;--motion-sheet:260ms;--motion-exit:180ms;--motion-release:240ms;--motion-reveal:300ms;--motion-celebrate:420ms;--motion-spring:cubic-bezier(.2,1.45,.4,1);--motion-ease:cubic-bezier(.2,.7,.2,1);--motion-pull:530ms}
 @keyframes app-fade{from{opacity:.82}to{opacity:1}}
 @keyframes app-forward{from{opacity:.7;transform:translate3d(18px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes app-back{from{opacity:.7;transform:translate3d(-18px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
@@ -9,9 +9,6 @@
 @keyframes backdrop-out{from{opacity:1}to{opacity:0}}
 @keyframes toast-in{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
 @keyframes toast-out{from{opacity:1}to{opacity:0}}
-@keyframes heart-save{0%,100%{scale:1}45%{scale:1.17}}
-@keyframes meal-changed{0%{background-color:#ffe2a0}100%{background-color:var(--paper)}}
-@keyframes complete-in{from{opacity:0;scale:.98}to{opacity:1;scale:1}}
 .route-content[data-motion=tab]{animation:app-fade 140ms ease-out both}
 .route-content[data-motion=forward]{animation:app-forward var(--motion-screen) var(--motion-ease) both}
 .route-content[data-motion=back]{animation:app-back var(--motion-screen) var(--motion-ease) both}
@@ -24,20 +21,18 @@
 .motion-sheet.sheet-interacted[data-state=open]{animation:none}
 .motion-sheet.sheet-dragging{animation:none;transition:none}
 .motion-sheet-grip{display:none}
-.toast{animation:toast-in var(--motion-feedback) var(--motion-ease)}
+.toast{animation:toast-in var(--motion-release) var(--motion-spring)}
 .toast.is-leaving{animation:toast-out var(--motion-exit) ease-in forwards}
-.heart.just-saved{animation:heart-save 200ms var(--motion-ease)}
 .shop-row,.cook-ingredient{transition:background-color var(--motion-feedback),border-color var(--motion-feedback)}
 input[type=checkbox]{transition:accent-color var(--motion-feedback)}
 .results-feedback{animation:app-fade var(--motion-feedback) ease-out}
 .planner-days[data-direction=forward]{animation:app-forward 200ms var(--motion-ease)}
 .planner-days[data-direction=back]{animation:app-back 200ms var(--motion-ease)}
-.planner-day.just-changed{animation:meal-changed 600ms ease-out}
 .cook-step-content[data-direction=forward]{animation:app-forward var(--motion-step) var(--motion-ease)}
 .cook-step-content[data-direction=back]{animation:app-back var(--motion-step) var(--motion-ease)}
 .cook-progress-track>div{width:100%;transform-origin:left;transition:transform 200ms var(--motion-ease)}
 .cook-step-announcement{display:flex;flex:1;min-width:0}
-.cook-complete{animation:complete-in 200ms var(--motion-ease)}
+.cook-complete{animation:none}
 .pull-body{will-change:auto;transform:none}
 .pull-body.is-pulling,.pull-body.is-settling{will-change:transform}
 @media(pointer:coarse){.pull-body{transition:transform var(--motion-pull) cubic-bezier(.2,1.3,.28,1)}.pull-body.is-pulling{transform:translate3d(0,var(--pull-shift,0px),0);transition:none}.pull-body.is-settling{transform:translate3d(0,0,0)}}
@@ -52,10 +47,7 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
   .motion-sheet-grip{display:flex;align-items:center;justify-content:center;width:100%;min-height:28px;border:0;background:transparent;touch-action:none;cursor:grab;padding:8px;margin:0 auto 4px}
   .motion-sheet-grip span{display:block;width:42px;height:5px;border-radius:99px;background:#b8ac9e}
   .larder-sheet-handle,.planner-picker-handle,.cook-sheet-handle{display:none}
-  button:not(:disabled){transition:scale var(--motion-press) var(--motion-ease),background-color var(--motion-feedback)}
-  button:not(:disabled):active{scale:.97}
   .btn:active{transform:none;box-shadow:1px 2px 0 var(--ink)!important}
-  .mobile-nav .mobbtn:active .mob-icon{transform:scale(.97)}
   .cook-step-content{min-height:300px}
   .recipe-card:hover{box-shadow:0 2px 0 #25231e18}
 }
@@ -68,11 +60,9 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
   .pull-native-icon svg{transform:none!important}
   .pull-body,.pull-body.is-pulling,.pull-body.is-settling{transform:none!important;will-change:auto!important}
 }
-.btn.just-saved .btn-icon{animation:heart-save 200ms var(--motion-ease)}
 .shop-row.done{background-color:#eff5e8}
 .cook-checklist label{transition:background-color var(--motion-feedback)}
 .cook-checklist label.is-checked{background-color:#edf5e5}
-@media(prefers-reduced-motion:reduce){.btn.just-saved .btn-icon{animation:none!important}}
 
 /* Screen transitions v2: keep fixed shell static and avoid clipping vertical content. */
 .route-content{overflow-x:clip;transform-origin:center top}
@@ -96,3 +86,32 @@ input[type=checkbox]{transition:accent-color var(--motion-feedback)}
 
 main[tabindex="-1"]:focus,
 main :is(h1,h2)[tabindex="-1"]:focus{outline:none}
+
+/* Dinner, with a little bounce. Hit areas and surrounding layout stay put. */
+.motion-mark{position:relative;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;flex:none}
+[data-motion-spark]{position:absolute;inset:50% auto auto 50%;width:4px;height:4px;margin:-2px;border-radius:1px;background:currentColor;opacity:0;pointer-events:none}
+.shuffle-icon{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle}
+.simmer-shuffle{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.week-complete{gap:6px;margin:10px 0 2px;padding:6px 10px;border-radius:99px;background:var(--selected);color:var(--brand);font-size:13px;font-weight:700}
+.cook-complete .cooking-complete-mark{display:inline-flex;width:72px;height:72px;border-radius:50%;background:var(--selected);color:var(--brand);font-size:inherit}
+.larder-item{transition:background-color var(--motion-feedback),border-color var(--motion-feedback)}
+/* Restrict press movement to the control; a recipe card contains other controls. */
+:is(.btn,.chip,.simmer-shuffle,.icon-button,.recipe-card-link){transition:scale var(--motion-release) var(--motion-spring),background-color var(--motion-feedback),color var(--motion-feedback)}
+:is(.btn,.chip,.simmer-shuffle,.icon-button):not(:disabled):active{scale:.97;transform:none;transition-duration:var(--motion-press)}
+.recipe-card-link:active{color:var(--action)}
+/* Pop the icon rather than the entire persistent tab, preserving its target. */
+.mobile-nav .mobbtn{scale:1}
+.mobile-nav .mob-icon{transform:none;transition:background-color var(--motion-feedback),color var(--motion-feedback)}
+.mobile-nav .mobbtn:active .mob-icon{transform:none}
+@media(hover:none),(pointer:coarse){
+  .recipe-illustration{transition:none}
+  .recipe-card:hover .recipe-illustration{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  :is(.btn,.chip,.simmer-shuffle,.icon-button):active{scale:1!important}
+  [data-motion-spark]{display:none}
+}
+
+.recipe-card .recipe-illustration{transition:scale var(--motion-release) var(--motion-spring)}
+.recipe-card:has(.recipe-card-link:active) .recipe-illustration{scale:.98;transition-duration:var(--motion-press)}
+@media(prefers-reduced-motion:reduce){.recipe-card:has(.recipe-card-link:active) .recipe-illustration{scale:1}}
