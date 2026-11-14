@@ -10,6 +10,8 @@ describe('food type filters',()=>{
     expect(matchesFoodType(recipe('0fa3'),'chicken')).toBe(true);
     expect(matchesFoodType(recipe('es36'),'chicken')).toBe(true);
     expect(matchesFoodType(recipe('es36'),'meat-free')).toBe(false);
+    expect(matchesFoodType(recipe('9j09'),'vegan')).toBe(true);
+    expect(matchesFoodType(recipe('gf6b'),'vegan')).toBe(false);
     expect(matchesFoodType(recipe('0fa3'),'pasta')).toBe(true);
     expect(matchesFoodType(recipe('0fa3'),'rice')).toBe(false);
     expect(matchesFoodType(recipe('mkys'),'pork')).toBe(true);
@@ -23,6 +25,15 @@ describe('food type filters',()=>{
     expect(ids).toContain('9j09');
     for(const id of ['5epv','gf6b','6lab','mkys','v8e7']) expect(ids).not.toContain(id);
     expect(matchesFoodType({...recipe('dahn'),ing:[...recipe('dahn').ing,{id:'ham',amount:1,unit:'slice',optional:true}]},'meat-free')).toBe(false);
+  });
+  it('applies dietary choices as restrictions, not an OR with meat categories',()=>{
+    expect(filterRecipes(recipes,'','all',[],['meat-free','chicken'])).toEqual([]);
+    const rice=filterRecipes(recipes,'','all',[],['vegan','rice']);
+    expect(rice.length).toBeGreaterThan(0);
+    expect(rice.every(item=>matchesFoodType(item,'vegan') && matchesFoodType(item,'rice'))).toBe(true);
+    expect(filterRecipes(recipes,'','all',[],['vegan']).every(item=>matchesFoodType(item,'meat-free'))).toBe(true);
+    expect(matchesFoodType(recipe('dahn'),'vegan')).toBe(false); // optional dairy still listed
+    expect(matchesFoodType(recipe('1ok1'),'vegan')).toBe(true); // check vegetable-stock label
   });
   it('offers populated food types without changing default catalogue results',()=>{
     expect(filterRecipes(recipes,'','all',[])).toEqual(filterRecipes(recipes,'','all',[],['all']));
