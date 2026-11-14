@@ -12,6 +12,7 @@ test('shared dinners stay readable and import controls remain above the mobile n
   for (const width of [320, 390, 768, 1024, 1280]) {
     await page.setViewportSize({ width, height: 800 });
     await page.goto(link);
+    await page.evaluate(() => window.scrollTo(0, 0));
     const title = page.locator('.shared-week-day-meal strong').first();
     expect((await title.boundingBox())!.width).toBeGreaterThan(100);
     expect((await page.locator('.shared-week-day').first().boundingBox())!.height).toBeLessThan(200);
