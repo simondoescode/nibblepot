@@ -159,7 +159,7 @@ test('the narrow planner keeps Today and both meal actions in one row', async ({
   await expect(today).toHaveCount(1);
 
   await view.click();
-  await expect(page).toHaveURL(/\/recipes\/jacket\/$/);
+  await expect(page).toHaveURL(/\/recipes\/jacket-potatoes-and-beans\/$/);
 });
 
 test('planner shows the same shortfall as shopping and can remove an emptied week', async ({ page }) => {
@@ -214,7 +214,7 @@ test('recipe details can plan a dinner for an explicit date after opening from h
   await page.goto('/nibblepot/');
   await page.getByRole('searchbox', { name: 'Search recipes', exact: true }).fill('Speedy tomato pasta');
   await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: 'View recipe' }).click();
-  await expect(page).toHaveURL(/\/recipes\/tomato-pasta\/$/);
+  await expect(page).toHaveURL(/\/recipes\/speedy-tomato-pasta\/$/);
   await opener.click();
   await expect(picker.getByRole('status')).toContainText('already planned');
   await picker.getByRole('button', { name: 'Next week' }).click();
