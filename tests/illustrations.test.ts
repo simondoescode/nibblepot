@@ -9,7 +9,7 @@ describe('illustrated recipe cards', () => {
     const images = new Set<string>();
     const svgContents = new Set<string>();
     for (const recipe of recipes) {
-      const path = recipe.image;
+      const path = recipe.image!;
       if (recipe.image) {
         expect(path).toMatch(/^recipes\/[a-z0-9-]+\.webp$/);
       } else {
