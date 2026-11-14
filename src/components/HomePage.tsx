@@ -15,6 +15,9 @@ const filters: { id: Filter; label: string }[] = [
   { id: 'quick', label: '⚡ 30 mins or less' },
   { id: 'simple', label: '✋ 5 ingredients' },
   { id: 'onepot', label: '🍲 One pot' },
+  { id: 'minimal', label: 'Minimal prep' },
+  { id: 'budget', label: 'Budget-friendly' },
+  { id: 'batch', label: 'Batch cooking' },
   { id: 'larder', label: '🫙 Use my larder' },
 ];
 
