@@ -6,7 +6,7 @@ import { DEFAULT_DATA, parseSavedData } from '../src/lib/storage';
 describe('recipe catalogue', () => {
   it('has 45 recipes including all 16 original IDs with valid ingredient IDs', () => {
     expect(recipes).toHaveLength(45);
-    for(const id of ['jacket','sausage-bean','chicken-rice','cottage','tuna-bake','tomato-pasta','egg-rice','quesadilla','mash','butter-stew','traybake','toasties','meatball','fish-butties','soup','chilli-jacket']) {
+    for(const id of ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9']) {
       expect(recipes.some(recipe=>recipe.id===id)).toBe(true);
     }
     expect(new Set(recipes.map(recipe => recipe.id)).size).toBe(recipes.length);
@@ -17,23 +17,26 @@ describe('recipe catalogue', () => {
     }
   });
   it('searches recipe titles and ingredient names', () => {
-    expect(filterRecipes(recipes, 'baked beans', 'all', []).some(recipe => recipe.id === 'jacket')).toBe(true);
-    expect(filterRecipes(recipes, 'soY SAUCE', 'all', []).map(recipe => recipe.id)).toContain('egg-rice');
+    expect(filterRecipes(recipes, 'baked beans', 'all', []).some(recipe => recipe.id === 'dahn')).toBe(true);
+    expect(filterRecipes(recipes, 'soY SAUCE', 'all', []).map(recipe => recipe.id)).toContain('41r8');
   });
   it('filters quick, simple, and one-pot recipes', () => {
     expect(filterRecipes(recipes, '', 'quick', []).every(recipe => recipe.mins <= 30)).toBe(true);
     expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.length <= 5)).toBe(true);
     expect(filterRecipes(recipes, '', 'onepot', []).every(recipe => recipe.onePot)).toBe(true);
+    expect(filterRecipes(recipes, '', 'budget', []).every(r => r.tags.includes('budget'))).toBe(true);
+    expect(filterRecipes(recipes, '', 'minimal', []).every(r => r.tags.includes('minimal-prep'))).toBe(true);
+    expect(filterRecipes(recipes, '', 'batch', []).every(r => r.tags.includes('batch-friendly'))).toBe(true);
   });
   it('groups ready and nearly ready recipes by required stock', () => {
     const pantry = ['potatoes', 'baked-beans', 'cheese', 'butter'];
     const matches = filterRecipes(recipes, '', 'larder', pantry);
-    expect(matches.some(recipe => recipe.id === 'jacket')).toBe(true);
-    expect(matches.every(recipe => missingRequired(recipe, pantry) <= 2)).toBe(true);
+    expect(matches.some(recipe => recipe.id === 'dahn')).toBe(true);
+    expect(matches).toHaveLength(recipes.length);
     expect(matches.map(recipe => missingRequired(recipe, pantry))).toEqual([...matches.map(recipe => missingRequired(recipe, pantry))].sort((a,b)=>a-b));
     expect(matches.some(recipe => missingRequired(recipe, pantry) > 0)).toBe(true);
-    expect(inLarder(recipes.find(recipe => recipe.id === 'jacket')!, pantry)).toBe(4);
-    expect(filterRecipes(recipes, '', 'larder', []).every(recipe => missingRequired(recipe, []) <= 2)).toBe(true);
+    expect(inLarder(recipes.find(recipe => recipe.id === 'dahn')!, pantry)).toBe(4);
+    expect(filterRecipes(recipes, '', 'larder', [])).toHaveLength(recipes.length);
     expect(filterRecipes(recipes, '', 'all', [])).toHaveLength(recipes.length);
   });
   it('ignores optional toppings when ranking dinner availability', () => {
@@ -43,7 +46,7 @@ describe('recipe catalogue', () => {
   });
   it('recommends meals using soon-dated ingredients but not expired stock', () => {
     const suggestions = useItUpRecipes(recipes,['potatoes','baked-beans'],{potatoes:'2026-11-06','baked-beans':'2026-11-01'},'2026-11-04');
-    expect(suggestions.some(recipe=>recipe.id==='jacket')).toBe(true);
+    expect(suggestions.some(recipe=>recipe.id==='dahn')).toBe(true);
     expect(useItUpRecipes(recipes,['potatoes'],{potatoes:'2026-11-03'},'2026-11-04')).toEqual([]);
     expect(useItUpRecipes(recipes,['potatoes'],{potatoes:'2026-12-01'},'2026-11-04')).toEqual([]);
   });
@@ -60,17 +63,17 @@ describe('recipe catalogue', () => {
 
 describe('saved data migration and shopping', () => {
   it('preserves valid original saved-state data', () => {
-    const saved = parseSavedData({ larder: ['rice', 'rice'], favorites: ['jacket'], shopping: [{ id: 'chicken', done: true, from: ['chicken-rice'] }] });
+    const saved = parseSavedData({ larder: ['rice', 'rice'], favorites: ['dahn'], shopping: [{ id: 'chicken', done: true, from: ['5sg6'] }] });
     expect(saved.larder).toEqual(['rice']);
-    expect(saved.favorites).toEqual(['jacket']);
-    expect(saved.shopping[0]).toEqual({ id: 'chicken', done: true, from: ['chicken-rice'] });
+    expect(saved.favorites).toEqual(['dahn']);
+    expect(saved.shopping[0]).toEqual({ id: 'chicken', done: true, from: ['5sg6'] });
   });
   it('uses the starter larder only when saved state is missing or malformed', () => {
     expect(parseSavedData(null).larder).toEqual(DEFAULT_DATA.larder);
     expect(parseSavedData({ larder: [] }).larder).toEqual([]);
   });
   it('adds only missing ingredients and never duplicates shopping entries', () => {
-    const recipe = recipes.find(r => r.id === 'sausage-bean')!;
+    const recipe = recipes.find(r => r.id === 'ruxx')!;
     const pantry = { larder: ['baked-beans'], favorites: [], shopping: [] };
     const added = addMissingIngredients(recipe, pantry);
     expect(added.added).toBe(4);

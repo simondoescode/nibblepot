@@ -12,7 +12,7 @@ async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' |
 test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
   // Ensure the random recipe has missing ingredients regardless of which meal is selected.
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
     larder: [], favorites: [], shopping: [],
   })));
   await page.reload();
@@ -71,10 +71,10 @@ test('spotlight changes recipe and keeps keyboard focus on Surprise me', async (
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {
   await page.goto('/nibblepot/');
   const link = page.locator('.recipe-card').first().getByRole('link', { name: /jacket potatoes/i });
-  await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket/');
+  await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket-potatoes-and-beans/');
   await link.focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/$/);
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.getByRole('button', { name: /back to recipes/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/$/);
@@ -99,7 +99,7 @@ test('mobile recipe card opens from the image, description and larder status', a
     await target.scrollIntoViewIfNeeded();
     const bounds = (await target.boundingBox())!;
     await page.touchscreen.tap(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-    await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+    await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/$/);
     await page.getByRole('button', { name: /back to recipes/i }).click();
     await expect(page).toHaveURL(/\/nibblepot\/$/);
   }

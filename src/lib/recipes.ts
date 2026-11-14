@@ -1,20 +1,21 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
-import { shoppingQuantity, parseQuantity, formatRecipeQuantity } from './quantities';
+import { shoppingQuantity, parseQuantity, ingredientQuantity } from './quantities';
 import { matchesFoodType, type FoodType } from './foodTypes';
 
 /** Only required ingredients affect whether dinner can be made. */
 export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
   recipe.ing.filter(item => !item.optional && !larder.includes(item.id)).length;
 
-/** A checked item without a measured quantity remains available for legacy larders.
+/** A checked item without a measured quantity remains available.
  * Compare only compatible units; never guess conversions between packs and weights. */
 export const missingRequiredIngredients = (recipe: Recipe, larder: readonly string[], stock: Readonly<Record<string,string>> = {}, servings = 4) =>
   recipe.ing.filter(item => {
     if (item.optional) return false;
     if (!larder.includes(item.id)) return true;
     if (!stock[item.id]) return false;
-    const required = parseQuantity(formatRecipeQuantity(item, servings));
+    const base = ingredientQuantity(item);
+    const required = {value: base.value * servings / 4, unit:base.unit};
     const owned = parseQuantity(stock[item.id]);
     return required.value !== undefined && owned.value !== undefined && required.unit === owned.unit && owned.value < required.value;
   });
@@ -31,9 +32,16 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
   if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
+  if (filter === 'budget') found = found.filter(recipe => recipe.tags.includes('budget'));
+  if (filter === 'batch') found = found.filter(recipe => recipe.tags.includes('batch-friendly'));
+  if (filter === 'minimal') found = found.filter(recipe => recipe.tags.includes('minimal-prep'));
   if (filter === 'larder') {
-    found = found.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length <= 2)
-      .sort((a, b) => missingRequiredIngredients(a, larder, stock, servings[a.id] ?? 4).length - missingRequiredIngredients(b, larder, stock, servings[b.id] ?? 4).length || a.mins - b.mins);
+    // Keep every candidate: the home screen separates ready, nearly ready and other ideas.
+    found.sort((a, b) => {
+      const missingA = missingRequiredIngredients(a, larder, stock, servings[a.id] ?? 4).length;
+      const missingB = missingRequiredIngredients(b, larder, stock, servings[b.id] ?? 4).length;
+      return missingA-missingB || a.prepMins-b.prepMins || a.mins-b.mins;
+    });
   }
   return found;
 }

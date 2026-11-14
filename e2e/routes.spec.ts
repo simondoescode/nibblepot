@@ -1,23 +1,23 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
-const recipes = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; title: string }[];
+const recipes = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; slug: string; title: string }[];
 
 test('all forty GitHub Pages recipe routes are physical HTML entrypoints', () => {
   for (const recipe of recipes) {
-    const path = 'dist/recipes/' + recipe.id + '/index.html';
+    const path = 'dist/recipes/' + recipe.slug + '/index.html';
     expect(existsSync(path), 'Missing static deep link ' + path).toBe(true);
     const html = readFileSync(path, 'utf8');
     expect(html).toContain(recipe.title.replaceAll('&', '&amp;').replaceAll('’', '’'));
-    expect(html).toContain('rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.id + '/"');
+    expect(html).toContain('rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.slug + '/"');
     expect(html).toContain('application/ld+json');
   }
 });
 
 test('direct link refresh keeps the same recipe URL and displays the full page', async ({ page }) => {
-  const response = await page.goto('/nibblepot/recipes/chicken-rice/');
+  const response = await page.goto('/nibblepot/recipes/one-pot-chicken-rice/');
   expect(response?.status()).toBe(200);
   await expect(page.getByRole('heading', { name: 'One-pot chicken rice' })).toBeVisible();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/chicken-rice\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/one-pot-chicken-rice\/$/);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'One-pot chicken rice' })).toBeVisible();
   await expect(page.locator('.recipe-page-method .steps li')).toHaveCount(3);
@@ -35,9 +35,9 @@ test('browser back and forward restore recipe and catalogue', async ({ page }) =
 });
 
 test('favourites and shopping work within the dedicated recipe route', async ({ page }, testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/');
   // The starter larder contains potatoes and beans; explicitly make them missing.
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
     larder: [], favorites: [], shopping: [],
   })));
   await page.reload();
@@ -51,9 +51,9 @@ test('favourites and shopping work within the dedicated recipe route', async ({ 
 });
 
 test('serving changes scale recipe amounts and update shopping quantities', async ({ page }, testInfo) => {
-  await page.goto('/nibblepot/recipes/tuna-bake/');
+  await page.goto('/nibblepot/recipes/tuna-pasta-bake/');
   // Pasta is marked in-stock by default. Test shopping for a user without pasta.
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
     larder: [], favorites: [], shopping: [],
   })));
   await page.reload();
@@ -73,7 +73,7 @@ test('serving changes scale recipe amounts and update shopping quantities', asyn
 });
 
 test('optional ingredients stay off the list until chosen', async ({ page }, testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/');
   await expect(page.locator('.recipe-optional')).toHaveCount(2);
   await page.getByRole('button', { name: /add missing bits/i }).click();
   const navName = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';

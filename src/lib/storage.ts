@@ -4,8 +4,8 @@ import { validMondayKey } from './weeklyPlan';
 import { parseQuantity } from './quantities';
 import { customShoppingItem } from './shopping';
 
-// Keep the existing storage key: returning users retain their original demo data.
-export const STORAGE_KEY = 'nibblepot-demo-v1';
+// Intentional v2 reset: recipe IDs are new and no migration is required in the prototype.
+export const STORAGE_KEY = 'simmer-recipes-v2';
 export const DEFAULT_DATA: SavedData = {
   larder: ['potatoes', 'baked-beans', 'rice', 'pasta', 'chopped-tomatoes', 'eggs', 'cheese'],
   favorites: [],

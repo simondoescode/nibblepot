@@ -47,20 +47,21 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
     </div>
     <div className="recipe-page-hero">
       <div className="recipe-page-image">
-        <img src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
+        <img src={`${import.meta.env.BASE_URL}${recipe.image ?? 'recipes/jacket.svg'}`}
           className={recipe.image ? 'recipe-photo' : ''} alt={`Finished ${recipe.title}`}
           width="800" height="504" decoding="async"
           onError={event => {
-            const fallback = `${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`;
+            const fallback = `${import.meta.env.BASE_URL}recipes/jacket.svg`;
             if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback;
           }} />
       </div>
       <div className="recipe-page-intro">
         <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
         <h1>{recipe.title}</h1>
+        <p className="recipe-tags">{recipe.tags.map(tag => <span key={tag}>{tag.replaceAll('-', ' ')}</span>)}</p>
         <p>{recipe.description}</p>
         <div className="recipe-page-facts">
-          <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes</span>
+          <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes ({recipe.prepMins} prep · {recipe.cookMins} cooking)</span>
           <span>🍽️ Serves {servings}</span>
           <span>🫙 {recipe.ing.filter(i => larder.includes(i.id)).length} of {recipe.ing.length} in larder</span>
         </div>

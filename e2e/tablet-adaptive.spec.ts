@@ -5,7 +5,7 @@ const columns = (selector: string) => (page: import('@playwright/test').Page) =>
 for (const width of [768, 834, 1024, 1180]) {
   test(`tablet ${width}px keeps recipe detail, cooking, larder and planner side by side`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto('/nibblepot/recipes/tomato-pasta/');
+    await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
     await expect(page.locator('.recipe-page-hero')).toBeVisible();
     expect(await columns('.recipe-page-hero')(page)).toBe(2);
     expect(await columns('.recipe-page-sections')(page)).toBe(2);
@@ -24,7 +24,7 @@ for (const width of [768, 834, 1024, 1180]) {
 
 test('phone recipe and planner layouts remain single-column', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/nibblepot/recipes/tomato-pasta/');
+  await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
   expect(await columns('.recipe-page-sections')(page)).toBe(1);
   await page.goto('/nibblepot/planner/');
   expect(await columns('.planner-layout')(page)).toBe(1);

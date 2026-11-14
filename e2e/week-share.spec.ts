@@ -29,9 +29,9 @@ test('share the selected week, open in another browser, refresh and return from 
   const recipient = await browser.newContext({ baseURL: new URL(page.url()).origin });
   const other = await recipient.newPage();
   await other.goto('/nibblepot/');
-  await other.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ larder: ['pasta'], favorites: ['jacket'], shopping: [], weekPlans: { '2026-11-09': Array.from({ length: 7 }, () => ({ kind: 'freezer' })) } })));
+  await other.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({ larder: ['pasta'], favorites: ['dahn'], shopping: [], weekPlans: { '2026-11-09': Array.from({ length: 7 }, () => ({ kind: 'freezer' })) } })));
   await other.reload();
-  const before = await other.evaluate(() => localStorage.getItem('nibblepot-demo-v1'));
+  const before = await other.evaluate(() => localStorage.getItem('simmer-recipes-v2'));
   await other.goto(link);
   await expect(other.getByRole('heading', { name: 'A shared week of dinners' })).toBeVisible();
   await expect(other.locator('.planner-intro p')).toHaveText(weekLabel!);
@@ -44,7 +44,7 @@ test('share the selected week, open in another browser, refresh and return from 
   await other.getByRole('button', { name: 'Back to recipes', exact: true }).click();
   await expect(other).toHaveURL(link);
   await expect(other.getByRole('heading', { name: 'A shared week of dinners' })).toBeVisible();
-  expect(await other.evaluate(() => localStorage.getItem('nibblepot-demo-v1'))).toBe(before);
+  expect(await other.evaluate(() => localStorage.getItem('simmer-recipes-v2'))).toBe(before);
   await recipient.close();
 });
 
@@ -73,10 +73,10 @@ test('copy failure offers selectable link, Escape restores focus and mobile layo
 
 test('broken links show a recovery message and leave saved plans alone', async ({ page }) => {
   await page.goto('/nibblepot/');
-  const before = await page.evaluate(() => localStorage.getItem('nibblepot-demo-v1'));
+  const before = await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'));
   await page.goto('/nibblepot/planner/shared/#plan=broken');
   await expect(page.getByRole('heading', { name: 'This week link isn’t complete' })).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem('nibblepot-demo-v1'))).toBe(before);
+  expect(await page.evaluate(() => localStorage.getItem('simmer-recipes-v2'))).toBe(before);
   await page.getByRole('button', { name: 'Open my planner', exact: true }).click();
   await expect(page).toHaveURL(/\/planner\/$/);
 });

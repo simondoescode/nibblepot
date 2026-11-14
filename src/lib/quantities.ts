@@ -17,7 +17,7 @@ export function parseQuantity(text: string): ParsedQuantity {
   const value = Number(match[1]);
   const suffix = match[2].toLowerCase().trim();
   const units: Record<string, string> = {
-    'g': 'g', 'kg': 'kg', 'ml': 'ml', 'l': 'l', 'tsp': 'tsp', 'tbsp': 'tbsp',
+    'each': 'each', 'g': 'g', 'kg': 'kg', 'ml': 'ml', 'l': 'l', 'tsp': 'tsp', 'tbsp': 'tbsp',
     'tin': 'tin', 'tins': 'tin', 'small tin': 'small tin', 'small tins': 'small tin',
     'slices': 'slice', 'slice': 'slice', 'clove': 'clove', 'cloves': 'clove',
     'cube': 'cube', 'cubes': 'cube', 'large': 'large', 'dry': 'dry',
@@ -26,7 +26,8 @@ export function parseQuantity(text: string): ParsedQuantity {
   // Existing "300g dry" is the same dry weight as "300g" in another recipe.
   const normalized = suffix === 'g dry' ? 'g' : suffix;
   if (!(normalized in units) || !Number.isFinite(value)) return { raw };
-  return { value, unit: units[normalized], raw };
+  const unit = units[normalized];
+  return unit === 'kg' ? {value:value*1000,unit:'g',raw} : unit === 'l' ? {value:value*1000,unit:'ml',raw} : {value,unit,raw};
 }
 
 function fraction(value: number): string {
@@ -49,26 +50,26 @@ function amountLabel(amount: number, unit: string): string {
   if (unit === 'leaf') return count + (amount <= 1 ? ' leaf' : ' leaves');
   return count + ' ' + (amount <= 1 ? unit : unit + 's');
 }
+/** Numeric ingredient measurements are canonical in the recipe catalogue. */
+export function ingredientQuantity(ingredient: RecipeIngredient) {
+  return ingredient.unit === 'kg' ? {value: ingredient.amount*1000, unit:'g'}
+    : ingredient.unit === 'l' ? {value:ingredient.amount*1000, unit:'ml'}
+    : {value:ingredient.amount, unit:ingredient.unit};
+}
 export function formatRecipeQuantity(ingredient: RecipeIngredient, servings: number): string {
-  const parsed = parseQuantity(ingredient.qty);
-  if (parsed.value === undefined) return parsed.raw;
-  return amountLabel(parsed.value * clampServings(servings) / BASE_SERVINGS, parsed.unit);
+  const parsed = ingredientQuantity(ingredient);
+  return amountLabel(parsed.value * clampServings(servings) / BASE_SERVINGS, parsed.unit) + (ingredient.note ? ' ' + ingredient.note : '');
 }
 
 /** Combine compatible units while preserving distinct quantities (e.g. 4 large + 750 g potatoes). */
 export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, number> = {}, stock?: Record<string, string>): string {
   const amounts = new Map<string, number>();
-  const unknown: string[] = [];
   const sourceIds = new Set([...entry.from, ...Object.keys(entry.weekCounts ?? {})]);
   for (const sourceId of sourceIds) {
     const recipe = recipes.find(item => item.id === sourceId);
     const ingredient = recipe?.ing.find(item => item.id === entry.id);
     if (!ingredient) continue;
-    const p = parseQuantity(ingredient.qty);
-    if (p.value === undefined) {
-      if (!unknown.includes(p.raw)) unknown.push(p.raw);
-      continue;
-    }
+    const p = ingredientQuantity(ingredient);
     amounts.set(p.unit, (amounts.get(p.unit) ?? 0) + p.value * Math.max(entry.from.includes(sourceId) ? 1 : 0, entry.weekCounts?.[sourceId] ?? 0) * clampServings(servings[sourceId] ?? BASE_SERVINGS) / BASE_SERVINGS);
   }
   const owned = stock?.[entry.id] ? parseQuantity(stock[entry.id]) : undefined;
@@ -77,7 +78,7 @@ export function shoppingQuantity(entry: ShoppingEntry, servings: Record<string, 
     if (needed !== undefined) amounts.set(owned.unit, Math.max(0, needed - owned.value));
   }
   const formatted = [...amounts].filter(([,total])=>total>0).map(([unit, total]) => amountLabel(total, unit));
-  return [...formatted, ...unknown].join(' + ') || (amounts.size ? 'Already in larder' : 'Quantity not set');
+  return formatted.join(' + ') || (amounts.size ? 'Already in larder' : 'Quantity not set');
 }
 
 /**
@@ -89,7 +90,7 @@ export function shoppingPackHint(entry: ShoppingEntry, servings: Record<string, 
   for (const id of new Set([...entry.from, ...Object.keys(entry.weekCounts ?? {})])) {
     const ingredient = recipes.find(r => r.id === id)?.ing.find(i => i.id === entry.id);
     if (!ingredient) continue;
-    const parsed = parseQuantity(ingredient.qty);
+    const parsed = ingredientQuantity(ingredient);
     if (parsed.value === undefined) return null;
     const factor = Math.max(entry.from.includes(id) ? 1 : 0, entry.weekCounts?.[id] ?? 0);
     quantities.set(parsed.unit, (quantities.get(parsed.unit) ?? 0) +
@@ -101,4 +102,14 @@ export function shoppingPackHint(entry: ShoppingEntry, servings: Record<string, 
   const label = unit === 'sheet' ? 'pastry sheet' : unit === 'small tin' ? 'small tin' : 'tin';
   const count = Math.ceil(amount);
   return 'Buy ' + count + ' whole ' + (count === 1 ? label : label + 's') + '; check pack size';
+}
+
+/** Explain exact missing amounts when stock is measured, without inventing pack conversions. */
+export function formatMissingAmount(item: RecipeIngredient, stock: string | undefined, servings = BASE_SERVINGS): string {
+  const wanted = ingredientQuantity(item);
+  const needed = wanted.value * clampServings(servings) / BASE_SERVINGS;
+  const owned = stock ? parseQuantity(stock) : undefined;
+  if (owned?.value !== undefined && owned.unit === wanted.unit)
+    return amountLabel(Math.max(0, needed - owned.value), wanted.unit);
+  return formatRecipeQuantity(item, servings);
 }

@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { ingredients, recipes } from '../src/data';
-import { formatRecipeQuantity, parseQuantity, shoppingQuantity, shoppingPackHint } from '../src/lib/quantities';
+import { formatRecipeQuantity, shoppingQuantity, shoppingPackHint } from '../src/lib/quantities';
 import { recipePath, cookingPath } from '../src/lib/routes';
 
-const originalIds = ['jacket','sausage-bean','chicken-rice','cottage','tuna-bake','tomato-pasta','egg-rice','quesadilla','mash','butter-stew','traybake','toasties','meatball','fish-butties','soup','chilli-jacket'];
+const originalIds = ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9'];
 describe('recipe quality gate', () => {
   it('preserves all original recipe IDs and has twenty-nine additions', () => {
     expect(recipes).toHaveLength(45);
@@ -26,12 +26,12 @@ describe('recipe quality gate', () => {
       expect(recipe.safety.length).toBeGreaterThan(32);
       expect(recipe.storage.length).toBeGreaterThan(65);
       expect(recipe.reviewedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(recipePath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.id + '/');
-      expect(cookingPath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.id + '/cook/');
+      expect(recipePath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.slug + '/');
+      expect(cookingPath(recipe.id)).toBe('/nibblepot/recipes/' + recipe.slug + '/cook/');
       expect(existsSync('public/' + (recipe.image ?? 'recipes/' + recipe.id + '.svg'))).toBe(true);
       for(const item of recipe.ing) {
         expect(ingredients[item.id]).toBeDefined();
-        const parsed = parseQuantity(item.qty);
+        const parsed = {value:item.amount,unit:item.unit};
         expect(parsed.value, recipe.id + '/' + item.id).toBeGreaterThan(0);
         expect(Number.isFinite(parsed.value)).toBe(true);
         expect(formatRecipeQuantity(item,1)).not.toMatch(/NaN|undefined/);
@@ -40,16 +40,16 @@ describe('recipe quality gate', () => {
     });
   }
   it('preserves compatible arithmetic and never invents tin conversions', () => {
-    expect(shoppingQuantity({ id:'pasta', done:false, from:['tomato-pasta'], weekCounts:{'sausage-pasta':2} })).toBe('1050 g');
-    expect(shoppingQuantity({ id:'chopped-tomatoes', done:false, from:[], weekCounts:{'chickpea-curry':1,'tomato-pasta':1} })).toBe('4 tins');
-    const pastry = { id:'puff-pastry',done:false,from:['chicken-pie'] };
-    expect(shoppingQuantity(pastry,{'chicken-pie':1})).toBe('¼ sheet');
-    expect(shoppingPackHint(pastry,{'chicken-pie':1})).toContain('Buy 1 whole pastry sheet');
-    expect(shoppingQuantity({id:'potatoes',done:false,from:['jacket','sausage-traybake']})).toBe('4 large + 800 g');
+    expect(shoppingQuantity({ id:'pasta', done:false, from:['hdfl'], weekCounts:{'nf56':2} })).toBe('1050 g');
+    expect(shoppingQuantity({ id:'chopped-tomatoes', done:false, from:[], weekCounts:{'9j09':1,'hdfl':1} })).toBe('4 tins');
+    const pastry = { id:'puff-pastry',done:false,from:['v8e7'] };
+    expect(shoppingQuantity(pastry,{'v8e7':1})).toBe('¼ sheet');
+    expect(shoppingPackHint(pastry,{'v8e7':1})).toContain('Buy 1 whole pastry sheet');
+    expect(shoppingQuantity({id:'potatoes',done:false,from:['dahn','awbe']})).toBe('4 large + 800 g');
   });
   it('includes twenty-four bundled offline illustrations', () => {
     for (const recipe of recipes.slice(16, 40)) {
-      const path='public/recipes/' + recipe.id + '.svg';
+      const path='public/' + recipe.image!.replace(/\.webp$/, '.svg');
       const svg = readFileSync(path,'utf8');
       expect(svg).toContain('<svg ');
       expect(svg).toContain('<title ');

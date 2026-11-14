@@ -1,25 +1,25 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 
-const recipeIds = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as {id:string;title:string}[];
+const recipeIds = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as {id:string;slug:string;title:string}[];
 
 test('every cooking route is a physical GitHub Pages entry with noindex and recipe canonical', () => {
   for (const recipe of recipeIds) {
-    const filename = `dist/recipes/${recipe.id}/cook/index.html`;
+    const filename = `dist/recipes/${recipe.slug}/cook/index.html`;
     expect(existsSync(filename), filename).toBe(true);
     const html = readFileSync(filename,'utf8');
     expect(html).toContain('Cook ' + recipe.title.replaceAll('&','&amp;'));
     expect(html).toContain('name="robots" content="noindex,follow"');
     expect(html).toContain(
-      'rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.id + '/"'
+      'rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.slug + '/"'
     );
   }
 });
 
 test('start cooking opens a dedicated route with next, previous and completion controls', async ({page}, testInfo) => {
-  await page.goto('/nibblepot/recipes/tomato-pasta/');
+  await page.goto('/nibblepot/recipes/speedy-tomato-pasta/');
   await page.getByRole('button',{name:'Start cooking'}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/tomato-pasta\/cook\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/speedy-tomato-pasta\/cook\/$/);
   await expect(page.getByText(/Put the pasta in a pan of boiling water/)).toBeVisible();
   await expect(page.getByRole('navigation',{name:'Main navigation'})).toHaveCount(0);
   if (testInfo.project.name === 'mobile') {
@@ -42,11 +42,11 @@ test('start cooking opens a dedicated route with next, previous and completion c
   await page.getByRole('button',{name:'Cook again'}).click();
   await expect(page.getByText(/Put the pasta in a pan of boiling water/)).toBeVisible();
   await page.getByRole('button',{name:'Recipe',exact:true}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/tomato-pasta\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/speedy-tomato-pasta\/$/);
 });
 
 test('direct cooking link and refresh keep step and checked ingredients for the same tab', async ({page}, testInfo) => {
-  const response=await page.goto('/nibblepot/recipes/jacket/cook/');
+  const response=await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   expect(response?.status()).toBe(200);
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open ingredient checklist'}).click();
   await page.locator('.cook-checklist label').filter({hasText:'Potatoes'}).getByRole('checkbox').check();
@@ -54,7 +54,7 @@ test('direct cooking link and refresh keep step and checked ingredients for the 
   await page.getByRole('button',{name:'Next step'}).click();
   await expect(page.getByText(/About 5 minutes before serving, heat the baked beans/)).toBeVisible();
   await page.reload();
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/cook\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/cook\/$/);
   await expect(page.getByText(/About 5 minutes before serving, heat the baked beans/)).toBeVisible();
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open ingredient checklist'}).click();
   await expect(page.locator('.cook-checklist label').filter({hasText:'Potatoes'}).getByRole('checkbox')).toBeChecked();
@@ -62,7 +62,7 @@ test('direct cooking link and refresh keep step and checked ingredients for the 
 });
 
 test('explicit step duration starts and pauses a countdown, survives a refresh, and resets', async ({page}, testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/cook/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   if (testInfo.project.name === 'mobile') await page.getByRole('button', {name:'Open kitchen timer'}).click();
   await page.getByRole('button',{name:'50 min',exact:true}).click();
   await expect(page.locator('.cook-timer-time')).toHaveText('50:00');
@@ -83,7 +83,7 @@ test('explicit step duration starts and pauses a countdown, survives a refresh, 
 
 test('mobile cooking controls stay thumb-reachable while scrolling, sheets close on Escape', async ({page}, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'Fixed thumb controls are mobile-only');
-  await page.goto('/nibblepot/recipes/sausage-bean/cook/');
+  await page.goto('/nibblepot/recipes/sausage-and-bean-casserole/cook/');
   const dock = page.locator('.cook-step-actions');
   const tools = page.locator('.cook-mobile-tools');
   await expect(dock).toBeVisible();
@@ -109,7 +109,7 @@ test('mobile cooking controls stay thumb-reachable while scrolling, sheets close
 });
 
 test('mobile timer chip reflects countdown while sheet is closed and the desktop keeps both panels', async ({page},testInfo) => {
-  await page.goto('/nibblepot/recipes/jacket/cook/');
+  await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/cook/');
   if (testInfo.project.name === 'mobile') {
     await page.getByRole('button',{name:'Open kitchen timer'}).click();
     await page.getByRole('button',{name:'Start timer'}).click();

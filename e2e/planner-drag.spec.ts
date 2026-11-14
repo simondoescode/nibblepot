@@ -98,7 +98,7 @@ test('active drag cancels on Escape, pointer cancellation and outside release wi
   await grip.scrollIntoViewIfNeeded();
   const titles=page.locator('.planner-picked strong');
   const before=await titles.allTextContents();
-  const saved=await page.evaluate(()=>localStorage.getItem('nibblepot-demo-v1'));
+  const saved=await page.evaluate(()=>localStorage.getItem('simmer-recipes-v2'));
   for(const mode of ['escape','cancel','outside','same-day']){
     const a=(await grip.boundingBox())!,b=(await page.locator('.planner-day').nth(1).boundingBox())!;
     await page.mouse.move(a.x+22,a.y+22);
@@ -113,7 +113,7 @@ test('active drag cancels on Escape, pointer cancellation and outside release wi
     await page.mouse.up();
     await expect(page.locator('.planner-drag-float,.planner-drop-ghost')).toHaveCount(0);
     await expect(titles).toHaveText(before);
-    expect(await page.evaluate(()=>localStorage.getItem('nibblepot-demo-v1'))).toBe(saved);
+    expect(await page.evaluate(()=>localStorage.getItem('simmer-recipes-v2'))).toBe(saved);
   }
 });
 
