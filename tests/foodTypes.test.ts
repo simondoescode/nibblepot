@@ -22,7 +22,7 @@ describe('food type filters',()=>{
     expect(ids).toContain('bf4m');
     expect(ids).toContain('9j09');
     for(const id of ['5epv','gf6b','6lab','mkys','v8e7']) expect(ids).not.toContain(id);
-    expect(matchesFoodType({...recipe('dahn'),ing:[...recipe('dahn').ing,{id:'ham',qty:'1 slice',optional:true}]},'meat-free')).toBe(false);
+    expect(matchesFoodType({...recipe('dahn'),ing:[...recipe('dahn').ing,{id:'ham',amount:1,unit:'slice',optional:true}]},'meat-free')).toBe(false);
   });
   it('offers populated food types without changing default catalogue results',()=>{
     expect(filterRecipes(recipes,'','all',[])).toEqual(filterRecipes(recipes,'','all',[],['all']));
