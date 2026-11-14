@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, CalendarDays } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, CookingPot, Snowflake } from 'lucide-react';
 import { recipes } from '../data';
 import { parseSharedWeek } from '../lib/weekShare';
 import { dateForWeekDay, WEEK_DAYS, weekSlotTitle } from '../lib/weeklyPlan';
@@ -24,18 +24,31 @@ export function SharedWeekPage({ onRecipe, onPlanner }: { onRecipe: (id: string)
       <div><h1>A shared week of dinners</h1><p>{date.formatRange(dateForWeekDay(plan.week, 0), dateForWeekDay(plan.week, 6))}</p></div>
     </header>
     <p className="shared-week-note">A snapshot of the sender’s plan. Your own planner stays as it is.</p>
-    <div className="planner-days">
+    <div className="shared-week-days">
       {plan.slots.map((slot, index) => {
         const recipe = slot.kind === 'recipe' ? recipes.find(r => r.id === slot.id) : undefined;
-        return <article className="planner-day" key={index}>
-          <div className="planner-day-label"><strong>{WEEK_DAYS[index]}</strong><span>{date.format(dateForWeekDay(plan.week, index))}</span></div>
-          <div className="shared-week-meal">
-            {recipe && <img className="planner-meal-thumb" src={import.meta.env.BASE_URL + (recipe.image ?? 'recipes/jacket.svg')} alt="" width="70" height="56"/>}
-            <div className="planner-picked"><strong>{slot.kind === 'empty' ? 'No dinner planned' : weekSlotTitle(slot)}</strong>
-              {recipe && <small>{recipe.mins} min · serves {plan.servings[recipe.id]}</small>}
-            </div>
+        const secondary = slot.kind === 'leftovers' ? 'Enjoy what you’ve already cooked'
+          : slot.kind === 'freezer' ? 'Something easy from the freezer'
+          : 'No meal planned for this day';
+        return <article className={`shared-week-day${recipe ? '' : ' shared-week-day--rest'}`} key={index}>
+          <div className="shared-week-day-date">
+            <strong>{WEEK_DAYS[index]}</strong><span>{date.format(dateForWeekDay(plan.week, index))}</span>
           </div>
-          {recipe && <button className="planner-view" type="button" aria-label={'View recipe for ' + WEEK_DAYS[index]} onClick={() => onRecipe(recipe.id)}><ArrowUpRight size={20}/></button>}
+          <div className="shared-week-day-visual" aria-hidden="true">
+            {recipe
+              ? <img src={import.meta.env.BASE_URL + (recipe.image ?? 'recipes/jacket.svg')} alt="" width="74" height="66"/>
+              : slot.kind === 'freezer' ? <Snowflake size={26}/>
+              : slot.kind === 'leftovers' ? <CookingPot size={26}/>
+              : <CalendarDays size={26}/>}
+          </div>
+          <div className="shared-week-day-meal">
+            <strong>{slot.kind === 'empty' ? 'No dinner planned' : weekSlotTitle(slot)}</strong>
+            <small>{recipe ? `${recipe.mins} min · serves ${plan.servings[recipe.id]}` : secondary}</small>
+          </div>
+          {recipe && <button className="shared-week-day-action" type="button"
+            aria-label={'View recipe for ' + WEEK_DAYS[index]} onClick={() => onRecipe(recipe.id)}>
+            <ArrowUpRight size={20} aria-hidden="true"/>
+          </button>}
         </article>;
       })}
     </div>
