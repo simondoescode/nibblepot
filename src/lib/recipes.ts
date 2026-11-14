@@ -32,6 +32,9 @@ export function filterRecipes(recipes: readonly Recipe[], search: string, filter
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
   if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
+  if (filter === 'budget') found = found.filter(recipe => recipe.tags.includes('budget'));
+  if (filter === 'batch') found = found.filter(recipe => recipe.tags.includes('batch-friendly'));
+  if (filter === 'minimal') found = found.filter(recipe => recipe.tags.includes('minimal-prep'));
   if (filter === 'larder') {
     // Keep every candidate: the home screen separates ready, nearly ready and other ideas.
     found.sort((a, b) => {
