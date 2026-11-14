@@ -24,6 +24,9 @@ describe('recipe catalogue', () => {
     expect(filterRecipes(recipes, '', 'quick', []).every(recipe => recipe.mins <= 30)).toBe(true);
     expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.length <= 5)).toBe(true);
     expect(filterRecipes(recipes, '', 'onepot', []).every(recipe => recipe.onePot)).toBe(true);
+    expect(filterRecipes(recipes, '', 'budget', []).every(r => r.tags.includes('budget'))).toBe(true);
+    expect(filterRecipes(recipes, '', 'minimal', []).every(r => r.tags.includes('minimal-prep'))).toBe(true);
+    expect(filterRecipes(recipes, '', 'batch', []).every(r => r.tags.includes('batch-friendly'))).toBe(true);
   });
   it('groups ready and nearly ready recipes by required stock', () => {
     const pantry = ['potatoes', 'baked-beans', 'cheese', 'butter'];
