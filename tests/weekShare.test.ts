@@ -4,7 +4,7 @@ import { defaultWeek } from '../src/lib/weeklyPlan';
 import { parseRoute } from '../src/lib/routes';
 import { encodeShareData } from '../src/lib/shareCodec';
 
-const create = () => createWeekShareLink('https://example.com', '2026-11-09', defaultWeek(), { jacket: 2, '5sg6': 6, '65ej': 8 });
+const create = () => createWeekShareLink('https://example.com', '2026-11-09', defaultWeek(), { 'dahn': 2, '5sg6': 6, '65ej': 8 });
 const encode = (value: unknown) => '#plan=' + encodeShareData(value);
 
 describe('week share snapshots', () => {
@@ -16,18 +16,18 @@ describe('week share snapshots', () => {
     const plan = parseSharedWeek(url.hash)!;
     expect(plan.week).toBe('2026-11-09');
     expect(plan.slots).toEqual(defaultWeek());
-    expect(plan.servings).toEqual({ jacket: 2, '5sg6': 6, 'ruxx': 4, cottage: 4, 'gf6b': 4 });
+    expect(plan.servings).toEqual({ 'dahn': 2, '5sg6': 6, 'ruxx': 4, '4khq': 4, 'gf6b': 4 });
     expect(Object.keys(plan).sort()).toEqual(['id', 'servings', 'slots', 'v', 'week']);
   });
   it('creates a unique link each time and keeps earlier snapshots unchanged', () => {
     const slots = defaultWeek();
-    const servings = { jacket: 2 };
+    const servings = { 'dahn': 2 };
     const link = createWeekShareLink('https://example.com', '2026-11-09', slots, servings);
     expect(link).not.toBe(create());
-    slots[0] = { kind: 'empty' }; servings.jacket = 8;
+    slots[0] = { kind: 'empty' }; servings['dahn'] = 8;
     const plan = parseSharedWeek(new URL(link).hash)!;
     expect(plan.slots[0]).toEqual({ kind: 'recipe', id: 'dahn' });
-    expect(plan.servings.jacket).toBe(2);
+    expect(plan.servings['dahn']).toBe(2);
   });
   it('retains empty, leftover and freezer nights, including repeated recipes', () => {
     const slots = defaultWeek(); slots[1] = slots[0]; slots[2] = { kind: 'empty' };
@@ -40,7 +40,7 @@ describe('week share snapshots', () => {
       encode({ ...valid, week: '2026-11-10' }), encode({ ...valid, week: '2026-02-30' }),
       encode({ ...valid, slots: valid.slots.slice(1) }),
       encode({ ...valid, slots: [{ kind: 'recipe', id: 'missing' }, ...valid.slots.slice(1)] }),
-      encode({ ...valid, servings: { ...valid.servings, jacket: 9 } }),
-      encode({ ...valid, servings: { ...valid.servings, jacket: 1.5 } })]) expect(parseSharedWeek(hash)).toBeNull();
+      encode({ ...valid, servings: { ...valid.servings, 'dahn': 9 } }),
+      encode({ ...valid, servings: { ...valid.servings, 'dahn': 1.5 } })]) expect(parseSharedWeek(hash)).toBeNull();
   });
 });
