@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-for(const route of ['', 'planner/shared/', 'planner/', 'shopping/', 'recipes/tomato-pasta/']){
+for(const route of ['', 'planner/shared/', 'planner/', 'shopping/', 'recipes/speedy-tomato-pasta/']){
   test(`static share metadata is readable without JavaScript: ${route||'home'}`,async({request})=>{
     const response=await request.get('/nibblepot/'+route);
     expect(response.ok()).toBe(true);
