@@ -22,6 +22,7 @@
 ## Versioning and user-facing releases
 
 - Read [docs/releases.md](docs/releases.md) before preparing or changing a release. Use Conventional Commit PR titles so Release Please can select the appropriate SemVer bump.
+- Keep the Release Please workflow in manifest mode: define `release-type` in `release-please-config.json`, not as an action input. Supplying the action input bypasses the saved manifest/config and can propose the wrong initial version. For the 0.x prototype, keep `bump-minor-pre-major` enabled and review any proposed move to 1.0.0 explicitly.
 - `package.json.version` is the single source of truth for the app version. Settings imports it directly; never hardcode a separate display version or use a Git SHA/deployment number as the release version.
 - Every versioned release must update `package.json`, the root/package version entries in `package-lock.json`, `.release-please-manifest.json` and `CHANGELOG.md` together through the reviewed release PR. The Git tag and GitHub Release must use that same version.
 - Include short, friendly user-facing release notes for every version, accessible offline from **Settings → What's new?**. Review the generated changelog's first three visible bullets; do not show notes newer than the installed app version.
