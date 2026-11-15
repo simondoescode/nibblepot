@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { version } from '../package.json';
 
 test('settings lets people read local release history without leaving the app', async ({page}, info) => {
   await page.goto('/nibblepot/');
@@ -8,13 +9,14 @@ test('settings lets people read local release history without leaving the app', 
     await page.getByRole('navigation',{name:'Main navigation'}).getByRole('button',{name:'Settings',exact:true}).click();
   }
 
-  await expect(page.locator('.settings-version')).toHaveText('v0.2.0');
+  await expect(page.locator('.settings-version')).toHaveText(`v${version}`);
   const notes = page.getByRole('region',{name:'Release notes'});
   const toggle = notes.getByRole('button',{name:/What.s new/});
   await expect(toggle).toBeVisible();
   await expect(toggle).toHaveAttribute('aria-expanded','false');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded','true');
+  await expect(notes.locator('.release-note-entry').first().locator('.release-note-meta span').first()).toHaveText(`v${version}`);
   await expect(notes.getByText('Our first helping')).toBeVisible();
   await expect(notes.getByText('v0.2.0',{exact:true})).toBeVisible();
   await toggle.click();
