@@ -44,11 +44,11 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
   await expect(page.locator('.recipe-card')).toHaveCount(1);
   const nav = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
   await page.getByRole('navigation', { name: nav }).getByRole('button', { name: 'Larder' }).click();
-  const potatoes = page.locator('.larder-item').filter({ hasText: 'Potatoes' }).getByRole('checkbox');
+  const potatoes = page.getByRole('checkbox', { name: 'Potatoes', exact: true });
   await potatoes.uncheck();
   await page.reload();
   await page.getByRole('navigation', { name: nav }).getByRole('button', { name: 'Larder' }).click();
-  await expect(page.locator('.larder-item').filter({ hasText: 'Potatoes' }).getByRole('checkbox')).not.toBeChecked();
+  await expect(page.getByRole('checkbox', { name: 'Potatoes', exact: true })).not.toBeChecked();
 });
 
 test('spotlight changes recipe and keeps keyboard focus on Surprise me', async ({ page }) => {

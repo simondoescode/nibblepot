@@ -8,7 +8,7 @@ test('every cooking route is a physical GitHub Pages entry with noindex and reci
     const filename = `dist/recipes/${recipe.slug}/cook/index.html`;
     expect(existsSync(filename), filename).toBe(true);
     const html = readFileSync(filename,'utf8');
-    expect(html).toContain('Cook ' + recipe.title.replaceAll('&','&amp;'));
+    expect(html).toContain('Cook ' + recipe.title.replaceAll('&','&amp;').replaceAll("'",'&#39;'));
     expect(html).toContain('name="robots" content="noindex,follow"');
     expect(html).toContain(
       'rel="canonical" href="https://simondoescode.github.io/nibblepot/recipes/' + recipe.slug + '/"'
