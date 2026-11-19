@@ -1,23 +1,28 @@
-# PR #62 — remaining food artwork
+# PR #62 — family recipe artwork status
 
-The data/schema migration is now done, but **the original 15 food photos have not been generated**.
+## Technical status
 
-Before merging, create a *distinct*, visually accurate and transparent 800 × 504 WebP photo for each recipe, observing [IMAGE_STYLE.md](../IMAGE_STYLE.md). Use real alpha and less than 250,000 bytes per file; check crops on mobile.
+All **15** generated food images are committed at `public/recipes/<recipe-slug>.webp`, matching the explicit `image` paths in `src/data/recipes.json`.
 
-- [ ] `public/recipes/creamy-chicken-broccoli-rice.webp`
-- [ ] `public/recipes/sticky-honey-garlic-chicken.webp`
-- [ ] `public/recipes/mild-chicken-sweet-potato-curry.webp`
-- [ ] `public/recipes/chicken-veggie-meatballs.webp`
-- [ ] `public/recipes/mini-shepherds-pies.webp`
-- [ ] `public/recipes/mild-lamb-koftas.webp`
-- [ ] `public/recipes/lamb-sweet-potato-stew.webp`
-- [ ] `public/recipes/hidden-veg-beef-bolognese.webp`
-- [ ] `public/recipes/cheesy-beef-rice-bowls.webp`
-- [ ] `public/recipes/beef-potato-hotpot.webp`
-- [ ] `public/recipes/beef-meatballs-tomato-sauce.webp`
-- [ ] `public/recipes/salmon-potato-fishcakes.webp`
-- [ ] `public/recipes/creamy-fish-pie.webp`
-- [ ] `public/recipes/homemade-fish-fingers-wedges.webp`
-- [ ] `public/recipes/creamy-salmon-pea-pasta.webp`
+- [x] 15 distinct WebP file paths
+- [x] 800 × 504 pixels, transparent alpha with clear corners
+- [x] Each WebP below the 250,000-byte limit
+- [ ] Visual editorial approval of every image
+- [ ] Full green CI and responsive/mobile image review
 
-Once images are committed, run `npm run check:recipes`, `npm run build`, `npm run test` and `npm run test:e2e`. Verify direct recipe pages, favourites, larder, shopping, planner and offline images in a browser. Only then take this PR out of draft and merge it.
+These paths use recipe slugs as explicitly configured in the JSON; [IMAGE_STYLE.md](../IMAGE_STYLE.md) describes an ID-based naming convention for future standardisation.
+
+## Six images still needing editorial attention
+
+- [ ] **chicken-veggie-meatballs** — Chicken mince and hidden vegetables are not visually verifiable; extra parmesan garnish
+- [ ] **mini-shepherds-pies** — Shows one large pie rather than four individual pies
+- [ ] **mild-lamb-koftas** — Extra tomatoes visible with lamb koftas, flatbread and cucumber yoghurt
+- [ ] **cheesy-beef-rice-bowls** — Sweetcorn not clearly visible
+- [ ] **beef-meatballs-tomato-sauce** — Extra green peas shown despite not being in recipe
+- [ ] **creamy-fish-pie** — Fish filling beneath mash cannot be verified visually
+
+## Before merging
+
+Run `npm run check:recipes`, `npm run build`, `npm run test` and `npm run test:e2e`, resolve any failures, inspect all 15 images on mobile and desktop, and confirm PWA offline loading. Keep the PR in draft until the six editorial issues above have been accepted or corrected.
+
+Related issue: #61.
