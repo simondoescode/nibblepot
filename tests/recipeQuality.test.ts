@@ -60,7 +60,7 @@ describe('recipe quality gate', () => {
     for (const recipe of recipes.filter(r => r.ing.some(i => i.id==='rice'))) {
       expect(recipe.storage).toContain('within one hour');
       expect(recipe.storage).toContain('24 hours');
-      expect(recipe.storage).toContain('reheat only once');
+      expect(recipe.storage.toLowerCase()).toContain('reheat only once');
     }
   });
 });
