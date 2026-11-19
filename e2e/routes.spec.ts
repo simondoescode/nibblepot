@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
 const recipes = JSON.parse(readFileSync('src/data/recipes.json', 'utf8')) as { id: string; slug: string; title: string }[];
 
-test('all forty GitHub Pages recipe routes are physical HTML entrypoints', () => {
+test('all sixty GitHub Pages recipe routes are physical HTML entrypoints', () => {
   for (const recipe of recipes) {
     const path = 'dist/recipes/' + recipe.slug + '/index.html';
     expect(existsSync(path), 'Missing static deep link ' + path).toBe(true);
@@ -29,7 +29,7 @@ test('browser back and forward restore recipe and catalogue', async ({ page }) =
   await page.getByRole('link', { name: /jacket potatoes/i }).first().click();
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.goBack();
-  await expect(page.locator('.recipe-card')).toHaveCount(45);
+  await expect(page.locator('.recipe-card')).toHaveCount(60);
   await page.goForward();
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
 });
