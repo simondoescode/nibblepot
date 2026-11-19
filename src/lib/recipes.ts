@@ -1,7 +1,7 @@
 import { ingredientName } from '../data';
 import type { Filter, Recipe, SavedData, ShoppingEntry } from '../types';
 import { shoppingQuantity, parseQuantity, ingredientQuantity } from './quantities';
-import { matchesFoodType, type FoodType } from './foodTypes';
+import { dietaryFoodTypes, matchesFoodType, type FoodType } from './foodTypes';
 
 /** Only required ingredients affect whether dinner can be made. */
 export const missingRequired = (recipe: Recipe, larder: readonly string[]) =>
@@ -26,11 +26,14 @@ export const inLarder = (recipe: Recipe, larder: readonly string[]) =>
 export function filterRecipes(recipes: readonly Recipe[], search: string, filter: Filter, larder: readonly string[], selectedFoodTypes: readonly FoodType[] = [], stock: Readonly<Record<string,string>> = {}, servings: Readonly<Record<string,number>> = {}): Recipe[] {
   const q = search.trim().toLocaleLowerCase('en-GB');
   let found = recipes.filter(recipe =>
-    (selectedFoodTypes.length === 0 || selectedFoodTypes.some(type=>matchesFoodType(recipe,type))) && (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
+    // Dietary restrictions always apply; ordinary food types remain an inclusive OR.
+    selectedFoodTypes.filter(type=>dietaryFoodTypes.includes(type)).every(type=>matchesFoodType(recipe,type)) &&
+    (selectedFoodTypes.filter(type=>!dietaryFoodTypes.includes(type)).length === 0 || selectedFoodTypes.filter(type=>!dietaryFoodTypes.includes(type)).some(type=>matchesFoodType(recipe,type))) &&
+    (!q || [recipe.title, recipe.description, ...recipe.ing.map(({ id }) => ingredientName(id))]
       .join(' ').toLocaleLowerCase('en-GB').includes(q))
   );
   if (filter === 'quick') found = found.filter(recipe => recipe.mins <= 30);
-  if (filter === 'simple') found = found.filter(recipe => recipe.ing.length <= 5);
+  if (filter === 'simple') found = found.filter(recipe => recipe.ing.filter(item=>!item.optional).length <= 5);
   if (filter === 'onepot') found = found.filter(recipe => recipe.onePot);
   if (filter === 'budget') found = found.filter(recipe => recipe.tags.includes('budget'));
   if (filter === 'batch') found = found.filter(recipe => recipe.tags.includes('batch-friendly'));

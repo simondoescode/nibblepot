@@ -22,7 +22,7 @@ describe('recipe catalogue', () => {
   });
   it('filters quick, simple, and one-pot recipes', () => {
     expect(filterRecipes(recipes, '', 'quick', []).every(recipe => recipe.mins <= 30)).toBe(true);
-    expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.length <= 5)).toBe(true);
+    expect(filterRecipes(recipes, '', 'simple', []).every(recipe => recipe.ing.filter(item=>!item.optional).length <= 5)).toBe(true);
     expect(filterRecipes(recipes, '', 'onepot', []).every(recipe => recipe.onePot)).toBe(true);
     expect(filterRecipes(recipes, '', 'budget', []).every(r => r.tags.includes('budget'))).toBe(true);
     expect(filterRecipes(recipes, '', 'minimal', []).every(r => r.tags.includes('minimal-prep'))).toBe(true);

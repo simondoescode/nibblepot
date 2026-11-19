@@ -135,3 +135,6 @@
 .release-note-entry h4{font-size:18px;letter-spacing:-.35px;margin:10px 0 7px}
 .release-note-entry ul{margin:0;padding-left:20px;display:grid;gap:5px;font-size:14px;line-height:1.45;color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.release-notes-chevron{transition:none}}
+
+.food-picker-group-title{grid-column:1/-1;font-size:13px;letter-spacing:.02em;margin:6px 0 0;font-weight:750}
+.food-picker-hint{grid-column:1/-1;margin:0!important;font-size:12px!important;line-height:1.45!important}
