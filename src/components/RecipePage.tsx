@@ -1,6 +1,8 @@
 
 import { ArrowLeft, Check, Clock3, Heart, Share2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
 import { ingredientName } from '../data';
+import { MotionMark } from '../ui/MotionMark';
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import { useState } from 'react';
 import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
 import { recipePath } from '../lib/routes';
@@ -20,7 +22,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
   servings: number; onServingsChange: (value: number) => void;
   onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; onPlan: (opener: HTMLButtonElement) => void; onCook: () => void; notify: (message: string) => void;
 }) {
-  const [pulse,setPulse] = useState(false);
+  const servingsRef = useChangeMotion<HTMLOutputElement>(servings, 'pop');
   const [includedOptional, setIncludedOptional] = useState<string[]>([]);
   const shareRecipe = async () => {
     const url = new URL(recipePath(recipe.id), window.location.origin).href;
@@ -70,7 +72,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
           <Button className="recipe-plan-action" aria-haspopup="dialog" icon={<CalendarPlus size={18} />}
             onClick={event => onPlan(event.currentTarget)}>Plan this dinner</Button>
           <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
-          <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={() => {setPulse(!saved);onFavorite();}} className={pulse ? 'just-saved' : ''} onAnimationEnd={() => setPulse(false)}
+          <Button icon={<MotionMark active={saved}><Heart size={18} fill={saved ? 'currentColor' : 'none'} /></MotionMark>} onClick={onFavorite}
             aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>
       </div>
@@ -82,7 +84,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
           <span>Servings</span>
           <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
             disabled={servings <= MIN_SERVINGS} aria-label="Fewer servings"><Minus size={17} /></button>
-          <output aria-live="polite" aria-label="Servings count">{servings}</output>
+          <output ref={servingsRef} aria-live="polite" aria-label="Servings count">{servings}</output>
           <button type="button" onClick={() => onServingsChange(Math.min(MAX_SERVINGS, servings + 1))}
             disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
         </div>

@@ -1,11 +1,15 @@
 import { InstallCard } from './PwaExperience';
 import type { PwaState } from '../hooks/usePwa';
 import { useRef, useState, type ChangeEvent } from 'react';
-import { Download, RefreshCw, Trash2, Upload, ShieldCheck } from 'lucide-react';
+import { Download, RefreshCw, Trash2, Upload, ShieldCheck, ChevronDown, Sparkles } from 'lucide-react';
 import { Button } from '../ui/controls';
 import { parseSavedData } from '../lib/storage';
 import type { SavedData } from '../types';
 import { version } from '../../package.json';
+import changelog from '../../CHANGELOG.md?raw';
+import { availableReleaseNotes, parseReleaseNotes } from '../lib/releaseNotes';
+
+const releaseNotes = availableReleaseNotes(parseReleaseNotes(changelog), version);
 
 export function SettingsPage({ pwa, data, onRefresh, refreshing, onRestore, onReset, notify }: {
   pwa: PwaState;
@@ -18,6 +22,7 @@ export function SettingsPage({ pwa, data, onRefresh, refreshing, onRestore, onRe
 }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [reading, setReading] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
 
   const downloadBackup = () => {
     const blob = new Blob([JSON.stringify({ format: 'nibblepot-backup', version: 1, data }, null, 2)], { type: 'application/json' });
@@ -77,6 +82,20 @@ export function SettingsPage({ pwa, data, onRefresh, refreshing, onRestore, onRe
           <Button tone="primary" icon={<RefreshCw size={17} />} onClick={onRefresh} disabled={refreshing}>
             {refreshing ? 'Refreshing…' : 'Refresh app'}
           </Button>
+        </div>
+      </section>
+      <section className="settings-panel settings-release-notes" role="region" aria-label="Release notes">
+        <button className="release-notes-toggle" type="button" onClick={() => setNotesOpen(value => !value)} aria-expanded={notesOpen} aria-controls="simmer-release-history">
+          <span className="release-notes-icon"><Sparkles size={20} aria-hidden="true" /></span>
+          <span className="release-notes-label"><strong>What's new?</strong><small>Little improvements, freshly served.</small></span>
+          <ChevronDown size={19} className={notesOpen ? 'release-notes-chevron open' : 'release-notes-chevron'} aria-hidden="true" />
+        </button>
+        <div id="simmer-release-history" hidden={!notesOpen}>
+          {releaseNotes.length ? releaseNotes.map((note, index) => <article key={note.version} className="release-note-entry">
+            <div className="release-note-meta"><span>v{note.version}</span>{index === 0 && <span className="release-note-latest">Latest</span>}{note.date && <time dateTime={note.date}>{new Date(note.date + 'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</time>}</div>
+            <h4>{note.title}</h4>
+            <ul>{note.highlights.map((item, itemIndex) => <li key={itemIndex}>{item}</li>)}</ul>
+          </article>) : <p>No release notes to show just yet. Something good is simmering.</p>}
         </div>
       </section>
       <section className="settings-panel">

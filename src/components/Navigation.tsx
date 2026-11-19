@@ -1,4 +1,5 @@
 import { BookOpen, CalendarDays, CookingPot, Heart, Settings2, ShoppingBasket } from 'lucide-react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import type { Tab } from '../types';
 import { PotIcon } from './PotArt';
 
@@ -41,7 +42,8 @@ export function Header({ tab, shoppingCount, onNavigate, mobileVisible }: { tab:
 }
 
 export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void }) {
-  return <nav className="mobile-nav" aria-label="Mobile navigation">
+  const ref = useChangeMotion<HTMLElement>(tab, 'pop', true, '.mobbtn.active .mob-icon > svg');
+  return <nav ref={ref} className="mobile-nav" aria-label="Mobile navigation">
     {mobileLinks.map(({ id, label, icon: Icon }) => <button type="button" key={id}
       className={`mobbtn ${tab === id ? 'active' : ''}`}
       aria-label={label} aria-description={id === 'shopping' && shoppingCount > 0 ? `${shoppingCount} to buy` : undefined}

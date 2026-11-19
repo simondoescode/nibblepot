@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
+import { MotionSparks } from '../ui/MotionMark';
 import { useDinnerDrag } from '../hooks/useDinnerDrag';
 import { DinnerDragPreview, DragMeal } from './DinnerDragPreview';
 import * as Dialog from '../ui/dialog';
@@ -30,8 +32,14 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
   onRecipe: (id: string) => void;
 }) {
 
+  const [shuffleRevision, setShuffleRevision] = useState(0);
+  const shuffleRef = useChangeMotion<HTMLSpanElement>(shuffleRevision, 'shuffle');
   const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
-  const [changedDay,setChangedDay] = useState<number|null>(null);
+  const [changedDay,setChangedDay] = useState<{index:number; revision:number}|null>(null);
+  const placementRef = useChangeMotion<HTMLDivElement>(changedDay, 'stamp', changedDay !== null, `[data-day-index="${changedDay?.index}"] .planner-meal-thumb`);
+  const markChanged = (index:number) => setChangedDay(previous => ({index, revision:(previous?.revision ?? 0) + 1}));
+  const weekComplete = slots.every(slot => slot.kind !== 'empty');
+  const completeRef = useChangeMotion<HTMLSpanElement>(weekComplete, 'celebrate', weekComplete, undefined, week);
   const lastEditing = useRef(0);
   const [editingDay,setEditingDay] = useState<number|null>(null);
   const [query,setQuery] = useState('');
@@ -60,7 +68,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
     if(editingDay === null) return;
     if(!sameSlot(slots[editingDay],choice)){
       remember(days[editingDay] + ' dinner changed');
-      setChangedDay(editingDay);
+      markChanged(editingDay);
       onChange(editingDay,choice);
     }
     setEditingDay(null);
@@ -73,22 +81,22 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
     setFilter('all');
     setClearPending(false);
   };
-  const shuffle = () => {remember('Dinners shuffled');onShuffle();setClearPending(false);};
-  const clear = () => {remember('Week cleared');onClear();setClearPending(false);};
-  const revert = () => {if(undo?.week === week){onReplace(undo.before);setUndo(null);}};
+  const shuffle = () => {setChangedDay(null);setShuffleRevision(value => value + 1);remember('Dinners shuffled');onShuffle();setClearPending(false);};
+  const clear = () => {setChangedDay(null);remember('Week cleared');onClear();setClearPending(false);};
+  const revert = () => {if(undo?.week === week){setChangedDay(null);onReplace(undo.before);setUndo(null);}};
   const dropMeal = (index:number, raw:string) => {
     setDragOver(null);
     setNativeDragFrom(null);
     const [kind,value] = raw.split(':');
     if(kind === 'recipe' && recipes.some(recipe=>recipe.id===value)) {
       if(sameSlot(slots[index],{kind:'recipe',id:value})) return;
-      remember(days[index] + ' dinner changed');setChangedDay(index);onChange(index,{kind:'recipe',id:value});
+      remember(days[index] + ' dinner changed');markChanged(index);onChange(index,{kind:'recipe',id:value});
     } else if(kind === 'day') {
       const from = Number(value);
       if(!Number.isInteger(from) || from<0 || from>=slots.length || from===index) return;
       remember('Dinners moved');
       const next=slots.map(slot=>({...slot}));[next[from],next[index]]=[next[index],next[from]];
-      setChangedDay(index);onReplace(next);
+      markChanged(index);onReplace(next);
     }
   };
   const drag = useDinnerDrag(week, (from,to) => dropMeal(to,'day:'+from), () => {
@@ -148,7 +156,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
       <div className="planner-tools">
         <WeekShareDialog week={week} slots={slots} servings={servings}/>
         {!isThisWeek && <Button size="small" onClick={()=>onWeekChange(thisWeek)}>This week</Button>}
-        <Button size="small" icon={<Dice5 size={16}/>} onClick={shuffle}>Shuffle dinners</Button>
+        <Button size="small" icon={<span ref={shuffleRef} className="shuffle-icon"><Dice5 size={16}/></span>} onClick={shuffle}>Shuffle dinners</Button>
         {clearPending ? <span className="planner-clear-confirm" role="group" aria-label="Confirm clearing the week">
           <button type="button" onClick={()=>setClearPending(false)}>Cancel</button>
           <button type="button" onClick={clear}>Confirm clear week</button>
@@ -188,11 +196,11 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
       <button type="button" onClick={()=>setMovingDay(null)}>Cancel move</button>
     </div>}
     <div className="planner-layout">
-      <div className="planner-days" key={week} data-direction={direction}>
+      <div ref={placementRef} className="planner-days" key={week} data-direction={direction}>
         {slots.map((slot,index) => {
           const recipe = slot.kind === 'recipe' ? recipes.find(r=>r.id===slot.id) : undefined;
           const isToday = isThisWeek && index === (today.getDay() + 6) % 7;
-          return <section className={`planner-day${changedDay === index ? ' just-changed' : ''}`} onAnimationEnd={() => setChangedDay(null)} key={index}
+          return <section className="planner-day" key={index}
             data-day-index={index} draggable onDragStart={event=>{if(drag.isTracking()){event.preventDefault();return;}setNativeDragFrom(index);event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
             onDragEnd={()=>{setNativeDragFrom(null);setDragOver(null);}}
             onDragOver={event=>{event.preventDefault();setDragOver(index);}}
@@ -246,6 +254,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
       </div>
       <aside className="planner-summary">
         <div className="planner-summary-top"><span>DINNER PLAN</span>
+          {weekComplete && <span ref={completeRef} className="motion-mark week-complete"><Check size={16} aria-hidden="true"/> Week, sorted.<MotionSparks/></span>}
           <div className="planner-big">{planned.length}<small>planned dinners</small></div>
           <p>{slots.filter(s=>s.kind==='leftovers'||s.kind==='freezer').length} leftovers or freezer nights</p>
         </div>
