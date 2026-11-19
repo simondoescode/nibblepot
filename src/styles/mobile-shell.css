@@ -53,7 +53,7 @@ html{scroll-padding-top:12px}
   .recipe-card:hover{transform:none;box-shadow:0 2px 0 #25231e18}
   .recipe-info h3{line-height:1.2}
   .heart{width:40px;height:40px}
-  .food-picker,.larder-sheet,.mobile-more-sheet{box-shadow:0 -12px 40px #0002}
+  .food-picker,.larder-sheet{box-shadow:0 -12px 40px #0002}
 }
 @media(max-width:360px){.hero .hero-content h1{font-size:32px;max-width:180px}.hero-art{width:64px;height:72px;right:5px}.hero .hero-content p{max-width:235px}.app-header-shell .brand{font-size:21px}}
 @media(prefers-reduced-motion:reduce){.mobile-header-actions button{transform:none!important}}

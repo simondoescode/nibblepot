@@ -24,6 +24,9 @@ import { HomePage } from './components/HomePage';
 import { FavouritesPage } from './components/FavouritesPage';
 import { LarderPage } from './components/LarderPage';
 import { WeekPlannerPage } from './components/WeekPlannerPage';
+import { SharedWeekPage } from './components/SharedWeekPage';
+import { importSharedWeek, type SharedWeek } from './lib/weekShare';
+import { SharedShoppingPage } from './components/SharedShoppingPage';
 import { ShoppingPage } from './components/ShoppingPage';
 import { RecipePage } from './components/RecipePage';
 import { PlanDinnerDialog } from './components/PlanDinnerDialog';
@@ -38,7 +41,6 @@ export default function App() {
   const [filter, setFilter] = useSessionState<Filter>('recipe-filter', 'all');
   const [selectedFoodTypes, setSelectedFoodTypes] = useSessionState<FoodType[]>('food-types', []);
   const [search, setSearch] = useSessionState('recipe-search', '');
-  const [focusSearch, setFocusSearch] = useState(false);
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
@@ -56,7 +58,8 @@ export default function App() {
     const recipe = route.kind === 'recipe' || route.kind === 'cook'
       ? recipes.find(item => item.id === route.id) : undefined;
     document.title = recipe ? `${route.kind === 'cook' ? 'Cook ' : ''}${recipe.title} | Simmer` :
-      'Simmer — Dinner, sorted.';
+      route.kind === 'shared-week' ? 'A shared week of dinners | Simmer' :
+      route.kind === 'shared-shopping' ? 'A shared shopping list | Simmer' : 'Simmer — Dinner, sorted.';
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (description) description.content = recipe
       ? route.kind === 'cook' ? `Step-by-step cooking mode for ${recipe.title}.` :
@@ -89,13 +92,6 @@ export default function App() {
   const navigate = useCallback((target: Tab) => {
     void changeRoute(tabPath(target), { kind: 'tab', tab: target });
   }, [changeRoute]);
-  useEffect(() => {
-    if (!focusSearch || route.kind !== 'tab' || route.tab !== 'home') return;
-    const input = document.querySelector<HTMLInputElement>('#search');
-    input?.focus({preventScroll:true});
-    input?.scrollIntoView({block:'center',behavior:'auto'});
-    setFocusSearch(false);
-  }, [route, focusSearch]);
   const openRecipe = useCallback((id: string) => {
     changeRoute(recipePath(id), { kind: 'recipe', id });
   }, [changeRoute]);
@@ -149,7 +145,7 @@ export default function App() {
     catch { toast('Copy not available here'); }
   };
 
-  const tab: Tab = route.kind === 'tab' ? route.tab : lastTab.current;
+  const tab: Tab = route.kind === 'tab' ? route.tab : route.kind === 'shared-week' ? 'planner' : lastTab.current;
   const swipe = useSwipeTabs(
     route.kind === 'tab' ? route.tab : null,
     target => changeRoute(tabPath(target), { kind: 'tab', tab: target }, 'swipe'),
@@ -199,10 +195,16 @@ export default function App() {
     toast('Week added to shopping 🛒');
     navigate('shopping');
   };
+  const updateFromSharedWeek = (plan: SharedWeek, updateShopping: boolean) => {
+    setData(current => importSharedWeek(current, plan, updateShopping));
+    setSelectedWeek(plan.week);
+    navigate('planner');
+    toast(updateShopping ? 'Planner and shopping list updated' : 'Planner updated. Shopping list unchanged.');
+  };
   const renderTab = (page: Tab, isPreview = false) => <>
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
-      favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
+      favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} dates={data.larderDates ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
       weekSlots={currentWeekSlots} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
     {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
@@ -228,7 +230,7 @@ export default function App() {
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
     <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
-      onSearch={()=>{navigate('home');setFocusSearch(true);}} />
+      mobileVisible={route.kind === 'tab' && route.tab === 'home'}/>
     <div className={`pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <div className="swipe-viewport" ref={swipe.viewport} onTouchStart={swipe.onTouchStart}
@@ -236,6 +238,8 @@ export default function App() {
         <div className="swipe-track" ref={swipe.track}>
           <main key={route.kind === 'tab' ? route.tab : route.kind + ('id' in route ? route.id : '')}
             className="wrap main route-content" data-motion={motion} id="main-content">
+            {route.kind === 'shared-week' && <SharedWeekPage onRecipe={openRecipe} onPlanner={() => navigate('planner')} onImport={updateFromSharedWeek}/>}
+            {route.kind === 'shared-shopping' && <SharedShoppingPage onShopping={() => navigate('shopping')}/>}
             {route.kind === 'recipe' && activeRecipe && <RecipePage key={activeRecipe.id} recipe={activeRecipe} larder={data.larder}
               saved={data.favorites.includes(activeRecipe.id)} servings={data.servings?.[activeRecipe.id] ?? BASE_SERVINGS}
               onServingsChange={value => setData(current => ({ ...current, servings: {

@@ -1,6 +1,6 @@
 [
   {
-    "id": "jacket",
+    "id": "dahn",
     "title": "Jacket potatoes & beans",
     "description": "The ultimate cheap, cheerful tea.",
     "emoji": "🥔",
@@ -9,20 +9,24 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "4 large"
+        "amount": 4,
+        "unit": "large"
       },
       {
         "id": "baked-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "cheese",
-        "qty": "100g",
+        "amount": 100,
+        "unit": "g",
         "optional": true
       },
       {
         "id": "butter",
-        "qty": "20g",
+        "amount": 20,
+        "unit": "g",
         "optional": true
       }
     ],
@@ -35,10 +39,17 @@
     "image": "recipes/jacket.webp",
     "safety": "Check the middle of each potato is piping hot and soft before serving.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "jacket-potatoes-and-beans",
+    "prepMins": 15,
+    "cookMins": 50,
+    "tags": [
+      "kid-friendly",
+      "budget"
+    ]
   },
   {
-    "id": "sausage-bean",
+    "id": "ruxx",
     "title": "Sausage & bean casserole",
     "description": "Big flavour. One pan. Happy plates.",
     "emoji": "🍲",
@@ -47,23 +58,28 @@
     "ing": [
       {
         "id": "sausages",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "baked-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -73,12 +89,22 @@
     ],
     "onePot": true,
     "image": "recipes/sausage-bean.webp",
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook sausages thoroughly until piping hot in the centre; follow the packet and check a clean probe reaches 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "sausage-and-bean-casserole",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chicken-rice",
+    "id": "5sg6",
     "title": "One-pot chicken rice",
     "description": "Dinner and minimal washing up.",
     "emoji": "🍗",
@@ -87,27 +113,33 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "rice",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -119,10 +151,16 @@
     "image": "recipes/chicken-rice.webp",
     "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "one-pot-chicken-rice",
+    "prepMins": 15,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "cottage",
+    "id": "4khq",
     "title": "Cheat’s cottage pie",
     "description": "A cosy classic without the fuss.",
     "emoji": "🥧",
@@ -131,27 +169,33 @@
     "ing": [
       {
         "id": "beef",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "750g"
+        "amount": 750,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "gravy",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "cheese",
-        "qty": "60g",
+        "amount": 60,
+        "unit": "g",
         "optional": true
       }
     ],
@@ -162,12 +206,20 @@
     ],
     "onePot": false,
     "image": "recipes/cottage.webp",
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook minced beef or meatballs thoroughly until piping hot throughout; check the centre with a clean probe (75°C for 30 seconds, or equivalent).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "cheats-cottage-pie",
+    "prepMins": 15,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ]
   },
   {
-    "id": "tuna-bake",
+    "id": "gf6b",
     "title": "Tuna pasta bake",
     "description": "The cupboard-clearout hero.",
     "emoji": "🍝",
@@ -176,27 +228,33 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "350g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "tuna",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "sweetcorn",
-        "qty": "1 small tin"
+        "amount": 1,
+        "unit": "small tin"
       },
       {
         "id": "cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "250ml"
+        "amount": 250,
+        "unit": "ml"
       },
       {
         "id": "cream-cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -208,10 +266,18 @@
     "image": "recipes/tuna-bake.webp",
     "safety": "Drain the canned tuna before mixing. Heat the bake until piping hot throughout.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "tuna-pasta-bake",
+    "prepMins": 15,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ]
   },
   {
-    "id": "tomato-pasta",
+    "id": "hdfl",
     "title": "Speedy tomato pasta",
     "description": "A very reliable 20-minute dinner.",
     "emoji": "🍅",
@@ -220,23 +286,28 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "350g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "garlic",
-        "qty": "2 cloves"
+        "amount": 2,
+        "unit": "clove"
       },
       {
         "id": "cheese",
-        "qty": "80g"
+        "amount": 80,
+        "unit": "g"
       },
       {
         "id": "oil",
-        "qty": "1 tbsp"
+        "amount": 1,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -248,10 +319,18 @@
     "image": "recipes/tomato-pasta.webp",
     "safety": "Serve piping hot; refrigerate any leftovers promptly.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "speedy-tomato-pasta",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "egg-rice",
+    "id": "41r8",
     "title": "Egg fried rice",
     "description": "The quickest fridge raid going.",
     "emoji": "🍚",
@@ -260,23 +339,29 @@
     "ing": [
       {
         "id": "rice",
-        "qty": "300g dry"
+        "amount": 300,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "eggs",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "frozen-peas",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "soy-sauce",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "spring-onions",
-        "qty": "3"
+        "amount": 3,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -288,10 +373,18 @@
     "image": "recipes/egg-rice.webp",
     "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "egg-fried-rice",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "quesadilla",
+    "id": "2oxo",
     "title": "Cheesy bean wraps",
     "description": "Crispy, melty, very little effort.",
     "emoji": "🌮",
@@ -300,19 +393,23 @@
     "ing": [
       {
         "id": "wraps",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "baked-beans",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "sweetcorn",
-        "qty": "1 small tin"
+        "amount": 1,
+        "unit": "small tin"
       }
     ],
     "steps": [
@@ -324,10 +421,18 @@
     "image": "recipes/quesadilla.webp",
     "safety": "Keep the filling hot and serve freshly cooked.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "cheesy-bean-wraps",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "mash",
+    "id": "2xm8",
     "title": "Sausage, mash & peas",
     "description": "Everyone knows the drill.",
     "emoji": "🥔",
@@ -336,19 +441,23 @@
     "ing": [
       {
         "id": "sausages",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "potatoes",
-        "qty": "800g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "250g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "gravy",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -358,12 +467,19 @@
     ],
     "onePot": false,
     "image": "recipes/mash.webp",
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook sausages thoroughly until piping hot in the centre; follow the packet and check a clean probe reaches 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "sausage-mash-and-peas",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "butter-stew",
+    "id": "1ok1",
     "title": "Smoky butter bean stew",
     "description": "A cosy dinner from a few tins.",
     "emoji": "🫘",
@@ -372,23 +488,28 @@
     "ing": [
       {
         "id": "butter-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       },
       {
         "id": "paprika",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -400,10 +521,20 @@
     "image": "recipes/butter-stew.webp",
     "safety": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "smoky-butter-bean-stew",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "traybake",
+    "id": "yu0o",
     "title": "Chicken & potato traybake",
     "description": "Chop, chuck in, oven on.",
     "emoji": "🍗",
@@ -412,23 +543,28 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "600g"
+        "amount": 600,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "700g"
+        "amount": 700,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "oil",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -440,10 +576,16 @@
     "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/traybake.webp"
+    "image": "recipes/traybake.webp",
+    "slug": "chicken-and-potato-traybake",
+    "prepMins": 15,
+    "cookMins": 40,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "toasties",
+    "id": "0iaz",
     "title": "Ham & cheese toasties",
     "description": "When cooking feels like too much.",
     "emoji": "🥪",
@@ -452,19 +594,23 @@
     "ing": [
       {
         "id": "bread",
-        "qty": "8 slices"
+        "amount": 8,
+        "unit": "slice"
       },
       {
         "id": "ham",
-        "qty": "8 slices"
+        "amount": 8,
+        "unit": "slice"
       },
       {
         "id": "cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "butter",
-        "qty": "20g"
+        "amount": 20,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -476,10 +622,17 @@
     "image": "recipes/toasties.webp",
     "safety": "Heat the ham-and-cheese filling until hot; refrigerate any remaining ham promptly.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "ham-and-cheese-toasties",
+    "prepMins": 5,
+    "cookMins": 10,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "meatball",
+    "id": "5epv",
     "title": "Meatball spaghetti",
     "description": "A dependable midweek winner.",
     "emoji": "🍝",
@@ -488,23 +641,28 @@
     "ing": [
       {
         "id": "meatballs",
-        "qty": "16"
+        "amount": 16,
+        "unit": "each"
       },
       {
         "id": "pasta",
-        "qty": "350g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "cheese",
-        "qty": "80g"
+        "amount": 80,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -514,12 +672,19 @@
     ],
     "onePot": false,
     "image": "recipes/meatball.webp",
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook minced beef or meatballs thoroughly until piping hot throughout; check the centre with a clean probe (75°C for 30 seconds, or equivalent).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "meatball-spaghetti",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "fish-butties",
+    "id": "l4pm",
     "title": "Fish finger butties",
     "description": "A five-star lazy tea.",
     "emoji": "🐟",
@@ -528,19 +693,23 @@
     "ing": [
       {
         "id": "fish-fingers",
-        "qty": "12"
+        "amount": 12,
+        "unit": "each"
       },
       {
         "id": "bread",
-        "qty": "8 slices"
+        "amount": 8,
+        "unit": "slice"
       },
       {
         "id": "mayo",
-        "qty": "4 tbsp"
+        "amount": 4,
+        "unit": "tbsp"
       },
       {
         "id": "lettuce",
-        "qty": "4 leaves"
+        "amount": 4,
+        "unit": "leaf"
       }
     ],
     "steps": [
@@ -552,10 +721,17 @@
     "image": "recipes/fish-butties.webp",
     "safety": "Follow the fish-finger cooking instructions; the centre must be cooked and piping hot.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "fish-finger-butties",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "soup",
+    "id": "o1du",
     "title": "Tomato soup & toasties",
     "description": "Easy comfort on a rainy day.",
     "emoji": "🥫",
@@ -564,23 +740,28 @@
     "ing": [
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       },
       {
         "id": "bread",
-        "qty": "8 slices"
+        "amount": 8,
+        "unit": "slice"
       },
       {
         "id": "cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -592,10 +773,20 @@
     "image": "recipes/soup.webp",
     "safety": "Be careful blending hot soup; allow steam to escape and never overfill a sealed blender jug.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "tomato-soup-and-toasties",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chilli-jacket",
+    "id": "7pt9",
     "title": "Bean chilli jackets",
     "description": "A loaded spud without the spend.",
     "emoji": "🌶️",
@@ -604,23 +795,28 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "4 large"
+        "amount": 4,
+        "unit": "large"
       },
       {
         "id": "kidney-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "paprika",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       },
       {
         "id": "cheese",
-        "qty": "100g"
+        "amount": 100,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -632,35 +828,49 @@
     "image": "recipes/chilli-jacket.webp",
     "safety": "Use canned kidney beans; do not substitute uncooked dried kidney beans without properly boiling and preparing them.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01"
+    "reviewedOn": "2026-11-01",
+    "slug": "bean-chilli-jackets",
+    "prepMins": 15,
+    "cookMins": 50,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly"
+    ]
   },
   {
-    "id": "sausage-traybake",
-    "title": "Sausage & potato traybake",
-    "description": "All on one tray, nothing fancy.",
+    "id": "awbe",
+    "title": "Sausage, potato & carrot traybake",
+    "description": "Sausages and chunky vegetables roasted together, with only ten minutes of prep.",
     "emoji": "🌭",
     "color": "#e7cda3",
     "mins": 55,
     "ing": [
       {
         "id": "sausages",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "potatoes",
-        "qty": "800g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "3"
+        "amount": 3,
+        "unit": "each"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "oil",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -669,13 +879,19 @@
       "Roast for 25–30 minutes more, turning sausages once, until potatoes are tender and sausages cooked all the way through."
     ],
     "onePot": false,
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook sausages thoroughly until piping hot in the centre; follow the packet and check a clean probe reaches 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-01",
-    "image": "recipes/sausage-traybake.webp"
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/sausage-traybake.webp",
+    "slug": "sausage-potato-and-carrot-traybake",
+    "prepMins": 15,
+    "cookMins": 40,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "chicken-pie",
+    "id": "v8e7",
     "title": "Cheat’s chicken pie",
     "description": "A cosy pie with a ready-made lid.",
     "emoji": "🥧",
@@ -684,23 +900,28 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "2"
+        "amount": 2,
+        "unit": "each"
       },
       {
         "id": "gravy",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "puff-pastry",
-        "qty": "1 sheet"
+        "amount": 1,
+        "unit": "sheet"
       }
     ],
     "steps": [
@@ -712,10 +933,18 @@
     "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chicken-pie.webp"
+    "image": "recipes/chicken-pie.webp",
+    "slug": "cheats-chicken-pie",
+    "prepMins": 15,
+    "cookMins": 35,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ]
   },
   {
-    "id": "tuna-jackets",
+    "id": "ma5h",
     "title": "Tuna & sweetcorn jackets",
     "description": "Cheap potatoes with a filling that works.",
     "emoji": "🥔",
@@ -724,19 +953,23 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "4 large"
+        "amount": 4,
+        "unit": "large"
       },
       {
         "id": "tuna",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "sweetcorn",
-        "qty": "1 small tin"
+        "amount": 1,
+        "unit": "small tin"
       },
       {
         "id": "mayo",
-        "qty": "4 tbsp"
+        "amount": 4,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -748,10 +981,17 @@
     "safety": "Keep tuna mayonnaise chilled until needed; do not leave it at room temperature while potatoes bake.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/tuna-jackets.webp"
+    "image": "recipes/tuna-jackets.webp",
+    "slug": "tuna-and-sweetcorn-jackets",
+    "prepMins": 15,
+    "cookMins": 50,
+    "tags": [
+      "kid-friendly",
+      "budget"
+    ]
   },
   {
-    "id": "creamy-chicken-rice",
+    "id": "8kqk",
     "title": "Creamy chicken & pea rice",
     "description": "One pot and proper comfort food.",
     "emoji": "🍗",
@@ -760,27 +1000,33 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "rice",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "cream-cheese",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       }
     ],
     "steps": [
@@ -792,10 +1038,16 @@
     "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/creamy-chicken-rice.webp"
+    "image": "recipes/creamy-chicken-rice.webp",
+    "slug": "creamy-chicken-and-pea-rice",
+    "prepMins": 15,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "broccoli-pasta",
+    "id": "6658",
     "title": "Creamy broccoli pasta",
     "description": "Four ingredients. Creamy without a faff.",
     "emoji": "🥦",
@@ -804,19 +1056,23 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "350g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "broccoli",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "cream-cheese",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "garlic",
-        "qty": "2 cloves"
+        "amount": 2,
+        "unit": "clove"
       }
     ],
     "steps": [
@@ -828,10 +1084,18 @@
     "safety": "Wash fresh broccoli and heat the sauce thoroughly before serving.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/broccoli-pasta.webp"
+    "image": "recipes/broccoli-pasta.webp",
+    "slug": "creamy-broccoli-pasta",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "smoky-bean-rice",
+    "id": "87fv",
     "title": "Smoky bean rice bowls",
     "description": "More tins, less spending.",
     "emoji": "🫘",
@@ -840,23 +1104,28 @@
     "ing": [
       {
         "id": "rice",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "kidney-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -868,10 +1137,18 @@
     "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/smoky-bean-rice.webp"
+    "image": "recipes/smoky-bean-rice.webp",
+    "slug": "smoky-bean-rice-bowls",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chicken-wraps",
+    "id": "h5k0",
     "title": "Chicken salad wraps",
     "description": "A midweek wrap with proper dinner filling.",
     "emoji": "🌯",
@@ -880,27 +1157,33 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "wraps",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "lettuce",
-        "qty": "4 leaves"
+        "amount": 4,
+        "unit": "leaf"
       },
       {
         "id": "carrots",
-        "qty": "2"
+        "amount": 2,
+        "unit": "each"
       },
       {
         "id": "mayo",
-        "qty": "4 tbsp"
+        "amount": 4,
+        "unit": "tbsp"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -912,10 +1195,16 @@
     "safety": "Cook chicken thoroughly throughout; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chicken-wraps.webp"
+    "image": "recipes/chicken-wraps.webp",
+    "slug": "chicken-salad-wraps",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "sausage-pasta",
+    "id": "nf56",
     "title": "One-pot sausage pasta",
     "description": "A pan of tomato pasta that fills everyone up.",
     "emoji": "🍝",
@@ -924,23 +1213,28 @@
     "ing": [
       {
         "id": "sausages",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "pasta",
-        "qty": "350g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -949,13 +1243,20 @@
       "Check the pasta is tender, sauce thick and every sausage piece cooked through before serving."
     ],
     "onePot": true,
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature).",
+    "safety": "Cook sausages thoroughly until piping hot in the centre; follow the packet and check a clean probe reaches 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/sausage-pasta.webp"
+    "image": "recipes/sausage-pasta.webp",
+    "slug": "one-pot-sausage-pasta",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "veggie-wraps",
+    "id": "tfco",
     "title": "Cheesy vegetable wraps",
     "description": "A cupboard-and-freezer dinner.",
     "emoji": "🌯",
@@ -964,23 +1265,28 @@
     "ing": [
       {
         "id": "wraps",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "cheese",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "sweetcorn",
-        "qty": "1 small tin"
+        "amount": 1,
+        "unit": "small tin"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -992,10 +1298,18 @@
     "safety": "Make sure the frozen peas are thoroughly heated before filling the wraps.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/veggie-wraps.webp"
+    "image": "recipes/veggie-wraps.webp",
+    "slug": "cheesy-vegetable-wraps",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "egg-noodles",
+    "id": "ckc3",
     "title": "Egg & pea noodles",
     "description": "A fast, filling noodle bowl.",
     "emoji": "🍜",
@@ -1004,23 +1318,28 @@
     "ing": [
       {
         "id": "noodles",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "eggs",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "frozen-peas",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "soy-sauce",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "spring-onions",
-        "qty": "3"
+        "amount": 3,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -1032,10 +1351,18 @@
     "safety": "Cook eggs until set and the noodle mixture piping hot; leftovers should be chilled promptly.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/egg-noodles.webp"
+    "image": "recipes/egg-noodles.webp",
+    "slug": "egg-and-pea-noodles",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "fish-wedges",
+    "id": "6lab",
     "title": "Fish fingers & homemade wedges",
     "description": "Crisp potatoes and no fuss.",
     "emoji": "🐟",
@@ -1044,19 +1371,23 @@
     "ing": [
       {
         "id": "fish-fingers",
-        "qty": "12"
+        "amount": 12,
+        "unit": "each"
       },
       {
         "id": "potatoes",
-        "qty": "800g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "200g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "oil",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -1068,10 +1399,16 @@
     "safety": "Follow the fish-finger packet instructions and serve only once cooked through.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/fish-wedges.webp"
+    "image": "recipes/fish-wedges.webp",
+    "slug": "fish-fingers-and-homemade-wedges",
+    "prepMins": 15,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "beef-chilli",
+    "id": "65ej",
     "title": "Easy beef & bean chilli",
     "description": "One big pan, plenty of leftovers.",
     "emoji": "🍲",
@@ -1080,27 +1417,33 @@
     "ing": [
       {
         "id": "beef",
-        "qty": "500g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "kidney-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       },
       {
         "id": "rice",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1109,13 +1452,21 @@
       "Meanwhile cook dry rice according to the packet, drain and serve the hot chilli on top."
     ],
     "onePot": false,
-    "safety": "Cook raw chicken, sausages and mince thoroughly throughout. If checking with a clean food probe, the centre should reach at least 75°C for 30 seconds (or an equivalent safe time/temperature). Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
+    "safety": "Cook minced beef or meatballs thoroughly until piping hot throughout; check the centre with a clean probe (75°C for 30 seconds, or equivalent).",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/beef-chilli.webp"
+    "image": "recipes/beef-chilli.webp",
+    "slug": "easy-beef-and-bean-chilli",
+    "prepMins": 15,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly"
+    ]
   },
   {
-    "id": "lentil-soup",
+    "id": "w8zz",
     "title": "Red lentil & tomato soup",
     "description": "A cheap, hearty bowl from the cupboard.",
     "emoji": "🥣",
@@ -1124,23 +1475,28 @@
     "ing": [
       {
         "id": "red-lentils",
-        "qty": "250g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "carrots",
-        "qty": "2"
+        "amount": 2,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       }
     ],
     "steps": [
@@ -1152,10 +1508,20 @@
     "safety": "Cook lentils fully until softened; cool leftover soup promptly and reheat thoroughly.",
     "storage": "Cool leftovers and put in the fridge within two hours. Eat within 48 hours or freeze; reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/lentil-soup.webp"
+    "image": "recipes/lentil-soup.webp",
+    "slug": "red-lentil-and-tomato-soup",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chickpea-curry",
+    "id": "9j09",
     "title": "Chickpea & spinach curry",
     "description": "A gentle, budget-friendly curry.",
     "emoji": "🍛",
@@ -1164,23 +1530,28 @@
     "ing": [
       {
         "id": "chickpeas",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "frozen-spinach",
-        "qty": "250g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "curry-powder",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       },
       {
         "id": "rice",
-        "qty": "300g"
+        "amount": 300,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1192,10 +1563,19 @@
     "safety": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Serve straight away. Cool any leftover rice quickly, ideally within one hour, refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chickpea-curry.webp"
+    "image": "recipes/chickpea-curry.webp",
+    "slug": "chickpea-and-spinach-curry",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "bean-pasta",
+    "id": "k505",
     "title": "Cheesy bean pasta",
     "description": "Pasta, beans and a tomato sauce.",
     "emoji": "🍝",
@@ -1204,19 +1584,23 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "baked-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "cheese",
-        "qty": "100 g"
+        "amount": 100,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1225,13 +1609,21 @@
       "Drain the pasta, toss with the hot bean sauce and sprinkle over grated cheese before serving."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook all ingredients according to packet directions and serve piping hot throughout; cool leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/bean-pasta.webp"
+    "image": "recipes/bean-pasta.webp",
+    "slug": "cheesy-bean-pasta",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chicken-noodles",
+    "id": "i9f5",
     "title": "Chicken & vegetable noodles",
     "description": "A quick pan of noodles and veg.",
     "emoji": "🍜",
@@ -1240,23 +1632,28 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "noodles",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "2"
+        "amount": 2,
+        "unit": "each"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "soy-sauce",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -1265,13 +1662,20 @@
       "Drain noodles and toss with chicken, vegetables and soy sauce, heating everything through before serving."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook chicken completely through; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chicken-noodles.webp"
+    "image": "recipes/chicken-noodles.webp",
+    "slug": "chicken-and-vegetable-noodles",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "potato-egg-hash",
+    "id": "4kr9",
     "title": "Potato, egg & pea hash",
     "description": "Crispy potatoes with eggs.",
     "emoji": "🥔",
@@ -1280,23 +1684,28 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "800 g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "eggs",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "frozen-peas",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "oil",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -1305,13 +1714,21 @@
       "Make four gaps, crack in eggs, cover and cook for 5–7 minutes until whites are set and eggs cooked to preference."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook eggs until set and the whole dish is piping hot before serving; cool any leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/potato-egg-hash.webp"
+    "image": "recipes/potato-egg-hash.webp",
+    "slug": "potato-egg-and-pea-hash",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "lentil-bolognese",
+    "id": "bf4m",
     "title": "Budget lentil bolognese",
     "description": "A meat-free pasta favourite.",
     "emoji": "🍅",
@@ -1320,23 +1737,28 @@
     "ing": [
       {
         "id": "red-lentils",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       }
     ],
     "steps": [
@@ -1345,13 +1767,23 @@
       "Meanwhile cook pasta according to the packet, drain and serve with the thickened lentil sauce."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook all ingredients according to packet directions and serve piping hot throughout; cool leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/lentil-bolognese.webp"
+    "image": "recipes/lentil-bolognese.webp",
+    "slug": "budget-lentil-bolognese",
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "batch-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "sausage-rice",
+    "id": "zvjq",
     "title": "Sausage & tomato rice",
     "description": "One-pan comfort food.",
     "emoji": "🍚",
@@ -1360,23 +1792,28 @@
     "ing": [
       {
         "id": "sausages",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "rice",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       }
     ],
     "steps": [
@@ -1385,13 +1822,19 @@
       "Stir in peas and cook for another 5–10 minutes until rice is tender, liquid absorbed and sausages cooked through."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook sausages thoroughly until piping hot in the centre; follow the packet and check a clean probe reaches 75°C for 30 seconds (or an equivalent safe time/temperature).",
     "storage": "Cool cooked rice quickly, ideally within one hour; refrigerate and eat within 24 hours, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/sausage-rice.webp"
+    "image": "recipes/sausage-rice.webp",
+    "slug": "sausage-and-tomato-rice",
+    "prepMins": 15,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "chickpea-jackets",
+    "id": "0h6l",
     "title": "Chickpea tomato jackets",
     "description": "A filling cupboard dinner.",
     "emoji": "🥔",
@@ -1400,23 +1843,28 @@
     "ing": [
       {
         "id": "potatoes",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "chickpeas",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       },
       {
         "id": "cheese",
-        "qty": "80 g"
+        "amount": 80,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1425,13 +1873,20 @@
       "Split potatoes and spoon over the chickpea topping, finishing with grated cheese if wanted."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook all ingredients according to packet directions and serve piping hot throughout; cool leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chickpea-jackets.webp"
+    "image": "recipes/chickpea-jackets.webp",
+    "slug": "chickpea-tomato-jackets",
+    "prepMins": 15,
+    "cookMins": 50,
+    "tags": [
+      "kid-friendly",
+      "budget"
+    ]
   },
   {
-    "id": "ham-pea-pasta",
+    "id": "mkys",
     "title": "Ham & pea creamy pasta",
     "description": "An easy after-school tea.",
     "emoji": "🍝",
@@ -1440,23 +1895,28 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "ham",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "cream-cheese",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "100 ml"
+        "amount": 100,
+        "unit": "ml"
       }
     ],
     "steps": [
@@ -1465,13 +1925,20 @@
       "Drain pasta and peas, combine with the sauce and heat until steaming hot before serving."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook all ingredients according to packet directions and serve piping hot throughout; cool leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/ham-pea-pasta.webp"
+    "image": "recipes/ham-pea-pasta.webp",
+    "slug": "ham-and-pea-creamy-pasta",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "broccoli-rice-bake",
+    "id": "kwga",
     "title": "Broccoli & cheese rice bake",
     "description": "Golden, cheesy and filling.",
     "emoji": "🥦",
@@ -1480,23 +1947,28 @@
     "ing": [
       {
         "id": "rice",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "broccoli",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "cheese",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "250 ml"
+        "amount": 250,
+        "unit": "ml"
       },
       {
         "id": "cream-cheese",
-        "qty": "100 g"
+        "amount": 100,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1505,13 +1977,20 @@
       "Sprinkle remaining cheese over and bake at 200°C (180°C fan) for 15–20 minutes until bubbling and golden."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Serve rice straight away. Cool leftovers quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot.",
     "storage": "Cool cooked rice quickly, ideally within one hour; refrigerate and eat within 24 hours, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/broccoli-rice-bake.webp"
+    "image": "recipes/broccoli-rice-bake.webp",
+    "slug": "broccoli-and-cheese-rice-bake",
+    "prepMins": 15,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "budget"
+    ]
   },
   {
-    "id": "bean-quesadillas",
+    "id": "f6mg",
     "title": "Crispy bean quesadillas",
     "description": "Fast, cheesy folded wraps.",
     "emoji": "🌯",
@@ -1520,23 +1999,28 @@
     "ing": [
       {
         "id": "wraps",
-        "qty": "8"
+        "amount": 8,
+        "unit": "each"
       },
       {
         "id": "kidney-beans",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "cheese",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "sweetcorn",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -1545,13 +2029,21 @@
       "Toast each quesadilla in a dry frying pan for 3–4 minutes per side until golden and hot throughout, then cut into wedges."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook all ingredients according to packet directions and serve piping hot throughout; cool leftovers promptly.",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/bean-quesadillas.webp"
+    "image": "recipes/bean-quesadillas.webp",
+    "slug": "crispy-bean-quesadillas",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "chicken-tomato-pasta",
+    "id": "0fa3",
     "title": "Chicken & tomato pasta",
     "description": "Simple chicken pasta for four.",
     "emoji": "🍗",
@@ -1560,23 +2052,28 @@
     "ing": [
       {
         "id": "chicken",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -1585,13 +2082,21 @@
       "Add tomatoes and paprika, simmer for 8 minutes, then combine with drained pasta and serve piping hot."
     ],
     "onePot": false,
-    "safety": "Cook poultry and sausages thoroughly and check that all hot food is steaming hot throughout before serving.",
+    "safety": "Cook chicken completely through; check the thickest piece with a clean probe (75°C for 30 seconds, or an equivalent safe time/temperature).",
     "storage": "Cool leftovers and refrigerate within two hours; eat within 48 hours or freeze, and reheat only once until steaming hot.",
     "reviewedOn": "2026-11-01",
-    "image": "recipes/chicken-tomato-pasta.webp"
+    "image": "recipes/chicken-tomato-pasta.webp",
+    "slug": "chicken-and-tomato-pasta",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
   },
   {
-    "id": "ham-cabbage-mac-and-cheese",
+    "id": "hy31",
     "title": "Ham & cabbage mac and cheese",
     "description": "Creamy cheddar macaroni with shredded cabbage and diced cooked ham or leftover gammon.",
     "emoji": "🍝",
@@ -1600,40 +2105,49 @@
     "ing": [
       {
         "id": "pasta",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g"
       },
       {
         "id": "cabbage",
-        "qty": "250 g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "ham",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "butter",
-        "qty": "40 g"
+        "amount": 40,
+        "unit": "g"
       },
       {
         "id": "plain-flour",
-        "qty": "40 g"
+        "amount": 40,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "500 ml"
+        "amount": 500,
+        "unit": "ml"
       },
       {
         "id": "cheese",
-        "qty": "175 g"
+        "amount": 175,
+        "unit": "g"
       },
       {
         "id": "mustard",
-        "qty": "1 tsp",
+        "amount": 1,
+        "unit": "tsp",
         "optional": true
       },
       {
         "id": "black-pepper",
-        "qty": "0.25 tsp",
+        "amount": 0.25,
+        "unit": "tsp",
         "optional": true
       }
     ],
@@ -1647,39 +2161,258 @@
     "image": "recipes/ham-cabbage-mac-and-cheese.webp",
     "safety": "Use ready-to-eat cooked ham or cooked gammon and heat the finished dish until steaming hot throughout.",
     "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout. If using leftover gammon, serve the mac and cheese freshly made.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "slug": "ham-and-cabbage-mac-and-cheese",
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly"
+    ]
   },
   {
-    "id": "creamy-chicken-broccoli-rice",
-    "title": "Creamy Chicken & Broccoli Rice",
-    "description": "A mild, family-friendly dinner for four.",
-    "emoji": "🍗",
-    "color": "#e9d7ba",
-    "mins": 35,
+    "id": "subg",
+    "title": "One-pot cheesy tomato pasta",
+    "description": "Pasta, peas and melted cheddar in a simple tomato sauce, all cooked in one pan.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 25,
     "ing": [
       {
-        "id": "chicken",
-        "qty": "500 g"
+        "id": "pasta",
+        "amount": 350,
+        "unit": "g"
       },
       {
-        "id": "rice",
-        "qty": "300 g"
+        "id": "passata",
+        "amount": 500,
+        "unit": "g"
       },
       {
-        "id": "broccoli",
-        "qty": "300 g"
+        "id": "frozen-peas",
+        "amount": 200,
+        "unit": "g"
       },
       {
-        "id": "cream-cheese",
-        "qty": "120 g"
+        "id": "cheese",
+        "amount": 100,
+        "unit": "g"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
+      }
+    ],
+    "steps": [
+      "Put the pasta and passata in a large, deep saucepan. Crumble in the stock and add 600 ml boiling water per stock cube. Bring to a gentle boil, stirring well.",
+      "Simmer uncovered for 12–15 minutes, stirring frequently so the pasta does not stick. Add a splash more hot water whenever the sauce looks dry before the pasta is tender.",
+      "Stir in the frozen peas and cook for the time stated on their packet, until the pasta is tender and the peas are piping hot. Take off the heat and stir in the grated cheddar until melted."
+    ],
+    "onePot": true,
+    "safety": "Cook frozen peas according to their packet and serve the finished pasta steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/one-pot-cheesy-tomato-pasta.webp",
+    "slug": "one-pot-cheesy-tomato-pasta",
+    "prepMins": 10,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "budget",
+      "minimal-prep"
+    ]
+  },
+  {
+    "id": "es36",
+    "title": "Cheat’s chicken & stuffing pie",
+    "description": "Cooked chicken and frozen vegetables in gravy, with a crisp stuffing topping.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 45,
+    "ing": [
+      {
+        "id": "cooked-chicken",
+        "amount": 400,
+        "unit": "g"
+      },
+      {
+        "id": "frozen-mixed-veg",
+        "amount": 400,
+        "unit": "g"
+      },
+      {
+        "id": "gravy",
+        "amount": 4,
+        "unit": "tbsp"
+      },
+      {
+        "id": "stuffing-mix",
+        "amount": 170,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Heat the oven to 200°C (180°C fan). Prepare the sage and onion stuffing mix with the boiling water specified on its packet, then leave it to stand while you make the filling.",
+      "Make the chicken gravy in a large saucepan using the granules and the water amount on their packet. Add the frozen mixed vegetables and simmer for their packet cooking time. Stir in bite-size pieces of cooked chicken and heat until steaming hot.",
+      "Transfer the hot filling to a shallow ovenproof dish. Spoon the prepared stuffing evenly over the top in small loose pieces. Bake for 25–30 minutes, or the stuffing packet time if longer, until golden on top and steaming hot in the centre."
+    ],
+    "onePot": false,
+    "safety": "Use ready-to-eat cooked chicken, not raw chicken. Heat until steaming hot throughout. This recipe reheats the cooked chicken, so serve freshly made and do not reheat again.",
+    "storage": "Make only what you need and serve freshly made: the cooked chicken is reheated during baking. Do not reheat the finished pie again. Follow the cooked chicken pack storage and use-by instructions before making the pie.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/chicken-stuffing-pie.webp",
+    "slug": "cheats-chicken-and-stuffing-pie",
+    "prepMins": 15,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ]
+  },
+  {
+    "id": "04do",
+    "title": "Creamy tuna & sweetcorn pasta",
+    "description": "A quick, creamy cupboard dinner with no oven needed.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 20,
+    "ing": [
+      {
+        "id": "pasta",
+        "amount": 350,
+        "unit": "g"
+      },
+      {
+        "id": "tuna",
+        "amount": 2,
+        "unit": "tin"
+      },
+      {
+        "id": "sweetcorn",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "id": "cream-cheese",
+        "amount": 200,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Boil the pasta according to its packet. Add the frozen sweetcorn for the cooking time stated on its packet, so both finish together.",
+      "Scoop out a mug of pasta water before draining. Return the pasta and sweetcorn to the same saucepan over a low heat, then stir in the cream cheese and a splash of pasta water.",
+      "Drain and flake the tinned tuna, then gently stir it through the pasta. Add a little more reserved pasta water if needed and heat, stirring, until the sauce is smooth and everything is steaming hot."
+    ],
+    "onePot": true,
+    "safety": "Use tinned tuna and cook frozen sweetcorn according to its packet. Heat the finished dish until steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/creamy-tuna-sweetcorn-pasta.webp",
+    "slug": "creamy-tuna-and-sweetcorn-pasta",
+    "prepMins": 5,
+    "cookMins": 15,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ]
+  },
+  {
+    "id": "le74",
+    "title": "One-pan beef & potato hash",
+    "description": "Tender potato cubes, beef mince and peas in a little savoury gravy.",
+    "emoji": "🍲",
+    "color": "#e7cda3",
+    "mins": 40,
+    "ing": [
+      {
+        "id": "beef",
+        "amount": 500,
+        "unit": "g"
+      },
+      {
+        "id": "potatoes",
+        "amount": 800,
+        "unit": "g"
+      },
+      {
+        "id": "frozen-onions",
+        "amount": 150,
+        "unit": "g"
+      },
+      {
+        "id": "frozen-peas",
+        "amount": 200,
+        "unit": "g"
+      },
+      {
+        "id": "stock",
+        "amount": 1,
+        "unit": "cube"
+      }
+    ],
+    "steps": [
+      "Scrub the potatoes and cut into small 1 cm cubes. Brown the beef mince in a large deep non-stick frying pan over medium-high heat for 6–8 minutes, breaking up clumps. Stir in the frozen onions and cook for another 3 minutes.",
+      "Add the potato cubes and stock, using 400 ml boiling water per stock cube. Cover and simmer gently for 15–20 minutes, stirring occasionally, until the potatoes are tender. Add a splash more water if the pan starts to dry out.",
+      "Stir in the frozen peas and cook for their packet cooking time. Remove the lid and simmer off excess liquid if needed, until the mince is cooked throughout, the potatoes are soft and everything is steaming hot."
+    ],
+    "onePot": true,
+    "safety": "Cook beef mince thoroughly with no pink remaining. Cook frozen vegetables according to their packets and serve steaming hot throughout.",
+    "storage": "Cool and refrigerate within two hours. Eat within 48 hours or freeze. Reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-13",
+    "image": "recipes/beef-potato-hash.webp",
+    "slug": "one-pan-beef-and-potato-hash",
+    "prepMins": 15,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly"
+    ]
+  },
+  {
+    "id": "1rqk",
+    "slug": "creamy-chicken-broccoli-rice",
+    "title": "Creamy Chicken & Broccoli Rice",
+    "description": "Soft chicken, broccoli and rice in a creamy one-pan sauce.",
+    "emoji": "🍗",
+    "color": "#e9d7ba",
+    "mins": 35,
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly"
+    ],
+    "ing": [
+      {
+        "id": "chicken",
+        "amount": 500,
+        "unit": "g"
+      },
+      {
+        "id": "rice",
+        "amount": 300,
+        "unit": "g",
+        "note": "dry"
+      },
+      {
+        "id": "broccoli",
+        "amount": 300,
+        "unit": "g"
+      },
+      {
+        "id": "cream-cheese",
+        "amount": 120,
+        "unit": "g"
+      },
+      {
+        "id": "stock",
+        "amount": 1,
+        "unit": "cube"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -1687,42 +2420,57 @@
       "Stir in dry rice, stock dissolved in 650 ml boiling water and chopped broccoli. Cover and simmer for 18–22 minutes until rice is tender.",
       "Stir through cream cheese and heat until bubbling; check chicken is cooked through and serve immediately."
     ],
-    "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
-    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "onePot": true,
+    "safety": "Cook raw chicken thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the thickest part.",
+    "storage": "Cool any leftover rice quickly, ideally within one hour; refrigerate and eat within 24 hours. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/creamy-chicken-broccoli-rice.webp"
   },
   {
-    "id": "sticky-honey-garlic-chicken",
+    "id": "e1xf",
+    "slug": "sticky-honey-garlic-chicken",
     "title": "Sticky Honey Garlic Chicken",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Sweet garlic chicken with carrots and fluffy rice.",
     "emoji": "🍗",
     "color": "#e9d7ba",
     "mins": 30,
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ],
     "ing": [
       {
         "id": "chicken",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "rice",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "honey",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "garlic",
-        "qty": "2 cloves"
+        "amount": 2,
+        "unit": "clove"
       },
       {
         "id": "soy-sauce",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "carrots",
-        "qty": "250 g"
+        "amount": 250,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -1731,41 +2479,56 @@
       "Add honey, finely chopped garlic and reduced-salt soy sauce; bubble until glossy and chicken is cooked through, then serve over rice."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
-    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "safety": "Cook raw chicken thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the thickest part.",
+    "storage": "Cool any leftover rice quickly, ideally within one hour; refrigerate and eat within 24 hours. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/sticky-honey-garlic-chicken.webp"
   },
   {
-    "id": "mild-chicken-sweet-potato-curry",
+    "id": "ymkm",
+    "slug": "mild-chicken-sweet-potato-curry",
     "title": "Mild Chicken & Sweet Potato Curry",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "A mild coconut chicken curry with sweet potato.",
     "emoji": "🍗",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly"
+    ],
     "ing": [
       {
         "id": "chicken",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "sweet-potatoes",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "coconut-milk",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "curry-powder",
-        "qty": "2 tsp"
+        "amount": 2,
+        "unit": "tsp"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "rice",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g",
+        "note": "dry"
       }
     ],
     "steps": [
@@ -1774,41 +2537,57 @@
       "Cook rice according to the packet; check chicken is cooked through and serve the mild curry piping hot over rice."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
-    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "safety": "Cook raw chicken thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the thickest part.",
+    "storage": "Cool any leftover rice quickly, ideally within one hour; refrigerate and eat within 24 hours. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/mild-chicken-sweet-potato-curry.webp"
   },
   {
-    "id": "chicken-veggie-meatballs",
+    "id": "ckl8",
+    "slug": "chicken-veggie-meatballs",
     "title": "Chicken & Veggie Meatballs",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Baked chicken and vegetable meatballs with tomato pasta.",
     "emoji": "🍗",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ],
     "ing": [
       {
         "id": "chicken-mince",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "courgette",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "eggs",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -1817,41 +2596,56 @@
       "Cook pasta to packet instructions, add meatballs to bubbling tomato sauce, check they are cooked throughout and serve over pasta."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook raw chicken thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the thickest part.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/chicken-veggie-meatballs.webp"
   },
   {
-    "id": "mini-shepherds-pies",
+    "id": "vyox",
+    "slug": "mini-shepherds-pies",
     "title": "Mini Shepherd's Pies",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Individual lamb shepherd’s pies with golden mash.",
     "emoji": "🍲",
     "color": "#e9d7ba",
     "mins": 55,
+    "prepMins": 15,
+    "cookMins": 40,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ],
     "ing": [
       {
         "id": "lamb-mince",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "800 g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "gravy",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -1860,41 +2654,54 @@
       "Divide filling between four ovenproof dishes, cover with mash and bake for 20 minutes until bubbling and golden."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/mini-shepherds-pies.webp"
   },
   {
-    "id": "mild-lamb-koftas",
+    "id": "p09p",
+    "slug": "mild-lamb-koftas",
     "title": "Mild Lamb Koftas",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Gentle lamb koftas with cucumber yoghurt wraps.",
     "emoji": "🍲",
     "color": "#e9d7ba",
     "mins": 35,
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "kid-friendly"
+    ],
     "ing": [
       {
         "id": "lamb-mince",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "wraps",
-        "qty": "4"
+        "amount": 4,
+        "unit": "each"
       },
       {
         "id": "cucumber",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "yoghurt",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       },
       {
         "id": "garlic",
-        "qty": "1 clove"
+        "amount": 1,
+        "unit": "clove"
       }
     ],
     "steps": [
@@ -1903,41 +2710,56 @@
       "Grate cucumber into plain yoghurt and serve the cooked koftas with warmed wraps and cucumber yoghurt."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/mild-lamb-koftas.webp"
   },
   {
-    "id": "lamb-sweet-potato-stew",
+    "id": "9cis",
+    "slug": "lamb-sweet-potato-stew",
     "title": "Slow-Cooked Lamb & Sweet Potato Stew",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Slow-simmered lamb and sweet potato stew.",
     "emoji": "🍲",
     "color": "#e9d7ba",
-    "mins": 70,
+    "mins": 120,
+    "prepMins": 15,
+    "cookMins": 105,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ],
     "ing": [
       {
         "id": "diced-lamb",
-        "qty": "600 g"
+        "amount": 600,
+        "unit": "g"
       },
       {
         "id": "sweet-potatoes",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "250 g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "stock",
-        "qty": "1 cube"
+        "amount": 1,
+        "unit": "cube"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       }
     ],
     "steps": [
@@ -1946,41 +2768,58 @@
       "Check the lamb is tender and cooked throughout and vegetables are soft; serve hot, with extra water if the stew becomes too thick."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Simmer diced lamb gently until completely cooked and tender, and serve the finished stew steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/lamb-sweet-potato-stew.webp"
   },
   {
-    "id": "hidden-veg-beef-bolognese",
+    "id": "x7yk",
+    "slug": "hidden-veg-beef-bolognese",
     "title": "Hidden-Veg Beef Bolognese",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Beef bolognese packed with grated vegetables and lentils.",
     "emoji": "🥘",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ],
     "ing": [
       {
         "id": "beef",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "carrots",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "courgette",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "red-lentils",
-        "qty": "100 g"
+        "amount": 100,
+        "unit": "g",
+        "note": "dry"
       }
     ],
     "steps": [
@@ -1989,41 +2828,56 @@
       "Cook pasta according to the packet, check sauce is piping hot and serve the beef and vegetable bolognese over pasta."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/hidden-veg-beef-bolognese.webp"
   },
   {
-    "id": "cheesy-beef-rice-bowls",
+    "id": "td9h",
+    "slug": "cheesy-beef-rice-bowls",
     "title": "Cheesy Beef & Rice Bowls",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Beef, beans and sweetcorn over rice with cheddar.",
     "emoji": "🥘",
     "color": "#e9d7ba",
     "mins": 30,
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly"
+    ],
     "ing": [
       {
         "id": "beef",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "rice",
-        "qty": "300 g"
+        "amount": 300,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "sweetcorn",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "kidney-beans",
-        "qty": "1 tin"
+        "amount": 1,
+        "unit": "tin"
       },
       {
         "id": "cheese",
-        "qty": "100 g"
+        "amount": 100,
+        "unit": "g"
       },
       {
         "id": "paprika",
-        "qty": "1 tsp"
+        "amount": 1,
+        "unit": "tsp"
       }
     ],
     "steps": [
@@ -2032,41 +2886,55 @@
       "Divide rice between four bowls, spoon over cooked beef mixture and finish with a small sprinkle of grated cheese."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
-    "storage": "Serve immediately. Cool any leftover rice quickly, ideally within one hour; refrigerate, eat within 24 hours and reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
+    "storage": "Cool any leftover rice quickly, ideally within one hour; refrigerate and eat within 24 hours. Reheat only once until steaming hot throughout.",
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/cheesy-beef-rice-bowls.webp"
   },
   {
-    "id": "beef-potato-hotpot",
+    "id": "j4s2",
+    "slug": "beef-potato-hotpot",
     "title": "Beef & Potato Hotpot",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Comforting beef and potato hotpot with tender vegetables.",
     "emoji": "🥘",
     "color": "#e9d7ba",
     "mins": 70,
+    "prepMins": 15,
+    "cookMins": 55,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly"
+    ],
     "ing": [
       {
         "id": "beef",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "800 g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "250 g"
+        "amount": 250,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "gravy",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       }
     ],
     "steps": [
@@ -2075,41 +2943,56 @@
       "Bake for 45 minutes, remove foil and bake for 15–20 minutes more until potatoes are soft, topping is golden and filling bubbles."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/beef-potato-hotpot.webp"
   },
   {
-    "id": "beef-meatballs-tomato-sauce",
+    "id": "csaw",
+    "slug": "beef-meatballs-tomato-sauce",
     "title": "Beef Meatballs in Tomato Sauce",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Beef meatballs and mash with a rich tomato sauce.",
     "emoji": "🥘",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly",
+      "freezer-friendly"
+    ],
     "ing": [
       {
         "id": "beef",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "eggs",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "carrots",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "chopped-tomatoes",
-        "qty": "2 tins"
+        "amount": 2,
+        "unit": "tin"
       },
       {
         "id": "potatoes",
-        "qty": "750 g"
+        "amount": 750,
+        "unit": "g"
       },
       {
         "id": "onion",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -2118,37 +3001,49 @@
       "Boil peeled potatoes until soft and mash; serve alongside the meatballs and hot tomato sauce."
     ],
     "onePot": false,
-    "safety": "Cook poultry and minced meat thoroughly; use a clean probe to check 75°C for 30 seconds or an equivalent safe time and temperature.",
+    "safety": "Cook minced meat thoroughly; use a food thermometer to check 75°C for 30 seconds (or an equivalent safe time and temperature) in the centre.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/beef-meatballs-tomato-sauce.webp"
   },
   {
-    "id": "salmon-potato-fishcakes",
+    "id": "lzdv",
+    "slug": "salmon-potato-fishcakes",
     "title": "Salmon & Potato Fishcakes",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Crisp salmon and potato fishcakes served with peas.",
     "emoji": "🐟",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly"
+    ],
     "ing": [
       {
         "id": "salmon",
-        "qty": "400 g"
+        "amount": 400,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "600 g"
+        "amount": 600,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "eggs",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "breadcrumbs",
-        "qty": "100 g"
+        "amount": 100,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -2157,45 +3052,60 @@
       "Bake at 200°C (180°C fan) for 15–20 minutes until golden and steaming hot throughout; cool slightly before serving children."
     ],
     "onePot": false,
-    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "safety": "Check all fish carefully for bones before serving to children. Cook until opaque, flakes easily and is steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/salmon-potato-fishcakes.webp"
   },
   {
-    "id": "creamy-fish-pie",
+    "id": "kmuu",
+    "slug": "creamy-fish-pie",
     "title": "Creamy Fish Pie",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "White fish and vegetables baked under mashed potatoes.",
     "emoji": "🐟",
     "color": "#e9d7ba",
     "mins": 55,
+    "prepMins": 15,
+    "cookMins": 40,
+    "tags": [
+      "kid-friendly",
+      "batch-friendly"
+    ],
     "ing": [
       {
         "id": "white-fish",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "800 g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "frozen-peas",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "carrots",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "400 ml"
+        "amount": 400,
+        "unit": "ml"
       },
       {
         "id": "plain-flour",
-        "qty": "30 g"
+        "amount": 30,
+        "unit": "g"
       },
       {
         "id": "butter",
-        "qty": "30 g"
+        "amount": 30,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -2204,41 +3114,54 @@
       "Cover with mashed potato and bake for 25–30 minutes until fish is fully cooked, filling bubbles and the centre is piping hot."
     ],
     "onePot": false,
-    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "safety": "Check all fish carefully for bones before serving to children. Cook until opaque, flakes easily and is steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/creamy-fish-pie.webp"
   },
   {
-    "id": "homemade-fish-fingers-wedges",
+    "id": "inxv",
+    "slug": "homemade-fish-fingers-wedges",
     "title": "Homemade Fish Fingers & Wedges",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Homemade crumbed white fish with oven wedges.",
     "emoji": "🐟",
     "color": "#e9d7ba",
     "mins": 40,
+    "prepMins": 10,
+    "cookMins": 30,
+    "tags": [
+      "kid-friendly"
+    ],
     "ing": [
       {
         "id": "white-fish",
-        "qty": "500 g"
+        "amount": 500,
+        "unit": "g"
       },
       {
         "id": "potatoes",
-        "qty": "800 g"
+        "amount": 800,
+        "unit": "g"
       },
       {
         "id": "eggs",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       },
       {
         "id": "breadcrumbs",
-        "qty": "120 g"
+        "amount": 120,
+        "unit": "g"
       },
       {
         "id": "oil",
-        "qty": "2 tbsp"
+        "amount": 2,
+        "unit": "tbsp"
       },
       {
         "id": "frozen-peas",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       }
     ],
     "steps": [
@@ -2247,41 +3170,56 @@
       "Bake fish strips on a separate lined tray for 15–20 minutes until fully cooked; cook peas to packet directions and serve everything hot."
     ],
     "onePot": false,
-    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "safety": "Check all fish carefully for bones before serving to children. Cook until opaque, flakes easily and is steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/homemade-fish-fingers-wedges.webp"
   },
   {
-    "id": "creamy-salmon-pea-pasta",
+    "id": "7op4",
+    "slug": "creamy-salmon-pea-pasta",
     "title": "Creamy Salmon & Pea Pasta",
-    "description": "A mild, family-friendly dinner for four.",
+    "description": "Salmon and peas in a creamy lemon pasta.",
     "emoji": "🐟",
     "color": "#e9d7ba",
     "mins": 30,
+    "prepMins": 10,
+    "cookMins": 20,
+    "tags": [
+      "kid-friendly",
+      "minimal-prep"
+    ],
     "ing": [
       {
         "id": "salmon",
-        "qty": "400 g"
+        "amount": 400,
+        "unit": "g"
       },
       {
         "id": "pasta",
-        "qty": "350 g"
+        "amount": 350,
+        "unit": "g",
+        "note": "dry"
       },
       {
         "id": "frozen-peas",
-        "qty": "200 g"
+        "amount": 200,
+        "unit": "g"
       },
       {
         "id": "cream-cheese",
-        "qty": "150 g"
+        "amount": 150,
+        "unit": "g"
       },
       {
         "id": "milk",
-        "qty": "100 ml"
+        "amount": 100,
+        "unit": "ml"
       },
       {
         "id": "lemon",
-        "qty": "1"
+        "amount": 1,
+        "unit": "each"
       }
     ],
     "steps": [
@@ -2290,8 +3228,9 @@
       "Warm cream cheese with milk in a saucepan, add flaked salmon and a little lemon juice, then stir through drained pasta and peas until piping hot."
     ],
     "onePot": false,
-    "safety": "Check all fish carefully for bones before serving to children; cook fish until opaque and flakes easily.",
+    "safety": "Check all fish carefully for bones before serving to children. Cook until opaque, flakes easily and is steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
-    "reviewedOn": "2026-11-08"
+    "reviewedOn": "2026-11-08",
+    "image": "recipes/creamy-salmon-pea-pasta.webp"
   }
 ]

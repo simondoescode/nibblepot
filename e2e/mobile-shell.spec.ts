@@ -1,27 +1,32 @@
 import { expect, test } from '@playwright/test';
 
-for(const width of [320,390,430]) test(`mobile app bar stays visible at ${width}px without covering larder search`,async({page},info)=>{
+for(const width of [320,390,430]) test(`only Recipes keeps the mobile header at ${width}px`,async({page},info)=>{
   test.skip(info.project.name!=='mobile');
   await page.setViewportSize({width,height:800});
-  await page.goto('/nibblepot/larder/');
+  await page.goto('/nibblepot/');
   const header=page.locator('.app-header-shell');
-  const initial=await header.boundingBox();
-  expect(initial!.height).toBeGreaterThanOrEqual(64);
+  if (width === 390) await page.screenshot({path:'test-results/mobile-navigation-recipes.png'});
+  await expect(header.getByRole('button',{name:'Simmer home'})).toBeVisible();
+  await expect(header.getByRole('button',{name:'Open settings'})).toBeVisible();
   await page.evaluate(()=>window.scrollTo(0,900));
-  const fixed=await header.boundingBox();
-  expect(fixed!.y).toBeCloseTo(0,0);
-  expect(fixed!.height).toBe(initial!.height);
-  const tools=await page.locator('.larder-tools').boundingBox();
-  expect(tools!.y).toBeCloseTo(fixed!.height,0);
-  await header.getByRole('button',{name:'Search recipes',exact:true}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/$/);
-  await expect(page.getByRole('searchbox',{name:'Search recipes',exact:true})).toBeFocused();
-  const input=await page.getByRole('searchbox',{name:'Search recipes',exact:true}).boundingBox();
-  expect(input!.y).toBeGreaterThanOrEqual(fixed!.height);
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
-  await header.getByRole('button',{name:'Open favourites',exact:true}).click();
-  await expect(page).toHaveURL(/\/nibblepot\/favourites\/$/);
-  await expect(page.getByRole('navigation',{name:'Mobile navigation'}).getByRole('button',{name:'More'})).toHaveClass(/active/);
+  expect((await header.boundingBox())!.y).toBeCloseTo(0,0);
+  const nav=page.getByRole('navigation',{name:'Mobile navigation'});
+  for (const label of ['Planner','Larder','Shopping','Favourites']) {
+    await nav.getByRole('button',{name:label,exact:true}).click();
+    await expect(header).toBeHidden();
+    if (width === 390 && label === 'Favourites') await page.screenshot({path:'test-results/mobile-navigation-favourites.png'});
+    expect(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--mobile-header-height').trim())).toBe('0px');
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
+  }
+  await nav.getByRole('button',{name:'Recipes',exact:true}).click();
+  await header.getByRole('button',{name:'Open settings',exact:true}).click();
+  await expect(page).toHaveURL(/\/settings\/$/);
+  await expect(header).toBeHidden();
+  await page.goto('/nibblepot/');
+  await page.getByRole('button',{name:'View recipe',exact:true}).first().click();
+  await expect(page).toHaveURL(/\/recipes\//);
+  await expect(header).toBeHidden();
+  await expect(page.getByRole('button',{name:'Back to recipes',exact:true})).toBeVisible();
 });
 
 test('mobile welcome card stays compact and header does not move with pull gesture',async({page},info)=>{

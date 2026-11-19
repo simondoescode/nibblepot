@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
+import { MotionSparks } from '../ui/MotionMark';
+import { useDinnerDrag } from '../hooks/useDinnerDrag';
+import { DinnerDragPreview, DragMeal } from './DinnerDragPreview';
 import * as Dialog from '../ui/dialog';
-import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Dice5, GripVertical, Pencil, Plus, RotateCcw, Search, ShoppingBasket, Snowflake, Trash2, X } from 'lucide-react';
 import { ingredientName, recipes } from '../data';
 import { shoppingQuantity } from '../lib/quantities';
 import { dateForWeekDay, mondayFor, shiftWeek, shoppingPlanSignature, weekContributions, WEEK_DAYS as days, weekSlotTitle } from '../lib/weeklyPlan';
 import type { WeekSlot } from '../types';
 import { Button } from '../ui/controls';
+import { WeekShareDialog } from './WeekShareDialog';
 
 const shortDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' });
 const weekDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -27,18 +32,29 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
   onRecipe: (id: string) => void;
 }) {
 
+  const [shuffleRevision, setShuffleRevision] = useState(0);
+  const shuffleRef = useChangeMotion<HTMLSpanElement>(shuffleRevision, 'shuffle');
   const [direction,setDirection] = useState<'forward'|'back'|'direct'>('direct');
-  const [changedDay,setChangedDay] = useState<number|null>(null);
+  const [changedDay,setChangedDay] = useState<{index:number; revision:number}|null>(null);
+  const placementRef = useChangeMotion<HTMLDivElement>(changedDay, 'stamp', changedDay !== null, `[data-day-index="${changedDay?.index}"] .planner-meal-thumb`);
+  const markChanged = (index:number) => setChangedDay(previous => ({index, revision:(previous?.revision ?? 0) + 1}));
+  const weekComplete = slots.every(slot => slot.kind !== 'empty');
+  const completeRef = useChangeMotion<HTMLSpanElement>(weekComplete, 'celebrate', weekComplete, undefined, week);
   const lastEditing = useRef(0);
   const [editingDay,setEditingDay] = useState<number|null>(null);
   const [query,setQuery] = useState('');
   const [filter,setFilter] = useState<MealFilter>('all');
   const [clearPending,setClearPending] = useState(false);
+  const [nativeDragFrom,setNativeDragFrom] = useState<number|null>(null);
   const [dragOver,setDragOver] = useState<number|null>(null);
   const [undo,setUndo] = useState<{week:string;before:WeekSlot[];description:string}|null>(null);
+  const [movingDay,setMovingDay] = useState<number|null>(null);
   const opener = useRef<HTMLButtonElement|null>(null);
   useEffect(() => {
     setEditingDay(null);
+    setMovingDay(null);
+    setDragOver(null);
+    setNativeDragFrom(null);
     setChangedDay(null);
     setClearPending(false);
     setUndo(null);
@@ -52,7 +68,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
     if(editingDay === null) return;
     if(!sameSlot(slots[editingDay],choice)){
       remember(days[editingDay] + ' dinner changed');
-      setChangedDay(editingDay);
+      markChanged(editingDay);
       onChange(editingDay,choice);
     }
     setEditingDay(null);
@@ -65,23 +81,29 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
     setFilter('all');
     setClearPending(false);
   };
-  const shuffle = () => {remember('Dinners shuffled');onShuffle();setClearPending(false);};
-  const clear = () => {remember('Week cleared');onClear();setClearPending(false);};
-  const revert = () => {if(undo?.week === week){onReplace(undo.before);setUndo(null);}};
+  const shuffle = () => {setChangedDay(null);setShuffleRevision(value => value + 1);remember('Dinners shuffled');onShuffle();setClearPending(false);};
+  const clear = () => {setChangedDay(null);remember('Week cleared');onClear();setClearPending(false);};
+  const revert = () => {if(undo?.week === week){setChangedDay(null);onReplace(undo.before);setUndo(null);}};
   const dropMeal = (index:number, raw:string) => {
     setDragOver(null);
+    setNativeDragFrom(null);
     const [kind,value] = raw.split(':');
     if(kind === 'recipe' && recipes.some(recipe=>recipe.id===value)) {
       if(sameSlot(slots[index],{kind:'recipe',id:value})) return;
-      remember(days[index] + ' dinner changed');setChangedDay(index);onChange(index,{kind:'recipe',id:value});
+      remember(days[index] + ' dinner changed');markChanged(index);onChange(index,{kind:'recipe',id:value});
     } else if(kind === 'day') {
       const from = Number(value);
       if(!Number.isInteger(from) || from<0 || from>=slots.length || from===index) return;
       remember('Dinners moved');
       const next=slots.map(slot=>({...slot}));[next[from],next[index]]=[next[index],next[from]];
-      setChangedDay(index);onReplace(next);
+      markChanged(index);onReplace(next);
     }
   };
+  const drag = useDinnerDrag(week, (from,to) => dropMeal(to,'day:'+from), () => {
+    setMovingDay(null);setDragOver(null);
+  });
+  const activeTarget = drag.preview?.target ?? dragOver;
+  const dragSource = drag.preview?.from ?? nativeDragFrom;
   const planned = slots.filter(slot => slot.kind === 'recipe');
   const hasShoppingHistory = hasGeneratedShopping || !!shoppingPlan;
   const synced = shoppingPlan?.week === week && shoppingPlan.signature ===
@@ -132,8 +154,9 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
         <button type="button" aria-label="Next week" onClick={() => {setDirection('forward');onWeekChange(shiftWeek(week,1));}}><ArrowRight size={19} aria-hidden="true"/></button>
       </div>
       <div className="planner-tools">
+        <WeekShareDialog week={week} slots={slots} servings={servings}/>
         {!isThisWeek && <Button size="small" onClick={()=>onWeekChange(thisWeek)}>This week</Button>}
-        <Button size="small" icon={<Dice5 size={16}/>} onClick={shuffle}>Shuffle dinners</Button>
+        <Button size="small" icon={<span ref={shuffleRef} className="shuffle-icon"><Dice5 size={16}/></span>} onClick={shuffle}>Shuffle dinners</Button>
         {clearPending ? <span className="planner-clear-confirm" role="group" aria-label="Confirm clearing the week">
           <button type="button" onClick={()=>setClearPending(false)}>Cancel</button>
           <button type="button" onClick={clear}>Confirm clear week</button>
@@ -162,18 +185,44 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
         onDragStart={event=>{event.dataTransfer.setData('text/plain','recipe:'+recipe.id);event.dataTransfer.effectAllowed='copy';}}>
         {recipe.title}</div>)}</div>
     </section>
+    {drag.preview && <DinnerDragPreview drag={drag.preview} slots={slots}/>}
+    <span className="planner-drag-announcement" role="status" aria-live="polite" aria-atomic="true">{drag.preview ?
+      (drag.preview.target === null ? 'Moving '+weekSlotTitle(slots[drag.preview.from])+'. Choose a day, or press Escape to cancel.' :
+        'Release on '+days[drag.preview.target]+'. '+(slots[drag.preview.target].kind==='empty' ? 'Move dinner here.' : weekSlotTitle(slots[drag.preview.target])+' moves to '+days[drag.preview.from]+'.')) : ''}</span>
+    <p id="planner-move-help" className="planner-move-help">Drag the grip to swap dinners, or tap it and choose a day.</p>
+    {movingDay!==null && <div className="planner-move-options" role="group" aria-label={'Move '+days[movingDay]+' dinner'}>
+      <strong>Swap {days[movingDay]} with</strong>
+      {days.map((day,index)=>index!==movingDay && <button key={day} type="button" onClick={()=>{dropMeal(index,'day:'+movingDay);setMovingDay(null);}}>{day}</button>)}
+      <button type="button" onClick={()=>setMovingDay(null)}>Cancel move</button>
+    </div>}
     <div className="planner-layout">
-      <div className="planner-days" key={week} data-direction={direction}>
+      <div ref={placementRef} className="planner-days" key={week} data-direction={direction}>
         {slots.map((slot,index) => {
           const recipe = slot.kind === 'recipe' ? recipes.find(r=>r.id===slot.id) : undefined;
           const isToday = isThisWeek && index === (today.getDay() + 6) % 7;
-          return <section className={`planner-day${changedDay === index ? ' just-changed' : ''}`} onAnimationEnd={() => setChangedDay(null)} key={index}
-            draggable onDragStart={event=>{event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
+          return <section className="planner-day" key={index}
+            data-day-index={index} draggable onDragStart={event=>{if(drag.isTracking()){event.preventDefault();return;}setNativeDragFrom(index);event.dataTransfer.setData('text/plain','day:'+index);event.dataTransfer.effectAllowed='move';}}
+            onDragEnd={()=>{setNativeDragFrom(null);setDragOver(null);}}
             onDragOver={event=>{event.preventDefault();setDragOver(index);}}
             onDragLeave={event=>{if(!event.currentTarget.contains(event.relatedTarget as Node))setDragOver(null);}}
             onDrop={event=>{event.preventDefault();dropMeal(index,event.dataTransfer.getData('text/plain'));}}
-            data-drop-target={dragOver===index ? 'true' : undefined}
+            data-drop-target={activeTarget===index ? 'true' : undefined}
+            data-drag-source={dragSource===index || undefined}
             data-today={isToday || undefined}>
+            <button type="button" className="planner-move-handle" data-no-tab-swipe data-no-pull
+              aria-label={'Move '+days[index]+' dinner'} aria-describedby="planner-move-help" aria-pressed={movingDay===index}
+              onDragStart={event=>event.preventDefault()}
+              onClick={()=>{if(drag.ignoreClick())return;setMovingDay(movingDay===index?null:index);}}
+              onPointerDown={event=>drag.pointerDown(event,index)}
+              onPointerMove={drag.pointerMove}
+              onPointerUp={drag.pointerUp}
+              onPointerCancel={drag.cancel}
+              onLostPointerCapture={drag.cancel}
+            ><GripVertical size={18} aria-hidden="true"/></button>
+            {dragSource!==null && dragSource!==index && activeTarget===index && <div className="planner-drop-ghost" aria-hidden="true">
+              <DragMeal slot={slots[dragSource!]}/>
+              <small>{slot.kind==='empty' ? 'Move to '+days[index] : 'Swap · '+weekSlotTitle(slot)+' → '+days[dragSource!]}</small>
+            </div>}
             <div className="planner-day-label" aria-current={isToday ? 'date' : undefined}>
               <strong className="planner-day-name">{days[index]}</strong>
               <strong className="planner-day-short">{days[index].slice(0, 3)}</strong>
@@ -184,7 +233,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
               aria-label={'Change '+days[index]+' dinner'} aria-haspopup="dialog"
               onClick={event=>openPicker(event,index)}>
               {recipe ? <img className="planner-meal-thumb" alt="" width="70" height="56" loading="lazy"
-                src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/> :
+                src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/jacket.svg')}/> :
                 <span className="planner-meal-thumb" data-kind={slot.kind} aria-hidden="true">
                   {slot.kind === 'leftovers' ? <RotateCcw size={18}/> :
                     slot.kind === 'freezer' ? <Snowflake size={18}/> : <Plus size={20}/>}
@@ -205,6 +254,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
       </div>
       <aside className="planner-summary">
         <div className="planner-summary-top"><span>DINNER PLAN</span>
+          {weekComplete && <span ref={completeRef} className="motion-mark week-complete"><Check size={16} aria-hidden="true"/> Week, sorted.<MotionSparks/></span>}
           <div className="planner-big">{planned.length}<small>planned dinners</small></div>
           <p>{slots.filter(s=>s.kind==='leftovers'||s.kind==='freezer').length} leftovers or freezer nights</p>
         </div>
@@ -255,7 +305,7 @@ export function WeekPlannerPage({ week, slots, larder, servings, stock, shopping
                 aria-label={'Choose '+recipe.title} aria-pressed={selected}
                 onClick={()=>chooseMeal({kind:'recipe',id:recipe.id})}>
                 <img width="100" height="80" alt="" loading="lazy"
-                  src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/'+recipe.id+'.svg')}/>
+                  src={import.meta.env.BASE_URL+(recipe.image ?? 'recipes/jacket.svg')}/>
                 <span className="planner-meal-copy"><strong>{recipe.title}</strong>
                   <small><Clock3 size={13} aria-hidden="true"/> {recipe.mins} min · {owned}/{required} ingredients in larder</small>
                   {used?.length ? <em>Also on {used.join(', ')}</em>:null}

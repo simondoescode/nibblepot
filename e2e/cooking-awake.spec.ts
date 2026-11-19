@@ -8,7 +8,7 @@ test('screen-awake opt in requests and releases a wake lock',async({page})=>{
       return {release:async()=>{stats.releases++;}};
     }}});
   });
-  await page.goto('/nibblepot/recipes/tomato-pasta/cook/');
+  await page.goto('/nibblepot/recipes/speedy-tomato-pasta/cook/');
   const toggle=page.getByRole('button',{name:'Keep screen on'});
   await toggle.click();
   await expect(page.getByRole('button',{name:'Screen awake'})).toHaveAttribute('aria-pressed','true');

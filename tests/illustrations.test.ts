@@ -9,11 +9,11 @@ describe('illustrated recipe cards', () => {
     const images = new Set<string>();
     const svgContents = new Set<string>();
     for (const recipe of recipes) {
-      const path = recipe.image ?? `recipes/${recipe.id}.svg`;
+      const path = recipe.image!;
       if (recipe.image) {
-        expect(path).toBe(`recipes/${recipe.id}.webp`);
+        expect(path).toMatch(/^recipes\/[a-z0-9-]+\.webp$/);
       } else {
-        expect(path).toBe(`recipes/${recipe.id}.svg`);
+        expect(path).toBe(`recipes/${recipe.slug}.svg`);
       }
       expect(images.has(path), `${recipe.title}: repeated image path`).toBe(false);
       images.add(path);

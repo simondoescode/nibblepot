@@ -49,9 +49,9 @@ test('filters combine with search and stock changes without losing hidden items'
 test('legacy custom amounts remain intact when changing just the date', async ({page}) => {
   await page.goto('/nibblepot/larder/');
   await page.evaluate(()=>{
-    const data=JSON.parse(localStorage.getItem('nibblepot-demo-v1') || '{}');
+    const data=JSON.parse(localStorage.getItem('simmer-recipes-v2') || '{}');
     data.larderQuantities={potatoes:'2 small tins'};
-    localStorage.setItem('nibblepot-demo-v1',JSON.stringify(data));
+    localStorage.setItem('simmer-recipes-v2',JSON.stringify(data));
   });
   await page.reload();
   await page.getByRole('button',{name:'Edit Potatoes stock details'}).click();
@@ -72,8 +72,8 @@ for (const width of [320,390,430]) {
     expect(rows.every(row=>row>width-50)).toBe(true);
     await page.evaluate(()=>window.scrollTo(0,500));
     const tools=await page.locator('.larder-tools').boundingBox();
-    const header=await page.locator('.app-header-shell').boundingBox();
-    expect(tools?.y).toBeCloseTo(header!.height,0);
+    await expect(page.locator('.app-header-shell')).toBeHidden();
+    expect(tools?.y).toBeCloseTo(0,0);
     const action=page.locator('.larder-meals-bar');
     const before=await action.boundingBox();
     const navigation = (await page.getByRole('navigation', { name: 'Mobile navigation' }).boundingBox())!;

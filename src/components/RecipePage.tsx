@@ -1,8 +1,11 @@
 
-import { ArrowLeft, Check, Clock3, Heart, Link2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
+import { ArrowLeft, Check, Clock3, Heart, Share2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
 import { ingredientName } from '../data';
+import { MotionMark } from '../ui/MotionMark';
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import { useState } from 'react';
 import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
+import { recipePath } from '../lib/routes';
 import type { Recipe } from '../types';
 import { Button } from '../ui/controls';
 
@@ -19,37 +22,48 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
   servings: number; onServingsChange: (value: number) => void;
   onBack: () => void; onAddMissing: (includedOptional: string[]) => void; onFavorite: () => void; onPlan: (opener: HTMLButtonElement) => void; onCook: () => void; notify: (message: string) => void;
 }) {
-  const [pulse,setPulse] = useState(false);
+  const servingsRef = useChangeMotion<HTMLOutputElement>(servings, 'pop');
   const [includedOptional, setIncludedOptional] = useState<string[]>([]);
-  const copyLink = async () => {
+  const shareRecipe = async () => {
+    const url = new URL(recipePath(recipe.id), window.location.origin).href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: recipe.title, text: recipe.description, url });
+        return;
+      } catch (error) {
+        // Cancelling the native share sheet should not copy a link unexpectedly.
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       notify('Recipe link copied!');
     } catch {
-      notify('Copy not available here');
+      notify('Sharing is unavailable here');
     }
   };
   return <article className="recipe-page" aria-label={recipe.title}>
     <div className="recipe-page-toolbar">
       <button className="recipe-back" type="button" onClick={onBack}><ArrowLeft size={18} /> Back to recipes</button>
-      <Button size="small" icon={<Link2 size={16} />} onClick={copyLink}>Copy link</Button>
+      <Button size="small" icon={<Share2 size={16} />} onClick={shareRecipe}>Share recipe</Button>
     </div>
     <div className="recipe-page-hero">
       <div className="recipe-page-image">
-        <img src={`${import.meta.env.BASE_URL}${recipe.image ?? `recipes/${recipe.id}.svg`}`}
+        <img src={`${import.meta.env.BASE_URL}${recipe.image ?? 'recipes/jacket.svg'}`}
           className={recipe.image ? 'recipe-photo' : ''} alt={`Finished ${recipe.title}`}
           width="800" height="504" decoding="async"
           onError={event => {
-            const fallback = `${import.meta.env.BASE_URL}recipes/${recipe.id}.svg`;
+            const fallback = `${import.meta.env.BASE_URL}recipes/jacket.svg`;
             if (!event.currentTarget.src.endsWith(fallback)) event.currentTarget.src = fallback;
           }} />
       </div>
       <div className="recipe-page-intro">
         <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
         <h1>{recipe.title}</h1>
+        <p className="recipe-tags">{recipe.tags.map(tag => <span key={tag}>{tag.replaceAll('-', ' ')}</span>)}</p>
         <p>{recipe.description}</p>
         <div className="recipe-page-facts">
-          <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes</span>
+          <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes ({recipe.prepMins} prep · {recipe.cookMins} cooking)</span>
           <span>🍽️ Serves {servings}</span>
           <span>🫙 {recipe.ing.filter(i => larder.includes(i.id)).length} of {recipe.ing.length} in larder</span>
         </div>
@@ -58,7 +72,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
           <Button className="recipe-plan-action" aria-haspopup="dialog" icon={<CalendarPlus size={18} />}
             onClick={event => onPlan(event.currentTarget)}>Plan this dinner</Button>
           <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
-          <Button icon={<Heart size={18} fill={saved ? 'currentColor' : 'none'} />} onClick={() => {setPulse(!saved);onFavorite();}} className={pulse ? 'just-saved' : ''} onAnimationEnd={() => setPulse(false)}
+          <Button icon={<MotionMark active={saved}><Heart size={18} fill={saved ? 'currentColor' : 'none'} /></MotionMark>} onClick={onFavorite}
             aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>
       </div>
@@ -70,7 +84,7 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
           <span>Servings</span>
           <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
             disabled={servings <= MIN_SERVINGS} aria-label="Fewer servings"><Minus size={17} /></button>
-          <output aria-live="polite" aria-label="Servings count">{servings}</output>
+          <output ref={servingsRef} aria-live="polite" aria-label="Servings count">{servings}</output>
           <button type="button" onClick={() => onServingsChange(Math.min(MAX_SERVINGS, servings + 1))}
             disabled={servings >= MAX_SERVINGS} aria-label="More servings"><Plus size={17} /></button>
         </div>

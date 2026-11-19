@@ -1,3 +1,4 @@
+import { MotionCheckbox } from '../ui/MotionCheckbox';
 import { useSessionState } from '../hooks/useSessionState';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -111,7 +112,7 @@ export function LarderPage({ larder, quantities = {}, dates = {}, onDate, onOpen
           if (!entries.length) return null;
           return <section className="panel larder-group" key={group}><h3>{group}<span>{entries.length}</span></h3>
             <div className="item-grid">{entries.map(([id, [name]]) => <div className="larder-item" key={id}>
-              <label className="larder-stock-toggle"><input type="checkbox" checked={larder.includes(id)} onChange={event => onToggle(id, event.target.checked)} />
+              <label className="larder-stock-toggle"><MotionCheckbox checked={larder.includes(id)} onChange={event => onToggle(id, event.target.checked)} />
                 <span>{name}</span></label>
               {larder.includes(id) && <StockDetails name={name} quantity={quantities[id] ?? ''} date={dates[id] ?? ''}
                 onSave={(quantity,date)=>{onQuantity(id,quantity);onDate(id,date);}} />}

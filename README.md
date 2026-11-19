@@ -62,7 +62,7 @@ Our colours, focus and radius tokens live in `src/ui/tokens.css`; reusable butto
 
 ## Settings and refreshing the PWA
 
-Open **Settings** in the desktop or mobile navigation. The page provides a **Refresh app** action, data backup/restore, a summary of local favourites/larder/shopping, and an explicitly confirmed local data reset.
+Open **Settings** from the desktop navigation or the gear button beside the Simmer logo on the mobile Recipes page. The page provides a **Refresh app** action, data backup/restore, a summary of local favourites/larder/shopping, and an explicitly confirmed local data reset.
 
 On touch devices, drag down from the top of the page until **Release to refresh** appears. This uses the same PWA refresh operation as the Settings button: check the service worker for an update, allow any waiting worker to activate, then reload the complete app (not only React state). Pulling on inputs or in recipe dialogs won't trigger it. Offline reloads fall back to the cached PWA shell. Saved data stays under the existing localStorage key.
 
@@ -122,7 +122,7 @@ On screens up to 750px, Cooking Mode uses a **fixed bottom Previous/Next action 
 
 ## Native-feeling mobile navigation
 
-The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and More. More opens a keyboard-accessible sheet for Favourites and Settings. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
+The mobile footer is a five-slot tab bar with lightweight Lucide icons for Recipes, Planner, Larder, Shopping and Favourites. Favourites opens directly and follows Shopping in the swipe order. Settings is available from the Recipes header. Current tab, shopping count and safe-area spacing are preserved; desktop navigation keeps its existing layout. Touch feedback and reduced-motion behaviour are tested in Playwright.
 
 Pull-to-refresh applies a resistance-limited translation to the app's content (not its fixed tab bar) with a spring-like release animation; it still calls the existing full PWA reload. Scrollable inputs, horizontal swipe gestures, dialogs and cooking mode don't start a refresh, and pull animation is disabled for reduced-motion users. This is a web approximation of iOS overscroll, not a promise of native haptics or exact Safari bounce behaviour.
 
@@ -142,6 +142,20 @@ Updates wait for an explicit Update app or existing Refresh app action. The upda
 
 ## Mobile app bar and complete food photography
 
-On mobile and tablet widths the app bar stays visible while the page scrolls. It offers direct search and favourites actions, with safe-area spacing, a compact welcome card and larger touch targets. Larder search sticks below the app bar, while the header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
+On mobile and tablet widths only the Recipes landing page has a sticky app bar, showing the Simmer logo and a Settings gear. Other pages, including recipe details, have no global app bar or reserved header space. Larder search sticks to the top edge; page-specific controls remain available. The Recipes header stays still during pull-to-refresh. Desktop navigation and the focused Cooking Mode retain their existing layout.
 
 All 40 recipes now use individual food photos. The 25 replacement photos were generated separately with the built-in image tool, checked against the recipe ingredients, then exported as 800×504 transparent WebPs (under 250,000 bytes each; 974,904 bytes combined). Existing SVG artwork remains in the repository. The exact generation prompts and export specification are recorded in [the photo prompt manifest](docs/recipe-photo-prompts-2026-11-06.json).
+
+## Share a week
+
+In Planner, choose a week and tap **Share week**. Use **Share link** on supported devices, or **Copy link**. The unique link opens a preview of the selected dates, seven dinner slots and serving counts, including leftovers, freezer and empty nights. Recipe links remain available. Viewing alone leaves the recipient's saved data unchanged.
+
+The hero shows food previews, the full date range and a heading relative to the recipient’s current week (this week, next week or last week). More distant weeks show their start date. The fixed **Update my planner** controls show which dated week will be replaced. Importing copies those dinners into that week while keeping the recipient's own serving sizes, larder, favourites and other weeks. **Also update my shopping list** is optional and unticked by default. When selected, it uses the existing weekly shopping calculation with the recipient's larder and serving sizes, retaining extras and purchased ticks. Shared meal cards have a separate layout from draggable planner rows so recipe titles remain readable on phones and tablets.
+
+Each share creates a new snapshot; editing the sender's plan does not update older links. The versioned plan is compressed into the URL fragment under `/nibblepot/plan/`, so sharing works with static GitHub Pages and requires no account or database. Only planned recipe IDs, servings and the week date are included. Anyone holding the complete link can read it; it is not an encrypted or revocable link. The share page has a physical, noindex HTML entrypoint, and malformed links show a recovery message. If clipboard access fails, the full URL stays selectable in the share dialog.
+
+## Share a shopping list
+
+Shopping → Share shopping list creates a unique, compressed snapshot link containing the displayed item names, stock-adjusted quantities, groups, packaging hints and purchased ticks. Custom item names support Unicode. The recipient can tick items off independently; progress for that link survives reloads in the same browser tab for the visit. Neither the sender’s list nor the recipient’s own list is replaced. Share again to send an updated snapshot.
+
+Both shopping and week links use URL-safe LZ compression with a `z.` format marker. No server or account is needed. Earlier uncompressed week links are no longer supported. Sharing supports native device sharing, clipboard copying and a selectable link fallback. Lists up to 100 items can be shared; larger lists keep the existing Copy list option. Invalid or incomplete links show recovery guidance.

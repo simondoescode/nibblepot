@@ -179,6 +179,26 @@
     "Black pepper",
     "Cupboard"
   ],
+  "passata": [
+    "Passata",
+    "Cupboard"
+  ],
+  "cooked-chicken": [
+    "Cooked chicken",
+    "Fridge"
+  ],
+  "frozen-mixed-veg": [
+    "Frozen mixed vegetables",
+    "Freezer"
+  ],
+  "stuffing-mix": [
+    "Sage and onion stuffing mix",
+    "Cupboard"
+  ],
+  "frozen-onions": [
+    "Frozen chopped onions",
+    "Freezer"
+  ],
   "honey": [
     "Honey",
     "Cupboard"

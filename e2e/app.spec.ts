@@ -2,8 +2,11 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' | 'Settings') {
   if (project === 'mobile') {
-    await page.getByRole('navigation', {name:'Mobile navigation'}).getByRole('button', {name:'More'}).click();
-    await page.getByRole('dialog', {name:'More Simmer'}).getByRole('button', {name:tab}).click();
+    const nav = page.getByRole('navigation', {name:'Mobile navigation'});
+    if (tab === 'Settings') {
+      await nav.getByRole('button', {name:'Recipes', exact:true}).click();
+      await page.getByRole('button', {name:'Open settings', exact:true}).click();
+    } else await nav.getByRole('button', {name:tab, exact:true}).click();
   } else {
     await page.getByRole('navigation', {name:'Main navigation'}).getByRole('button', {name:tab}).click();
   }
@@ -12,13 +15,13 @@ async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' |
 test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
   // Ensure the random recipe has missing ingredients regardless of which meal is selected.
-  await page.evaluate(() => localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+  await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
     larder: [], favorites: [], shopping: [],
   })));
   await page.reload();
 
   await expect(page.getByRole('region', { name: "Tonight's inspiration" })).toBeVisible();
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /surprise me/i }).click();
   await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /view recipe/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/recipes\/[a-z0-9-]+\//);
@@ -71,14 +74,14 @@ test('spotlight changes recipe and keeps keyboard focus on Surprise me', async (
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {
   await page.goto('/nibblepot/');
   const link = page.locator('.recipe-card').first().getByRole('link', { name: /jacket potatoes/i });
-  await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket/');
+  await expect(link).toHaveAttribute('href', '/nibblepot/recipes/jacket-potatoes-and-beans/');
   await link.focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+  await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/$/);
   await expect(page.locator('.recipe-page h1')).toHaveText('Jacket potatoes & beans');
   await page.getByRole('button', { name: /back to recipes/i }).click();
   await expect(page).toHaveURL(/\/nibblepot\/$/);
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   await expect(link).toBeFocused();
 });
 
@@ -99,7 +102,7 @@ test('mobile recipe card opens from the image, description and larder status', a
     await target.scrollIntoViewIfNeeded();
     const bounds = (await target.boundingBox())!;
     await page.touchscreen.tap(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
-    await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket\/$/);
+    await expect(page).toHaveURL(/\/nibblepot\/recipes\/jacket-potatoes-and-beans\/$/);
     await page.getByRole('button', { name: /back to recipes/i }).click();
     await expect(page).toHaveURL(/\/nibblepot\/$/);
   }
@@ -160,5 +163,5 @@ test('pull-to-refresh is available on mobile and reloads instead of rerendering'
   });
   await loaded;
   expect(await page.evaluate(() => sessionStorage.getItem('touch-started'))).toBe('yes');
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
 });

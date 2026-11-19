@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
-import * as Dialog from '../ui/dialog';
-import { BookOpen, CalendarDays, CookingPot, Ellipsis, Heart, Settings2, ShoppingBasket, Search, X } from 'lucide-react';
+import { BookOpen, CalendarDays, CookingPot, Heart, Settings2, ShoppingBasket } from 'lucide-react';
+import { useChangeMotion } from '../hooks/useChangeMotion';
 import type { Tab } from '../types';
 import { PotIcon } from './PotArt';
 
@@ -18,10 +17,11 @@ const mobileLinks = [
   { id: 'planner', label: 'Planner', icon: CalendarDays },
   { id: 'larder', label: 'Larder', icon: CookingPot },
   { id: 'shopping', label: 'Shopping', icon: ShoppingBasket },
+  { id: 'favorites', label: 'Favourites', icon: Heart },
 ] as const;
 
-export function Header({ tab, shoppingCount, onNavigate, onSearch }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void; onSearch: () => void }) {
-  return <div className="app-header-shell"><div className="wrap"><header className="header">
+export function Header({ tab, shoppingCount, onNavigate, mobileVisible }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void; mobileVisible: boolean }) {
+  return <div className="app-header-shell" data-mobile-visible={mobileVisible}><div className="wrap"><header className="header">
     <button className="brand" type="button" onClick={() => onNavigate('home')} aria-label="Simmer home">
       <span className="brand-pot"><PotIcon /></span><span>Simmer</span>
     </button>
@@ -36,60 +36,22 @@ export function Header({ tab, shoppingCount, onNavigate, onSearch }: { tab: Tab;
     </nav>
     <span className="small-print">DINNER, SORTED.</span>
     <div className="mobile-header-actions">
-      <button type="button" aria-label="Search recipes" onClick={onSearch}><Search size={21} aria-hidden="true"/></button>
-      <button type="button" aria-label="Open favourites" aria-current={tab==='favorites'?'page':undefined} onClick={()=>onNavigate('favorites')}><Heart size={21} aria-hidden="true"/></button>
+      <button type="button" aria-label="Open settings" onClick={() => onNavigate('settings')}><Settings2 size={21} aria-hidden="true"/></button>
     </div>
   </header></div></div>;
 }
 
 export function MobileNavigation({ tab, shoppingCount, onNavigate }: { tab: Tab; shoppingCount: number; onNavigate: (tab: Tab) => void }) {
-  const [moreOpen, setMoreOpen] = useState(false);
-  const leavingMore = useRef(false);
-  const moreButton = useRef<HTMLButtonElement>(null);
-  const choose = (destination: Tab) => { leavingMore.current=true;setMoreOpen(false); onNavigate(destination); };
-  const moreActive = tab === 'favorites' || tab === 'settings';
-
-  return <>
-    <nav className="mobile-nav" aria-label="Mobile navigation">
-      {mobileLinks.map(({ id, label, icon: Icon }) => <button type="button" key={id}
-        className={`mobbtn ${tab === id ? 'active' : ''}`}
-        aria-label={label} aria-description={id === 'shopping' && shoppingCount > 0 ? `${shoppingCount} to buy` : undefined} aria-current={tab === id ? 'page' : undefined}
-        onClick={() => choose(id)}>
-        <span className="mob-icon" aria-hidden="true"><Icon size={20} strokeWidth={2} />
-          {id === 'shopping' && shoppingCount > 0 && <span className="mob-count">{shoppingCount > 99 ? '99+' : shoppingCount}</span>}
-        </span>
-        <span className="mob-label">{label}</span>
-      </button>)}
-      <button ref={moreButton} type="button" className={`mobbtn ${moreActive ? 'active' : ''}`}
-        aria-label="More" aria-haspopup="dialog" aria-expanded={moreOpen}
-        onClick={() => {leavingMore.current=false;setMoreOpen(true);}}>
-        <span className="mob-icon" aria-hidden="true"><Ellipsis size={20} strokeWidth={2} /></span>
-        <span className="mob-label">More</span>
-      </button>
-    </nav>
-    <Dialog.Root historyKey="more" open={moreOpen} onOpenChange={setMoreOpen}>
-      <Dialog.Portal>
-        <Dialog.Overlay className="mobile-more-overlay" />
-        <Dialog.Content className="mobile-more-sheet" aria-describedby="mobile-more-description"
-          onCloseAutoFocus={event => { event.preventDefault(); if (!leavingMore.current) moreButton.current?.focus(); }}>
-          <span className="mobile-more-handle" aria-hidden="true" />
-          <div className="mobile-more-heading">
-            <Dialog.Title>More Simmer</Dialog.Title>
-            <Dialog.Close className="mobile-more-close" aria-label="Close More menu"><X size={21} aria-hidden="true" /></Dialog.Close>
-          </div>
-          <Dialog.Description id="mobile-more-description" className="sr-only">Choose another Simmer section.</Dialog.Description>
-          <button type="button" className="mobile-more-option" aria-current={tab === 'favorites' ? 'page' : undefined}
-            onClick={() => choose('favorites')}>
-            <span className="mobile-more-option-icon"><Heart size={23} aria-hidden="true" /></span>
-            <span><strong>Favourites</strong><small>Your saved go-to dinners</small></span>
-          </button>
-          <button type="button" className="mobile-more-option" aria-current={tab === 'settings' ? 'page' : undefined}
-            onClick={() => choose('settings')}>
-            <span className="mobile-more-option-icon"><Settings2 size={23} aria-hidden="true" /></span>
-            <span><strong>Settings</strong><small>Refresh, backup and preferences</small></span>
-          </button>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
-  </>;
+  const ref = useChangeMotion<HTMLElement>(tab, 'pop', true, '.mobbtn.active .mob-icon > svg');
+  return <nav ref={ref} className="mobile-nav" aria-label="Mobile navigation">
+    {mobileLinks.map(({ id, label, icon: Icon }) => <button type="button" key={id}
+      className={`mobbtn ${tab === id ? 'active' : ''}`}
+      aria-label={label} aria-description={id === 'shopping' && shoppingCount > 0 ? `${shoppingCount} to buy` : undefined}
+      aria-current={tab === id ? 'page' : undefined} onClick={() => onNavigate(id)}>
+      <span className="mob-icon" aria-hidden="true"><Icon size={20} strokeWidth={2}/>
+        {id === 'shopping' && shoppingCount > 0 && <span className="mob-count">{shoppingCount > 99 ? '99+' : shoppingCount}</span>}
+      </span>
+      <span className="mob-label">{label}</span>
+    </button>)}
+  </nav>;
 }

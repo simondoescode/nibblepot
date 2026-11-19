@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 
 test('shopping rows toggle by name and the To buy filter tracks remaining items', async ({ page }, testInfo) => {
   await page.addInitScript(() => {
-    if (!localStorage.getItem('nibblepot-demo-v1')) {
-      localStorage.setItem('nibblepot-demo-v1', JSON.stringify({
+    if (!localStorage.getItem('simmer-recipes-v2')) {
+      localStorage.setItem('simmer-recipes-v2', JSON.stringify({
         favorites: [], larder: [],
         shopping: [{ id: 'pasta', done: false, from: [] }, { id: 'rice', done: true, from: [] }],
       }));
@@ -42,7 +42,7 @@ for (const count of [12, 105]) test(`shopping count of ${count} fits the mobile 
     const shopping = Array.from({ length: count }, (_, index) => ({
       id: `custom:item ${index}`, customName: `Item ${index}`, done: false, from: [],
     }));
-    localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: [], larder: [], shopping }));
+    localStorage.setItem('simmer-recipes-v2', JSON.stringify({ favorites: [], larder: [], shopping }));
   }, count);
   await page.goto('/nibblepot/shopping/');
 
@@ -63,8 +63,8 @@ for (const count of [12, 105]) test(`shopping count of ${count} fits the mobile 
 
 test('adds catalogue ingredients, larder picks and custom items from an empty list', async ({ page }) => {
   await page.addInitScript(() => {
-    if (!localStorage.getItem('nibblepot-demo-v1')) {
-      localStorage.setItem('nibblepot-demo-v1', JSON.stringify({ favorites: [], larder: ['rice'], shopping: [] }));
+    if (!localStorage.getItem('simmer-recipes-v2')) {
+      localStorage.setItem('simmer-recipes-v2', JSON.stringify({ favorites: [], larder: ['rice'], shopping: [] }));
     }
   });
   await page.goto('/nibblepot/shopping/');

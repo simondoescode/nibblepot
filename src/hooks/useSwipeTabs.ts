@@ -3,7 +3,7 @@ import type { TouchEvent } from 'react';
 import type { Tab } from '../types';
 import { prefersReducedMotion } from './useReducedMotion';
 
-export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping'];
+export const SWIPE_TABS: readonly Tab[] = ['home', 'planner', 'larder', 'shopping', 'favorites'];
 const MOBILE_NAV_QUERY = '(max-width: 1180px)';
 const SYSTEM_EDGE_INSET = 24;
 const BLOCKED = 'input,textarea,select,[role="slider"],[role="dialog"],[contenteditable="true"],[data-no-tab-swipe],[data-horizontal-scroll]';

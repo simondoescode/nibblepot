@@ -15,16 +15,16 @@ test('multiple food types combine with search and quick filters and can be clear
   await page.getByRole('searchbox',{name:'Search recipes'}).fill('tomato');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
   await expect(page.locator('.recipe-card h3')).toHaveText('Chicken & tomato pasta');
-  await expect(page.locator('.recipe-result-count')).toHaveText('1 of 41 recipes');
+  await expect(page.locator('.recipe-result-count')).toHaveText('1 of 45 recipes');
   await chooseTypes(page,['Fish']);
   await expect(page.getByRole('heading',{name:'No recipes found'})).toBeVisible();
   await page.getByRole('button',{name:'Show everything'}).click();
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('All food');
   await expect(page.getByRole('searchbox')).toHaveValue('');
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   await chooseTypes(page,['Rice']);
   await page.getByRole('button',{name:'Clear filters',exact:true}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
 });
 
 test('selected categories match either type and can be removed individually',async ({page})=>{
@@ -35,9 +35,9 @@ test('selected categories match either type and can be removed individually',asy
   await expect(page.locator('#home-results').getByRole('heading',{name:'One-pot chicken rice',exact:true})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Speedy tomato pasta',exact:true})).toHaveCount(0);
   await page.getByRole('button',{name:'Remove Chicken filter',exact:true}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(4);
+  await expect(page.locator('.recipe-card')).toHaveCount(5);
   await page.getByRole('button',{name:'Remove Fish filter',exact:true}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
 });
 
 test('food selections survive opening a recipe and returning to the list',async ({page})=>{
@@ -58,7 +58,7 @@ test('picker cancels on Escape and restores focus without applying draft changes
   await sheet.getByRole('checkbox',{name:'Fish',exact:true}).check();
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
   await trigger.click();
   await expect(sheet.getByRole('checkbox',{name:'Fish',exact:true})).not.toBeChecked();
   await sheet.getByRole('checkbox',{name:'Fish',exact:true}).check();
@@ -66,7 +66,7 @@ test('picker cancels on Escape and restores focus without applying draft changes
   await trigger.click();
   await sheet.getByRole('button',{name:'Clear selection'}).click();
   await sheet.getByRole('button',{name:'Apply filters'}).click();
-  await expect(page.locator('.recipe-card')).toHaveCount(41);
+  await expect(page.locator('.recipe-card')).toHaveCount(45);
 });
 
 test('finding meals from the larder clears previous food restrictions',async ({page},info)=>{
@@ -86,7 +86,7 @@ for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`
   await page.goto('/nibblepot/');
   await page.getByRole('button',{name:/Food types/}).click();
   const picker=page.getByRole('dialog',{name:'Choose food types'});
-  await expect(picker.getByRole('checkbox')).toHaveCount(8);
+  await expect(picker.getByRole('checkbox')).toHaveCount(9);
   const box=await picker.boundingBox();
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x+box!.width).toBeLessThanOrEqual(width);
@@ -95,4 +95,13 @@ for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`
   await picker.getByRole('button',{name:'Apply filters'}).click();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
   await expect(page.getByRole('button',{name:/Food types/})).toContainText('2 selected');
+});
+
+test('dietary preferences restrict other selected categories',async ({page})=>{
+  await page.goto('/nibblepot/');
+  await chooseTypes(page,['Vegan-friendly','Rice']);
+  await expect(page.locator('#home-results').getByRole('heading',{name:'Smoky bean rice bowls',exact:true})).toBeVisible();
+  await expect(page.locator('#home-results').getByRole('heading',{name:'One-pot chicken rice',exact:true})).toHaveCount(0);
+  await chooseTypes(page,['Meat-free','Chicken']);
+  await expect(page.getByRole('heading',{name:'No recipes found'})).toBeVisible();
 });
