@@ -18,6 +18,10 @@ describe('food type filters',()=>{
     expect(matchesFoodType(recipe('65ej'),'beef')).toBe(true);
     expect(matchesFoodType(recipe('5epv'),'beef')).toBe(false);
     expect(matchesFoodType({...recipe('dahn'),title:'Chicken rice'},'chicken')).toBe(false);
+    expect(matchesFoodType(recipe('ckl8'),'chicken')).toBe(true);
+    expect(matchesFoodType(recipe('lzdv'),'fish')).toBe(true);
+    expect(matchesFoodType(recipe('lzdv'),'meat-free')).toBe(false);
+    expect(matchesFoodType(recipe('p09p'),'vegan')).toBe(false);
   });
   it('keeps fish, meatballs and optional meat out of meat-free results',()=>{
     const ids=filterRecipes(recipes,'','all',[],['meat-free']).map(item=>item.id);
@@ -38,7 +42,7 @@ describe('food type filters',()=>{
   it('offers populated food types without changing default catalogue results',()=>{
     expect(filterRecipes(recipes,'','all',[])).toEqual(filterRecipes(recipes,'','all',[],['all']));
     for(const type of foodTypes) expect(filterRecipes(recipes,'','all',[],[type.id]).length).toBeGreaterThan(0);
-    expect(filterRecipes(recipes,'','all',[],['fish']).map(item=>item.id)).toEqual(['gf6b','l4pm','ma5h','6lab','04do']);
+    expect(filterRecipes(recipes,'','all',[],['fish']).map(item=>item.id)).toEqual(['gf6b','l4pm','ma5h','6lab','04do','lzdv','kmuu','inxv','7op4']);
   });
   it('combines food type with search, quick filters and larder ranking',()=>{
     expect(filterRecipes(recipes,'tomato','quick',[],['chicken']).map(item=>item.id)).toEqual(['0fa3']);

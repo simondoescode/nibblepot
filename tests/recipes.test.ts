@@ -4,8 +4,8 @@ import { addMissingIngredients, chooseRandomRecipe, filterRecipes, inLarder, mis
 import { DEFAULT_DATA, parseSavedData } from '../src/lib/storage';
 
 describe('recipe catalogue', () => {
-  it('has 45 recipes including all 16 original IDs with valid ingredient IDs', () => {
-    expect(recipes).toHaveLength(45);
+  it('has 60 recipes including all 16 original IDs with valid ingredient IDs', () => {
+    expect(recipes).toHaveLength(60);
     for(const id of ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9']) {
       expect(recipes.some(recipe=>recipe.id===id)).toBe(true);
     }

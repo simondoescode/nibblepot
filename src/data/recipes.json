@@ -2764,10 +2764,10 @@
     ],
     "steps": [
       "Brown diced lamb in a heavy pot, then add chopped onion and cook for 5 minutes until softened.",
-      "Add diced sweet potato, sliced carrots, tomatoes and stock dissolved in 400 ml boiling water. Cover and simmer gently for 55–60 minutes.",
+      "Add diced sweet potato, sliced carrots, tomatoes and stock dissolved in 400 ml boiling water. Cover and simmer gently for 90–100 minutes.",
       "Check the lamb is tender and cooked throughout and vegetables are soft; serve hot, with extra water if the stew becomes too thick."
     ],
-    "onePot": false,
+    "onePot": true,
     "safety": "Simmer diced lamb gently until completely cooked and tender, and serve the finished stew steaming hot throughout.",
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-08",
