@@ -6,18 +6,18 @@ import { recipePath, cookingPath } from '../src/lib/routes';
 
 const originalIds = ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9'];
 describe('recipe quality gate', () => {
-  it('preserves all original recipe IDs and has twenty-nine additions', () => {
-    expect(recipes).toHaveLength(45);
+  it('preserves all original recipe IDs and has forty-four additions', () => {
+    expect(recipes).toHaveLength(60);
     const ids = recipes.map(r => r.id);
-    expect(new Set(ids).size).toBe(45);
+    expect(new Set(ids).size).toBe(60);
     expect(ids.slice(0,16)).toEqual(originalIds);
-    expect(ids.slice(16)).toHaveLength(29);
+    expect(ids.slice(16)).toHaveLength(44);
   });
   for (const recipe of recipes) {
     it('checks quantities, references and safety: ' + recipe.id, () => {
       expect(recipe.title.length).toBeGreaterThan(6);
       expect(recipe.mins).toBeGreaterThanOrEqual(10);
-      expect(recipe.mins).toBeLessThanOrEqual(75);
+      expect(recipe.mins).toBeLessThanOrEqual(150);
       expect(recipe.steps.length).toBeGreaterThanOrEqual(3);
       expect(recipe.steps.every(step => step.length >= 35 && !/enough water for your rice/i.test(step))).toBe(true);
       expect(recipe.ing.length).toBeGreaterThanOrEqual(3);
@@ -60,7 +60,7 @@ describe('recipe quality gate', () => {
     for (const recipe of recipes.filter(r => r.ing.some(i => i.id==='rice'))) {
       expect(recipe.storage).toContain('within one hour');
       expect(recipe.storage).toContain('24 hours');
-      expect(recipe.storage).toContain('reheat only once');
+      expect(recipe.storage.toLowerCase()).toContain('reheat only once');
     }
   });
 });

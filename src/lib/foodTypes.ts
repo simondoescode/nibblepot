@@ -15,8 +15,8 @@ export const foodTypes = [
 export type FoodType = typeof foodTypes[number]['id'];
 
 const ingredientsByType = {
-  chicken: ['chicken', 'cooked-chicken'], beef: ['beef'], pork: ['sausages', 'ham'],
-  fish: ['tuna', 'fish-fingers'], pasta: ['pasta', 'noodles'],
+  chicken: ['chicken', 'cooked-chicken', 'chicken-mince'], beef: ['beef'], pork: ['sausages', 'ham'],
+  fish: ['tuna', 'fish-fingers', 'salmon', 'white-fish'], pasta: ['pasta', 'noodles'],
   rice: ['rice'], potatoes: ['potatoes'],
 };
 /** Packaged stock, sauces and pasta need their labels checked by the cook.
@@ -24,10 +24,10 @@ const ingredientsByType = {
  * so the default recipe ingredients do not imply a vegan dish incorrectly.
  * Vegan-friendly is not a certification; see the picker guidance.
  */
-const animalProducts = new Set(['cheese','butter','eggs','milk','cream-cheese','mayo','chicken','cooked-chicken','beef','sausages','ham','meatballs','tuna','fish-fingers','puff-pastry','stuffing-mix','gravy']);
+const animalProducts = new Set(['cheese','butter','eggs','milk','cream-cheese','mayo','chicken','cooked-chicken','beef','sausages','ham','meatballs','tuna','fish-fingers','puff-pastry','stuffing-mix','gravy','chicken-mince','lamb-mince','diced-lamb','salmon','white-fish','yoghurt']);
 export const dietaryFoodTypes: readonly FoodType[] = ['meat-free','vegan'];
 
-const meatAndFish = new Set(['chicken', 'cooked-chicken', 'beef', 'sausages', 'ham', 'meatballs', 'tuna', 'fish-fingers']);
+const meatAndFish = new Set(['chicken', 'cooked-chicken', 'beef', 'sausages', 'ham', 'meatballs', 'tuna', 'fish-fingers', 'chicken-mince', 'lamb-mince', 'diced-lamb', 'salmon', 'white-fish']);
 
 /** Categories can overlap: chicken pasta belongs to both Chicken and Pasta.
  * Match catalogue IDs rather than titles, and do not infer a meatball's meat.
