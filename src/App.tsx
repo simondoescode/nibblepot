@@ -265,7 +265,7 @@ export default function App() {
       </div>
       <footer className="wrap footer">Made for real-life tea times ✳ Simmer demo</footer>
     </div>
-    <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />
+    {!(route.kind === 'recipe' && activeRecipe) && <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />}
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
       onReopen={() => setRandomId(lastRandom.current!.id)} onClose={() => setRandomId(null)} onView={() => { if (lastRandom.current) openRecipe(lastRandom.current.id); }} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
     <PlanDinnerDialog recipe={plannedRecipe}

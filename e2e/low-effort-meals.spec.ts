@@ -37,6 +37,7 @@ test('stuffing pie scales cooked chicken and adds it to shopping separately from
   await expect(page.locator('.ingredient-line').filter({ hasText: 'Cooked chicken' })).toContainText('200 g');
   await page.getByRole('button', { name: 'Save recipe', exact: true }).click();
   await page.getByRole('button', { name: 'Add missing ingredients', exact: true }).click();
+  await page.getByRole('button', { name: 'Back to recipes', exact: true }).click();
   await page.getByRole('navigation', { name: info.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' }).getByRole('button', { name: 'Shopping', exact: true }).click();
   await expect(page.locator('.shop-row').filter({ hasText: 'Cooked chicken' })).toContainText('200 g');
   await page.reload();

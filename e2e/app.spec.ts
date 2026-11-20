@@ -28,6 +28,7 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
   await expect(page.locator('.recipe-page')).toBeVisible();
   await expect(page.getByRole('heading', { name: /What you'll need/i })).toBeVisible();
   await page.getByRole('button', { name: /add missing ingredients/i }).click();
+  await page.getByRole('button', { name: 'Back to recipes', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' }).getByRole('button', { name: 'Shopping' }).click();
   await expect(page.locator('.shop-row').first()).toBeVisible();
