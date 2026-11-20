@@ -6,12 +6,12 @@ import { recipePath, cookingPath } from '../src/lib/routes';
 
 const originalIds = ['dahn','ruxx','5sg6','4khq','gf6b','hdfl','41r8','2oxo','2xm8','1ok1','yu0o','0iaz','5epv','l4pm','o1du','7pt9'];
 describe('recipe quality gate', () => {
-  it('preserves all original recipe IDs and has forty-four additions', () => {
-    expect(recipes).toHaveLength(60);
+  it('preserves all original recipe IDs and has forty-five additions', () => {
+    expect(recipes).toHaveLength(61);
     const ids = recipes.map(r => r.id);
-    expect(new Set(ids).size).toBe(60);
+    expect(new Set(ids).size).toBe(61);
     expect(ids.slice(0,16)).toEqual(originalIds);
-    expect(ids.slice(16)).toHaveLength(44);
+    expect(ids.slice(16)).toHaveLength(45);
   });
   for (const recipe of recipes) {
     it('checks quantities, references and safety: ' + recipe.id, () => {
