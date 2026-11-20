@@ -43,7 +43,7 @@ test('favourites and shopping work within the dedicated recipe route', async ({ 
   await page.reload();
   await page.getByRole('button', { name: /save recipe/i }).click();
   await expect(page.getByRole('button', { name: /saved to favourites/i })).toBeVisible();
-  await page.getByRole('button', { name: /add missing bits/i }).click();
+  await page.getByRole('button', { name: /add missing ingredients/i }).click();
   const nav = page.getByRole('navigation', { name: testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation' });
   await nav.getByRole('button', { name: 'Shopping' }).click();
   await expect(page).toHaveURL(/\/nibblepot\/shopping\/$/);
@@ -61,7 +61,7 @@ test('serving changes scale recipe amounts and update shopping quantities', asyn
   await page.getByRole('button', { name: 'Fewer servings' }).click();
   await page.getByRole('button', { name: 'Fewer servings' }).click();
   await expect(page.locator('.recipe-page-ingredients')).toContainText('175 g');
-  await page.getByRole('button', { name: /add missing bits/i }).click();
+  await page.getByRole('button', { name: /add missing ingredients/i }).click();
   const navName = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
   await page.getByRole('navigation', { name: navName }).getByRole('button', { name: 'Shopping' }).click();
   await expect(page.locator('.shop-row').filter({ hasText: 'Pasta' })).toContainText('175 g');
@@ -75,7 +75,7 @@ test('serving changes scale recipe amounts and update shopping quantities', asyn
 test('optional ingredients stay off the list until chosen', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/recipes/jacket-potatoes-and-beans/');
   await expect(page.locator('.recipe-optional')).toHaveCount(2);
-  await page.getByRole('button', { name: /add missing bits/i }).click();
+  await page.getByRole('button', { name: /add missing ingredients/i }).click();
   const navName = testInfo.project.name === 'mobile' ? 'Mobile navigation' : 'Main navigation';
   const nav = page.getByRole('navigation', { name: navName });
   await nav.getByRole('button', { name: 'Shopping' }).click();
@@ -83,7 +83,7 @@ test('optional ingredients stay off the list until chosen', async ({ page }, tes
   await nav.getByRole('button', { name: 'Recipes' }).click();
   await page.getByRole('link', { name: /jacket potatoes/i }).first().click();
   await page.locator('.recipe-optional').filter({ hasText: 'Include optional ingredient' }).last().getByRole('checkbox').check();
-  await page.getByRole('button', { name: /add missing bits/i }).click();
+  await page.getByRole('button', { name: /add missing ingredients/i }).click();
   await nav.getByRole('button', { name: 'Shopping' }).click();
   // Butter is in the starter larder? It isn't, so explicitly opting in adds it.
   await expect(page.locator('.shop-row').filter({ hasText: 'Butter or spread' })).toHaveCount(1);
