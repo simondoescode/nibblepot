@@ -156,3 +156,30 @@
   font: 700 .85rem/1 var(--font-ui);
   text-decoration: none;
 }
+
+.settings-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: env(safe-area-inset-top);
+  background: var(--surface);
+  border-bottom: 1px solid var(--divider);
+}
+.settings-toolbar .wrap {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 3.5rem;
+}
+.settings-toolbar h1 { margin: 0; font-size: 1.5rem; }
+.settings-toolbar button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--selected);
+  color: var(--brand);
+  cursor: pointer;
+}

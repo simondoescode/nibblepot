@@ -68,10 +68,6 @@ export function SettingsPage({ pwa, data, onRefresh, refreshing, onRestore, onRe
   };
 
   return <div className="settings-page">
-    <section className="page-intro settings-intro">
-      <div><h2>Little tweaks.</h2><p>Make Nibblepot yours. No account, no fuss.</p></div>
-      <span className="intro-icon" aria-hidden="true">🍲</span>
-    </section>
     <div className="settings-stack">
       <InstallCard pwa={pwa} settings />
       <p role="status">{pwa.offlineReady ? 'Ready for offline tea times.' : 'Offline access becomes available after the app finishes downloading.'}</p>
