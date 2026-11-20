@@ -1,0 +1,7 @@
+.home-day { display:flex; flex-direction:column; min-width:0; background:#f3f6ee; border:1px solid #dce4d7; border-radius:13px; }
+.simmer-home-days .home-day button { flex:1; border:0; width:100%; }
+.simmer-home-days .home-day .home-change { flex:none; min-height:44px; justify-content:center; text-decoration:underline; font-size:.8rem; }
+@media(max-width:700px) { .home-day { flex:0 0 122px; scroll-snap-align:start; } }
+@media(min-width:1025px) {
+  .planner-picker-dialog.home-day-picker { width:360px; height:min(460px, calc(100dvh - 32px)); left:clamp(16px,var(--day-left),calc(100vw - 376px)); top:clamp(16px,var(--day-top),calc(100dvh - 476px)); transform:none; }
+}

@@ -1,5 +1,7 @@
-import { Search } from 'lucide-react';
-import { useMemo } from 'react';
+import "../styles/home-day.css";
+import { Search, X } from 'lucide-react';
+import * as Dialog from "../ui/dialog";
+import { useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { WeekSlot } from '../types';
 import { TonightInspiration } from './TonightInspiration';
 import { recipes } from '../data';
@@ -25,10 +27,10 @@ type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
   favorites: string[]; larder: string[]; stock: Record<string,string>; dates: Record<string,string>; servings: Record<string,number>; onFavorite: (id: string) => void; onOpen: (id: string) => void;
-  weekSlots: WeekSlot[]; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
+  weekSlots: WeekSlot[]; onPlan: (day: number, id: string) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onFavorite, onOpen, weekSlots, onPlanner, onLarder, onShopping }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
   const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
   const nearly = filter === 'larder' ? filtered.filter(recipe => {
@@ -41,9 +43,57 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
   if (filter === 'larder') { ready.sort(byUseSoon); nearly.sort(byUseSoon); other.sort(byUseSoon); }
   const resultCount = filtered.length === recipes.length ? `${recipes.length}` : `${filtered.length} of ${recipes.length}`;
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const [day, setDay] = useState(0);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const opener = useRef<HTMLButtonElement | null>(null);
+  const openPicker = (index: number, button: HTMLButtonElement) => {
+    opener.current = button;
+    setDay(index);
+    setQuery('');
+    setPickerOpen(true);
+  };
+  const matches = useMemo(() => pickerOpen ? filterRecipes(recipes, query, 'all', [])
+    .sort((a, b) => Number(favorites.includes(b.id)) - Number(favorites.includes(a.id))) : [], [pickerOpen, query, favorites]);
+  const anchor = opener.current?.getBoundingClientRect();
   return <>
     <TonightInspiration recipes={ready.length ? ready : nearly.length ? nearly : filtered} onOpen={onOpen} />
-    <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><h2>This week's dinners</h2><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">{weekSlots.map((slot,index) => {const meal=slot.kind === 'recipe' ? recipes.find(recipe=>recipe.id===slot.id) : undefined;return <button type="button" key={index} onClick={onPlanner}><span>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}</span><strong>{meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner')}</strong></button>;})}</div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
+    <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><h2>This week's dinners</h2><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">
+      {weekSlots.map((slot, index) => {
+        const meal = slot.kind === 'recipe' ? recipes.find(recipe => recipe.id === slot.id) : undefined;
+        const title = meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner');
+        return <div className="home-day" key={days[index]}>
+          <button type="button" onClick={event => meal ? onOpen(meal.id) : openPicker(index, event.currentTarget)}>
+            <span>{days[index].slice(0, 3)}</span><strong>{title}</strong>
+          </button>
+          {meal && <button type="button" className="home-change" aria-label={`Change dinner for ${days[index]}`} onClick={event => openPicker(index, event.currentTarget)}>Change dinner</button>}
+        </div>;
+      })}
+    </div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
+    <Dialog.Root historyKey="home-day-picker" open={pickerOpen} onOpenChange={setPickerOpen}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="planner-picker-overlay"/>
+        <Dialog.Content className="planner-picker-dialog home-day-picker" aria-describedby={undefined}
+          style={{ '--day-left': `${anchor?.left ?? 16}px`, '--day-top': `${(anchor?.bottom ?? 8) + 8}px` } as CSSProperties}
+          onCloseAutoFocus={event => { event.preventDefault(); opener.current?.focus(); }}>
+          <div className="planner-picker-heading"><Dialog.Title>Dinner for {days[day]}</Dialog.Title>
+            <Dialog.Close className="planner-picker-close" aria-label="Close dinner picker"><X size={20}/></Dialog.Close></div>
+          <label className="planner-picker-search"><Search size={18} aria-hidden="true"/>
+            <input type="search" value={query} aria-label="Search dinners" placeholder="Search meals or ingredients" onChange={event => setQuery(event.target.value)}/>
+          </label>
+          <div className="planner-picker-results">
+            {matches.map(recipe => <button className="planner-meal-option" key={recipe.id} type="button"
+              onClick={() => { onPlan(day, recipe.id); setPickerOpen(false); }}>
+              <img width="64" height="48" alt="" loading="lazy" src={import.meta.env.BASE_URL + (recipe.image ?? 'recipes/jacket.svg')}/>
+              <span className="planner-meal-copy"><strong>{recipe.title}</strong>
+                <small>{recipe.mins} min{favorites.includes(recipe.id) && ' · Favourite'}</small></span>
+            </button>)}
+            {!matches.length && <p role="status">No dinners match your search.</p>}
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
     <section className="menu-toolbar" aria-label="Browse recipes">
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
 </div>
