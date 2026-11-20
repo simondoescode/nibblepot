@@ -16,9 +16,17 @@ html { scroll-padding-top: calc(var(--mobile-header-height) + 12px); }
 }
 .app-header-shell .header { min-height: 63px; padding-block: 7px; }
 .brand, .navbtn { min-height: 44px; }
-.navbtn { color: var(--text-muted); font-weight: 600; }
-.navbtn:hover { background: var(--bg); }
-.navbtn.active, .mobile-header-actions button[aria-current="page"] { background: var(--selected); }
+.topnav { gap: var(--space-1); }
+.navbtn { padding: 7px 12px; color: var(--text-muted); font-weight: 600; }
+.navbtn:hover { background: var(--bg); color: var(--brand); }
+.navbtn.active {
+  border-color: var(--brand);
+  background: var(--selected);
+  color: var(--brand);
+}
+.navbtn.active:hover { background: var(--surface); }
+.navbtn:focus-visible { outline-offset: 3px; }
+.mobile-header-actions button[aria-current="page"] { background: var(--selected); }
 
 .btn {
   min-height: 44px;

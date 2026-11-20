@@ -3,11 +3,11 @@ import type { PwaState } from '../hooks/usePwa';
 
 export function InstallCard({ pwa, settings = false }: { pwa: PwaState; settings?: boolean }) {
   if (!settings && (pwa.installed || pwa.dismissed || (!pwa.canInstall && !pwa.apple))) return null;
-  return <section className="pwa-card" aria-label="Install Simmer">
+  return <section className={settings ? 'pwa-card' : 'pwa-card pwa-card-home'} aria-label="Install Simmer">
     <img src={`${import.meta.env.BASE_URL}icons/icon-192-v3.png`} width="52" height="52" alt="" />
     <div className="pwa-card-copy"><h3>{pwa.installed ? 'Simmer is on your home screen' : 'Tea times, one tap away.'}</h3>
       <p>{pwa.installed ? 'You’re using the app. Your recipes and lists stay on this device.' : 'Add Simmer to your home screen. Keep recipes, your planner and shopping list handy offline.'}</p>
-      {!pwa.installed && <button className="btn btn-primary" type="button" disabled={pwa.installing} onClick={() => void pwa.install()}>
+      {!pwa.installed && <button className={settings ? 'btn btn-primary' : 'btn btn-cream'} type="button" disabled={pwa.installing} onClick={() => void pwa.install()}>
         <Download size={17} aria-hidden="true" /> {pwa.installing ? 'Opening…' : pwa.canInstall ? 'Install Simmer' : 'How to install'}
       </button>}
       {pwa.help && !pwa.installed && <div className="pwa-install-help">

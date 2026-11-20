@@ -34,7 +34,6 @@ export function Header({ tab, shoppingCount, onNavigate, mobileVisible }: { tab:
         {id === 'shopping' && shoppingCount > 0 && <span className="nav-count">{shoppingCount > 99 ? '99+' : shoppingCount}</span>}
       </button>)}
     </nav>
-    <span className="small-print">DINNER, SORTED.</span>
     <div className="mobile-header-actions">
       <button type="button" aria-label="Open settings" onClick={() => onNavigate('settings')}><Settings2 size={21} aria-hidden="true"/></button>
     </div>

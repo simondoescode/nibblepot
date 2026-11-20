@@ -2,3 +2,29 @@
 .pwa-card img{border-radius:14px;flex:none}.pwa-card-copy{flex:1;min-width:0}.pwa-card h3{margin:0 32px 8px 0;font-size:21px;letter-spacing:-.6px}.pwa-card p{font-size:14px;line-height:1.5;margin:0 0 12px}.pwa-card .btn{min-height:44px}.pwa-dismiss{position:absolute;top:8px;right:8px;display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--ink);cursor:pointer}.pwa-dismiss:focus-visible{outline:3px solid var(--focus-ring)}
 .pwa-install-help{margin-top:14px;padding-top:12px;border-top:1px solid var(--muted)}.pwa-install-help ol{padding-left:20px;font-size:14px;line-height:1.7}.pwa-status{display:flex;justify-content:center;align-items:center;gap:8px;padding:10px 16px;background:var(--yellow);color:var(--ink);font-size:13px;line-height:1.5}.pwa-status svg{flex:none}.pwa-update{position:fixed;z-index:30;bottom:24px;right:24px;max-width:430px;border:2px solid var(--ink);border-radius:20px;background:var(--paper);padding:18px;box-shadow:var(--shadow);display:flex;flex-wrap:wrap;gap:10px}.pwa-update p{font-size:13px;line-height:1.5;margin:5px 0}.pwa-update .btn{min-height:44px}
 @media(max-width:750px){.pwa-card{padding:16px;gap:10px}.pwa-card img{width:40px;height:40px}.pwa-card h3{font-size:18px}.pwa-card p{font-size:13px}.pwa-update{bottom:calc(85px + env(safe-area-inset-bottom));left:12px;right:12px;max-width:none}.pwa-status{font-size:12px;text-align:center}}
+
+@media (width > 1180px) {
+  .pwa-card-home {
+    align-items: center;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--divider);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    box-shadow: none;
+  }
+  .pwa-card-home img { width: 36px; height: 36px; border-radius: var(--radius-control); }
+  .pwa-card-home .pwa-card-copy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+  .pwa-card-home h3 { margin: 0; font-size: 15px; letter-spacing: normal; }
+  .pwa-card-home p { margin: 0; color: var(--text-muted); }
+  .pwa-card-home .pwa-card-copy > .btn { margin-left: auto; padding-block: var(--space-2); }
+  .pwa-card-home .pwa-install-help,
+  .pwa-card-home [role="status"] { flex-basis: 100%; }
+  .pwa-card-home .pwa-dismiss { position: static; flex: none; }
+}
