@@ -4,6 +4,8 @@
 
 The reference is the individual food photography across [Wagamama’s UK menu](https://www.wagamama.com/menu). The small sauce bowls read by colour and surface texture. The children’s katsu plates repeat their composition so the change of sauce is immediately visible. Upright juice glasses read by silhouette. Apply that discipline to Nibblepot’s own recipes and crockery.
 
+The overhead sausage and white bean casserole sample is the visual reference for new recipe cards. Its round ivory bowl frames browned sausage and pale beans against tomato sauce. Aim for that same immediate recognition with each recipe’s own ingredients. Give the finished asset 10–12% breathing room around the complete vessel.
+
 ## Choose the shot before writing the prompt
 
 | Menu reference | Direction for Nibblepot |
@@ -22,7 +24,7 @@ For related recipes, lock the vessel, orientation, camera height and apparent se
 
 ## Look and composition
 
-- **Camera angle.** Default to overhead (approximately 80–90° above the table) for plated meals, pasta, rice dishes and bowls whose toppings identify the recipe. Use a high three-quarter angle (45–60°) when a wrap’s filling, a pie’s layers or a tall serving needs depth to read. Use one viewpoint per image.
+- **Camera angle.** Shoot food directly overhead, with the lens centred above the serving and the camera sensor parallel to the tabletop. A circular rim should read as a circle. Reserve a high three-quarter view for a defining cut face or layer hidden from above. Use the drinks guidance for upright glasses.
 - **Food.** Style one realistic serving with the ingredients and accompaniments called for in the recipe. Arrange them loosely so the main ingredient is easy to pick out. Keep craggy crumbs, browned edges and the natural variation in cooked food.
 - **Tableware.** Choose a simple matte plate, bowl or dish that fits the recipe. Use warm off-white, stone or muted charcoal where it gives the food a clear edge. Show the full vessel with 10–12% clear padding around it and centre the dish by its visual weight.
 - **Lighting and colour.** Use soft directional studio light from the upper left, with enough contrast to see texture and enough fill to retain details in dark food. Keep the white balance neutral to warm and let the real ingredient colours provide the accents. Allow a short, soft contact shadow close to the vessel.
@@ -47,9 +49,9 @@ Do not commit huge generated PNGs as production assets. WebP lossy *with alpha* 
 
 ## AI image generation prompt (one dish at a time)
 
-> Create one photorealistic menu photograph of **[RECIPE TITLE]**. Show one realistic home-cooked serving containing **[VISIBLE INGREDIENTS AND RECIPE ACCOMPANIMENTS]** on **[SIMPLE MATTE VESSEL]**. Use **[ANGLE FROM THE SHOT GUIDE: OVERHEAD / HIGH THREE-QUARTER / NEAR EYE LEVEL FOR DRINKS]** to make **[DEFINING INGREDIENT, FILLING OR TEXTURE]** easy to see. Frame the complete vessel with 10–12% clear space and centre it by visual weight. Use soft directional light from the upper left, natural ingredient colours, believable cooking textures and a short, soft contact shadow if needed. Isolate the vessel and food on genuine transparent alpha. Exclude surfaces, props, extra accompaniments, lettering, borders and artificial gloss.
+> Create one photorealistic menu photograph of **[RECIPE TITLE]**. Show one realistic home-cooked serving containing **[VISIBLE INGREDIENTS AND RECIPE ACCOMPANIMENTS]** on **[SIMPLE MATTE VESSEL]**. Photograph directly overhead at 90° to the tabletop. Arrange the serving to make **[DEFINING INGREDIENT, FILLING OR TEXTURE]** easy to see. Frame the complete vessel with 10–12% clear space and centre it by visual weight. Use soft directional light from the upper left, natural ingredient colours, believable cooking textures and a short, soft contact shadow if needed. Isolate the vessel and food on genuine transparent alpha. Exclude surfaces, props, extra accompaniments, lettering, borders and artificial gloss.
 
-For jacket potatoes and beans, use an overhead view of a split baked potato on a warm off-white plate. Show the crisp skin and spooned-in beans. Add a modest amount of grated cheddar only if the recipe includes it. For a filled wrap, use a high three-quarter view and face the cut end towards the camera.
+For the cut-face or upright-drink exceptions, replace the overhead sentence with the specified camera angle. For jacket potatoes and beans, use an overhead view of a split baked potato on a warm off-white plate. Show the crisp skin and spooned-in beans. Add a modest amount of grated cheddar only if the recipe includes it. For a filled wrap, turn the cut end upwards first. Lower the camera only if the filling is still hidden.
 
 **Generate separately for each recipe.** Do not prompt for a 10-dish grid and then crop it: scale and transparency become inconsistent. Asking for alpha does not guarantee the model delivers alpha. Reject nontransparent renders or properly remove the background before export.
 
