@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/simondoescode/nibblepot/compare/v0.5.0...v0.6.0) (2026-11-20)
+
+
+### Features
+
+* add a sticky Settings header and back button ([2e3c509](https://github.com/simondoescode/nibblepot/commit/2e3c50949645c425dbfec92a08e2397e2d30c323))
+* bring the recipe hero style to homepage cards ([c3ea40b](https://github.com/simondoescode/nibblepot/commit/c3ea40b6a9f5d02e074f0b339e3be6eba250444b))
+* style homepage recipe cards like the recipe hero ([b514ca8](https://github.com/simondoescode/nibblepot/commit/b514ca8e5b3574f2404e84d99f3d821320fc0953))
+
+
+### Bug Fixes
+
+* group recipe tags and diet badges above the title ([4cf8f68](https://github.com/simondoescode/nibblepot/commit/4cf8f6837373fa0655b145534644e292d66e73d7))
+* put recipe tags and dietary badges on one row ([622900e](https://github.com/simondoescode/nibblepot/commit/622900e878d22c309c2d867b25902ebc683cd033))
+
 ## [0.5.0](https://github.com/simondoescode/nibblepot/compare/v0.4.0...v0.5.0) (2026-11-20)
 
 
