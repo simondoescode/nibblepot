@@ -14,6 +14,7 @@ export interface RecipeIngredient {
 }
 
 export interface Recipe {
+  diet?: "vegan" | "vegetarian" | "omnivore";
   id: RecipeId;
   /** Human-readable, stable route segment. */
   slug: string;

@@ -1,3 +1,4 @@
+import { DietBadges } from './DietBadges';
 import { Clock3, Heart } from 'lucide-react';
 import { type MouseEvent } from 'react';
 import { MotionMark } from '../ui/MotionMark';
@@ -59,6 +60,7 @@ export function RecipeGrid({ recipes, favorites, larder, onFavorite, onOpen, onR
       <RecipeArt recipe={recipe} saved={favorites.includes(recipe.id)}
         onFavorite={() => onFavorite(recipe.id)} />
       <div className="recipe-info">
+        <DietBadges diet={recipe.diet} />
         <h3><a className="recipe-card-link" href={recipePath(recipe.id)}
           onClick={event => visitRecipe(event, recipe.id, onOpen)}>
           {recipe.title}</a></h3><p>{recipe.description}</p>

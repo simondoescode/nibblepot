@@ -23,7 +23,7 @@ export function FoodTypePicker({selected,onChange}:{selected:FoodType[];onChange
         <div className="food-picker-options"><h3 className="food-picker-group-title">Dietary preferences</h3>{dietary.map(type=><label key={type.id}>
           <input type="checkbox" checked={draft.includes(type.id)} onChange={event=>setDraft(current=>event.target.checked?[...current,type.id]:current.filter(id=>id!==type.id))}/>
           <span>{type.label}</span></label>)}
-        <p className="food-picker-hint">Vegan-friendly recipes exclude listed animal ingredients. Check product labels, especially stock cubes, pasta and sauces.</p>
+        <p className="food-picker-hint">V = vegetarian. VG = vegan. Vegetarian results include vegan dishes. Choose suitable stock, cheese and pasta when shopping.</p>
         <h3 className="food-picker-group-title">Ingredients &amp; dishes</h3>{options.map(type=><label key={type.id}>
           <input type="checkbox" checked={draft.includes(type.id)} onChange={event=>setDraft(current=>event.target.checked?[...current,type.id]:current.filter(id=>id!==type.id))}/>
           <span>{type.label}</span></label>)}</div>
