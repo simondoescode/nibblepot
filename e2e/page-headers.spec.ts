@@ -22,7 +22,7 @@ for (const { route, heading } of pageTitles) {
 test('home section heading has no redundant decorative symbol', async ({ page }) => {
   await page.goto('/nibblepot/');
   await expect(page.locator('.section-heading h2')).toHaveText('What takes your fancy?');
-  await expect(page.getByRole('region',{name:"Tonight's inspiration"}).getByRole('heading',{level:1})).toBeVisible();
+  await expect(page.getByRole('region',{name:"Tonight's dinner"}).getByRole('heading',{level:1})).toBeVisible();
 });
 
 test('missing recipe heading stays text only', async ({ page }) => {

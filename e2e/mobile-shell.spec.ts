@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({page}) => {
+  await page.clock.setFixedTime(new Date(2026,10,20,19));
+  await page.addInitScript(() => localStorage.setItem('simmer-recipes-v2',JSON.stringify({larder:[],favorites:[],shopping:[],weekPlans:{'2026-11-16':Array.from({length:7},()=>({kind:'recipe',id:'dahn'}))}})));
+});
+
 for(const width of [320,390,430]) test(`only Recipes keeps the mobile header at ${width}px`,async({page},info)=>{
   test.skip(info.project.name!=='mobile');
   await page.setViewportSize({width,height:800});

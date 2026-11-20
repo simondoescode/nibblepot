@@ -1,4 +1,4 @@
-import { BookOpen, CalendarDays, CookingPot, Heart, Settings2, ShoppingBasket } from 'lucide-react';
+import { BookOpen, CalendarDays, CookingPot, Heart, Settings, ShoppingBasket } from 'lucide-react';
 import { useChangeMotion } from '../hooks/useChangeMotion';
 import type { Tab } from '../types';
 import { PotIcon } from './PotArt';
@@ -35,7 +35,7 @@ export function Header({ tab, shoppingCount, onNavigate, mobileVisible }: { tab:
       </button>)}
     </nav>
     <div className="mobile-header-actions">
-      <button type="button" aria-label="Open settings" onClick={() => onNavigate('settings')}><Settings2 size={21} aria-hidden="true"/></button>
+      <button type="button" aria-label="Open settings" onClick={() => onNavigate('settings')}><Settings size={21} aria-hidden="true"/></button>
     </div>
   </header></div></div>;
 }

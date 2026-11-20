@@ -46,7 +46,11 @@ const longestRecipe = recipes.reduce((longest, recipe) => recipe.title.length > 
 for (const width of [1280, 1440]) {
   test(`desktop Recipes keeps its main actions visible at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 720 });
-    await page.addInitScript(id => sessionStorage.setItem('simmer-spotlight-v1', id), longestRecipe.id);
+    await page.addInitScript(id => {
+      const now = new Date(); now.setDate(now.getDate() - (now.getDay()+6)%7);
+      const key = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      localStorage.setItem('simmer-recipes-v2', JSON.stringify({larder:[],favorites:[],shopping:[],weekPlans:{[key]:Array.from({length:7},()=>({kind:'recipe',id}))}}));
+    }, longestRecipe.id);
     await page.goto('/nibblepot/');
     await expect(page.getByRole('heading', { level: 1, name: longestRecipe.title, exact: true })).toBeVisible();
     const nav = page.getByRole('navigation', { name: 'Main navigation' });
