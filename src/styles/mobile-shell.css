@@ -9,7 +9,6 @@ html{scroll-padding-top:12px}
   .app-header-shell .brand{font-size:23px;gap:9px;min-height:44px}
   .app-header-shell .brand-pot{width:34px;height:34px;border-radius:12px;box-shadow:none}
   .app-header-shell .brand-pot img{width:28px;height:28px}
-  .app-header-shell .small-print{display:none}
   .mobile-header-actions{display:flex;align-items:center;gap:4px;margin-left:auto}
   .mobile-header-actions button{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;border-radius:14px;background:transparent;color:var(--ink);touch-action:manipulation}
   .mobile-header-actions button:active{background:#f1e6d2;transform:scale(.94)}

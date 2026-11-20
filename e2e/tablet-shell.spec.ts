@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import recipes from '../src/data/recipes.json';
 
 for (const width of [834, 1024, 1180]) {
   test(`tablet ${width}px uses the app navigation instead of desktop tabs`, async ({ page }) => {
@@ -37,3 +38,33 @@ test('the rebranded shell switches navigation at 1180px without changing app-bar
   await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeHidden();
   await expect(header).toHaveCSS('height', '64px');
 });
+
+const longestRecipe = recipes.reduce((longest, recipe) => recipe.title.length > longest.title.length ? recipe : longest);
+
+for (const width of [1280, 1440]) {
+  test(`desktop Recipes keeps its main actions visible at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 720 });
+    await page.addInitScript(id => sessionStorage.setItem('simmer-spotlight-v1', id), longestRecipe.id);
+    await page.goto('/nibblepot/');
+    await expect(page.getByRole('heading', { level: 1, name: longestRecipe.title, exact: true })).toBeVisible();
+    const nav = page.getByRole('navigation', { name: 'Main navigation' });
+    const activeTab = nav.getByRole('button', { name: 'Recipes', exact: true });
+    await expect(activeTab).toHaveAttribute('aria-current', 'page');
+    await expect(activeTab).toHaveCSS('color', 'rgb(21, 60, 50)');
+    await activeTab.hover();
+    await expect(activeTab).toHaveCSS('color', 'rgb(21, 60, 50)');
+    await page.getByRole('button', { name: 'Simmer home' }).focus();
+    await page.keyboard.press('Tab');
+    await expect(activeTab).toBeFocused();
+    await expect(activeTab).toHaveCSS('outline-style', 'solid');
+
+    await page.evaluate(() => window.dispatchEvent(new Event('beforeinstallprompt', { cancelable: true })));
+    const install = page.getByRole('region', { name: 'Install Simmer' });
+    await expect(install.getByRole('button', { name: 'Install Simmer' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'View recipe', exact: true })).toBeInViewport();
+    await expect(page.getByRole('button', { name: /Open planner/ })).toBeInViewport();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await install.getByRole('button', { name: 'Maybe later' }).click();
+    await expect(install).toHaveCount(0);
+  });
+}

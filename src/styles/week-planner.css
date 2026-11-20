@@ -194,7 +194,6 @@
 .larder-searchbar:focus-within{outline:3px solid #4b78e5;outline-offset:3px}
 .larder-result-count{font-size:12px;font-weight:800;color:var(--muted);margin:9px 0 13px}
 .larder-no-results{display:grid;justify-items:start;gap:14px}
-@media(min-width:821px) and (max-width:1130px){.topnav{gap:1px}.navbtn{padding:9px 10px}.small-print{display:none}}
 @media (max-width:560px){.mobile-nav button{font-size:10px;min-width:0}.mobile-nav button span{font-size:19px}.mobile-nav{gap:0}}
 
 .planner-clear-confirm{display:flex;align-items:center;gap:7px}
