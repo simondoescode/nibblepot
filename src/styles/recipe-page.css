@@ -106,12 +106,16 @@
 
   grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
   padding-inline: var(--content-gutter);
-  background: #fff;
+  /* Carry the green half of the image panel through the outer gutter. */
+  background: linear-gradient(to right, #fff 50%, var(--brand) 50%);
   border: 0;
   border-radius: 0;
 }
 .recipe-page .recipe-page-intro {
   grid-area: 1 / 1;
+  align-self: stretch;
+  align-content: center;
+  background: #fff;
   padding: clamp(24px, 4vw, 56px) 24px clamp(24px, 4vw, 56px) 0;
   overflow-wrap: anywhere;
 }
@@ -127,7 +131,7 @@
   height: auto;
   min-height: 300px;
   border: 0;
-  background: transparent;
+  background: linear-gradient(to right, #fff 50%, var(--brand) 50%);
 }
 .recipe-page .recipe-page-image img {
   position: relative;
@@ -137,10 +141,15 @@
   object-fit: contain;
 }
 @media (max-width: 767px) {
-  .recipe-page .recipe-page-hero { grid-template-columns: minmax(0, 1fr); }
+  .recipe-page .recipe-page-hero {
+    --dish-height: clamp(180px, 55vw, 280px);
+    grid-template-columns: minmax(0, 1fr);
+    background: linear-gradient(to bottom, var(--brand) calc(var(--dish-height) / 2), #fff 0);
+  }
   .recipe-page .recipe-page-image {
     grid-area: 1 / 1;
-    height: clamp(180px, 55vw, 280px);
+    height: var(--dish-height);
+    background: transparent;
     min-height: 0;
   }
   .recipe-page .recipe-page-image img { width: 88%; height: 100%; min-height: 0; align-self: center; grid-area: 1 / 1; }
