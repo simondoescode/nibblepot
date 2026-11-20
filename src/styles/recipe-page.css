@@ -150,7 +150,16 @@
 
 .recipe-page-toolbar .recipe-back { margin-right: auto; }
 .recipe-page-toolbar .icon-button { min-width: 44px; min-height: 44px; }
-.recipe-page-heading .recipe-tags { display: block; margin-bottom: 10px; }
+.recipe-heading-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.recipe-heading-labels:empty { display: none; }
+.recipe-heading-labels .recipe-tags,
+.recipe-heading-labels .diet-badges { margin: 0; }
 .recipe-page .recipe-page-facts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
