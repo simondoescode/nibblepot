@@ -101,18 +101,22 @@
 .recipe-page-intro>.recipe-tags{display:flex;flex-wrap:wrap;gap:7px;margin:-5px 0 14px}
 .recipe-tags span{display:inline-flex;align-items:center;border:1px solid #decfba;border-radius:999px;background:#f7f0e6;padding:5px 9px;color:#634e3e;font-size:11px;font-weight:850;text-transform:capitalize;line-height:1.2}
 
-/* The plate sits on the seam. The image panel owns both colours so its
-   midpoint stays aligned with the food as the title or controls wrap. */
+/* Full-width white hero with its contents aligned to the reading column. */
 .recipe-page .recipe-page-hero {
 
   grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
-  background: var(--bg);
+  padding-inline: var(--content-gutter);
+  /* Carry the green half of the image panel through the outer gutter. */
+  background: linear-gradient(to right, #fff 50%, var(--brand) 50%);
   border: 0;
   border-radius: 0;
 }
 .recipe-page .recipe-page-intro {
   grid-area: 1 / 1;
-  padding: clamp(24px, 4vw, 56px);
+  align-self: stretch;
+  align-content: center;
+  background: #fff;
+  padding: clamp(24px, 4vw, 56px) 24px clamp(24px, 4vw, 56px) 0;
   overflow-wrap: anywhere;
 }
 .recipe-page .recipe-page-intro h1 {
@@ -127,7 +131,7 @@
   height: auto;
   min-height: 300px;
   border: 0;
-  background: linear-gradient(to right, var(--bg) 50%, var(--brand) 50%);
+  background: linear-gradient(to right, #fff 50%, var(--brand) 50%);
 }
 .recipe-page .recipe-page-image img {
   position: relative;
@@ -137,15 +141,19 @@
   object-fit: contain;
 }
 @media (max-width: 767px) {
-  .recipe-page .recipe-page-hero { grid-template-columns: minmax(0, 1fr); }
+  .recipe-page .recipe-page-hero {
+    --dish-height: clamp(180px, 55vw, 280px);
+    grid-template-columns: minmax(0, 1fr);
+    background: linear-gradient(to bottom, var(--brand) calc(var(--dish-height) / 2), #fff 0);
+  }
   .recipe-page .recipe-page-image {
     grid-area: 1 / 1;
-    height: clamp(180px, 55vw, 280px);
+    height: var(--dish-height);
+    background: transparent;
     min-height: 0;
-    background: linear-gradient(to bottom, var(--brand) 50%, var(--bg) 50%);
   }
   .recipe-page .recipe-page-image img { width: 88%; height: 100%; min-height: 0; align-self: center; grid-area: 1 / 1; }
-  .recipe-page .recipe-page-intro { grid-area: 2 / 1; padding: 8px 20px 24px; }
+  .recipe-page .recipe-page-intro { grid-area: 2 / 1; padding: 8px 0 24px; }
 }
 
 .recipe-page-toolbar .recipe-back { margin-right: auto; }
@@ -182,19 +190,18 @@
 /* Let the hero occupy the shell width while keeping the reading column centred. */
 main.wrap.main:has(> .recipe-page) { width: 100%; max-width: none; padding-inline: 0; }
 main > .recipe-page {
-  --recipe-gutter: max(16px, calc((100% - 1050px) / 2));
   max-width: none;
   margin-top: 0;
 }
 .recipe-page > :is(.recipe-page-sections, .recipe-safety-panel, .recipe-page-bottom, .recipe-jumps) {
-  margin-inline: var(--recipe-gutter);
+  margin-inline: var(--content-gutter);
 }
 .recipe-page .recipe-page-toolbar {
   position: sticky;
   top: var(--mobile-header-height);
   z-index: 12;
   margin: 0;
-  padding: 8px var(--recipe-gutter);
+  padding: 8px var(--content-gutter);
   background: var(--bg);
   border-bottom: 1px solid var(--divider);
 }

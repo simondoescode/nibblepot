@@ -1,4 +1,5 @@
 :root {
+  --content-gutter: max(16px, calc((100% - 1050px) / 2));
   --bg: #f7f1e6;
   --surface: #fffcf6;
   --text: #192c24;
