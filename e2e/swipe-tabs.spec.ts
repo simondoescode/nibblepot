@@ -182,7 +182,9 @@ test('touch tablets preview Recipes, settle across repeated swipes and leave edg
     [180, 480, '/nibblepot/', "This week's dinners"],
     [480, 180, '/nibblepot/planner/', "This week's dinners"],
   ] as const) {
-    const hero = await page.locator('#main-content .simmer-spotlight-kicker').boundingBox();
+    const hero = path === '/nibblepot/planner/'
+      ? await page.locator('#main-content .simmer-spotlight-kicker').boundingBox()
+      : null;
     const y = hero ? hero.y + hero.height / 2 : 104;
     await touch('touchStart', start, y);
     await touch('touchMove', end, y);
