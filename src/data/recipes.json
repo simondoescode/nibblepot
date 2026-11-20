@@ -3292,5 +3292,68 @@
     "storage": "Cool and refrigerate leftovers within two hours. Eat within 48 hours or freeze promptly. Reheat only once until steaming hot throughout.",
     "reviewedOn": "2026-11-08",
     "image": "recipes/creamy-salmon-pea-pasta.webp"
+  },
+  {
+    "id": "p4nc",
+    "slug": "classic-pancakes",
+    "title": "Classic pancakes",
+    "description": "Easy thin pancakes from cupboard staples, with optional lemon and sugar. Makes about 12 pancakes for four.",
+    "emoji": "🥞",
+    "color": "#eacaa9",
+    "mins": 35,
+    "prepMins": 10,
+    "cookMins": 25,
+    "tags": [
+      "budget",
+      "kid-friendly",
+      "freezer-friendly",
+      "minimal-prep"
+    ],
+    "ing": [
+      {
+        "id": "plain-flour",
+        "amount": 100,
+        "unit": "g"
+      },
+      {
+        "id": "eggs",
+        "amount": 2,
+        "unit": "each"
+      },
+      {
+        "id": "milk",
+        "amount": 300,
+        "unit": "ml"
+      },
+      {
+        "id": "oil",
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      {
+        "id": "lemon",
+        "amount": 1,
+        "unit": "each",
+        "optional": true
+      },
+      {
+        "id": "caster-sugar",
+        "amount": 20,
+        "unit": "g",
+        "optional": true
+      }
+    ],
+    "steps": [
+      "Put the flour in a mixing bowl and make a well in the centre. Crack in the eggs and add a splash of the milk. Whisk into a thick paste, then gradually whisk in the remaining milk until the batter is smooth and pourable.",
+      "Heat a medium non-stick frying pan over medium heat. Wipe a little of the oil around the pan with kitchen paper held in tongs, keeping the remaining oil for later pancakes.",
+      "Pour in a small ladle of batter and immediately tilt the pan to coat the base thinly. Cook for 60–90 seconds until the surface is set and the edges lift, then turn and cook for another 30–60 seconds until lightly golden and cooked through.",
+      "Transfer to a plate and repeat with the remaining batter, lightly oiling the pan as needed. Stir the batter between batches and reduce the heat if the pancakes brown before they set. Serve straight away, folded with lemon juice and a sprinkle of sugar if using."
+    ],
+    "onePot": false,
+    "safety": "Do not taste raw batter: it contains raw flour and eggs. Cook each pancake until set throughout with no wet batter remaining, and supervise children around the hot pan.",
+    "storage": "Cool cooked pancakes and refrigerate within two hours. Eat within 48 hours or freeze with baking paper between them. Defrost in the fridge and reheat only once, until steaming hot throughout.",
+    "reviewedOn": "2026-11-20",
+    "image": "recipes/p4nc.webp",
+    "diet": "vegetarian"
   }
 ]

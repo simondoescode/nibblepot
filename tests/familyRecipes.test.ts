@@ -69,7 +69,7 @@ const additions = [
 
 describe('family recipes added in #61',()=>{
   it('adds all 15 new four-serving recipes without changing the existing catalogue',()=>{
-    expect(recipes).toHaveLength(60);
+    expect(recipes).toHaveLength(61);
     const ids=new Set(recipes.map(recipe=>recipe.id));
     expect(ids.size).toBe(recipes.length);
     for(const item of additions){
