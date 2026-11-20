@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
-import recipes from '../src/data/recipes.json';
+import { readFileSync } from 'node:fs';
+import type { Recipe } from '../src/types';
 
 for (const width of [834, 1024, 1180]) {
   test(`tablet ${width}px uses the app navigation instead of desktop tabs`, async ({ page }) => {
@@ -39,6 +40,7 @@ test('the rebranded shell switches navigation at 1180px without changing app-bar
   await expect(header).toHaveCSS('height', '64px');
 });
 
+const recipes: Recipe[] = JSON.parse(readFileSync(new URL('../src/data/recipes.json', import.meta.url), 'utf8'));
 const longestRecipe = recipes.reduce((longest, recipe) => recipe.title.length > longest.title.length ? recipe : longest);
 
 for (const width of [1280, 1440]) {
