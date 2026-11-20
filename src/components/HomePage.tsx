@@ -12,23 +12,23 @@ import { FilterChip } from '../ui/controls';
 
 const filters: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All recipes' },
-  { id: 'quick', label: '⚡ 30 mins or less' },
-  { id: 'simple', label: '✋ 5 ingredients' },
-  { id: 'onepot', label: '🍲 One pot' },
+  { id: 'quick', label: '30 mins or less' },
+  { id: 'onepot', label: 'One pot' },
   { id: 'minimal', label: 'Minimal prep' },
+  { id: 'simple', label: '5 ingredients' },
   { id: 'budget', label: 'Budget-friendly' },
   { id: 'batch', label: 'Batch cooking' },
-  { id: 'larder', label: '🫙 Use my larder' },
+  { id: 'larder', label: 'Use my larder' },
 ];
 
 type Props = {
   selectedFoodTypes: FoodType[]; setSelectedFoodTypes: (types: FoodType[]) => void;
   filter: Filter; setFilter: (filter: Filter) => void; search: string; setSearch: (search: string) => void;
-  favorites: string[]; larder: string[]; stock: Record<string,string>; dates: Record<string,string>; servings: Record<string,number>; onAddMissing: (id: string) => void; onFavorite: (id: string) => void; onOpen: (id: string) => void;
+  favorites: string[]; larder: string[]; stock: Record<string,string>; dates: Record<string,string>; servings: Record<string,number>; onFavorite: (id: string) => void; onOpen: (id: string) => void;
   weekSlots: WeekSlot[]; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onAddMissing, onFavorite, onOpen, weekSlots, onPlanner, onLarder, onShopping }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onFavorite, onOpen, weekSlots, onPlanner, onLarder, onShopping }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
   const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
   const nearly = filter === 'larder' ? filtered.filter(recipe => {
@@ -44,8 +44,9 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
   return <>
     <TonightInspiration recipes={ready.length ? ready : nearly.length ? nearly : filtered} onOpen={onOpen} />
     <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><h2>This week's dinners</h2><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">{weekSlots.map((slot,index) => {const meal=slot.kind === 'recipe' ? recipes.find(recipe=>recipe.id===slot.id) : undefined;return <button type="button" key={index} onClick={onPlanner}><span>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][index]}</span><strong>{meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner')}</strong></button>;})}</div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
+    <section className="menu-toolbar" aria-label="Browse recipes">
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
-      <p>{recipes.length} easy recipes, all made for real life.</p></div>
+</div>
       <label className="search"><Search size={20} aria-hidden="true" />
         <input type="search" id="search" placeholder="Search meals or ingredients" value={search}
           onChange={event => setSearch(event.target.value)} aria-label="Search recipes" /></label>
@@ -61,15 +62,16 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
       {foodTypes.filter(type=>selectedFoodTypes.includes(type.id)).map(type=><button key={type.id} type="button" aria-label={`Remove ${type.label} filter`}
         onClick={()=>setSelectedFoodTypes(selectedFoodTypes.filter(id=>id!==type.id))}>{type.label}<span aria-hidden="true">×</span></button>)}
     </div>}
+    </section>
     <div id="home-results" className="results-feedback" key={filter + selectedFoodTypes.join(',')}>
       {filter === 'larder' ? <>
         <section aria-label="Ready to cook"><h2>Ready to cook</h2><p>Everything required is in your larder.</p>
           {ready.length ? <RecipeGrid recipes={ready} favorites={favorites} larder={larder} stock={stock} servings={servings} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No meals ready yet. Add ingredients to your larder.</p>}</section>
         <section aria-label="Nearly there"><h2>Nearly there</h2><p>Just one or two required ingredients to pick up.</p>
-          {nearly.length ? <RecipeGrid recipes={nearly} favorites={favorites} larder={larder} stock={stock} servings={servings} onAddMissing={onAddMissing} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No close matches right now.</p>}</section>
+          {nearly.length ? <RecipeGrid recipes={nearly} favorites={favorites} larder={larder} stock={stock} servings={servings} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No close matches right now.</p>}</section>
         <section aria-label="Other inspiration"><h2>Other inspiration</h2><p>More dinner ideas for when you next stock up.</p>
-          {other.length ? <RecipeGrid recipes={other} favorites={favorites} larder={larder} stock={stock} servings={servings} onAddMissing={onAddMissing} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No other matches.</p>}</section>
-      </> : <RecipeGrid recipes={filtered} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} onReset={clearFilters} />}
+          {other.length ? <RecipeGrid recipes={other} favorites={favorites} larder={larder} stock={stock} servings={servings} onFavorite={onFavorite} onOpen={onOpen} /> : <p>No other matches.</p>}</section>
+      </> : <RecipeGrid recipes={filtered} stock={stock} servings={servings} favorites={favorites} larder={larder} onFavorite={onFavorite} onOpen={onOpen} onReset={clearFilters} />}
     </div>
   </>;
 }
