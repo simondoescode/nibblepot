@@ -1,18 +1,17 @@
 # Nibblepot image style guide
 
-**Creative direction:** premium, minimal, editorial food photography — real, appetising family food, not glossy AI advertising. This is the required brief for every new AI-generated food image. Existing SVGs remain valid fallbacks until replaced individually.
+**Creative direction.** Photograph everyday family dinners with the clarity of a restaurant menu. Each image shows one recognisable serving, with enough detail to tell dishes apart at thumbnail size.
+
+[Wagamama’s festive menu](https://www.wagamama.com/menu?category=festive) is the reference for the individual dish cards. The overhead katsu plates show the rice, curry and salad clearly, and the wrap cards show the filling through the cut end. The complete silhouettes read against both dark cards and the light hover state.
 
 ## Look and composition
 
-- **View:** low three-quarter, more side-on than overhead, about **20–30° above table level**. Show depth, the front of the food and the side/rim of the plate or casserole.
-- **Food:** one recognisable finished portion from the recipe, prepared with its actual ingredients. Honest UK family cooking, not restaurant plating or exaggerated fine dining.
-- **Backdrop:** **genuinely transparent alpha**, not a white backdrop, coloured backdrop, gradient, table, studio scene or checkerboard baked into pixels. A very subtle contact shadow belonging to the cutout is okay.
-- **Framing:** complete serving vessel in frame with **10–12% clear padding**. Centre the visual mass just below the middle. Avoid clipping at narrower mobile card crops.
-- **Colour:** restrained natural saturation, warm-neutral white balance, realistic browns/greens, gentle contrast. Never neon orange, saturated red sauces, HDR sheen or plasticky CGI.
-- **Light:** soft diffused natural daylight, usually from upper-left; good readable texture with controlled highlights.
-- **Tableware:** simple matte/satin off-white stoneware, neutral ceramics or restrained muted enamel. Only a vessel needed to present the dish; no cutlery or styling props.
-- **Garnish:** minimal and recipe-accurate. No random parsley or cherry tomatoes where they don't belong.
-- **No text, logos, badges, people, hands, extra food props, frames, collages, borders or multiple viewpoints.**
+- **Camera angle.** Default to overhead (approximately 80–90° above the table) for plated meals, pasta, rice dishes and bowls whose toppings identify the recipe. Use a high three-quarter angle (45–60°) when a wrap’s filling, a pie’s layers or a tall serving needs depth to read. Use one viewpoint per image.
+- **Food.** Style one realistic serving with the ingredients and accompaniments called for in the recipe. Arrange them loosely so the main ingredient is easy to pick out. Keep craggy crumbs, browned edges and the natural variation in cooked food.
+- **Tableware.** Choose a simple matte plate, bowl or dish that fits the recipe. Use warm off-white, stone or muted charcoal where it gives the food a clear edge. Show the full vessel with 10–12% clear padding around it and centre the dish by its visual weight.
+- **Lighting and colour.** Use soft directional studio light from the upper left, with enough contrast to see texture and enough fill to retain details in dark food. Keep the white balance neutral to warm and let the real ingredient colours provide the accents. Allow a short, soft contact shadow close to the vessel.
+- **Background.** Use genuine transparent alpha. Keep the food and its vessel isolated from any table, gradient, coloured backdrop or baked-in checkerboard. Use clean edges that hold up over both light and dark cards.
+- **Styling.** Include garnish only when the recipe calls for it. Keep table linens, cutlery, hands, seasonal props, typography, logos, badges and borders out of the asset.
 
 ## Technical export specification
 
@@ -32,9 +31,9 @@ Do not commit huge generated PNGs as production assets. WebP lossy *with alpha* 
 
 ## AI image generation prompt (one dish at a time)
 
-> A single finished serving of **[RECIPE TITLE]**, accurately containing **[VISIBLE INGREDIENTS]**, served in **[SIMPLE SPECIFIC DISH/PLATE]**. Contemporary British editorial food photography, photorealistic, natural, understated and premium. Camera at a low front three-quarter side angle about 25 degrees above the table, not overhead; full plate or dish visible with generous clear margins. Soft diffused daylight from the upper left, realistic subtle textures, gentle shadows, refined colour grading with muted natural saturation. **Isolated food cutout on an actual transparent alpha background, absolutely no surface, environment or studio backdrop.** One serving only. No props, cutlery, people, text, logos, borders, collage, exaggerated garnish, overly glossy sauce, fluorescent saturation or artificial 3D look.
+> Create one photorealistic menu photograph of **[RECIPE TITLE]**. Show one realistic home-cooked serving containing **[VISIBLE INGREDIENTS AND RECIPE ACCOMPANIMENTS]** on **[SIMPLE MATTE VESSEL]**. Use **[OVERHEAD 80–90° / HIGH THREE-QUARTER 45–60°]** to make **[DEFINING INGREDIENT, FILLING OR TEXTURE]** easy to see. Frame the complete vessel with 10–12% clear space and centre it by visual weight. Use soft directional light from the upper left, natural ingredient colours, believable cooking textures and a short, soft contact shadow if needed. Isolate the vessel and food on genuine transparent alpha. Exclude surfaces, props, extra accompaniments, lettering, borders and artificial gloss.
 
-For jacket potatoes & beans, for example: a crisp-skinned split baked potato filled with baked beans and a **modest** amount of cheddar, on a plain off-white plate. Maintain the above angle, lighting, alpha and restraint.
+For jacket potatoes and beans, use an overhead view of a split baked potato on a warm off-white plate. Show the crisp skin and spooned-in beans. Add a modest amount of grated cheddar only if the recipe includes it. For a filled wrap, use a high three-quarter view and face the cut end towards the camera.
 
 **Generate separately for each recipe.** Do not prompt for a 10-dish grid and then crop it: scale and transparency become inconsistent. Asking for alpha does not guarantee the model delivers alpha. Reject nontransparent renders or properly remove the background before export.
 
@@ -44,9 +43,9 @@ For jacket potatoes & beans, for example: a crisp-skinned split baked potato fil
 2. Open over a checkerboard in an editor and inspect the **alpha channel**, including all four corners. Fake checkerboard and a white/black matte fail.
 3. Prepare an **800×504** transparent canvas with 10–12% padding. Do not distort the food or crop off the plate.
 4. Export WebP with transparency, quality around 80, sRGB, metadata stripped. Adjust compression to stay below 250,000 bytes.
-5. Inspect at mobile size and in the full recipe dialog: crisp edges, believable food, enough negative space, no excessive shadows.
+5. Inspect at mobile card size and in the full recipe view. Check that the main ingredient is recognisable, the full dish fits the crop, and the edges and shadow look clean over light and dark backgrounds.
 6. Save `public/recipes/<id>.webp`, add `"image": "recipes/<id>.webp"` to that recipe and run the tests described in [ADDING_RECIPES.md](ADDING_RECIPES.md).
-7. Compare against at least three other Nibblepot images for consistent angle, scale, colour and realism.
+7. Compare against at least three other Nibblepot images for consistent scale, lighting, colour and realism. Check that the chosen angle shows what makes the dish recognisable.
 
 Optional ImageMagick example **when the source already has real alpha** (confirm scaling/padding manually):
 
