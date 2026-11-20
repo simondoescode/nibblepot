@@ -58,8 +58,10 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
           }} />
       </div>
       <div className="recipe-page-intro">
-        <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
-        <h1>{recipe.title}</h1>
+        <div className="recipe-page-heading">
+          <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
+          <h1>{recipe.title}</h1>
+        </div>
         <p className="recipe-tags">{recipe.tags.map(tag => <span key={tag}>{tag.replaceAll('-', ' ')}</span>)}</p>
         <p>{recipe.description}</p>
         <div className="recipe-page-facts">
