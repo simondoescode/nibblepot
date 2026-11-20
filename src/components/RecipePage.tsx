@@ -1,5 +1,5 @@
 
-import { ArrowLeft, Check, Clock3, Heart, Share2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
+import { ArrowLeft, Check, Heart, Share2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
 import { ingredientName } from '../data';
 import { MotionMark } from '../ui/MotionMark';
 import { useChangeMotion } from '../hooks/useChangeMotion';
@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { MAX_SERVINGS, MIN_SERVINGS, formatRecipeQuantity } from '../lib/quantities';
 import { recipePath } from '../lib/routes';
 import type { Recipe } from '../types';
-import { Button } from '../ui/controls';
+import { Button, IconButton } from '../ui/controls';
 
 const ingredientIcons: Record<string, string> = {
   potatoes: '🥔', 'baked-beans': '🫘', cheese: '🧀', butter: '🧈', rice: '🍚', chicken: '🍗',
@@ -24,6 +24,8 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
 }) {
   const servingsRef = useChangeMotion<HTMLOutputElement>(servings, 'pop');
   const [includedOptional, setIncludedOptional] = useState<string[]>([]);
+  const tag = recipe.onePot ? 'One pot' : (['minimal-prep', 'budget', 'batch-friendly', 'freezer-friendly', 'kid-friendly'] as const)
+    .find(tag => recipe.tags.includes(tag))?.replaceAll('-', ' ');
   const shareRecipe = async () => {
     const url = new URL(recipePath(recipe.id), window.location.origin).href;
     if (navigator.share) {
@@ -45,6 +47,9 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
   return <article className="recipe-page" aria-label={recipe.title}>
     <div className="recipe-page-toolbar">
       <button className="recipe-back" type="button" onClick={onBack}><ArrowLeft size={18} /> Back to recipes</button>
+      <IconButton label={saved ? 'Saved to favourites' : 'Save recipe'} onClick={onFavorite} aria-pressed={saved}>
+        <MotionMark active={saved}><Heart size={18} fill={saved ? 'currentColor' : 'none'} /></MotionMark>
+      </IconButton>
       <Button size="small" icon={<Share2 size={16} />} onClick={shareRecipe}>Share recipe</Button>
     </div>
     <div className="recipe-page-hero">
@@ -59,29 +64,28 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
       </div>
       <div className="recipe-page-intro">
         <div className="recipe-page-heading">
-          <span className="recipe-page-eyebrow">FROM THE SIMMER KITCHEN</span>
+          {tag && <span className="recipe-tags"><span>{tag}</span></span>}
           <h1>{recipe.title}</h1>
         </div>
-        <p className="recipe-tags">{recipe.tags.map(tag => <span key={tag}>{tag.replaceAll('-', ' ')}</span>)}</p>
         <p>{recipe.description}</p>
-        <div className="recipe-page-facts">
-          <span><Clock3 size={18} aria-hidden="true" /> {recipe.mins} minutes ({recipe.prepMins} prep · {recipe.cookMins} cooking)</span>
-          <span>🍽️ Serves {servings}</span>
-          <span>🫙 {recipe.ing.filter(i => larder.includes(i.id)).length} of {recipe.ing.length} in larder</span>
-        </div>
+        <dl className="recipe-page-facts">
+          <div><dt>Prep</dt><dd>{recipe.prepMins} min</dd></div>
+          <div><dt>Cook</dt><dd>{recipe.cookMins} min</dd></div>
+          <div><dt>Serves</dt><dd>{servings}</dd></div>
+        </dl>
         <div className="recipe-page-actions">
           <Button tone="primary" icon={<ChefHat size={18} />} onClick={onCook}>Start cooking</Button>
           <Button className="recipe-plan-action" aria-haspopup="dialog" icon={<CalendarPlus size={18} />}
             onClick={event => onPlan(event.currentTarget)}>Plan this dinner</Button>
-          <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing bits</Button>
-          <Button icon={<MotionMark active={saved}><Heart size={18} fill={saved ? 'currentColor' : 'none'} /></MotionMark>} onClick={onFavorite}
-            aria-pressed={saved}>{saved ? 'Saved to favourites' : 'Save recipe'}</Button>
         </div>
       </div>
     </div>
+    <nav className="recipe-jumps" aria-label="Recipe sections">
+      <a href="#recipe-ingredients">Ingredients</a><a href="#recipe-method">Method</a>
+    </nav>
     <div className="recipe-page-sections">
       <section className="recipe-detail-panel recipe-page-ingredients">
-        <h2>What you'll need <span>{servings} servings</span></h2>
+        <h2 id="recipe-ingredients" tabIndex={-1}>What you'll need <span>{servings} servings</span></h2>
         <div className="servings-control" aria-label="Adjust recipe servings">
           <span>Servings</span>
           <button type="button" onClick={() => onServingsChange(Math.max(MIN_SERVINGS, servings - 1))}
@@ -106,9 +110,10 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
               {owned ? <><Check size={13} aria-hidden="true" /> In larder</> : item.optional ? 'Optional' : '+ Need'}</span>
           </div>;
         })}</div>
+        <Button icon={<ShoppingBasket size={18} />} onClick={() => onAddMissing(includedOptional)}>Add missing ingredients</Button>
       </section>
       <section className="recipe-detail-panel recipe-page-method">
-        <h2>Method</h2>
+        <h2 id="recipe-method" tabIndex={-1}>Method</h2>
         <ol className="steps">{recipe.steps.map((step, index) =>
           <li key={index}><span className="step-number" aria-hidden="true">{index + 1}</span><span>{step}</span></li>
         )}</ol>
