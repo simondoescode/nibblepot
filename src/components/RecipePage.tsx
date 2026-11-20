@@ -65,9 +65,11 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
       </div>
       <div className="recipe-page-intro">
         <div className="recipe-page-heading">
-          {tag && <span className="recipe-tags"><span>{tag}</span></span>}
-          <DietBadges diet={recipe.diet} />
-        <h1>{recipe.title}</h1>
+          <div className="recipe-heading-labels">
+            {tag && <span className="recipe-tags"><span>{tag}</span></span>}
+            <DietBadges diet={recipe.diet} />
+          </div>
+          <h1>{recipe.title}</h1>
         </div>
         <p>{recipe.description}</p>
         <dl className="recipe-page-facts">
