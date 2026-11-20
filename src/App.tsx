@@ -204,9 +204,9 @@ export default function App() {
   const renderTab = (page: Tab, isPreview = false) => <>
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
-      favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} dates={data.larderDates ?? {}} servings={data.servings ?? {}} onAddMissing={addMissing} onFavorite={toggleFavorite} onOpen={openRecipe}
+      favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} dates={data.larderDates ?? {}} servings={data.servings ?? {}} onFavorite={toggleFavorite} onOpen={openRecipe}
       weekSlots={currentWeekSlots} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
-    {page === 'favorites' && <FavouritesPage favorites={data.favorites} larder={data.larder}
+    {page === 'favorites' && <FavouritesPage stock={data.larderQuantities} servings={data.servings} favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
     {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} showMobileBar={!isPreview && !swipe.preview} />}
     {page === 'planner' && <WeekPlannerPage week={selectedWeek}

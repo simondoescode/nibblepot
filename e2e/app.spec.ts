@@ -97,7 +97,7 @@ test('mobile recipe card opens from the image, description and larder status', a
   await expect(card.getByRole('button', { name: /remove from favourites/i })).toHaveAttribute('aria-pressed', 'true');
   await expect(page).toHaveURL(/\/nibblepot\/$/);
 
-  for (const area of ['.recipe-illustration', '.recipe-info p', '.foot-meta']) {
+  for (const area of ['.recipe-illustration', '.recipe-info h3', '.foot-meta']) {
     const target = card.locator(area);
     await target.scrollIntoViewIfNeeded();
     const bounds = (await target.boundingBox())!;
@@ -164,4 +164,17 @@ test('pull-to-refresh is available on mobile and reloads instead of rerendering'
   await loaded;
   expect(await page.evaluate(() => sessionStorage.getItem('touch-started'))).toBe('yes');
   await expect(page.locator('.recipe-card')).toHaveCount(60);
+});
+
+test('recipe menu adapts from a phone list to a two-column desktop grid', async ({ page }) => {
+  await page.goto('/nibblepot/');
+  const grid = page.locator('#home-results .menu-grid');
+  for (const [width, columns] of [[390, 1], [1280, 2]]) {
+    await page.setViewportSize({ width, height: 844 });
+    await expect.poll(() => grid.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(columns);
+    const card = grid.locator('.recipe-card').first();
+    await expect(card.getByRole('link')).toBeVisible();
+    await expect(card.locator('.foot-meta')).toContainText('min');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+  }
 });

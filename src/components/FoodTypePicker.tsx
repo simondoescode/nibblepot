@@ -11,7 +11,7 @@ export function FoodTypePicker({selected,onChange}:{selected:FoodType[];onChange
   const options=foodTypes.filter(type=>type.id!=='all' && !dietaryFoodTypes.includes(type.id));
   return <Dialog.Root historyKey="food-types" open={open} onOpenChange={value=>{if(value)setDraft([...selected]);setOpen(value);}}>
     <Dialog.Trigger className="food-type-trigger">
-      <SlidersHorizontal size={18} aria-hidden="true"/><span>Food types</span>
+      <SlidersHorizontal size={18} aria-hidden="true"/><span>Food types &amp; diet</span>
       <span className="food-type-summary">{selected.length ? `${selected.length} selected` : 'All food'}</span><ChevronDown size={16} aria-hidden="true" />
     </Dialog.Trigger>
     <Dialog.Portal>
