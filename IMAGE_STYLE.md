@@ -2,7 +2,23 @@
 
 **Creative direction.** Photograph everyday family dinners with the clarity of a restaurant menu. Each image shows one recognisable serving, with enough detail to tell dishes apart at thumbnail size.
 
-[Wagamama’s festive menu](https://www.wagamama.com/menu?category=festive) is the reference for the individual dish cards. The overhead katsu plates show the rice, curry and salad clearly, and the wrap cards show the filling through the cut end. The complete silhouettes read against both dark cards and the light hover state.
+The reference is the individual food photography across [Wagamama’s UK menu](https://www.wagamama.com/menu). The small sauce bowls read by colour and surface texture. The children’s katsu plates repeat their composition so the change of sauce is immediately visible. Upright juice glasses read by silhouette. Apply that discipline to Nibblepot’s own recipes and crockery.
+
+## Choose the shot before writing the prompt
+
+| Menu reference | Direction for Nibblepot |
+| --- | --- |
+| Festive | Let a seasonal ingredient identify the dish. Show it where it is actually served, such as cranberry sauce over a cutlet. |
+| Lunch time | For a wrap, turn one cut end towards the lens. For a lunch box, shoot overhead and show the whole arrangement in a single vessel. |
+| Sides | Group a believable serving on a small plate. Leave enough separation to read the shape of a wedge, dumpling or skewer. |
+| The main event | Shoot bowls and plated dinners overhead. Let rice, sauce and protein meet naturally, leaving enough of each visible to identify the meal. For a mixed dish such as sausage and bean casserole, bring a piece of sausage and a few beans to the surface. |
+| Extras | Use a close overhead view of one small ramekin. Let the swirl of a thick sauce, the sheen of a pickle or the cut edge of a chilli carry the image. |
+| Desserts and sweet treats | Use overhead for a distinctive top or drizzle. Lower the camera for a slice whose crumb, filling or layers identify it. Choose a plate that separates the dessert’s edges from the rim. |
+| Drinks | Shoot a single glass near eye level, with a slight view of the rim. Keep its base in frame, verticals straight, and a narrow highlight on the glass. |
+| Kids | Show the smaller serving. Keep recognisable components in loose groups and include a small sauce pot only when served separately in the recipe. |
+| Gluten free | Follow the same composition as the corresponding dish. Show substitutions that change its appearance and leave dietary labels to the interface. |
+
+For related recipes, lock the vessel, orientation, camera height and apparent serving size. Let the actual difference between the recipes be visible in the same part of the frame. For example, shoot two jacket potato fillings on the same plate with the split potato facing the same way.
 
 ## Look and composition
 
@@ -31,7 +47,7 @@ Do not commit huge generated PNGs as production assets. WebP lossy *with alpha* 
 
 ## AI image generation prompt (one dish at a time)
 
-> Create one photorealistic menu photograph of **[RECIPE TITLE]**. Show one realistic home-cooked serving containing **[VISIBLE INGREDIENTS AND RECIPE ACCOMPANIMENTS]** on **[SIMPLE MATTE VESSEL]**. Use **[OVERHEAD 80–90° / HIGH THREE-QUARTER 45–60°]** to make **[DEFINING INGREDIENT, FILLING OR TEXTURE]** easy to see. Frame the complete vessel with 10–12% clear space and centre it by visual weight. Use soft directional light from the upper left, natural ingredient colours, believable cooking textures and a short, soft contact shadow if needed. Isolate the vessel and food on genuine transparent alpha. Exclude surfaces, props, extra accompaniments, lettering, borders and artificial gloss.
+> Create one photorealistic menu photograph of **[RECIPE TITLE]**. Show one realistic home-cooked serving containing **[VISIBLE INGREDIENTS AND RECIPE ACCOMPANIMENTS]** on **[SIMPLE MATTE VESSEL]**. Use **[ANGLE FROM THE SHOT GUIDE: OVERHEAD / HIGH THREE-QUARTER / NEAR EYE LEVEL FOR DRINKS]** to make **[DEFINING INGREDIENT, FILLING OR TEXTURE]** easy to see. Frame the complete vessel with 10–12% clear space and centre it by visual weight. Use soft directional light from the upper left, natural ingredient colours, believable cooking textures and a short, soft contact shadow if needed. Isolate the vessel and food on genuine transparent alpha. Exclude surfaces, props, extra accompaniments, lettering, borders and artificial gloss.
 
 For jacket potatoes and beans, use an overhead view of a split baked potato on a warm off-white plate. Show the crisp skin and spooned-in beans. Add a modest amount of grated cheddar only if the recipe includes it. For a filled wrap, use a high three-quarter view and face the cut end towards the camera.
 
@@ -43,7 +59,7 @@ For jacket potatoes and beans, use an overhead view of a split baked potato on a
 2. Open over a checkerboard in an editor and inspect the **alpha channel**, including all four corners. Fake checkerboard and a white/black matte fail.
 3. Prepare an **800×504** transparent canvas with 10–12% padding. Do not distort the food or crop off the plate.
 4. Export WebP with transparency, quality around 80, sRGB, metadata stripped. Adjust compression to stay below 250,000 bytes.
-5. Inspect at mobile card size and in the full recipe view. Check that the main ingredient is recognisable, the full dish fits the crop, and the edges and shadow look clean over light and dark backgrounds.
+5. Hide the title and preview at roughly 100 px wide. A viewer should be able to pick out the defining ingredient or shape. Check for white fringes, clipped rims and shadows that make the vessel float. Inspect at mobile card size and in the full recipe view. Check that the main ingredient is recognisable, the full dish fits the crop, and the edges and shadow look clean over light and dark backgrounds.
 6. Save `public/recipes/<id>.webp`, add `"image": "recipes/<id>.webp"` to that recipe and run the tests described in [ADDING_RECIPES.md](ADDING_RECIPES.md).
 7. Compare against at least three other Nibblepot images for consistent scale, lighting, colour and realism. Check that the chosen angle shows what makes the dish recognisable.
 
