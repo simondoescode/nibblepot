@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.5.0](https://github.com/simondoescode/nibblepot/compare/v0.4.0...v0.5.0) (2026-11-20)
+
+
+### Features
+
+* centre recipe dishes on a hard split background ([934100f](https://github.com/simondoescode/nibblepot/commit/934100ff6996a1c4a88fcb32b32d9ce2a15c9b72))
+* centre recipe dishes on a hard split background ([123c59f](https://github.com/simondoescode/nibblepot/commit/123c59f49086e61426edb8ac0bd9fbaddf40b106))
+* choose dinners directly from the home week strip ([2f3e37f](https://github.com/simondoescode/nibblepot/commit/2f3e37f4a81b9280bebe04f6f43854a53809e5b8))
+* choose dinners directly from the home week strip ([db4b38b](https://github.com/simondoescode/nibblepot/commit/db4b38bcc04fcd04a4bb322faefbd0897932f985))
+* classify recipes and show vegetarian and vegan menu badges ([9e84a73](https://github.com/simondoescode/nibblepot/commit/9e84a7399c638dd1aa8d16b8105a933b0c443c38))
+* frame mobile recipe titles beside a half-cropped dish ([2f7ce1d](https://github.com/simondoescode/nibblepot/commit/2f7ce1df8aab47698aa6ef330349bb393a4887a9))
+* give recipes a full-width branded hero and sticky toolbar ([f732773](https://github.com/simondoescode/nibblepot/commit/f7327730021b74b7461d188915360c1a8428e600))
+* give recipes a full-width branded hero and sticky toolbar ([9eea07a](https://github.com/simondoescode/nibblepot/commit/9eea07a83fed25e0587e4651ebf1b614acb23511))
+* refresh recipe photos in overhead menu style ([#85](https://github.com/simondoescode/nibblepot/issues/85)) ([08832c7](https://github.com/simondoescode/nibblepot/commit/08832c7c6043e2a3e08fdce04cf6657fc0a1387d))
+* simplify recipe actions, timing and section navigation ([578e5aa](https://github.com/simondoescode/nibblepot/commit/578e5aaccbc39620ba1f2f66c6f8a67d0a862efa))
+* simplify recipe browsing on mobile and desktop ([e62e3ec](https://github.com/simondoescode/nibblepot/commit/e62e3ecb5f98e3b47cf83c73e9a7255cffb5219c))
+* simplify recipe browsing with responsive menu cards ([1666df0](https://github.com/simondoescode/nibblepot/commit/1666df082c2416ae3bb0c7246329f732e19e86dd))
+* simplify recipe pages and frame the dish on mobile ([ef1ab77](https://github.com/simondoescode/nibblepot/commit/ef1ab77fdab02f87d722361470bfe8fc4d802b68))
+
 ## [0.4.0](https://github.com/simondoescode/nibblepot/compare/v0.3.0...v0.4.0) (2026-11-20)
 
 
