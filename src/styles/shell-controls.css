@@ -176,3 +176,47 @@ button.icon-button { min-width: 44px; min-height: 44px; }
   .menu-toolbar .section-heading, .menu-toolbar .selected-food-types { grid-column: 1 / -1; }
   .menu-toolbar .recipe-food-toolbar { margin: 0; }
 }
+
+/* Echo the recipe hero at card scale. The dish sits across the colour break. */
+#home-results .recipe-card {
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  background: var(--bg);
+  overflow: hidden;
+}
+#home-results .recipe-pic {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 9rem;
+  background: linear-gradient(to right, var(--bg) 50%, var(--brand) 50%);
+}
+#home-results .recipe-illustration {
+  position: static;
+  width: 94%;
+  height: 100%;
+  max-height: 11rem;
+  object-fit: contain;
+  transform: none;
+}
+#home-results .heart {
+  inset: 4px 4px auto auto;
+  border-radius: 50%;
+  background: var(--surface);
+}
+#home-results .recipe-info h3 {
+  font: 800 clamp(1.125rem, 2vw, 1.625rem)/1.1 var(--font-sans, sans-serif);
+  letter-spacing: -.035em;
+}
+@media (max-width: 767px) {
+  #home-results .recipe-card { grid-template-columns: minmax(0, 1fr); }
+  #home-results .recipe-pic {
+    grid-area: 1 / 1;
+    height: clamp(8rem, 36vw, 12rem);
+    min-height: 0;
+    background: linear-gradient(to bottom, var(--brand) 50%, var(--bg) 50%);
+  }
+  #home-results .recipe-info {
+    grid-area: 2 / 1;
+    padding: 0 1rem 1rem;
+  }
+}
