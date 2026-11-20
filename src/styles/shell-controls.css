@@ -177,10 +177,10 @@ button.icon-button { min-width: 44px; min-height: 44px; }
   .menu-toolbar .recipe-food-toolbar { margin: 0; }
 }
 
-/* Echo the recipe hero at card scale. The dish sits across the colour break. */
 #home-results .recipe-card {
   grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  background: var(--bg);
+  background: var(--brand);
+  color: var(--surface);
   overflow: hidden;
 }
 #home-results .recipe-pic {
@@ -188,7 +188,7 @@ button.icon-button { min-width: 44px; min-height: 44px; }
   display: grid;
   place-items: center;
   min-height: 9rem;
-  background: linear-gradient(to right, var(--bg) 50%, var(--brand) 50%);
+  background: transparent;
 }
 #home-results .recipe-illustration {
   position: static;
@@ -203,6 +203,10 @@ button.icon-button { min-width: 44px; min-height: 44px; }
   border-radius: 50%;
   background: var(--surface);
 }
+#home-results .recipe-card:has(.recipe-card-link:focus-visible) { outline-color: var(--highlight); }
+#home-results .recipe-info :is(h3, .recipe-card-link) { color: var(--surface); }
+#home-results .recipe-info :is(p, .menu-meta, .foot-meta) { color: var(--selected); }
+#home-results .heart:not(.saved) { color: var(--brand); }
 #home-results .recipe-info h3 {
   font: 800 clamp(1.125rem, 2vw, 1.625rem)/1.1 var(--font-sans, sans-serif);
   letter-spacing: -.035em;
@@ -213,7 +217,6 @@ button.icon-button { min-width: 44px; min-height: 44px; }
     grid-area: 1 / 1;
     height: clamp(8rem, 36vw, 12rem);
     min-height: 0;
-    background: linear-gradient(to bottom, var(--brand) 50%, var(--bg) 50%);
   }
   #home-results .recipe-info {
     grid-area: 2 / 1;
