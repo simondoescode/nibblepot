@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/simondoescode/nibblepot/compare/v0.6.0...v0.7.0) (2026-11-20)
+
+
+### Features
+
+* add classic pancakes with overhead food photo ([4490769](https://github.com/simondoescode/nibblepot/commit/4490769dd3bab0433b55ea487afbc667fb87f206))
+* add classic pancakes with top-down food photo ([227fe55](https://github.com/simondoescode/nibblepot/commit/227fe552ae07fae931823409c95d68d374ea2a91))
+
+
+### Bug Fixes
+
+* align white recipe hero and navbar with the reading column ([241e4e8](https://github.com/simondoescode/nibblepot/commit/241e4e8133b5db17d9b7de090d7459b594d40bdf))
+* align white recipe hero and navbar with the reading column ([b57cda9](https://github.com/simondoescode/nibblepot/commit/b57cda974bfb6761ba71726d3395fa852ce254c3))
+* give homepage recipe cards a solid green background ([5b3d84c](https://github.com/simondoescode/nibblepot/commit/5b3d84c133d8d62c6ee0b9314b73171fd12fc516))
+* restore the green split behind the dish on the white recipe hero ([27f5331](https://github.com/simondoescode/nibblepot/commit/27f533181cffdd53ad4b41f68b423ddcfa004851))
+* show tonight’s saved dinner and improve home discovery ([#100](https://github.com/simondoescode/nibblepot/issues/100)) ([f304fd8](https://github.com/simondoescode/nibblepot/commit/f304fd864cf3b51b860e152ae7f500390c19c8a6))
+* use solid green homepage recipe cards ([1ab7181](https://github.com/simondoescode/nibblepot/commit/1ab7181314c971dc3bf132c9bb58f9743308c046))
+
 ## [0.6.0](https://github.com/simondoescode/nibblepot/compare/v0.5.0...v0.6.0) (2026-11-20)
 
 
