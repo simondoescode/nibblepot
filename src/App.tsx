@@ -19,7 +19,7 @@ import { usePullToRefresh } from './hooks/usePullToRefresh';
 import { swipeDestination, useSwipeTabs } from './hooks/useSwipeTabs';
 import { pullOffset } from './lib/pullGesture';
 import type { CSSProperties } from 'react';
-import type { Filter, SavedData, ShoppingEntry, Tab } from './types';
+import type { Filter, SavedData, ShoppingEntry, Tab, WeekSlot } from './types';
 import { Header, MobileNavigation } from './components/Navigation';
 import { HomePage } from './components/HomePage';
 import { FavouritesPage } from './components/FavouritesPage';
@@ -44,6 +44,13 @@ export default function App() {
   const [search, setSearch] = useSessionState('recipe-search', '');
   const [randomId, setRandomId] = useState<string | null>(null);
   const [data, setData] = useState<SavedData>(readSavedData);
+  const [localDate, setLocalDate] = useState(() => new Date().toDateString());
+  useEffect(() => {
+    const update = () => setLocalDate(new Date().toDateString());
+    const timer = window.setInterval(update, 30_000);
+    window.addEventListener('focus', update);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', update); };
+  }, []);
   const [selectedWeek, setSelectedWeek] = useState(() => mondayFor(new Date()));
   const [dinnerPicker, setDinnerPicker] = useState<{id: string; open: boolean}>();
   const dinnerPickerOpener = useRef<HTMLButtonElement | null>(null);
@@ -162,8 +169,8 @@ export default function App() {
   const replaceSlots = (slots: typeof weekSlots) => setData(current => ({
     ...current, weekPlans: { ...current.weekPlans, [selectedWeek]: slots.map(slot => ({ ...slot })) },
   }));
-  const currentWeek = mondayFor(new Date());
-  const currentWeekSlots = data.weekPlans?.[currentWeek] ?? defaultWeek();
+  const currentWeek = mondayFor(new Date(localDate));
+  const currentWeekSlots = data.weekPlans?.[currentWeek] ?? Array.from({length: 7}, () => ({kind: 'empty'} as const));
   const plannedRecipe = dinnerPicker && recipes.find(recipe => recipe.id === dinnerPicker.id);
   const openDinnerPicker = (id: string, opener: HTMLButtonElement) => {
     dinnerPickerOpener.current = opener;
@@ -206,7 +213,11 @@ export default function App() {
     {page === 'home' && <InstallCard pwa={pwa} />}
     {page === 'home' && <HomePage selectedFoodTypes={selectedFoodTypes} setSelectedFoodTypes={setSelectedFoodTypes} filter={filter} setFilter={setFilter} search={search} setSearch={setSearch}
       favorites={data.favorites} larder={data.larder} stock={data.larderQuantities ?? {}} dates={data.larderDates ?? {}} servings={data.servings ?? {}} onFavorite={toggleFavorite} onOpen={openRecipe}
-      weekSlots={currentWeekSlots} onPlan={(day, id) => changeSlot(day, { kind: 'recipe', id }, currentWeek)} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
+      weekSlots={currentWeekSlots} onPlan={(day, id) => setData(current => {
+        const slots: WeekSlot[] = [...(current.weekPlans?.[currentWeek] ?? Array.from({length: 7}, () => ({kind: 'empty'} as const)))];
+        slots[day] = {kind: 'recipe', id};
+        return {...current, weekPlans: {...current.weekPlans, [currentWeek]: slots}};
+      })} onPlanner={() => { setSelectedWeek(currentWeek); navigate('planner'); }} onLarder={() => navigate('larder')} onShopping={() => navigate('shopping')} />}
     {page === 'favorites' && <FavouritesPage stock={data.larderQuantities} servings={data.servings} favorites={data.favorites} larder={data.larder}
       onFavorite={toggleFavorite} onOpen={openRecipe} onBrowse={() => navigate('home')} />}
     {page === 'larder' && <LarderPage larder={data.larder} quantities={data.larderQuantities} dates={data.larderDates} onDate={setLarderDate} onOpenRecipe={openRecipe} onQuantity={setLarderQuantity} onToggle={toggleLarder} onFindMeals={findMeals} showMobileBar={!isPreview && !swipe.preview} />}

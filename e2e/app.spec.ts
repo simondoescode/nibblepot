@@ -12,7 +12,7 @@ async function openSecondaryTab(page: Page, project: string, tab: 'Favourites' |
   }
 }
 
-test('random dinner and recipe flow', async ({ page }, testInfo) => {
+test('recipe discovery and shopping flow', async ({ page }, testInfo) => {
   await page.goto('/nibblepot/');
   // Ensure the random recipe has missing ingredients regardless of which meal is selected.
   await page.evaluate(() => localStorage.setItem('simmer-recipes-v2', JSON.stringify({
@@ -20,10 +20,9 @@ test('random dinner and recipe flow', async ({ page }, testInfo) => {
   })));
   await page.reload();
 
-  await expect(page.getByRole('region', { name: "Tonight's inspiration" })).toBeVisible();
+  await expect(page.getByRole('region', { name: "Tonight's dinner" })).toBeVisible();
   await expect(page.locator('.recipe-card')).toHaveCount(61);
-  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /surprise me/i }).click();
-  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: /view recipe/i }).click();
+  await page.locator('.recipe-card').first().getByRole('link').click();
   await expect(page).toHaveURL(/\/nibblepot\/recipes\/[a-z0-9-]+\//);
   await expect(page.locator('.recipe-page')).toBeVisible();
   await expect(page.getByRole('heading', { name: /What you'll need/i })).toBeVisible();
@@ -52,24 +51,14 @@ test('favourites and larder persist after reload', async ({ page }, testInfo) =>
   await expect(page.getByRole('checkbox', { name: 'Potatoes', exact: true })).not.toBeChecked();
 });
 
-test('spotlight changes recipe and keeps keyboard focus on Surprise me', async ({ page }) => {
-  const backdropResponse = page.waitForResponse(response => /\/nibblepot\/backgrounds\/[^/]+\.webp$/.test(response.url()));
+test('empty tonight picker returns keyboard focus when dismissed', async ({ page }) => {
   await page.goto('/nibblepot/');
-  const spotlight = page.getByRole('region', { name: "Tonight's inspiration" });
-  await expect(spotlight.locator('.simmer-spotlight-image')).toHaveCSS('background-image', /\/nibblepot\/backgrounds\/[^/]+\.webp/);
-  expect((await backdropResponse).ok()).toBe(true);
-  const shuffle = spotlight.getByRole('button', { name: /surprise me/i });
-  const title = spotlight.getByRole('heading', { level: 1 });
-  await expect(title).toBeVisible();
-  const originalTitle = await title.innerText();
-  await expect(spotlight.getByRole('button')).toHaveCount(2);
-  await shuffle.focus();
-  await shuffle.press('Enter');
-  await expect(title).not.toHaveText(originalTitle);
-  await expect(shuffle).toBeFocused();
-  const shuffledTitle = await title.innerText();
-  await page.reload();
-  await expect(title).toHaveText(shuffledTitle);
+  const trigger = page.getByRole('region', { name: "Tonight's dinner" }).getByRole('button', {name:'Plan tonight'});
+  await trigger.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
 });
 
 test('opening a recipe navigates to its own page and Back returns to listing', async ({ page }) => {

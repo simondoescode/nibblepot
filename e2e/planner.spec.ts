@@ -213,7 +213,7 @@ test('recipe details can plan a dinner for an explicit date after opening from h
 
   await page.goto('/nibblepot/');
   await page.getByRole('searchbox', { name: 'Search recipes', exact: true }).fill('Speedy tomato pasta');
-  await page.getByRole('region', { name: "Tonight's inspiration" }).getByRole('button', { name: 'View recipe' }).click();
+  await page.locator('.recipe-card').getByRole('link', {name:'Speedy tomato pasta',exact:true}).click();
   await expect(page).toHaveURL(/\/recipes\/speedy-tomato-pasta\/$/);
   await opener.click();
   await expect(picker.getByRole('status')).toContainText('already planned');

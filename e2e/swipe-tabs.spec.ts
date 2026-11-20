@@ -66,8 +66,12 @@ test.describe('Swipe between mobile tabs', () => {
     await expect(page.locator('.swipe-track')).toHaveCSS('transform', 'none');
     await expect(page.getByRole('dialog')).toHaveCount(0);
 
-    await touch('touchStart', 290);
-    await touch('touchMove', 80);
+    // Search and filter rows now sit at y=104 and correctly own their gestures.
+    // Swipe from the hero copy to exercise tab navigation instead.
+    const hero = (await page.locator('#main-content .simmer-spotlight-kicker').boundingBox())!;
+    const heroY = hero.y + hero.height / 2;
+    await touch('touchStart', 290, heroY);
+    await touch('touchMove', 80, heroY);
     await touch('touchEnd');
     await expect(page).toHaveURL(/\/planner\/$/);
     await meal.tap();
@@ -178,8 +182,12 @@ test('touch tablets preview Recipes, settle across repeated swipes and leave edg
     [180, 480, '/nibblepot/', "This week's dinners"],
     [480, 180, '/nibblepot/planner/', "This week's dinners"],
   ] as const) {
-    await touch('touchStart', start);
-    await touch('touchMove', end);
+    const hero = path === '/nibblepot/planner/'
+      ? await page.locator('#main-content .simmer-spotlight-kicker').boundingBox()
+      : null;
+    const y = hero ? hero.y + hero.height / 2 : 104;
+    await touch('touchStart', start, y);
+    await touch('touchMove', end, y);
     await expect(preview).toContainText(heading);
     await touch('touchEnd');
     await expect(page).toHaveURL(url => url.pathname === path);

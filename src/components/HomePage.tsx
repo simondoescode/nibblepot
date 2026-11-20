@@ -1,9 +1,9 @@
 import "../styles/home-day.css";
 import { Search, X } from 'lucide-react';
 import * as Dialog from "../ui/dialog";
-import { useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import type { WeekSlot } from '../types';
-import { TonightInspiration } from './TonightInspiration';
+import { Button } from '../ui/controls';
 import { recipes } from '../data';
 import { filterRecipes, missingRequiredIngredients } from '../lib/recipes';
 import { foodTypes, type FoodType } from '../lib/foodTypes';
@@ -30,7 +30,7 @@ type Props = {
   weekSlots: WeekSlot[]; onPlan: (day: number, id: string) => void; onPlanner: () => void; onLarder: () => void; onShopping: () => void;
 };
 
-export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onFavorite, onOpen, weekSlots, onPlan, onPlanner, onLarder, onShopping }: Props) {
+export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setFilter, search, setSearch, favorites, larder, stock, dates, servings, onFavorite, onOpen, weekSlots, onPlan, onPlanner }: Props) {
   const filtered = useMemo(() => filterRecipes(recipes, search, filter, larder, selectedFoodTypes, stock, servings), [search, filter, larder, selectedFoodTypes, stock, servings]);
   const ready = filter === 'larder' ? filtered.filter(recipe => missingRequiredIngredients(recipe, larder, stock, servings[recipe.id] ?? 4).length === 0) : filtered;
   const nearly = filter === 'larder' ? filtered.filter(recipe => {
@@ -44,7 +44,21 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
   const resultCount = filtered.length === recipes.length ? `${recipes.length}` : `${filtered.length} of ${recipes.length}`;
   const clearFilters = () => { setSearch(''); setFilter('all'); setSelectedFoodTypes([]); };
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  const [day, setDay] = useState(0);
+  const [today, setToday] = useState(() => (new Date().getDay() + 6) % 7);
+  const [day, setDay] = useState(today);
+  const strip = useRef<HTMLDivElement>(null);
+  const tonight = weekSlots[today];
+  const tonightMeal = tonight?.kind === 'recipe' ? recipes.find(recipe => recipe.id === tonight.id) : undefined;
+  useEffect(() => {
+    const update = () => setToday((new Date().getDay() + 6) % 7);
+    const timer = window.setInterval(update, 30_000);
+    window.addEventListener('focus', update);
+    return () => { window.clearInterval(timer); window.removeEventListener('focus', update); };
+  }, []);
+  useEffect(() => {
+    const card = strip.current?.children[today] as HTMLElement | undefined;
+    if (strip.current && card) strip.current.scrollLeft = card.offsetLeft - (strip.current.children[0] as HTMLElement).offsetLeft;
+  }, [today]);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [query, setQuery] = useState('');
   const opener = useRef<HTMLButtonElement | null>(null);
@@ -58,19 +72,38 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     .sort((a, b) => Number(favorites.includes(b.id)) - Number(favorites.includes(a.id))) : [], [pickerOpen, query, favorites]);
   const anchor = opener.current?.getBoundingClientRect();
   return <>
-    <TonightInspiration recipes={ready.length ? ready : nearly.length ? nearly : filtered} onOpen={onOpen} />
-    <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><h2>This week's dinners</h2><button type="button" onClick={onPlanner}>Open planner →</button></div><div className="simmer-home-days">
+    <section className="home-discovery" aria-label="Find a recipe">
+      <label className="search"><Search size={20} aria-hidden="true"/>
+        <input type="search" aria-label="Search recipes" placeholder="Search meals or ingredients" value={search} onChange={event => setSearch(event.target.value)}/>
+      </label>
+      <div className="chips" aria-label="Recipe filters">{filters.map(({ id, label }) =>
+        <FilterChip key={id} selected={filter === id} onClick={() => setFilter(id)}>{label}</FilterChip>)}</div>
+      <FoodTypePicker selected={selectedFoodTypes} onChange={setSelectedFoodTypes}/>
+    </section>
+    <section className={`simmer-spotlight tonight-plan${tonightMeal ? '' : ' simmer-spotlight-empty'}`} aria-label="Tonight's dinner">
+      {tonightMeal && <div className="simmer-spotlight-image"><img src={import.meta.env.BASE_URL + (tonightMeal.image ?? 'recipes/jacket.svg')} alt="" width="800" height="504"/></div>}
+      <div className="simmer-spotlight-content">
+        <span className="simmer-spotlight-kicker">Tonight · {days[today]}</span>
+        <h1>{tonightMeal?.title ?? (tonight?.kind === 'leftovers' ? 'Leftovers night' : tonight?.kind === 'freezer' ? 'Freezer night' : 'Plan tonight')}</h1>
+        <p>{tonightMeal ? `${tonightMeal.mins} mins · Serves ${servings[tonightMeal.id] ?? 4}` : tonight?.kind === 'leftovers' || tonight?.kind === 'freezer' ? 'An easy evening, already planned.' : 'Choose a dinner for this evening.'}</p>
+        <div className="simmer-spotlight-actions">
+          {tonightMeal && <Button tone="primary" onClick={() => onOpen(tonightMeal.id)}>View recipe</Button>}
+          <button type="button" className="tonight-change" onClick={event => openPicker(today, event.currentTarget)}>{tonightMeal || tonight?.kind === 'leftovers' || tonight?.kind === 'freezer' ? 'Change dinner' : 'Plan tonight'}</button>
+        </div>
+      </div>
+    </section>
+    <section className="simmer-home-plan" aria-label="This week's meal plan"><div className="simmer-home-plan-heading"><h2>This week's dinners</h2><button type="button" onClick={onPlanner}>Open planner</button></div><div className="simmer-home-days" ref={strip}>
       {weekSlots.map((slot, index) => {
         const meal = slot.kind === 'recipe' ? recipes.find(recipe => recipe.id === slot.id) : undefined;
         const title = meal?.title ?? (slot.kind === 'leftovers' ? 'Leftovers' : slot.kind === 'freezer' ? 'Freezer night' : 'Choose dinner');
-        return <div className="home-day" key={days[index]}>
-          <button type="button" onClick={event => meal ? onOpen(meal.id) : openPicker(index, event.currentTarget)}>
-            <span>{days[index].slice(0, 3)}</span><strong>{title}</strong>
+        return <div className={`home-day${index === today ? ' is-today' : ''}`} key={days[index]}>
+          <button type="button" aria-current={index === today ? 'date' : undefined} aria-label={`Change dinner for ${days[index]}: ${title}`} onClick={event => openPicker(index, event.currentTarget)}>
+            <span>{index === today ? 'Today' : days[index].slice(0, 3)}</span><strong>{title}</strong>
+            <span className="home-day-action">{slot.kind === 'empty' ? 'Plan dinner' : 'Change dinner'}</span>
           </button>
-          {meal && <button type="button" className="home-change" aria-label={`Change dinner for ${days[index]}`} onClick={event => openPicker(index, event.currentTarget)}>Change dinner</button>}
         </div>;
       })}
-    </div><div className="simmer-home-shortcuts"><button type="button" onClick={onLarder}>Use my larder</button><button type="button" onClick={onShopping}>Shopping list</button></div></section>
+    </div></section>
     <Dialog.Root historyKey="home-day-picker" open={pickerOpen} onOpenChange={setPickerOpen}>
       <Dialog.Portal>
         <Dialog.Overlay className="planner-picker-overlay"/>
@@ -97,14 +130,8 @@ export function HomePage({ selectedFoodTypes, setSelectedFoodTypes, filter, setF
     <section className="menu-toolbar" aria-label="Browse recipes">
     <div className="section-heading"><div><h2>What takes your fancy?</h2>
 </div>
-      <label className="search"><Search size={20} aria-hidden="true" />
-        <input type="search" id="search" placeholder="Search meals or ingredients" value={search}
-          onChange={event => setSearch(event.target.value)} aria-label="Search recipes" /></label>
     </div>
-    <div className="chips" aria-label="Recipe filters">{filters.map(({ id, label }) =>
-      <FilterChip key={id} selected={filter === id} onClick={() => setFilter(id)}>{label}</FilterChip>)}</div>
     <div className="recipe-food-toolbar">
-      <FoodTypePicker selected={selectedFoodTypes} onChange={setSelectedFoodTypes}/>
       {(selectedFoodTypes.length > 0 || filter !== 'all' || search.trim()) && <button type="button" className="recipe-clear-filters" onClick={clearFilters}>Clear filters</button>}
       <p className="recipe-result-count" role="status">{filter === 'larder' ? `${ready.length} ready · ${nearly.length} need 1–2 items · ${other.length} more ideas` : `${resultCount} recipes`}</p>
     </div>

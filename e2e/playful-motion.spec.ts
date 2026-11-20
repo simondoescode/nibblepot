@@ -53,23 +53,6 @@ test('changing motion preference cancels active sparks and subsequent actions st
   expect(await effects(heart)).toContain('simmer-pop');
 });
 
-test('shuffle preserves the trigger and replaces rather than stacks recipe reveals', async ({ page }) => {
-  await page.goto('/nibblepot/');
-  const hero = page.getByRole('region', { name: "Tonight's inspiration" });
-  const button = hero.getByRole('button', { name: 'Surprise me' });
-  const image = hero.locator('img');
-  const first = await image.getAttribute('src');
-  await button.focus();
-  await button.dispatchEvent('click');
-  await expect(image).not.toHaveAttribute('src', first!);
-  await expect(button).toBeFocused();
-  await expect.poll(async () => (await effects(hero)).sort()).toEqual(['simmer-reveal', 'simmer-reveal', 'simmer-shuffle'].sort());
-  await button.dispatchEvent('click');
-  await expect.poll(async () => (await effects(hero)).sort()).toEqual(['simmer-reveal', 'simmer-reveal', 'simmer-shuffle'].sort());
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect.poll(() => effects(hero)).toEqual([]);
-});
-
 test('cooking celebration runs once after finishing, but not after restoring a completed session', async ({ page }) => {
   await page.goto('/nibblepot/recipes/speedy-tomato-pasta/cook/');
   await page.getByRole('button', { name: 'Next step', exact: true }).click();
@@ -100,16 +83,11 @@ for (const width of [360, 390, 820, 1180, 1440]) {
   test(`playful feedback keeps the layout stable at ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/nibblepot/');
-    const shuffle = page.getByRole('button', { name: 'Surprise me' });
-    await shuffle.click();
-    await expect(shuffle).toBeFocused();
-    const hero = page.getByRole('region', { name: "Tonight's inspiration" });
-    await expect.poll(async () => (await effects(hero)).length).toBe(3);
-    const settledTarget = await shuffle.boundingBox();
-    await hero.evaluate(element => element.getAnimations({ subtree: true }).forEach(animation => {
-      if (animation.id.startsWith('simmer-')) animation.currentTime = Number(animation.effect!.getTiming().duration) * .45;
-    }));
-    expect(await shuffle.boundingBox()).toEqual(settledTarget);
+    const hero = page.getByRole('region', { name: "Tonight's dinner" });
+    const plan = hero.getByRole('button', {name:'Plan tonight'});
+    await plan.click();
+    await page.getByRole('button', {name:'Close dinner picker'}).click();
+    await expect(plan).toBeFocused();
     await page.screenshot({ path: info.outputPath(`motion-${width}-normal.png`) });
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await expect.poll(() => effects(hero)).toEqual([]);
