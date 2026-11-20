@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import { Toast } from './components/Toast';
 import { useAppNavigation } from './hooks/useAppNavigation';
 import { useSessionState } from './hooks/useSessionState';
@@ -222,6 +223,7 @@ export default function App() {
     {page === 'settings' && <SettingsPage pwa={pwa} data={data} onRefresh={() => refresh()} refreshing={refreshing}
       onRestore={setData} onReset={() => setData({ larder: [], favorites: [], shopping: [] })} notify={toast} />}
   </>;
+  const settingsOpen = route.kind === 'tab' && route.tab === 'settings';
   const shoppingCount = data.shopping.filter(item => !item.done).length;
   if (activeCookRecipe) return <><PwaStatus pwa={pwa} cooking /><CookingMode key={activeCookRecipe.id} recipe={activeCookRecipe}
     servings={data.servings?.[activeCookRecipe.id] ?? BASE_SERVINGS}
@@ -229,8 +231,15 @@ export default function App() {
   return <>
     <PwaStatus pwa={pwa} />
     <PullIndicator distance={pull.distance} refreshing={refreshing} />
-    <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
-      mobileVisible={route.kind === 'tab' && route.tab === 'home'}/>
+    {settingsOpen ? <header className="settings-toolbar">
+      <div className="wrap">
+        <button type="button" aria-label="Back" onClick={() => back(tabPath('home'), {kind: 'tab', tab: 'home'})}>
+          <ArrowLeft size={22} aria-hidden="true" />
+        </button>
+        <h1>Settings</h1>
+      </div>
+    </header> : <Header tab={tab} shoppingCount={shoppingCount} onNavigate={navigate}
+      mobileVisible={route.kind === 'tab' && route.tab === 'home'}/>}
     <div className={`pull-body${pull.dragging ? ' is-pulling' : pull.settling ? ' is-settling' : ''}`}
       style={{ '--pull-shift': `${pullOffset(pull.distance)}px` } as CSSProperties}>
       <div className="swipe-viewport" ref={swipe.viewport} onTouchStart={swipe.onTouchStart}
@@ -263,9 +272,9 @@ export default function App() {
           </div>}
         </div>
       </div>
-      <footer className="wrap footer">Made for real-life tea times ✳ Simmer demo</footer>
+      {!settingsOpen && <footer className="wrap footer">Made for real-life tea times ✳ Simmer demo</footer>}
     </div>
-    {!(route.kind === 'recipe' && activeRecipe) && <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />}
+    {!settingsOpen && !(route.kind === 'recipe' && activeRecipe) && <MobileNavigation tab={tab} shoppingCount={shoppingCount} onNavigate={navigate} />}
     {lastRandom.current && <RandomRecipeDialog open={!!randomRecipe} recipe={lastRandom.current} saved={data.favorites.includes(lastRandom.current.id)}
       onReopen={() => setRandomId(lastRandom.current!.id)} onClose={() => setRandomId(null)} onView={() => { if (lastRandom.current) openRecipe(lastRandom.current.id); }} onReroll={randomMeal} returnFocusRef={dialogReturnFocus} />}
     <PlanDinnerDialog recipe={plannedRecipe}

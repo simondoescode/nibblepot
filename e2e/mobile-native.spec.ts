@@ -24,7 +24,7 @@ test('mobile tab bar has Lucide tabs, visible active state, direct favourites an
   await nav.getByRole('button',{name:'Recipes'}).click();
   await page.getByRole('button',{name:'Open settings'}).click();
   await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
-  await expect(page.getByRole('heading',{name:/little tweaks/i})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Settings'})).toBeVisible();
 });
 
 test('mobile pull-to-refresh visually displaces page and springs back on a short release',async ({page},testInfo)=>{

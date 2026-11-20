@@ -114,7 +114,7 @@ test('settings backup, restore, and confirmed reset persist across reloads', asy
   await page.goto('/nibblepot/');
   await page.locator('.recipe-card').first().getByRole('button', { name: /add to favourites/i }).click();
   await openSecondaryTab(page, testInfo.project.name, 'Settings');
-  await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
   await expect(page.locator('.settings-stats')).toContainText('1');
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export' }).click();
@@ -127,7 +127,6 @@ test('settings backup, restore, and confirmed reset persist across reloads', asy
   await page.getByRole('button', { name: 'Clear saved data' }).click();
   await expect(page.locator('.settings-stats')).toContainText('0');
   await page.reload();
-  await openSecondaryTab(page, testInfo.project.name, 'Settings');
   await expect(page.locator('.settings-stats')).toContainText('0');
 
   page.once('dialog', dialog => dialog.accept());
@@ -143,9 +142,10 @@ test('refresh app reloads the full PWA without clearing saved favourites', async
   const navigation = page.waitForEvent('load');
   await page.getByRole('button', { name: 'Refresh app' }).click();
   await navigation;
-  await expect(page.getByRole('heading', { name: /little tweaks/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
   await expect(page).toHaveURL(/\/nibblepot\/settings\/$/);
   expect(await page.evaluate(() => sessionStorage.getItem('before-refresh'))).toBe('yes');
+  await page.getByRole('button', {name: 'Back', exact: true}).click();
   await openSecondaryTab(page, testInfo.project.name, 'Favourites');
   await expect(page.locator('.recipe-card')).toHaveCount(1);
 });
