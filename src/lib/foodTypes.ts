@@ -6,8 +6,8 @@ export const foodTypes = [
   { id: 'beef', label: 'Beef' },
   { id: 'pork', label: 'Sausage & ham' },
   { id: 'fish', label: 'Fish' },
-  { id: 'meat-free', label: 'Meat-free' },
-  { id: 'vegan', label: 'Vegan-friendly' },
+  { id: 'meat-free', label: 'Vegetarian' },
+  { id: 'vegan', label: 'Vegan' },
   { id: 'pasta', label: 'Pasta & noodles' },
   { id: 'rice', label: 'Rice' },
   { id: 'potatoes', label: 'Potatoes' },
@@ -19,12 +19,6 @@ const ingredientsByType = {
   fish: ['tuna', 'fish-fingers', 'salmon', 'white-fish'], pasta: ['pasta', 'noodles'],
   rice: ['rice'], potatoes: ['potatoes'],
 };
-/** Packaged stock, sauces and pasta need their labels checked by the cook.
- * Exclude all explicitly animal-derived ingredients, including optional toppings,
- * so the default recipe ingredients do not imply a vegan dish incorrectly.
- * Vegan-friendly is not a certification; see the picker guidance.
- */
-const animalProducts = new Set(['cheese','butter','eggs','milk','cream-cheese','mayo','chicken','cooked-chicken','beef','sausages','ham','meatballs','tuna','fish-fingers','puff-pastry','stuffing-mix','gravy','chicken-mince','lamb-mince','diced-lamb','salmon','white-fish','yoghurt']);
 export const dietaryFoodTypes: readonly FoodType[] = ['meat-free','vegan'];
 
 const meatAndFish = new Set(['chicken', 'cooked-chicken', 'beef', 'sausages', 'ham', 'meatballs', 'tuna', 'fish-fingers', 'chicken-mince', 'lamb-mince', 'diced-lamb', 'salmon', 'white-fish']);
@@ -35,7 +29,7 @@ const meatAndFish = new Set(['chicken', 'cooked-chicken', 'beef', 'sausages', 'h
  */
 export function matchesFoodType(recipe: Recipe, type: FoodType): boolean {
   if (type === 'all') return true;
-  if (type === 'meat-free') return !recipe.ing.some(item=>meatAndFish.has(item.id));
-  if (type === 'vegan') return !recipe.ing.some(item=>animalProducts.has(item.id));
+  if (type === 'meat-free') return (recipe.diet === 'vegetarian' || recipe.diet === 'vegan') && !recipe.ing.some(item=>meatAndFish.has(item.id));
+  if (type === 'vegan') return recipe.diet === 'vegan';
   return recipe.ing.some(item=>ingredientsByType[type].includes(item.id));
 }

@@ -138,3 +138,21 @@
 
 .food-picker-group-title{grid-column:1/-1;font-size:13px;letter-spacing:.02em;margin:6px 0 0;font-weight:750}
 .food-picker-hint{grid-column:1/-1;margin:0!important;font-size:12px!important;line-height:1.45!important}
+
+.diet-badges {
+  display: inline-flex;
+  gap: .3rem;
+  margin-block: .25rem;
+  color: var(--brand);
+}
+.diet-badges abbr {
+  display: inline-grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: var(--surface);
+  font: 700 .85rem/1 var(--font-ui);
+  text-decoration: none;
+}

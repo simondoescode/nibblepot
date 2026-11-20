@@ -115,6 +115,9 @@ test('direct recipe entry has a safe back fallback; history forward and rapid ta
   await page.goBack();await expect(page).toHaveURL(/\/nibblepot\/$/);
   await page.goForward();await expect(page.getByRole('heading',{name:'Jacket potatoes & beans',exact:true})).toBeVisible();
   const nav=navigation(page,info.project.name);
+  if (info.project.name === 'mobile') await expect(nav).toHaveCount(0);
+  await page.getByRole('button',{name:'Back to recipes',exact:true}).click();
+  await expect(page).toHaveURL(/\/nibblepot\/$/);
   await nav.getByRole('button',{name:'Planner',exact:true}).click();
   await nav.getByRole('button',{name:'Shopping',exact:true}).click();
   await nav.getByRole('button',{name:'Larder',exact:true}).click();

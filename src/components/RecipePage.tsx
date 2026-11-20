@@ -1,3 +1,4 @@
+import { DietBadges } from './DietBadges';
 
 import { ArrowLeft, Check, Heart, Share2, ShoppingBasket, Minus, Plus, ChefHat, CalendarPlus } from 'lucide-react';
 import { ingredientName } from '../data';
@@ -65,7 +66,8 @@ export function RecipePage({ recipe, larder, saved, servings, onServingsChange, 
       <div className="recipe-page-intro">
         <div className="recipe-page-heading">
           {tag && <span className="recipe-tags"><span>{tag}</span></span>}
-          <h1>{recipe.title}</h1>
+          <DietBadges diet={recipe.diet} />
+        <h1>{recipe.title}</h1>
         </div>
         <p>{recipe.description}</p>
         <dl className="recipe-page-facts">

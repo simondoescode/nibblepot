@@ -9,6 +9,7 @@ const ids = new Set(), slugs = new Set();
 assert(Array.isArray(recipes) && recipes.length > 0, 'Catalogue must contain recipes');
 for(const recipe of recipes) {
   const label = recipe.title || JSON.stringify(recipe);
+  assert(['vegan', 'vegetarian', 'omnivore'].includes(recipe.diet), label + ': dietary classification required');
   assert.match(recipe.id, /^[a-z0-9]{4}$/, label + ': ID must have four lowercase alphanumeric characters');
   assert(!ids.has(recipe.id), label + ': duplicate ID'); ids.add(recipe.id);
   assert.match(recipe.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/, label + ': invalid slug');

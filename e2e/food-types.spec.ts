@@ -90,7 +90,7 @@ for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`
   const box=await picker.boundingBox();
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x+box!.width).toBeLessThanOrEqual(width);
-  await picker.getByRole('checkbox',{name:'Meat-free',exact:true}).check();
+  await picker.getByRole('checkbox',{name:'Vegetarian',exact:true}).check();
   await picker.getByRole('checkbox',{name:'Rice',exact:true}).check();
   await picker.getByRole('button',{name:'Apply filters'}).click();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBe(width);
@@ -99,9 +99,9 @@ for(const width of [320,390]) test(`multi-select picker fits ${width}px screens`
 
 test('dietary preferences restrict other selected categories',async ({page})=>{
   await page.goto('/nibblepot/');
-  await chooseTypes(page,['Vegan-friendly','Rice']);
+  await chooseTypes(page,['Vegan','Rice']);
   await expect(page.locator('#home-results').getByRole('heading',{name:'Smoky bean rice bowls',exact:true})).toBeVisible();
   await expect(page.locator('#home-results').getByRole('heading',{name:'One-pot chicken rice',exact:true})).toHaveCount(0);
-  await chooseTypes(page,['Meat-free','Chicken']);
+  await chooseTypes(page,['Vegetarian','Chicken']);
   await expect(page.getByRole('heading',{name:'No recipes found'})).toBeVisible();
 });
